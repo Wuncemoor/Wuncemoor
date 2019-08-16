@@ -1,0 +1,9 @@
+class Party:
+	def __init__(self, capacity):
+		self.capacity = capacity
+		self.crew = []
+
+	def add_party_member(self, mercenary):
+		results = []
+		if len(self.crew) >= self.capacity:
+			results.append({'ally_added': None, 'message': Message('Your party is already full!', libtcod.white)})
