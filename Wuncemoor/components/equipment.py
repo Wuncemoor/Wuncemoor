@@ -54,6 +54,124 @@ class Equipment:
         return bonus
         
     @property
+    def max_mp_bonus(self):
+        bonus = 0
+        
+        if self.main_hand and self.main_hand.equippable:
+            bonus += self.main_hand.equippable.max_mp_bonus
+            
+        if self.off_hand and self.off_hand.equippable:
+            bonus += self.off_hand.equippable.max_mp_bonus
+            
+        if self.head and self.head.equippable:
+            bonus += self.head.equippable.max_mp_bonus
+            
+        if self.body and self.body.eqiuppable:
+            bonus += self.body.equippable.max_mp_bonus
+        
+        if self.feet and self.feet.equippable:
+            bonus += self.feet.equippable.max_mp_bonus
+            
+        if self.belt and self.belt.equippable:
+            bonus += self.belt.equippable.max_mp_bonus
+            
+        if self.hands and self.hands.eqiuppable:
+            bonus += self.feet.equippable.max_mp_bonus
+            
+        if self.finger and self.finger.equippable:
+            bonus += self.feet.equippable.max_mp_bonus
+            
+        if self.neck and self.neck.equippable:
+            bonus += self.feet.equippable.max_mp_bonus
+            
+        if self.back and self.back.equippable:
+            bonus += self.back.equippable.max_mp_bonus
+            
+        if self.accessory and self.accessory.equippable:
+            bonus += self.accessory.equippable.max_mp_bonus
+            
+        return bonus
+
+    @property
+    def max_tp_bonus(self):
+        bonus = 0
+        
+        if self.main_hand and self.main_hand.equippable:
+            bonus += self.main_hand.equippable.max_tp_bonus
+            
+        if self.off_hand and self.off_hand.equippable:
+            bonus += self.off_hand.equippable.max_tp_bonus
+            
+        if self.head and self.head.equippable:
+            bonus += self.head.equippable.max_tp_bonus
+            
+        if self.body and self.body.eqiuppable:
+            bonus += self.body.equippable.max_tp_bonus
+        
+        if self.feet and self.feet.equippable:
+            bonus += self.feet.equippable.max_tp_bonus
+            
+        if self.belt and self.belt.equippable:
+            bonus += self.belt.equippable.max_tp_bonus
+            
+        if self.hands and self.hands.eqiuppable:
+            bonus += self.feet.equippable.max_tp_bonus
+            
+        if self.finger and self.finger.equippable:
+            bonus += self.feet.equippable.max_tp_bonus
+            
+        if self.neck and self.neck.equippable:
+            bonus += self.feet.equippable.max_tp_bonus
+            
+        if self.back and self.back.equippable:
+            bonus += self.back.equippable.max_tp_bonus
+            
+        if self.accessory and self.accessory.equippable:
+            bonus += self.accessory.equippable.max_tp_bonus
+            
+        return bonus
+
+    @property
+    def max_vp_bonus(self):
+        bonus = 0
+        
+        if self.main_hand and self.main_hand.equippable:
+            bonus += self.main_hand.equippable.max_vp_bonus
+            
+        if self.off_hand and self.off_hand.equippable:
+            bonus += self.off_hand.equippable.max_vp_bonus
+            
+        if self.head and self.head.equippable:
+            bonus += self.head.equippable.max_vp_bonus
+            
+        if self.body and self.body.eqiuppable:
+            bonus += self.body.equippable.max_vp_bonus
+        
+        if self.feet and self.feet.equippable:
+            bonus += self.feet.equippable.max_vp_bonus
+            
+        if self.belt and self.belt.equippable:
+            bonus += self.belt.equippable.max_vp_bonus
+            
+        if self.hands and self.hands.eqiuppable:
+            bonus += self.feet.equippable.max_vp_bonus
+            
+        if self.finger and self.finger.equippable:
+            bonus += self.feet.equippable.max_vp_bonus
+            
+        if self.neck and self.neck.equippable:
+            bonus += self.feet.equippable.max_vp_bonus
+            
+        if self.back and self.back.equippable:
+            bonus += self.back.equippable.max_vp_bonus
+            
+        if self.accessory and self.accessory.equippable:
+            bonus += self.accessory.equippable.max_vp_bonus
+            
+        return bonus
+
+        
+    @property
     def power_bonus(self):
         bonus = 0
         

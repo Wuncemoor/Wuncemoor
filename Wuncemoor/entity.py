@@ -1,12 +1,13 @@
 import math
 import tcod as libtcod
+from PIL import Image
 from render_functions import RenderOrder
 from components.item import Item
 #Generic object representing PC and NPC, items, etc
 class Entity:
 
     #Creation
-    def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None, item=None, inventory=None, stairs=None, level=None, equipment=None, equippable=None):
+    def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, combatant=None, ai=None, item=None, inventory=None, stairs=None, level=None, equipment=None, equippable=None):
         self.x = x
         self.y = y
         self.char = char
@@ -14,7 +15,7 @@ class Entity:
         self.name = name
         self.blocks = blocks
         self.render_order = render_order
-        self.fighter = fighter
+        self.combatant = combatant
         self.ai = ai
         self.item = item
         self.inventory = inventory
@@ -23,8 +24,8 @@ class Entity:
         self.equipment = equipment
         self.equippable = equippable
         
-        if self.fighter:
-            self.fighter.owner = self
+        if self.combatant:
+            self.combatant.owner = self
             
         if self.ai:
             self.ai.owner = self

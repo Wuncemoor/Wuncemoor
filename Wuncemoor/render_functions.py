@@ -70,9 +70,12 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
         libtcod.console_print_ex(panel, message_log.x, y, libtcod.BKGND_NONE, libtcod.LEFT, message.text)
         y += 1
     
-    render_bar(panel, 1, 1, bar_width, 'HP', player.fighter.hp, player.fighter.max_hp, libtcod.light_red, libtcod.darker_red)
+    render_bar(panel, 1, 1, bar_width, 'HP', player.combatant.current_hp, player.combatant.max_hp, libtcod.light_red, libtcod.darker_red)
+    render_bar(panel, 1, 2, bar_width, 'MP', player.combatant.current_mp, player.combatant.max_mp, libtcod.light_blue, libtcod.darker_blue)
+    render_bar(panel, 1, 3, bar_width, 'TP', player.combatant.current_tp, player.combatant.max_tp, libtcod.light_green, libtcod.darker_green)
+    render_bar(panel, 1, 4, bar_width, 'VP', player.combatant.current_vp, player.combatant.max_vp, libtcod.light_orange, libtcod.darker_orange)
     
-    libtcod.console_print_ex(panel, 1, 3, libtcod.BKGND_NONE, libtcod.LEFT, 'Dungeon Level: {0}'.format(game_map.dungeon_level))
+    libtcod.console_print_ex(panel, 1, 5, libtcod.BKGND_NONE, libtcod.LEFT, 'Dungeon Level: {0}'.format(game_map.dungeon_level))
     libtcod.console_set_default_foreground(panel, libtcod.light_grey)
     libtcod.console_print_ex(panel, 1, 0, libtcod.BKGND_NONE, libtcod.LEFT, get_names_under_mouse(mouse, entities, fov_map))
     libtcod.console_blit(panel, 0, 0, screen_width, panel_height, 0, 0, panel_y)
@@ -89,7 +92,7 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
     elif game_state == GameStates.LEVEL_UP:
         level_up_menu(con, 'Level up! Choose a stat boost:', player, 40, screen_width, screen_height)
     elif game_state == GameStates.CHARACTER_SCREEN:
-        character_screen(player, 30, 10, screen_width, screen_height)
+        character_screen(player, 40, 30, screen_width, screen_height)
 
 def clear_all(con, entities):
 

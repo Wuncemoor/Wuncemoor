@@ -1,7 +1,7 @@
 import tcod as libtcod
 from random import randint
 from components.ai import BasicMonster
-from components.fighter import Fighter
+from components.combatant import Combatant
 from components.item import Item
 from components.equipment import EquipmentSlots
 from components.equippable import Equippable
@@ -108,7 +108,7 @@ class GameMap:
    
         monster_chances = { 
             'orc' : 80, 
-            'troll': from_dungeon_level([[15,3], [30,5], [60,7]], self.dungeon_level)
+            'troll': from_dungeon_level([[20,1], [40,2], [80,3]], self.dungeon_level)
             }
         
         item_chances = {
@@ -128,13 +128,13 @@ class GameMap:
             if not any([entity for entity in entities if entity.x == x and entity.y == y]):
                 monster_choice = random_choice_from_dict(monster_chances)
                 if monster_choice == 'orc':
-                    fighter_component = Fighter(hp=20, defence=0, power=4, xp=35 )
+                    combatant_component = Combatant(strength=5, instinct=0, coordination=0, endurance=7, arcana=10, improvisation=10, wisdom=10, finesse=10, charisma=10, devotion=10, xp=350 )
                     ai_component = BasicMonster()
-                    monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True, render_order=RenderOrder.ACTOR, fighter=fighter_component, ai=ai_component)
+                    monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component, ai=ai_component)
                 else:
-                    fighter_component = Fighter(hp=30, defence=2, power=8, xp=100)
+                    combatant_component = Combatant(strength=1, instinct=0, coordination=0, endurance=10, arcana=10, improvisation=10, wisdom=10, finesse=10, charisma=10, devotion=10, xp=1000)
                     ai_component = BasicMonster()
-                    monster = Entity(x, y, 'T', libtcod.darker_green, 'Troll', blocks=True, render_order=RenderOrder.ACTOR, fighter=fighter_component, ai=ai_component)
+                    monster = Entity(x, y, 'T', libtcod.darker_green, 'Troll', blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component, ai=ai_component)
                     
                 entities.append(monster)
                      
@@ -147,7 +147,7 @@ class GameMap:
                 
                 
                 if item_choice == 'healing_potion':
-                    item_component = Item(use_function=heal, amount=40)
+                    item_component = Item(use_function=heal, amount=400)
                     item = Entity(x, y, '!', libtcod.violet, 'Healing Potion', render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'sword':
                     equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=3)
@@ -156,13 +156,13 @@ class GameMap:
                     equippable_component = Equippable(EquipmentSlots.OFF_HAND, defence_bonus = 1)
                     item = Entity(x, y, '[', libtcod.darker_orange, 'Shield', equippable=equippable_component)
                 elif item_choice == 'fireball_scroll':
-                    item_component = Item(use_function=cast_fireball, targeting = True, targeting_message=Message('Left-click a target tile for the fireball, or right-click to rethink your life decisions.', libtcod.light_cyan), damage=25, radius=3)
+                    item_component = Item(use_function=cast_fireball, targeting = True, targeting_message=Message('Left-click a target tile for the fireball, or right-click to rethink your life decisions.', libtcod.light_cyan), damage=250, radius=3)
                     item = Entity(x, y, '#', libtcod.red, 'Fireball Scroll', render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'confusion_scroll':
                     item_component = Item(use_function=cast_confuse, targeting=True, targeting_message=Message('Left-click an enemy to confuse it, or right-click to cancel.', libtcod.light_cyan))
                     item = Entity(x, y, '#', libtcod.light_pink, 'Confusion Scroll', render_order=RenderOrder.ITEM, item=item_component)
                 else:
-                    item_component = Item(use_function = cast_lightning, damage=40, maximum_range=5)
+                    item_component = Item(use_function = cast_lightning, damage=400, maximum_range=5)
                     item = Entity(x, y, '#', libtcod.yellow, 'Lightning Scroll', render_order=RenderOrder.ITEM, item=item_component)
                     
                 entities.append(item)
@@ -180,7 +180,7 @@ class GameMap:
         self.tiles = self.initialize_tiles()
         self.make_map(constants['max_rooms'], constants['room_min_size'], constants['room_max_size'], constants['map_width'], constants['map_height'], player, entities) 
         
-        player.fighter.heal(player.fighter.max_hp // 2)
+        player.combatant.gain_hp(player.combatant.max_hp // 2)
         
         message_log.add_message(Message('You take a moment to rest before travelling forth.', libtcod.light_violet))
         

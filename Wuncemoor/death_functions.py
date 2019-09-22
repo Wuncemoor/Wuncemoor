@@ -16,7 +16,7 @@ def kill_monster(monster):
     monster.char = '%'
     monster.color = libtcod.dark_red
     monster.blocks = False
-    monster.fighter = None
+    monster.combatant = None
     monster.ai = None
     monster.name = 'The remains of ' + monster.name
     monster.render_order = RenderOrder.CORPSE

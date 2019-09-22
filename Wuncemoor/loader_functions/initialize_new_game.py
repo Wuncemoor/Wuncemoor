@@ -1,5 +1,6 @@
 import tcod as libtcod
-from components.fighter import Fighter
+from PIL import Image
+from components.combatant import Combatant
 from components.inventory import Inventory
 from components.level import Level
 from components.equipment import Equipment
@@ -45,7 +46,8 @@ def get_constants():
         'dark_wall': libtcod.Color(0, 0, 100),
         'dark_ground': libtcod.Color(50, 50, 150),
         'light_wall': libtcod.Color(130, 110, 50),
-        'light_ground': libtcod.Color(200, 180, 50)
+        'light_ground': libtcod.Color(200, 180, 50),
+        'white' : libtcod.Color(255,255,255)
         }
     
     constants = {
@@ -73,12 +75,13 @@ def get_constants():
     return constants
     
 def get_game_variables(constants):
-    fighter_component = Fighter(hp=100, defence=1, power=2)
+    combatant_component = Combatant(strength=10, instinct=10, coordination=10, endurance=10, arcana=10, improvisation=10, wisdom=10, finesse=10, charisma=10, devotion=10)
     inventory_component = Inventory(26)
     level_component = Level()
     equipment_component = Equipment()
+    player_sprite = Image.open(r'C:\Users\penic\Desktop\Wuncemoor\slime.jpg')
     
-    player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, render_order = RenderOrder.ACTOR, fighter=fighter_component, inventory=inventory_component, level=level_component, equipment=equipment_component)
+    player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, render_order = RenderOrder.ACTOR, combatant=combatant_component, inventory=inventory_component, level=level_component, equipment=equipment_component)
     
     entities = [player]
     

@@ -23,6 +23,13 @@ def handle_character_screen(key):
         
     return {}
 
+def handle_feats_screen(key):
+    if key.vk == libtcod.KEY_ESCAPE:
+        return {'exit': True}
+    if key.char == 'a':
+        return {'mighty_strength': True}
+        
+    return {}
 def handle_player_turn_keys(key):
     key_char = chr(key.c)
     #Movement keys
@@ -130,10 +137,24 @@ def handle_level_up_menu(key):
         key_char = chr(key.c)
         
         if key_char == 'a':
-            return {'level_up': 'HP'}
+            return {'level_up': 'Strength'}
         elif key_char == 'b':
-            return {'level_up': 'Str'}
+            return {'level_up': 'Instinct'}
         elif key_char == 'c':
-            return {'level_up': 'def'}
+            return {'level_up': 'Coordination'}
+        elif key_char == 'd':
+            return {'level_up': 'Endurance'}
+        elif key_char == 'e':
+            return {'level_up': 'Arcana'}
+        elif key_char == 'f':
+            return {'level_up': 'Improvisation'}
+        elif key_char == 'g':
+            return {'level_up': 'Wisdom'}
+        elif key_char == 'h':
+            return {'level_up': 'Finesse'}
+        elif key_char == 'i':
+            return {'level_up': 'Charisma'}
+        elif key_char == 'j':
+            return {'level_up': 'Devotion'}
     
     return {}

@@ -9,6 +9,7 @@ from render_functions import clear_all, render_all, render_bar
 from loader_functions.initialize_new_game import get_constants, get_game_variables
 from loader_functions.data_loaders import load_game, save_game
 from menus import main_menu, message_box
+from PIL import Image
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
     
@@ -63,7 +64,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 target = get_blocking_entities_at_location(entities, destination_x, destination_y)
                 
                 if target:
-                    attack_results = player.fighter.attack(target)
+                    attack_results = player.combatant.attack(target)
                     player_turn_results.extend(attack_results)
                 else:
                     player.move(dx,dy)
@@ -113,13 +114,28 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             game_state = GameStates.CHARACTER_SCREEN
             
         if level_up:
-            if level_up == 'HP':
-                player.fighter.base_max_hp += 20
-                player.fighter.hp += 20
-            elif level_up == 'str':
-                player.fighter.base_power += 1
-            elif level_up == 'def':
-                player.fighter.base_defence += 1
+            
+            if level_up == 'Strength':
+                player.combatant.strength += 1
+            elif level_up == 'Instinct':
+                player.combatant.instinct += 1
+            elif level_up == 'Coordination':
+                player.combatant.coordination += 1
+            elif level_up == 'Vitality':
+                player.combatant.vitality += 1
+            elif level_up == 'Arcana':
+                player.combatant.arcana += 1
+            elif level_up == 'Improvisation':
+                player.combatant.improvisation += 1
+            elif level_up == 'Wisdom':
+                player.combatant.wisdom += 1
+            elif level_up == 'Finesse':
+                player.combatant.finesse += 1
+            elif level_up == 'Charisma':
+                player.combatant.charisma += 1
+            elif level_up == 'Devotion':
+                player.combatant.devotion += 1
+                
             
             game_state = previous_game_state
             game_state = previous_game_state

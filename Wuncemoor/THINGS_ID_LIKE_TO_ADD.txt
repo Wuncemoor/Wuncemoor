@@ -22,4 +22,9 @@ town junkquests to exchange lifetime for gold/xp
 get testers to roleplay out a character, see what decisions they make and why, try to have those decisions linked via personality traits, that way when a player roleplays his desired way, he will quickly get a "locked in" personality via maxes and wont arbitrarily wobble between personalities so long as do not act erratically.
 croudsourced roleplaying app - I implement main quest and adventure nodes as a choose-your-own-adventure style roleplay session. Users type up their personality and class/specs, then choose from premade options from initial 10 or so testers(friends) with additional option to append an existing option or input their new option. Reasoning behind their decisions will be asked at the end of each question
 eternal dungeon - exponentially harder per level
-base randomzied merc personality on results of playtester characters
+base randomzied merc personality on results of playtester characters, offer
+generate voronoi.lloyd WorldMap, which will be only traversable by water, with rough draft of basic mountain/river/biomes on continents
+render separate maps for each continent/land_mass based on WorldMap by finding centroid and creating circle based on it, zoomed in and with a DetailFilter applied to touch up the raw biome input
+Towns = CorePlotTowns and ProcGenTowns, Dungeons = CorePlotDungeons and ProcGenDungeons, PointOfInterest = Towns and Dungeons and 
+Zooming In: WorldMap -> Continent[x] -> PointOfInterest[y] -> (Building[i] or Dungeon[j]) -> Subfloor[i or j]
+WorldMap <-> CombatEncounter <-> Continent <-> PointOfInterest
