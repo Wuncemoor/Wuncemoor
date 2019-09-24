@@ -19,13 +19,22 @@ class Combatant:
         self.base_defence = vitality
         self.base_power = strength
         self.xp = xp
-        self.current_hp = 1000
-        self.current_mp = 1000
-        self.current_tp = 1000
-        self.current_vp = 1000
         self.hit = coordination
         self.dodge = finesse
        
+#Initial resources functions
+    @property
+    def current_hp(self):
+        return (20*(self.strength + self.strength + self.instinct + self.coordination + self.vitality))
+    @property
+    def current_mp(self):
+        return (20*(self.arcana + self.arcana + self.instinct + self.improvisation + self.wisdom))
+    @property
+    def current_tp(self):
+        return (20*(self.finesse + self.finesse + self.coordination + self.improvisation + self.charisma))
+    @property
+    def current_vp(self):
+        return (20*(self.devotion + self.devotion + self.vitality + self.wisdom + self.charisma))
     
 #Base maximum resource functions
     @property

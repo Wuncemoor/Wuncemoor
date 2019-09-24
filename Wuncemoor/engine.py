@@ -43,7 +43,20 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         show_inventory = action.get('show_inventory')
         drop_inventory = action.get('drop_inventory')
         inventory_index = action.get('inventory_index')
-        show_character_screen = action.get('show_character_screen')
+        show_stats_menu = action.get('show_stats_menu')
+        show_primary_stats = action.get('show_primary_stats')
+        show_combat_stats = action.get('show_combat_stats')
+        show_feats = action.get('show_feats')
+        show_strength_feats = action.get('show_strength_feats')
+        show_instinct_feats = action.get('show_instinct_feats')
+        show_coordination_feats = action.get('show_coordination_feats')
+        show_vitality_feats = action.get('show_vitality_feats')
+        show_arcana_feats = action.get('show_arcana_feats')
+        show_improvisation_feats = action.get('show_improvisation_feats')
+        show_wisdom_feats = action.get('show_wisdom_feats')
+        show_finesse_feats = action.get('show_finesse_feats')
+        show_charisma_feats = action.get('show_charisma_feats')
+        show_devotion_feats = action.get('show_devotion_feats')
         exit = action.get('exit')
         take_stairs = action.get('take_stairs')
         fullscreen = action.get('fullscreen')
@@ -109,9 +122,48 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                     break
             else:
                 message_log.add_message(Message("Doesn't look like there's any stairs here, buddy...", libtcod.yellow))
-        if show_character_screen:
+        if show_stats_menu:
             previous_game_state = game_state
-            game_state = GameStates.CHARACTER_SCREEN
+            game_state = GameStates.CHARACTER_MENU
+        if show_primary_stats:
+            previous_game_state = game_state
+            game_state = GameStates.PRIMARY_STATS_SCREEN
+        if show_combat_stats:
+            previous_game_state = game_state
+            game_state = GameStates.COMBAT_STATS_SCREEN
+        if show_feats:
+            previous_game_state = game_state
+            game_state = GameStates.FEATS_MENU
+        if show_strength_feats:
+            previous_game_state = game_state
+            game_state = GameStates.STRENGTH_FEATS
+        if show_instinct_feats:
+            previous_game_state = game_state
+            game_state = GameStates.INSTINCT_FEATS
+        if show_coordination_feats:
+            previous_game_state = game_state
+            game_state = GameStates.COORDINATION_FEATS
+        if show_vitality_feats:
+            previous_game_state = game_state
+            game_state = GameStates.VITALITY_FEATS
+        if show_arcana_feats:
+            previous_game_state = game_state
+            game_state = GameStates.ARCANA_FEATS
+        if show_improvisation_feats:
+            previous_game_state = game_state
+            game_state = GameStates.IMPROVISATION_FEATS
+        if show_wisdom_feats:
+            previous_game_state = game_state
+            game_state = GameStates.WISDOM_FEATS
+        if show_finesse_feats:
+            previous_game_state = game_state
+            game_state = GameStates.FINESSE_FEATS
+        if show_charisma_feats:
+            previous_game_state = game_state
+            game_state = GameStates.CHARISMA_FEATS
+        if show_devotion_feats:
+            previous_game_state = game_state
+            game_state = GameStates.DEVOTION_FEATS
             
         if level_up:
             
@@ -152,7 +204,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         if wait:
             game_state = GameStates.ENEMY_TURN
         if exit:
-            if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_SCREEN):
+            if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU):
                 game_state = previous_game_state
             elif game_state == GameStates.TARGETING:
                 player_turn_results.append({'targeting_cancelled': True})

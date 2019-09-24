@@ -67,23 +67,138 @@ def inventory_menu(con, header, player, inventory_width, screen_width, screen_he
 def main_menu(con, background_image, screen_width, screen_height):
     libtcod.image_blit_2x(background_image, 0, 0, 0)
     libtcod.console_set_default_foreground(0, libtcod.light_yellow)
-    libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height/ 2 )- 4, libtcod.BKGND_NONE, libtcod.CENTER, 'WUNCEMOOR: THE ETERNAL DREAM' )
+    libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height / 2 )- 4, libtcod.BKGND_NONE, libtcod.CENTER, 'WUNCEMOOR: THE ETERNAL DREAM' )
     libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height - 2), libtcod.BKGND_NONE, libtcod.CENTER, 'A ZenSymphony Production')
     
     menu(con, '', ['Start A New Game', 'Continue Previous Game', 'Quit'], 24, screen_width, screen_height) 
 
 def level_up_menu(con, header, player, menu_width, screen_width, screen_height):
-    options = ['+1 Strength (Currently {0})'.format(player.combatant.strength), '+1 Instinct (Currently {0})'.format(player.combatant.instinct), '+1 Coordination (Currently {0})'.format(player.combatant.coordination), '+1 Endurance (Currently {0})'.format(player.combatant.endurance), '+1 Arcana (Currently {0})'.format(player.combatant.arcana), '+1 Improvisation (Currently {0})'.format(player.combatant.improvisation), '+1 Wisdom (Currently {0})'.format(player.combatant.wisdom), '+1 Finesse (Currently {0})'.format(player.combatant.finesse), '+1 Charisma (Currently {0})'.format(player.combatant.charisma), '+1 Devotion (Currently {0})'.format(player.combatant.devotion)]
+    options = ['+1 Strength (Currently {0})'.format(player.combatant.strength), '+1 Instinct (Currently {0})'.format(player.combatant.instinct), '+1 Coordination (Currently {0})'.format(player.combatant.coordination), '+1 Vitality (Currently {0})'.format(player.combatant.vitality), '+1 Arcana (Currently {0})'.format(player.combatant.arcana), '+1 Improvisation (Currently {0})'.format(player.combatant.improvisation), '+1 Wisdom (Currently {0})'.format(player.combatant.wisdom), '+1 Finesse (Currently {0})'.format(player.combatant.finesse), '+1 Charisma (Currently {0})'.format(player.combatant.charisma), '+1 Devotion (Currently {0})'.format(player.combatant.devotion)]
     menu(con, header, options, menu_width, screen_width, screen_height)
     
-def feats_screen(player, character_screen_width, character_screen_height, screen_width, screen_height):
+def feats_menu(con, header, menu_width, screen_width, screen_height):
+    options = ['Strength Feats', 'Instinct Feats', 'Coordination Feats', 'Vitality Feats', 'Arcana Feats', 'Improvisation Feats', 'Wisdom Feats', 'Finesse Feats', 'Charisma Feats', 'Devotion Feats']
+    menu(con, header, options, menu_width, screen_width, screen_height)
+    
+def strength_feats_menu(con, header, menu_width, screen_width, screen_height):
     window = libtcod.console_new(character_screen_width, character_screen_height)
-    options = ['Mighty Strength']
+    
     
     libtcod.console_set_default_foreground(window, libtcod.white)
+    
+    libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Placeholder Text')
+    x = screen_width // 2 - character_screen_width // 2
+    y = screen_height // 2 - character_screen_height // 2
+    libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
+    
+def instinct_feats_menu(con, header, menu_width, screen_width, screen_height):
+    window = libtcod.console_new(character_screen_width, character_screen_height)
+    
+    
+    libtcod.console_set_default_foreground(window, libtcod.white)
+    
+    libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Placeholder Text')
+    x = screen_width // 2 - character_screen_width // 2
+    y = screen_height // 2 - character_screen_height // 2
     libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
 
-def character_screen(player, character_screen_width, character_screen_height, screen_width, screen_height):  
+def coordination_feats_menu(con, header, menu_width, screen_width, screen_height):
+    window = libtcod.console_new(character_screen_width, character_screen_height)
+    
+    
+    libtcod.console_set_default_foreground(window, libtcod.white)
+    
+    libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Placeholder Text')
+    x = screen_width // 2 - character_screen_width // 2
+    y = screen_height // 2 - character_screen_height // 2
+    libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
+
+
+def vitality_feats_menu(con, header, menu_width, screen_width, screen_height):
+    window = libtcod.console_new(character_screen_width, character_screen_height)
+    
+    
+    libtcod.console_set_default_foreground(window, libtcod.white)
+    
+    libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Placeholder Text')
+    x = screen_width // 2 - character_screen_width // 2
+    y = screen_height // 2 - character_screen_height // 2
+    libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
+
+def arcana_feats_menu(con, header, menu_width, screen_width, screen_height):
+    window = libtcod.console_new(character_screen_width, character_screen_height)
+    
+    
+    libtcod.console_set_default_foreground(window, libtcod.white)
+    
+    libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Placeholder Text')
+    x = screen_width // 2 - character_screen_width // 2
+    y = screen_height // 2 - character_screen_height // 2
+    libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
+
+def improvisation_feats_menu(con, header, menu_width, screen_width, screen_height):
+    window = libtcod.console_new(character_screen_width, character_screen_height)
+    
+    
+    libtcod.console_set_default_foreground(window, libtcod.white)
+    
+    libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Placeholder Text')
+    x = screen_width // 2 - character_screen_width // 2
+    y = screen_height // 2 - character_screen_height // 2
+    libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
+
+def wisdom_feats_menu(con, header, menu_width, screen_width, screen_height):
+    window = libtcod.console_new(character_screen_width, character_screen_height)
+    
+    
+    libtcod.console_set_default_foreground(window, libtcod.white)
+    
+    libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Placeholder Text')
+    x = screen_width // 2 - character_screen_width // 2
+    y = screen_height // 2 - character_screen_height // 2
+    libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
+
+def finesse_feats_menu(con, header, menu_width, screen_width, screen_height):
+    window = libtcod.console_new(character_screen_width, character_screen_height)
+    
+    
+    libtcod.console_set_default_foreground(window, libtcod.white)
+    
+    libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Placeholder Text')
+    x = screen_width // 2 - character_screen_width // 2
+    y = screen_height // 2 - character_screen_height // 2
+    libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
+
+def charisma_feats_menu(con, header, menu_width, screen_width, screen_height):
+    window = libtcod.console_new(character_screen_width, character_screen_height)
+    
+    
+    libtcod.console_set_default_foreground(window, libtcod.white)
+    
+    libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Placeholder Text')
+    x = screen_width // 2 - character_screen_width // 2
+    y = screen_height // 2 - character_screen_height // 2
+    libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
+
+def devotion_feats_menu(con, header, menu_width, screen_width, screen_height):
+    window = libtcod.console_new(character_screen_width, character_screen_height)
+    
+    
+    libtcod.console_set_default_foreground(window, libtcod.white)
+    
+    libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Placeholder Text')
+    x = screen_width // 2 - character_screen_width // 2
+    y = screen_height // 2 - character_screen_height // 2
+    libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
+
+    
+   
+def character_menu(con, header, menu_width, screen_width, screen_height):
+    options = ['Primary Stats', 'Combat Stats', 'Feats']
+    menu(con, header, options, menu_width, screen_width, screen_height)
+    
+
+def primary_stats_screen(player, character_screen_width, character_screen_height, screen_width, screen_height):  
     window = libtcod.console_new(character_screen_width, character_screen_height)
     
     
@@ -96,15 +211,13 @@ def character_screen(player, character_screen_width, character_screen_height, sc
     libtcod.console_print_rect_ex(window, 0, 6, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Strength: {0}'.format(player.combatant.strength)) 
     libtcod.console_print_rect_ex(window, 0, 7, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Instinct: {0}'.format(player.combatant.instinct))
     libtcod.console_print_rect_ex(window, 0, 8, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Coordination: {0}'.format(player.combatant.coordination))
-    libtcod.console_print_rect_ex(window, 0, 9, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Endurance: {0}'.format(player.combatant.endurance))
+    libtcod.console_print_rect_ex(window, 0, 9, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Vitality: {0}'.format(player.combatant.vitality))
     libtcod.console_print_rect_ex(window, 0, 10, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Arcana: {0}'.format(player.combatant.arcana))
     libtcod.console_print_rect_ex(window, 0, 11, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Improvisation: {0}'.format(player.combatant.improvisation))
     libtcod.console_print_rect_ex(window, 0, 12, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Wisdom: {0}'.format(player.combatant.wisdom))
     libtcod.console_print_rect_ex(window, 0, 13, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Finesse: {0}'.format(player.combatant.finesse))
     libtcod.console_print_rect_ex(window, 0, 14, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Charisma: {0}'.format(player.combatant.charisma))
     libtcod.console_print_rect_ex(window, 0, 15, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Devotion: {0}'.format(player.combatant.devotion))
-    libtcod.console_print_rect_ex(window, 0, 17, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Attack: {0} ({1})'.format(player.combatant.power, player.combatant.base_power))
-    libtcod.console_print_rect_ex(window, 0, 18, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Defence: {0} ({1})'.format(player.combatant.defence, player.combatant.base_defence))
 
     
 
@@ -113,5 +226,20 @@ def character_screen(player, character_screen_width, character_screen_height, sc
     x = screen_width // 2 - character_screen_width // 2
     y = screen_height // 2 - character_screen_height // 2
     libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
+    
+def combat_stats_screen(player, css_width, css_height, screen_width, screen_height):
+    window = libtcod.console_new(css_width, css_height)
+    
+    libtcod.console_set_default_foreground(window, libtcod.white)
+    
+    libtcod.console_print_rect_ex(window, 0, 1, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Attack: {0} ({1})'.format(player.combatant.power, player.combatant.base_power))
+    libtcod.console_print_rect_ex(window, 0, 2, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Defence: {0} ({1})'.format(player.combatant.defence, player.combatant.base_defence))
+    
+    x = screen_width // 2 - css_width // 2
+    y = screen_height // 2 - css_height // 2
+    libtcod.console_blit(window, 0, 0, css_width, css_height, 0, x, y, 1.0, 0.7)
+
+    
+    
 def message_box(con, header, width, screen_width, screen_height):
     menu(con, header, [], width, screen_width, screen_height)

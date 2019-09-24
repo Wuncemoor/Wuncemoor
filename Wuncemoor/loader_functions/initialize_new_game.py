@@ -75,7 +75,7 @@ def get_constants():
     return constants
     
 def get_game_variables(constants):
-    combatant_component = Combatant(strength=10, instinct=10, coordination=10, endurance=10, arcana=10, improvisation=10, wisdom=10, finesse=10, charisma=10, devotion=10)
+    combatant_component = Combatant(strength=10, instinct=10, coordination=10, vitality=10, arcana=10, improvisation=10, wisdom=10, finesse=10, charisma=10, devotion=10)
     inventory_component = Inventory(26)
     level_component = Level()
     equipment_component = Equipment()

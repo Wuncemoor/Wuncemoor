@@ -1,6 +1,6 @@
 import tcod as libtcod
 from game_states import GameStates
-from menus import inventory_menu, level_up_menu, character_screen
+from menus import inventory_menu, level_up_menu, feats_menu, character_menu, primary_stats_screen, combat_stats_screen, strength_feats_menu, instinct_feats_menu, coordinaton_feats_menu, vitality_feats_menu, arcana_feats_menu, improvisation_feats_menu, wisdom_feats_menu, finesse_feats_menu, charisma_feats_menu, devotion_feats_menu
 
 
 from enum import Enum
@@ -91,8 +91,36 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
         inventory_menu(con, inventory_title, player, 50, screen_width, screen_height)
     elif game_state == GameStates.LEVEL_UP:
         level_up_menu(con, 'Level up! Choose a stat boost:', player, 40, screen_width, screen_height)
-    elif game_state == GameStates.CHARACTER_SCREEN:
-        character_screen(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.CHARACTER_MENU:
+        character_menu(con, 'What would you like to look at?', 40, screen_width, screen_height)
+    elif game_state == GameStates.PRIMARY_STATS_SCREEN:
+        primary_stats_screen(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.COMBAT_STATS_SCREEN:
+        combat_stats_screen(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.FEATS_MENU:
+        feats_menu(con, 'What type of feat are you interested in?', 40, screen_width, screen_height)
+    elif game_state == GameStates.STRENGTH_FEATS:
+        strength_feats_menu(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.INSTINCT_FEATS:
+        instinct_feats_menu(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.COORDINATION_FEATS:
+        coordinaton_feats_menu(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.VITALITY_FEATS:
+        vitality_feats_menu(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.ARCANA_FEATS:
+        arcana_feats_menu(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.IMPROVISATION_FEATS:
+        improvisation_feats_menu(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.WISDOM_FEATS:
+        wisdom_feats_menu(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.FINESSE_FEATS:
+        finesse_feats_menu(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.CHARISMA_FEATS:
+        charisma_feats_menu(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.DEVOTION_FEATS:
+        devotion_feats_menu(player, 40, 30, screen_width, screen_height)
+        
+    
 
 def clear_all(con, entities):
 

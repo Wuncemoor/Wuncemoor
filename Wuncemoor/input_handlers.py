@@ -12,9 +12,12 @@ def handle_keys(key, game_state):
         return handle_inventory_keys(key)
     elif game_state == GameStates.LEVEL_UP:
         return handle_level_up_menu(key)
-    elif game_state == GameStates.CHARACTER_SCREEN:
-        return handle_character_screen(key)
-        
+    elif game_state == GameStates.CHARACTER_MENU:
+        return handle_character_menu(key)
+    elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN):
+        return handle_stat_info(key)
+    elif game_state == GameStates.FEATS_MENU:
+        return handle_feats_menu(key)
     return {}
 
 def handle_character_screen(key):
@@ -22,14 +25,52 @@ def handle_character_screen(key):
         return {'exit': True}
         
     return {}
-
-def handle_feats_screen(key):
-    if key.vk == libtcod.KEY_ESCAPE:
+    
+def handle_character_menu(key):
+    key_char = chr(key.c)
+    
+    if key_char == 'a':
+        return {'show_primary_stats': True}
+    elif key_char == 'b':
+        return {'show_combat_stats': True}
+    elif key_char == 'c':
+        return {'show_feats': True}
+    elif key.vk == libtcod.KEY_ESCAPE:
         return {'exit': True}
-    if key.char == 'a':
-        return {'mighty_strength': True}
+    
+    return {}
+
+def handle_stat_info(key):
+    if key.vk == libtcod.KEY_ESCAPE:
+        return {'show_stats_menu': True}
         
     return {}
+    
+def handle_feats_menu(key):
+    key_char = chr(key.c)
+    
+    if key_char == 'a':
+        return {'show_strength_feats': True}
+    elif key_char == 'b':
+        return {'show_instinct_feats': True}
+    elif key_char == 'c':
+        return {'show_coordination_feats': True}
+    elif key_char == 'd':
+        return {'show_vitality_feats': True}
+    elif key_char == 'e':
+        return {'show_arcana_feats': True}
+    elif key_char == 'f':
+        return {'show_improvisation_feats': True}
+    elif key_char == 'g':
+        return {'show_wisdom_feats': True}
+    elif key_char == 'h':
+        return {'show_finesse_feats': True}
+    elif key_char == 'i':
+        return {'show_charisma_feats': True}
+    elif key_char == 'j':
+        return {'show_devotion_feats': True}
+    return {}
+    
 def handle_player_turn_keys(key):
     key_char = chr(key.c)
     #Movement keys
@@ -50,7 +91,7 @@ def handle_player_turn_keys(key):
     elif key_char == 'c':
         return {'move': (1, 1)}
     elif key_char == 'p':
-        return {'show_character_screen': True}
+        return {'show_stats_menu': True}
     elif key_char == 's':
         return {'wait': True}
     if key_char == 'g':
@@ -143,7 +184,7 @@ def handle_level_up_menu(key):
         elif key_char == 'c':
             return {'level_up': 'Coordination'}
         elif key_char == 'd':
-            return {'level_up': 'Endurance'}
+            return {'level_up': 'Vitality'}
         elif key_char == 'e':
             return {'level_up': 'Arcana'}
         elif key_char == 'f':

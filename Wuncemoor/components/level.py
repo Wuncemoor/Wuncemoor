@@ -4,6 +4,7 @@ class Level:
         self.current_xp = current_xp
         self.level_up_base = level_up_base
         self.level_up_factor = level_up_factor
+        self.perks = perks
         
     @property
     def experience_to_next_level(self):
