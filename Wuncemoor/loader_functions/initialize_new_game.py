@@ -86,7 +86,7 @@ def get_game_variables(constants):
     
     entities = [player]
     
-    equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=2)
+    equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonuses=[0,0,2])
     stick = Entity(0, 0, '-', libtcod.sky, 'Stick', equippable=equippable_component)
     player.inventory.add_item(stick)
     player.equipment.toggle_equip(stick)

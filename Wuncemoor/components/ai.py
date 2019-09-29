@@ -11,7 +11,7 @@ class BasicMonster:
             if monster.distance_to(target) >= 2:
                 monster.move_astar(target, entities, game_map)
                 
-            elif target.combatant.current_hp > 0:
+            elif target.combatant.attributes.current_hp > 0:
                 attack_results = monster.combatant.attack(target)
                 results.extend(attack_results)
                 

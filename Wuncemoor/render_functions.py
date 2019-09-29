@@ -70,10 +70,10 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
         libtcod.console_print_ex(panel, message_log.x, y, libtcod.BKGND_NONE, libtcod.LEFT, message.text)
         y += 1
     
-    render_bar(panel, 1, 1, bar_width, 'HP', player.combatant.current_hp, player.combatant.max_hp, libtcod.light_red, libtcod.darker_red)
-    render_bar(panel, 1, 2, bar_width, 'MP', player.combatant.current_mp, player.combatant.max_mp, libtcod.light_blue, libtcod.darker_blue)
-    render_bar(panel, 1, 3, bar_width, 'TP', player.combatant.current_tp, player.combatant.max_tp, libtcod.light_green, libtcod.darker_green)
-    render_bar(panel, 1, 4, bar_width, 'VP', player.combatant.current_vp, player.combatant.max_vp, libtcod.light_orange, libtcod.darker_orange)
+    render_bar(panel, 1, 1, bar_width, 'HP', player.combatant.attributes.current_hp, player.combatant.max_hp, libtcod.light_red, libtcod.darker_red)
+    render_bar(panel, 1, 2, bar_width, 'MP', player.combatant.attributes.current_mp, player.combatant.max_mp, libtcod.light_blue, libtcod.darker_blue)
+    render_bar(panel, 1, 3, bar_width, 'TP', player.combatant.attributes.current_tp, player.combatant.max_tp, libtcod.light_green, libtcod.darker_green)
+    render_bar(panel, 1, 4, bar_width, 'VP', player.combatant.attributes.current_vp, player.combatant.max_vp, libtcod.light_orange, libtcod.darker_orange)
     
     libtcod.console_print_ex(panel, 1, 5, libtcod.BKGND_NONE, libtcod.LEFT, 'Dungeon Level: {0}'.format(game_map.dungeon_level))
     libtcod.console_set_default_foreground(panel, libtcod.light_grey)

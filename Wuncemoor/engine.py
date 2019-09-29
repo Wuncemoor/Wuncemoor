@@ -126,12 +126,15 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             previous_game_state = game_state
             game_state = GameStates.CHARACTER_MENU
         if show_primary_stats:
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.PRIMARY_STATS_SCREEN
         if show_combat_stats:
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.COMBAT_STATS_SCREEN
         if show_feats:
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.FEATS_MENU
         if show_strength_feats:
@@ -206,6 +209,9 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         if exit:
             if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU):
                 game_state = previous_game_state
+            elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN, GameStates.FEATS_MENU):
+                game_state = previous_game_state
+                previous_game_state = older_game_state
             elif game_state == GameStates.TARGETING:
                 player_turn_results.append({'targeting_cancelled': True})
             else:

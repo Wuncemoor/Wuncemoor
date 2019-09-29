@@ -232,8 +232,27 @@ def combat_stats_screen(player, css_width, css_height, screen_width, screen_heig
     
     libtcod.console_set_default_foreground(window, libtcod.white)
     
-    libtcod.console_print_rect_ex(window, 0, 1, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Attack: {0} ({1})'.format(player.combatant.power, player.combatant.base_power))
-    libtcod.console_print_rect_ex(window, 0, 2, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Defence: {0} ({1})'.format(player.combatant.defence, player.combatant.base_defence))
+    libtcod.console_print_rect_ex(window, 10, 0, css_width, css_height, libtcod.BKGND_NONE, libtcod.CENTER, 'Power')
+    libtcod.console_print_rect_ex(window, 30, 0, css_width, css_height, libtcod.BKGND_NONE, libtcod.CENTER, 'Resistance')
+
+
+    libtcod.console_print_rect_ex(window, 0, 2, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Slash: {0} ({1})'.format(player.combatant.power_slash, player.combatant.attributes.base_power_slash))
+    libtcod.console_print_rect_ex(window, 0, 3, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Pierce: {0} ({1})'.format(player.combatant.power_pierce, player.combatant.attributes.base_power_pierce))
+    libtcod.console_print_rect_ex(window, 0, 4, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Blunt: {0} ({1})'.format(player.combatant.power_blunt, player.combatant.attributes.base_power_blunt))
+    libtcod.console_print_rect_ex(window, 0, 5, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Heat: {0} ({1})'.format(player.combatant.spirit_heat, player.combatant.attributes.base_spirit_heat))
+    libtcod.console_print_rect_ex(window, 0, 6, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Cold: {0} ({1})'.format(player.combatant.spirit_cold, player.combatant.attributes.base_spirit_cold))
+    libtcod.console_print_rect_ex(window, 0, 7, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Acid: {0} ({1})'.format(player.combatant.spirit_acid, player.combatant.attributes.base_spirit_acid))
+    libtcod.console_print_rect_ex(window, 0, 8, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Current: {0} ({1})'.format(player.combatant.spirit_current, player.combatant.attributes.base_spirit_current))
+    libtcod.console_print_rect_ex(window, 0, 9, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Aether: {0} ({1})'.format(player.combatant.spirit_aether, player.combatant.attributes.base_spirit_aether))
+
+    libtcod.console_print_rect_ex(window, 20, 2, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Slash: {0} ({1})'.format(player.combatant.resist_slash, player.combatant.attributes.base_resist_slash))
+    libtcod.console_print_rect_ex(window, 20, 3, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Pierce: {0} ({1})'.format(player.combatant.resist_pierce, player.combatant.attributes.base_resist_pierce))
+    libtcod.console_print_rect_ex(window, 20, 4, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Blunt: {0} ({1})'.format(player.combatant.resist_blunt, player.combatant.attributes.base_resist_blunt))
+    libtcod.console_print_rect_ex(window, 20, 5, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Heat: {0} ({1})'.format(player.combatant.resist_heat, player.combatant.attributes.base_resist_heat))
+    libtcod.console_print_rect_ex(window, 20, 6, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Cold: {0} ({1})'.format(player.combatant.resist_cold, player.combatant.attributes.base_resist_cold))
+    libtcod.console_print_rect_ex(window, 20, 7, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Acid: {0} ({1})'.format(player.combatant.resist_acid, player.combatant.attributes.base_resist_acid))
+    libtcod.console_print_rect_ex(window, 20, 8, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Current: {0} ({1})'.format(player.combatant.resist_current, player.combatant.attributes.base_resist_current))
+    libtcod.console_print_rect_ex(window, 20, 9, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Aether: {0} ({1})'.format(player.combatant.resist_aether, player.combatant.attributes.base_resist_aether))
     
     x = screen_width // 2 - css_width // 2
     y = screen_height // 2 - css_height // 2
