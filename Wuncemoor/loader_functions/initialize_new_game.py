@@ -5,7 +5,7 @@ from components.inventory import Inventory
 from components.level import Level
 from components.equipment import Equipment
 from components.equippable import Equippable
-
+from components.attributes import Attributes
 from entity import Entity
 from equipment_slots import EquipmentSlots
 from game_messages import MessageLog
@@ -75,7 +75,8 @@ def get_constants():
     return constants
     
 def get_game_variables(constants):
-    combatant_component = Combatant(strength=10, instinct=10, coordination=10, vitality=10, arcana=10, improvisation=10, wisdom=10, finesse=10, charisma=10, devotion=10)
+    attribute_component = Attributes(10,10,10,10,10,10,10,10,10,10)
+    combatant_component = Combatant(attributes=attribute_component)
     inventory_component = Inventory(26)
     level_component = Level()
     equipment_component = Equipment()

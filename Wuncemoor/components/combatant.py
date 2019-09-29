@@ -5,50 +5,25 @@ import random
 import math
 
 class Combatant:
-    def __init__(self, strength, instinct, coordination, vitality, arcana, improvisation, wisdom, finesse, charisma, devotion, xp=0):
-        self.strength = strength
-        self.instinct = instinct
-        self.coordination = coordination
-        self.vitality = vitality
-        self.arcana = arcana
-        self.improvisation = improvisation
-        self.wisdom = wisdom
-        self.finesse = finesse
-        self.charisma = charisma
-        self.devotion = devotion
-        self.base_defence = vitality
-        self.base_power = strength
+    def __init__(self, attributes, xp=0):
+        self.attributes = attributes
+        self.current_hp = attributes.current_hp
+        self.current_mp = attributes.current_mp
+        self.current_tp = attributes.current_tp
+        self.current_vp = attributes.current_vp
+        self.base_max_hp = attributes.base_max_hp
+        self.base_max_mp = attributes.base_max_mp
+        self.base_max_tp = attributes.base_max_tp
+        self.base_max_vp = attributes.base_max_vp
+        self.base_defence = attributes.vitality
+        self.base_power = attributes.strength
         self.xp = xp
-        self.hit = coordination
-        self.dodge = finesse
+        self.hit = attributes.coordination
+        self.dodge = attributes.finesse
+        
        
-#Initial resources functions
-    @property
-    def current_hp(self):
-        return (20*(self.strength + self.strength + self.instinct + self.coordination + self.vitality))
-    @property
-    def current_mp(self):
-        return (20*(self.arcana + self.arcana + self.instinct + self.improvisation + self.wisdom))
-    @property
-    def current_tp(self):
-        return (20*(self.finesse + self.finesse + self.coordination + self.improvisation + self.charisma))
-    @property
-    def current_vp(self):
-        return (20*(self.devotion + self.devotion + self.vitality + self.wisdom + self.charisma))
+
     
-#Base maximum resource functions
-    @property
-    def base_max_hp(self):
-        return (20*(self.strength + self.strength + self.instinct + self.coordination + self.vitality))
-    @property
-    def base_max_mp(self):
-        return (20*(self.arcana + self.arcana + self.instinct + self.improvisation + self.wisdom))
-    @property
-    def base_max_tp(self):
-        return (20*(self.finesse + self.finesse + self.coordination + self.improvisation + self.charisma))
-    @property
-    def base_max_vp(self):
-        return (20*(self.devotion + self.devotion + self.vitality + self.wisdom + self.charisma))
 #Maximum resources with equipment on
     @property
     def max_hp(self):
@@ -136,6 +111,7 @@ class Combatant:
     def resist_aether(self):
         resist = self.vitality + self.devotion
         return resist
+        
     
 #bonuses (or penalties) to saving throws (default savethrow is d100 +/- bonus)    
     @property

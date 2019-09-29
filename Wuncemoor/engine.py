@@ -168,25 +168,25 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         if level_up:
             
             if level_up == 'Strength':
-                player.combatant.strength += 1
+                player.combatant.attributes.strength += 1
             elif level_up == 'Instinct':
-                player.combatant.instinct += 1
+                player.combatant.attributes.instinct += 1
             elif level_up == 'Coordination':
-                player.combatant.coordination += 1
+                player.combatant.attributes.coordination += 1
             elif level_up == 'Vitality':
-                player.combatant.vitality += 1
+                player.combatant.attributes.vitality += 1
             elif level_up == 'Arcana':
-                player.combatant.arcana += 1
+                player.combatant.attributes.arcana += 1
             elif level_up == 'Improvisation':
-                player.combatant.improvisation += 1
+                player.combatant.attributes.improvisation += 1
             elif level_up == 'Wisdom':
-                player.combatant.wisdom += 1
+                player.combatant.attributes.wisdom += 1
             elif level_up == 'Finesse':
-                player.combatant.finesse += 1
+                player.combatant.attributes.finesse += 1
             elif level_up == 'Charisma':
-                player.combatant.charisma += 1
+                player.combatant.attributes.charisma += 1
             elif level_up == 'Devotion':
-                player.combatant.devotion += 1
+                player.combatant.attributes.devotion += 1
                 
             
             game_state = previous_game_state

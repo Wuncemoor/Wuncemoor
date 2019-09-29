@@ -73,7 +73,7 @@ def main_menu(con, background_image, screen_width, screen_height):
     menu(con, '', ['Start A New Game', 'Continue Previous Game', 'Quit'], 24, screen_width, screen_height) 
 
 def level_up_menu(con, header, player, menu_width, screen_width, screen_height):
-    options = ['+1 Strength (Currently {0})'.format(player.combatant.strength), '+1 Instinct (Currently {0})'.format(player.combatant.instinct), '+1 Coordination (Currently {0})'.format(player.combatant.coordination), '+1 Vitality (Currently {0})'.format(player.combatant.vitality), '+1 Arcana (Currently {0})'.format(player.combatant.arcana), '+1 Improvisation (Currently {0})'.format(player.combatant.improvisation), '+1 Wisdom (Currently {0})'.format(player.combatant.wisdom), '+1 Finesse (Currently {0})'.format(player.combatant.finesse), '+1 Charisma (Currently {0})'.format(player.combatant.charisma), '+1 Devotion (Currently {0})'.format(player.combatant.devotion)]
+    options = ['+1 Strength (Currently {0})'.format(player.combatant.attributes.strength), '+1 Instinct (Currently {0})'.format(player.combatant.attributes.instinct), '+1 Coordination (Currently {0})'.format(player.combatant.attributes.coordination), '+1 Vitality (Currently {0})'.format(player.combatant.attributes.vitality), '+1 Arcana (Currently {0})'.format(player.combatant.attributes.arcana), '+1 Improvisation (Currently {0})'.format(player.combatant.attributes.improvisation), '+1 Wisdom (Currently {0})'.format(player.combatant.attributes.wisdom), '+1 Finesse (Currently {0})'.format(player.combatant.attributes.finesse), '+1 Charisma (Currently {0})'.format(player.combatant.attributes.charisma), '+1 Devotion (Currently {0})'.format(player.combatant.attributes.devotion)]
     menu(con, header, options, menu_width, screen_width, screen_height)
     
 def feats_menu(con, header, menu_width, screen_width, screen_height):
@@ -102,7 +102,7 @@ def instinct_feats_menu(con, header, menu_width, screen_width, screen_height):
     y = screen_height // 2 - character_screen_height // 2
     libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
 
-def coordination_feats_menu(con, header, menu_width, screen_width, screen_height):
+def coordinaton_feats_menu(con, header, menu_width, screen_width, screen_height):
     window = libtcod.console_new(character_screen_width, character_screen_height)
     
     
@@ -208,16 +208,16 @@ def primary_stats_screen(player, character_screen_width, character_screen_height
     libtcod.console_print_rect_ex(window, 0, 2, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Level: {0}'.format(player.level.current_level))
     libtcod.console_print_rect_ex(window, 0, 3, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Experience: {0}'.format(player.level.current_xp))
     libtcod.console_print_rect_ex(window, 0, 4, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Experience till next levelup: {0}'.format(player.level.experience_to_next_level))
-    libtcod.console_print_rect_ex(window, 0, 6, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Strength: {0}'.format(player.combatant.strength)) 
-    libtcod.console_print_rect_ex(window, 0, 7, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Instinct: {0}'.format(player.combatant.instinct))
-    libtcod.console_print_rect_ex(window, 0, 8, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Coordination: {0}'.format(player.combatant.coordination))
-    libtcod.console_print_rect_ex(window, 0, 9, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Vitality: {0}'.format(player.combatant.vitality))
-    libtcod.console_print_rect_ex(window, 0, 10, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Arcana: {0}'.format(player.combatant.arcana))
-    libtcod.console_print_rect_ex(window, 0, 11, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Improvisation: {0}'.format(player.combatant.improvisation))
-    libtcod.console_print_rect_ex(window, 0, 12, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Wisdom: {0}'.format(player.combatant.wisdom))
-    libtcod.console_print_rect_ex(window, 0, 13, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Finesse: {0}'.format(player.combatant.finesse))
-    libtcod.console_print_rect_ex(window, 0, 14, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Charisma: {0}'.format(player.combatant.charisma))
-    libtcod.console_print_rect_ex(window, 0, 15, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Devotion: {0}'.format(player.combatant.devotion))
+    libtcod.console_print_rect_ex(window, 0, 6, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Strength: {0}'.format(player.combatant.attributes.strength)) 
+    libtcod.console_print_rect_ex(window, 0, 7, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Instinct: {0}'.format(player.combatant.attributes.instinct))
+    libtcod.console_print_rect_ex(window, 0, 8, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Coordination: {0}'.format(player.combatant.attributes.coordination))
+    libtcod.console_print_rect_ex(window, 0, 9, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Vitality: {0}'.format(player.combatant.attributes.vitality))
+    libtcod.console_print_rect_ex(window, 0, 10, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Arcana: {0}'.format(player.combatant.attributes.arcana))
+    libtcod.console_print_rect_ex(window, 0, 11, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Improvisation: {0}'.format(player.combatant.attributes.improvisation))
+    libtcod.console_print_rect_ex(window, 0, 12, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Wisdom: {0}'.format(player.combatant.attributes.wisdom))
+    libtcod.console_print_rect_ex(window, 0, 13, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Finesse: {0}'.format(player.combatant.attributes.finesse))
+    libtcod.console_print_rect_ex(window, 0, 14, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Charisma: {0}'.format(player.combatant.attributes.charisma))
+    libtcod.console_print_rect_ex(window, 0, 15, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Devotion: {0}'.format(player.combatant.attributes.devotion))
 
     
 

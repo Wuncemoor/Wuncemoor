@@ -29,14 +29,14 @@ def handle_character_screen(key):
 def handle_character_menu(key):
     key_char = chr(key.c)
     
-    if key_char == 'a':
+    if key.vk == libtcod.KEY_ESCAPE:
+        return {'exit': True}
+    elif key_char == 'a':
         return {'show_primary_stats': True}
     elif key_char == 'b':
         return {'show_combat_stats': True}
     elif key_char == 'c':
         return {'show_feats': True}
-    elif key.vk == libtcod.KEY_ESCAPE:
-        return {'exit': True}
     
     return {}
 

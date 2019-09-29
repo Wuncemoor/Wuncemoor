@@ -5,6 +5,7 @@ from components.combatant import Combatant
 from components.item import Item
 from components.equipment import EquipmentSlots
 from components.equippable import Equippable
+from components.attributes import Attributes
 from entity import Entity
 from game_messages import Message
 from map_objects.tile import Tile
@@ -128,11 +129,13 @@ class GameMap:
             if not any([entity for entity in entities if entity.x == x and entity.y == y]):
                 monster_choice = random_choice_from_dict(monster_chances)
                 if monster_choice == 'orc':
-                    combatant_component = Combatant(strength=5, instinct=0, coordination=0, vitality=7, arcana=10, improvisation=10, wisdom=10, finesse=10, charisma=10, devotion=10, xp=350 )
+                    attribute_component = Attributes(5,0,0,7,10,10,10,10,10,10)
+                    combatant_component = Combatant(attribute_component, xp=350 )
                     ai_component = BasicMonster()
                     monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component, ai=ai_component)
                 else:
-                    combatant_component = Combatant(strength=1, instinct=0, coordination=0, vitality=10, arcana=10, improvisation=10, wisdom=10, finesse=10, charisma=10, devotion=10, xp=1000)
+                    attribute_component = Attributes(1,0,0,10,10,10,10,10,10,10)
+                    combatant_component = Combatant(attribute_component, xp=1000)
                     ai_component = BasicMonster()
                     monster = Entity(x, y, 'T', libtcod.darker_green, 'Troll', blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component, ai=ai_component)
                     
