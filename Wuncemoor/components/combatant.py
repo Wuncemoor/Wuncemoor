@@ -198,76 +198,77 @@ class Combatant:
     
     @property
     def savethrow_reflex(self):
-        bonus = self.instinct + self.improvisation + self.finesse
+        bonus = self.attributes.instinct + self.attributes.improvisation + self.attributes.finesse
         return bonus
         
     @property 
     def savethrow_balance(self):
-        bonus = self.coordination + self.improvisation + self.finesse
+        bonus = self.attributes.coordination + self.attributes.improvisation + self.attributes.finesse
         return bonus
         
     @property
     def savethrow_breath(self):
-        bonus = self.instinct + self.vitality 
+        bonus = self.attributes.instinct + self.attributes.vitality 
         return bonus
         
     @property
     def savethrow_grapple(self):
-        bonus = self.strength + self.instinct + self.coordination 
+        bonus = self.attributes.strength + self.attributes.instinct + self.attributes.coordination 
         return bonus
     
     @property 
     def savethrow_stun(self):
-        bonus = self.vitality + self.improvisation
+        bonus = self.attributes.vitality + self.attributes.improvisation
         return bonus
     
     @property
     def savethrow_panic(self):
-        bonus = self.improvisation + self.wisdom + self.charisma
+        bonus = self.attributes.improvisation + self.attributes.wisdom + self.attributes.charisma
         return bonus
     
     @property
     def savethrow_apathy(self):
-        bonus = self.wisdom + self.charisma + self.devotion
+        bonus = self.attributes.wisdom + self.attributes.charisma + self.attributes.devotion
         return bonus
     
     @property
     def savethrow_pain(self):
-        bonus = self.vitality + self.wisdom
+        bonus = self.attributes.vitality + self.attributes.wisdom
         return bonus
         
     @property 
     def savethrow_bewitch(self):
-        bonus = self.instinct + self.wisdom + self.charisma + self.devotion
+        bonus = self.attributes.instinct + self.attributes.wisdom + self.attributes.charisma + self.attributes.devotion
         return bonus
     
     @property
     def savethrow_enrage(self):
-        bonus = self.wisdom + self.charisma
+        bonus = self.attributes.wisdom + self.attributes.charisma
+        return bonus
         
     @property
     def savethrow_illness(self):
-        bonus = self.vitality 
+        bonus = self.attributes.vitality 
         return bonus
     
     @property
     def savethrow_tenacity(self):
-        bonus = self.vitality + self.arcana
+        bonus = self.attributes.vitality + self.attributes.arcana
         return bonus
     
     @property
     def savethrow_pressure(self):
-        bonus = self.vitality 
+        bonus = self.attributes.vitality 
         return bonus
     
     @property
     def savethrow_bleed(self):
-        bonus = self.vitality
+        bonus = self.attributes.vitality
         return bonus
     
     @property 
     def savethrow_injury(self):
-        bonus = self.strength + self.vitality
+        bonus = self.attributes.strength + self.attributes.vitality
         return bonus
         
 #Hit/Dodge
@@ -295,27 +296,27 @@ class Combatant:
     #Who goes first?
     @property
     def initiative(self):
-        bonus = self.instinct + self.improvisation
+        bonus = self.attributes.instinct + self.attributes.improvisation
         return bonus
     #How quickly do they gain action potential?    
     @property
     def speed(self):
-        vroom = self.coordination + self.finesse
+        vroom = self.attributes.coordination + self.attributes.finesse
         return vroom
     #Zone of control (ZoC) / and Attacks of Opportunity (AoO)
     @property
     def presence(self):
-        woah = self.strength + self.vitality
+        woah = self.attributes.strength + self.attributes.vitality
         return woah
     #Combo moves with multiple combatants
     @property
     def teamwork(self):
-        combo_potential = self.coordination
+        combo_potential = self.attributes.coordination
         return combo_potential
     #Used to determine formations, designated leader gives aura buffs
     @property
     def leadership(self):
-        captain = self.coordination + self.charisma
+        captain = self.attributes.coordination + self.attributes.charisma
         return captain
     
     
@@ -332,10 +333,10 @@ class Combatant:
         return results
         
     def gain_hp(self, amount):
-        self.current_hp += amount
+        self.attributes.current_hp += amount
         
-        if self.current_hp > self.max_hp:
-            self.current_hp = self.max_hp
+        if self.attributes.current_hp > self.max_hp:
+            self.attributes.current_hp = self.max_hp
             
     def lose_mp(self, amount):
     
