@@ -1,22 +1,27 @@
 import tcod as libtcod
-from random import randint
-from components.ai import BasicMonster
-from components.combatant import Combatant
-from components.item import Item
-from components.equipment import EquipmentSlots
-from components.equippable import Equippable
-from components.attributes import Attributes
 from entity import Entity
+from render_functions import RenderOrder
+from random import randint
 from game_messages import Message
 from map_objects.tile import Tile
+from map_objects.game_map import GameMap
 from map_objects.rectangle import Rect
-from render_functions import RenderOrder
-from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
+from components.ai import BasicMonster
+from components.item import Item
 from components.stairs import Stairs
+from components.attributes import Attributes
+from components.combatant import Combatant
 from random_utils import random_choice_from_dict, from_dungeon_level
+from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
 
-class GameMap:
-    def __init__(self, width, height, dungeon_level=1):
+
+
+
+
+class NodeAlphaMap:
+    
+    def __init__(self, width, height, dungeon_level=0):
+        
         self.width = width
         self.height = height
         self.tiles = self.initialize_tiles()
@@ -24,10 +29,46 @@ class GameMap:
         
     def initialize_tiles(self):
         tiles = [[Tile(True) for y in range(self.height)] for x in range(self.width)]
-        
         return tiles
         
-    def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities):
+    def is_blocked(self, x, y):
+        if self.tiles[x][y].blocked:
+            return True
+            
+        return False
+        
+    def create_room(self, room):
+        #go through the tiles in the rectangle and make them not blocked
+        for x in range(room.x1 + 1, room.x2):
+            for y in range(room.y1 + 1, room.y2):
+                self.tiles[x][y].blocked = False
+                self.tiles[x][y].block_sight = False
+                
+    def create_h_tunnel(self, x1, x2, y):
+        for x in range(min(x1, x2), max(x1, x2) + 1):
+            self.tiles[x][y].blocked = False
+            self.tiles[x][y].block_sight = False
+            
+    def create_v_tunnel(self, y1, y2, x):
+        for y in range(min(y1, y2), max(y1, y2) +1):
+            self.tiles[x][y].blocked = False
+            self.tiles[x][y].block_sight = False
+                            
+                
+    def next_floor(self, player, message_log, constants):
+        self.dungeon_level += 1
+        entities = [player]
+        
+        self.tiles = self.initialize_tiles()
+        self.make_dungeon(constants['max_rooms'], constants['room_min_size'], constants['room_max_size'], constants['map_width'], constants['map_height'], player, entities) 
+        
+        player.combatant.gain_hp(player.combatant.max_hp // 2)
+        
+        message_log.add_message(Message('You glance behind you, but the stairs have disappeared!', libtcod.light_violet))
+        
+        return entities
+        
+    def make_dungeon(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities):
         rooms = []
         num_rooms = 0
         center_of_last_room_x = None
@@ -79,28 +120,7 @@ class GameMap:
         stairs_component = Stairs(self.dungeon_level + 1)
         down_stairs = Entity(center_of_last_room_x, center_of_last_room_y, '>', libtcod.white, 'Stairs', render_order=RenderOrder.STAIRS, stairs=stairs_component)
         entities.append(down_stairs)
-                    
-                    
-                    
-                    
-    
-    def create_room(self, room):
-        #go through the tiles in the rectangle and make them not blocked
-        for x in range(room.x1 + 1, room.x2):
-            for y in range(room.y1 + 1, room.y2):
-                self.tiles[x][y].blocked = False
-                self.tiles[x][y].block_sight = False
-                
-    def create_h_tunnel(self, x1, x2, y):
-        for x in range(min(x1, x2), max(x1, x2) + 1):
-            self.tiles[x][y].blocked = False
-            self.tiles[x][y].block_sight = False
-            
-    def create_v_tunnel(self, y1, y2, x):
-        for y in range(min(y1, y2), max(y1, y2) +1):
-            self.tiles[x][y].blocked = False
-            self.tiles[x][y].block_sight = False
-            
+
     def place_entities(self, room, entities):
         #Get random number of monsters
         number_of_monsters = from_dungeon_level([[2,1], [3,4], [5,6]], self.dungeon_level)
@@ -170,21 +190,18 @@ class GameMap:
                     
                 entities.append(item)
         
-    def is_blocked(self, x, y):
-        if self.tiles[x][y].blocked:
-            return True
-            
-        return False
+                    
         
-    def next_floor(self, player, message_log, constants):
-        self.dungeon_level += 1
-        entities = [player]
+    def make_alpha_map(self, width, height, player, entities):
         
-        self.tiles = self.initialize_tiles()
-        self.make_map(constants['max_rooms'], constants['room_min_size'], constants['room_max_size'], constants['map_width'], constants['map_height'], player, entities) 
+        town = Rect(0,0,width-1,height-1)
+        self.create_room(town)
+        (center_x, center_y) = town.center()
+        player.x = center_x
+        player.y = center_y
+        stairs_component = Stairs(self.dungeon_level + 1)
+        down_stairs = Entity(40, 40, '>', libtcod.white, 'Stairs', render_order=RenderOrder.STAIRS, stairs=stairs_component)
+        entities.append(down_stairs)
+
+
         
-        player.combatant.gain_hp(player.combatant.max_hp // 2)
-        
-        message_log.add_message(Message('You take a moment to rest before travelling forth.', libtcod.light_violet))
-        
-        return entities
