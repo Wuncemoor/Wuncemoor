@@ -22,7 +22,7 @@ def town_name_generate():
     
     fourth_possibilities = ['test']
     
-    fifth_possibilities = ['icle']
+    fifth_possibilities = ['test2']
     
 
     first_syllable = random.choice(first_possibilities)
@@ -43,5 +43,3 @@ def town_name_generate():
     print(town_name)
 town_name_generate()
         
-        #https://www.python-course.eu/weighted_choice_and_sample.php
-        #https://docs.scipy.org/doc/numpy/user/basics.rec.html
