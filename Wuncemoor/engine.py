@@ -46,6 +46,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         show_stats_menu = action.get('show_stats_menu')
         show_primary_stats = action.get('show_primary_stats')
         show_combat_stats = action.get('show_combat_stats')
+        show_noncombat_stats = action.get('show_noncombat_stats')
         show_feats = action.get('show_feats')
         show_strength_feats = action.get('show_strength_feats')
         show_instinct_feats = action.get('show_instinct_feats')
@@ -62,6 +63,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         fullscreen = action.get('fullscreen')
         level_up = action.get('level_up')
         wait = action.get('wait')
+        encounter = action.get('encounter')
         
         left_click = mouse_action.get('left_click')
         right_click = mouse_action.get('right_click')
@@ -102,6 +104,10 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         if drop_inventory:
             previous_game_state = game_state
             game_state = GameStates.DROP_INVENTORY
+        
+        if encounter:
+            previous_game_state = game_state
+            game_state = GameStates.ENCOUNTER
             
         if inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and inventory_index < len(player.inventory.items):
             item = player.inventory.items[inventory_index]
@@ -133,38 +139,62 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.COMBAT_STATS_SCREEN
+        if show_noncombat_stats:
+            older_game_state = previous_game_state
+            previous_game_state = game_state
+            game_state = GameStates.NONCOMBAT_STATS_SCREEN
         if show_feats:
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.FEATS_MENU
         if show_strength_feats:
+            even_older_game_state = older_game_state
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.STRENGTH_FEATS
         if show_instinct_feats:
+            even_older_game_state = older_game_state
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.INSTINCT_FEATS
         if show_coordination_feats:
+            even_older_game_state = older_game_state
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.COORDINATION_FEATS
         if show_vitality_feats:
+            even_older_game_state = older_game_state
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.VITALITY_FEATS
         if show_arcana_feats:
+            even_older_game_state = older_game_state
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.ARCANA_FEATS
         if show_improvisation_feats:
+            even_older_game_state = older_game_state
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.IMPROVISATION_FEATS
         if show_wisdom_feats:
+            even_older_game_state = older_game_state
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.WISDOM_FEATS
         if show_finesse_feats:
+            even_older_game_state = older_game_state
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.FINESSE_FEATS
         if show_charisma_feats:
+            even_older_game_state = older_game_state
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.CHARISMA_FEATS
         if show_devotion_feats:
+            even_older_game_state = older_game_state
+            older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.DEVOTION_FEATS
             
@@ -209,14 +239,18 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         if exit:
             if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU):
                 game_state = previous_game_state
-            elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN, GameStates.FEATS_MENU):
+            elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN, GameStates.NONCOMBAT_STATS_SCREEN, GameStates.FEATS_MENU):
                 game_state = previous_game_state
                 previous_game_state = older_game_state
+            elif game_state in (GameStates.STRENGTH_FEATS, GameStates.INSTINCT_FEATS, GameStates.COORDINATION_FEATS, GameStates.VITALITY_FEATS, GameStates.ARCANA_FEATS, GameStates.IMPROVISATION_FEATS, GameStates.WISDOM_FEATS, GameStates.FINESSE_FEATS, GameStates.CHARISMA_FEATS, GameStates.DEVOTION_FEATS):
+                game_state = previous_game_state
+                previous_game_state = older_game_state
+                older_game_state = even_older_game_state
             elif game_state == GameStates.TARGETING:
                 player_turn_results.append({'targeting_cancelled': True})
             else:
                 save_game(player, entities, game_map, message_log, game_state)
-                
+   
                 return True
                 
         if fullscreen:
@@ -326,7 +360,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 def main():
     constants = get_constants()
     
-    libtcod.console_set_custom_font(r'C:\Users\penic\Desktop\Wuncemoor\arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+    libtcod.console_set_custom_font('Desktop\Projects\Wuncemoor\\arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
     
     libtcod.console_init_root(constants['screen_width'], constants['screen_height'], constants['window_title'], False)
     
@@ -342,7 +376,6 @@ def main():
     show_main_menu = True
     show_load_error_message = False
     
-    main_menu_background_image = libtcod.image_load(r'C:\Users\penic\Desktop\Wuncemoor\the_fall_of_icarus.jpg')
     
     key = libtcod.Key()
     mouse = libtcod.Mouse()
@@ -377,6 +410,7 @@ def main():
                     player, entities, game_map, message_log, game_state = load_game()
                     show_main_menu = False
                 except FileNotFoundError:
+                    print('file not found')
                     show_load_error_message = True
             elif exit_game:
                 break

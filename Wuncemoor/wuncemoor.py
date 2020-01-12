@@ -12,18 +12,17 @@ from menus import main_menu, message_box
 from PIL import Image
 import random
 import math
+import os
+import sys
 import pygame
 
 pygame.init()
 
-size = (700,500)
-constants = get_constants()
-colors = constants['colors']
+screen_size = (700,500)
+screen = pygame.display.set_mode(screen_size)
 
-
-screen = pygame.display.set_mode(size)
 pygame.display.set_caption('Wuncemoor')
-
+ 
 
 
 
@@ -31,12 +30,15 @@ clock = pygame.time.Clock()
 
 #Main Loop
 def main():
+    constants = get_constants()
+    colors = constants['colors']
     carryOn = True
 
     while carryOn:
         
         for event in pygame.event.get(): #User input
             if event.type == pygame.QUIT:
+                pygame.quit(); sys.exit()
                 carryOn = False
                 
         #Game Logic Here
@@ -63,7 +65,7 @@ def main():
         pygame.display.flip()
         
         #60 FPS
-        clock.tick(60)
+        clock.tick(constants['fps'])
     pygame.quit()
 
 if __name__ == '__main__':

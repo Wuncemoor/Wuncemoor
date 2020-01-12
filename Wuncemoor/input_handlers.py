@@ -14,7 +14,7 @@ def handle_keys(key, game_state):
         return handle_level_up_menu(key)
     elif game_state == GameStates.CHARACTER_MENU:
         return handle_character_menu(key)
-    elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN):
+    elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN, GameStates.NONCOMBAT_STATS_SCREEN, GameStates.STRENGTH_FEATS, GameStates.INSTINCT_FEATS, GameStates.COORDINATION_FEATS, GameStates.VITALITY_FEATS, GameStates.ARCANA_FEATS, GameStates.IMPROVISATION_FEATS, GameStates.WISDOM_FEATS, GameStates.FINESSE_FEATS, GameStates.CHARISMA_FEATS, GameStates.DEVOTION_FEATS):
         return handle_stat_info(key)
     elif game_state == GameStates.FEATS_MENU:
         return handle_feats_menu(key)
@@ -36,8 +36,9 @@ def handle_character_menu(key):
     elif key_char == 'b':
         return {'show_combat_stats': True}
     elif key_char == 'c':
-        return {'show_feats': True}
-    
+        return {'show_noncombat_stats': True}
+    elif key_char == 'd':
+        return {'show_feats': True}   
     return {}
 
 def handle_stat_info(key):
@@ -72,6 +73,7 @@ def handle_feats_menu(key):
     elif key_char == 'j':
         return {'show_devotion_feats': True}
     return {}
+    
     
 def handle_player_turn_keys(key):
     key_char = chr(key.c)

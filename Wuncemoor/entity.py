@@ -7,7 +7,7 @@ from components.item import Item
 class Entity:
 
     #Creation
-    def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, combatant=None, ai=None, item=None, inventory=None, stairs=None, level=None, equipment=None, equippable=None):
+    def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, combatant=None, ai=None, item=None, inventory=None, stairs=None, level=None, equipment=None, equippable=None, loot=None):
         self.x = x
         self.y = y
         self.char = char
