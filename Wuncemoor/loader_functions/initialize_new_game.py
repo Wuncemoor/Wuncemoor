@@ -4,13 +4,17 @@ from components.combatant import Combatant
 from components.inventory import Inventory
 from components.level import Level
 from components.equipment import Equipment
-from components.equippable import Equippable
+from components.equippable import Equippable, get_equippable
 from components.attributes import Attributes
+from components.equippable_core import EquippableCore
+from components.equippable_material import EquippableMaterial
+from components.equippable_quality import EquippableQuality
 from entity import Entity
 from equipment_slots import EquipmentSlots
 from game_messages import MessageLog
 from game_states import GameStates
 from map_objects.game_map import GameMap
+from map_objects.alpha import NodeAlphaMap
 from render_functions import RenderOrder
 
 
@@ -19,6 +23,7 @@ def get_constants():
     
     screen_width = 80
     screen_height = 50
+    fps = 60
     
     bar_width = 20
     panel_height = 7
@@ -80,19 +85,22 @@ def get_game_variables(constants):
     inventory_component = Inventory(26)
     level_component = Level()
     equipment_component = Equipment()
-    player_sprite = Image.open(r'C:\Users\penic\Desktop\Wuncemoor\slime.jpg')
     
     player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, render_order = RenderOrder.ACTOR, combatant=combatant_component, inventory=inventory_component, level=level_component, equipment=equipment_component)
     
     entities = [player]
     
-    equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonuses=[0,0,2])
+    equippable_component = get_equippable('stick')
     stick = Entity(0, 0, '-', libtcod.sky, 'Stick', equippable=equippable_component)
     player.inventory.add_item(stick)
     player.equipment.toggle_equip(stick)
     
-    game_map = GameMap(constants['map_width'], constants['map_height'])
-    game_map.make_map(constants['max_rooms'], constants['room_min_size'], constants['room_max_size'], constants['map_width'], constants['map_height'], player, entities)
+    #game_map = GameMap(constants['map_width'], constants['map_height'])
+    #game_map.make_map(constants['max_rooms'], constants['room_min_size'], constants['room_max_size'], constants['map_width'], constants['map_height'], player, entities)
+    
+    game_map = NodeAlphaMap(constants['map_width'], constants['map_height'])
+    game_map.make_alpha_map(constants['map_width'], constants['map_height'], player, entities)
+    
     
     message_log = MessageLog(constants['message_x'], constants['message_width'], constants['message_height'])
     
