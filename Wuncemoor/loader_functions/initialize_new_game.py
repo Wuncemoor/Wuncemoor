@@ -1,8 +1,10 @@
 import tcod as libtcod
 from PIL import Image
 from components.combatant import Combatant
+from components.item import Item
 from components.inventory import Inventory
 from components.level import Level
+from components.competence import Competence, Strength, Instinct, Coordination, Vitality, Arcana, Improvisation, Wisdom, Finesse, Charisma, Devotion
 from components.equipment import Equipment
 from components.equippable import Equippable, get_equippable
 from components.attributes import Attributes
@@ -38,7 +40,7 @@ def get_constants():
     
     room_max_size = 10
     room_min_size = 6
-    max_rooms = 30
+    max_rooms = 3
     
     fov_algorithm = 0
     fov_light_walls = True
@@ -81,22 +83,22 @@ def get_constants():
     
 def get_game_variables(constants):
     attribute_component = Attributes(10,10,10,10,10,10,10,10,10,10)
-    combatant_component = Combatant(attributes=attribute_component)
     inventory_component = Inventory(26)
     level_component = Level()
+    competence_component = Competence(Strength(), Instinct(), Coordination(), Vitality(), Arcana(), Improvisation(), Wisdom(), Finesse(), Charisma(), Devotion())
     equipment_component = Equipment()
+    combatant_component = Combatant('Player', '@', attributes=attribute_component, level=level_component, competence=competence_component, equipment=equipment_component, inventory=inventory_component)
+
     
-    player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, render_order = RenderOrder.ACTOR, combatant=combatant_component, inventory=inventory_component, level=level_component, equipment=equipment_component)
+    player = Entity(0, 0, libtcod.white, blocks=True, render_order = RenderOrder.ACTOR, combatant=combatant_component)
     
     entities = [player]
     
-    equippable_component = get_equippable('stick')
-    stick = Entity(0, 0, '-', libtcod.sky, 'Stick', equippable=equippable_component)
-    player.inventory.add_item(stick)
-    player.equipment.toggle_equip(stick)
+    item_component = Item(Equippable('Stick', '-', EquipmentSlots.MAIN_HAND, EquippableCore('staff'), EquippableMaterial('wood'), EquippableQuality('average')))
+    stick = Entity(0, 0, libtcod.sky, item=item_component)
+    player.combatant.inventory.add_item(stick)
+    player.combatant.equipment.toggle_equip(stick)
     
-    #game_map = GameMap(constants['map_width'], constants['map_height'])
-    #game_map.make_map(constants['max_rooms'], constants['room_min_size'], constants['room_max_size'], constants['map_width'], constants['map_height'], player, entities)
     
     game_map = NodeAlphaMap(constants['map_width'], constants['map_height'])
     game_map.make_alpha_map(constants['map_width'], constants['map_height'], player, entities)
