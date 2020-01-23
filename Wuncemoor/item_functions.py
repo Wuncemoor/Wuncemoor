@@ -3,15 +3,15 @@ from game_messages import Message
 from components.ai import ConfusedMonster
 
 def heal(*args, **kwargs):
-    entity = args[0]
+    combatant = args[0].combatant
     amount = kwargs.get('amount')
     
     results = []
     
-    if entity.combatant.attributes.current_hp == entity.combatant.max_hp:
+    if combatant.attributes.current_hp == combatant.max_hp:
         results.append({'consumed': False, 'message': Message('You are already at full health!', libtcod.yellow)})
     else:
-        entity.combatant.gain_hp(amount)
+        combatant.gain_hp(amount)
         results.append({'consumed': True, 'message': Message('Your wounds start to heal!', libtcod.green)})
         
     return results
@@ -38,7 +38,7 @@ def cast_lightning(*args, **kwargs):
                 
     if target:
         results.append({'consumed': True, 'target': target, 'message': Message('A lightning bolt strikes the {0} with a loud thunder! {0} takes {1} damage!'.format(target.name, damage))})
-        results.extend(target.combatant.take_damage(damage))
+        results.extend(target.combatant.lose_hp(damage))
     else:
         results.append({'consumed': False, 'target': None, 'message': Message('No enemy is close enough to strike.', libtcod.red)})
         
@@ -64,7 +64,7 @@ def cast_fireball(*args, **kwargs):
     for entity in entities:
         if entity.distance(target_x, target_y) <= radius and entity.combatant:
             results.append({'message':Message('The {0} takes {1} fire damage!'.format(entity.name, damage), libtcod.orange)})
-            results.extend(entity.combatant.take_damage(damage))
+            results.extend(entity.combatant.lose_hp(damage))
             
     return results
         
@@ -80,11 +80,11 @@ def cast_confuse(*args, **kwargs):
         results.append({'consumed':False, 'message':Message('You cannot target a tile outside your field of view.', libtcod.yellow)})
         return results
     for entity in entities:
-        if entity.x == target_x and entity.y == target_y and entity.ai:
-            confused_ai = ConfusedMonster(entity.ai, 10)
+        if entity.x == target_x and entity.y == target_y and entity.combatant.ai:
+            confused_ai = ConfusedMonster(entity.combatant.ai, 10)
             
             confused_ai.owner = entity
-            entity.ai = confused_ai
+            entity.combatant.ai = confused_ai
             
             results.append({'consumed':True, 'message': Message('The eyes of the {0} look vacant, as they start to stumble around aimlessly...'.format(entity.name), libtcod.light_green)})
             break

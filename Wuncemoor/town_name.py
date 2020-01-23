@@ -22,7 +22,7 @@ def town_name_generate():
     
     fourth_possibilities = ['test']
     
-    fifth_possibilities = ['test2']
+    fifth_possibilities = ['TEST']
     
 
     first_syllable = random.choice(first_possibilities)

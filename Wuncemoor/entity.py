@@ -7,51 +7,45 @@ from components.item import Item
 class Entity:
 
     #Creation
-    def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, combatant=None, ai=None, item=None, inventory=None, stairs=None, level=None, equipment=None, equippable=None, loot=None):
+    def __init__(self, x, y, color, blocks=False, render_order=RenderOrder.CORPSE, combatant=None, item=None, stairs=None):
         self.x = x
         self.y = y
-        self.char = char
         self.color = color
-        self.name = name
         self.blocks = blocks
         self.render_order = render_order
         self.combatant = combatant
-        self.ai = ai
         self.item = item
-        self.inventory = inventory
         self.stairs = stairs
-        self.level = level
-        self.equipment = equipment
-        self.equippable = equippable
+        self.name = None
+        self.image = None
         
         if self.combatant:
             self.combatant.owner = self
+            self.name = self.combatant.name
+            self.image = self.combatant.image
+            if self.combatant.ai:
+                self.combatant.ai.owner = self
+            if self.combatant.level:
+                self.combatant.level.owner = self
+            if self.combatant.inventory:
+                self.combatant.inventory.owner = self
             
-        if self.ai:
-            self.ai.owner = self
             
         if self.item:
             self.item.owner = self
+            self.name = self.item.name
+            self.image = self.item.image
+            if self.item.equippable:
+                self.item.equippable.owner = self
+            if self.item.useable:
+                self.item.useable.owner = self
             
-        if self.inventory:
-            self.inventory.owner = self
-            
+
         if self.stairs:
             self.stairs.owner = self
-            
-        if self.level:
-            self.level.owner = self
-            
-        if self.equipment:
-            self.equipment.owner = self
-            
-        if self.equippable:
-            self.equippable.owner = self
-            
-            if not self.item:
-                item = Item()
-                self.item = item
-                self.item.owner = self
+            self.name = self.stairs.name
+            self.image = self.stairs.image
+
         
     #Move the entity
     def move(self, dx, dy):

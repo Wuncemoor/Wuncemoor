@@ -42,12 +42,12 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         pickup = action.get('pickup')
         show_inventory = action.get('show_inventory')
         drop_inventory = action.get('drop_inventory')
+        show_competence = action.get('show_competence')
         inventory_index = action.get('inventory_index')
         show_stats_menu = action.get('show_stats_menu')
         show_primary_stats = action.get('show_primary_stats')
         show_combat_stats = action.get('show_combat_stats')
         show_noncombat_stats = action.get('show_noncombat_stats')
-        show_feats = action.get('show_feats')
         show_strength_feats = action.get('show_strength_feats')
         show_instinct_feats = action.get('show_instinct_feats')
         show_coordination_feats = action.get('show_coordination_feats')
@@ -58,12 +58,15 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         show_finesse_feats = action.get('show_finesse_feats')
         show_charisma_feats = action.get('show_charisma_feats')
         show_devotion_feats = action.get('show_devotion_feats')
+        gain_competence = action.get('gain_competence')
         exit = action.get('exit')
         take_stairs = action.get('take_stairs')
         fullscreen = action.get('fullscreen')
         level_up = action.get('level_up')
         wait = action.get('wait')
         encounter = action.get('encounter')
+        
+        
         
         left_click = mouse_action.get('left_click')
         right_click = mouse_action.get('right_click')
@@ -79,8 +82,12 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 target = get_blocking_entities_at_location(entities, destination_x, destination_y)
                 
                 if target:
-                    attack_results = player.combatant.attack(target)
-                    player_turn_results.extend(attack_results)
+                    if target.combatant:
+                        attack_results = player.combatant.attack(target)
+                        player_turn_results.extend(attack_results)
+                    elif target.shopkeeper:
+                        talk_results = player.combatant.talk_to(target)
+                        game_state = GameStates.DIALOGUE
                 else:
                     player.move(dx,dy)
                     
@@ -90,7 +97,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         elif pickup and game_state == GameStates.PLAYERS_TURN:
             for entity in entities:
                 if entity.item and entity.x == player.x and entity.y == player.y:
-                    pickup_results = player.inventory.add_item(entity)
+                    pickup_results = player.combatant.inventory.add_item(entity)
                     player_turn_results.extend(pickup_results)
                     
                     break
@@ -105,17 +112,28 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             previous_game_state = game_state
             game_state = GameStates.DROP_INVENTORY
         
+        if show_competence:
+            previous_game_state = game_state
+            game_state = GameStates.COMPETENCE_MENU
+        
         if encounter:
             previous_game_state = game_state
             game_state = GameStates.ENCOUNTER
             
-        if inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and inventory_index < len(player.inventory.items):
-            item = player.inventory.items[inventory_index]
+        if inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and inventory_index < len(player.combatant.inventory.items):
+            item = player.combatant.inventory.items[inventory_index]
             
             if game_state == GameStates.SHOW_INVENTORY:
-                player_turn_results.extend(player.inventory.use(item, entities=entities, fov_map=fov_map))
+                player_turn_results.extend(player.combatant.inventory.use(item, entities=entities, fov_map=fov_map))
             elif game_state == GameStates.DROP_INVENTORY:
-                player_turn_results.extend(player.inventory.drop_item(item))
+                player_turn_results.extend(player.combatant.inventory.drop_item(item))
+                
+        if gain_competence:
+            attribute, competence = gain_competence
+            
+            player_turn_results.extend(player.competencies.comp_setter(attribute, competence))
+            
+            
         
         if take_stairs and game_state == GameStates.PLAYERS_TURN:
             for entity in entities:
@@ -143,57 +161,46 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.NONCOMBAT_STATS_SCREEN
-        if show_feats:
-            older_game_state = previous_game_state
+        if show_competence:
             previous_game_state = game_state
-            game_state = GameStates.FEATS_MENU
+            game_state = GameStates.COMPETENCE_MENU
         if show_strength_feats:
-            even_older_game_state = older_game_state
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.STRENGTH_FEATS
         if show_instinct_feats:
-            even_older_game_state = older_game_state
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.INSTINCT_FEATS
         if show_coordination_feats:
-            even_older_game_state = older_game_state
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.COORDINATION_FEATS
         if show_vitality_feats:
-            even_older_game_state = older_game_state
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.VITALITY_FEATS
         if show_arcana_feats:
-            even_older_game_state = older_game_state
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.ARCANA_FEATS
         if show_improvisation_feats:
-            even_older_game_state = older_game_state
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.IMPROVISATION_FEATS
         if show_wisdom_feats:
-            even_older_game_state = older_game_state
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.WISDOM_FEATS
         if show_finesse_feats:
-            even_older_game_state = older_game_state
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.FINESSE_FEATS
         if show_charisma_feats:
-            even_older_game_state = older_game_state
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.CHARISMA_FEATS
         if show_devotion_feats:
-            even_older_game_state = older_game_state
             older_game_state = previous_game_state
             previous_game_state = game_state
             game_state = GameStates.DEVOTION_FEATS
@@ -223,12 +230,11 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 
             
             game_state = previous_game_state
-            game_state = previous_game_state
         if game_state == GameStates.TARGETING:
             if left_click:
                 target_x, target_y = left_click
                 
-                item_use_results = player.inventory.use(targeting_item, entities=entities, fov_map=fov_map, target_x=target_x, target_y=target_y)
+                item_use_results = player.combatant.inventory.use(targeting_item, entities=entities, fov_map=fov_map, target_x=target_x, target_y=target_y)
                 
                 player_turn_results.extend(item_use_results)
             elif right_click:
@@ -239,13 +245,15 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         if exit:
             if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU):
                 game_state = previous_game_state
-            elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN, GameStates.NONCOMBAT_STATS_SCREEN, GameStates.FEATS_MENU):
+            elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN, GameStates.NONCOMBAT_STATS_SCREEN):
                 game_state = previous_game_state
                 previous_game_state = older_game_state
             elif game_state in (GameStates.STRENGTH_FEATS, GameStates.INSTINCT_FEATS, GameStates.COORDINATION_FEATS, GameStates.VITALITY_FEATS, GameStates.ARCANA_FEATS, GameStates.IMPROVISATION_FEATS, GameStates.WISDOM_FEATS, GameStates.FINESSE_FEATS, GameStates.CHARISMA_FEATS, GameStates.DEVOTION_FEATS):
                 game_state = previous_game_state
                 previous_game_state = older_game_state
                 older_game_state = even_older_game_state
+            elif game_state == GameStates.COMPETENCE_MENU:
+                game_state = GameStates.PLAYERS_TURN
             elif game_state == GameStates.TARGETING:
                 player_turn_results.append({'targeting_cancelled': True})
             else:
@@ -292,7 +300,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 game_state = GameStates.ENEMY_TURN
             
             if equip:
-                equip_results = player.equipment.toggle_equip(equip)
+                equip_results = player.combatant.equipment.toggle_equip(equip)
                 
                 for equip_result in equip_results:
                     equipped = equip_result.get('equipped')
@@ -311,7 +319,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 
                 targeting_item = targeting
                 
-                message_log.add_message(targeting_item.item.targeting_message)
+                message_log.add_message(targeting_item.item.useable.targeting_message)
                 
             if targeting_cancelled:
                 game_state = previous_game_state
@@ -319,37 +327,42 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 message_log.add_message(Message('Targeting cancelled.'))
                 
             if xp:
-                leveled_up = player.level.add_xp(xp)
+                leveled_up = player.combatant.level.add_xp(xp)
                 message_log.add_message(Message('You gain {0} experience points!'.format(xp)))
                 
                 if leveled_up:
-                    message_log.add_message(Message('Your skills grow once more! Level {0}!'.format(player.level.current_level) + '!', libtcod.yellow))
-                    previous_game_state = game_state
-                    game_state = GameStates.LEVEL_UP
+                    message_log.add_message(Message('Your skills grow once more! Level {0}!'.format(player.combatant.level.current_level) + '!', libtcod.yellow))
+                    if not GameStates.TARGETING:
+                        previous_game_state = game_state
+                        game_state = GameStates.LEVEL_UP
+                    else:
+                        previous_game_state = GameStates.PLAYERS_TURN
+                        game_state = GameStates.LEVEL_UP
                     
                     
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:
-                if entity.ai:
-                    enemy_turn_results = entity.ai.take_turn(player, fov_map, game_map, entities)
-                    
-                    for enemy_turn_result in enemy_turn_results:
-                        message = enemy_turn_result.get('message')
-                        dead_entity = enemy_turn_result.get('dead')
+                if entity.combatant:
+                    if entity.combatant.ai:
+                        enemy_turn_results = entity.combatant.ai.take_turn(player, fov_map, game_map, entities)
                         
-                        if message:
-                            message_log.add_message(message)
+                        for enemy_turn_result in enemy_turn_results:
+                            message = enemy_turn_result.get('message')
+                            dead_entity = enemy_turn_result.get('dead')
                             
-                        if dead_entity:
-                            if dead_entity == player:
-                                message, game_state = kill_player(dead_entity)
-                            else:
-                                message = kill_monster(dead_entity)
-                            
-                            message_log.add_message(message)
-                            
-                            if game_state == GameStates.PLAYER_DEAD:
-                                break
+                            if message:
+                                message_log.add_message(message)
+                                
+                            if dead_entity:
+                                if dead_entity == player:
+                                    message, game_state = kill_player(dead_entity)
+                                else:
+                                    message = kill_monster(dead_entity)
+                                
+                                message_log.add_message(message)
+                                
+                                if game_state == GameStates.PLAYER_DEAD:
+                                    break
                 if game_state == GameStates.PLAYER_DEAD:
                     break
             else:
@@ -376,6 +389,7 @@ def main():
     show_main_menu = True
     show_load_error_message = False
     
+    main_menu_background_image = libtcod.image_load('the_fall_of_icarus.jpg')
     
     key = libtcod.Key()
     mouse = libtcod.Mouse()

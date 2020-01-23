@@ -1,6 +1,6 @@
 import tcod as libtcod
 from game_states import GameStates
-from menus import inventory_menu, level_up_menu, feats_menu, character_menu, primary_stats_screen, combat_stats_screen, noncombat_stats_screen, strength_feats_menu, instinct_feats_menu, coordinaton_feats_menu, vitality_feats_menu, arcana_feats_menu, improvisation_feats_menu, wisdom_feats_menu, finesse_feats_menu, charisma_feats_menu, devotion_feats_menu
+from menus import inventory_menu, dialogue_menu, level_up_menu, competence_menu, character_menu, primary_stats_screen, combat_stats_screen, noncombat_stats_screen, strength_feats_menu, instinct_feats_menu, coordinaton_feats_menu, vitality_feats_menu, arcana_feats_menu, improvisation_feats_menu, wisdom_feats_menu, finesse_feats_menu, charisma_feats_menu, devotion_feats_menu
 
 
 from enum import Enum
@@ -99,8 +99,8 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
         combat_stats_screen(player, 40, 30, screen_width, screen_height)
     elif game_state == GameStates.NONCOMBAT_STATS_SCREEN:
         noncombat_stats_screen(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.FEATS_MENU:
-        feats_menu(con, 'What type of feat are you interested in?', 40, screen_width, screen_height)
+    elif game_state == GameStates.COMPETENCE_MENU:
+        competence_menu(con, 'What would you like to be more competent at?', 40, screen_width, screen_height)
     elif game_state == GameStates.STRENGTH_FEATS:
         strength_feats_menu(player, 40, 30, screen_width, screen_height)
     elif game_state == GameStates.INSTINCT_FEATS:
@@ -121,6 +121,8 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
         charisma_feats_menu(player, 40, 30, screen_width, screen_height)
     elif game_state == GameStates.DEVOTION_FEATS:
         devotion_feats_menu(player, 40, 30, screen_width, screen_height)
+    elif game_state == GameStates.DIALOGUE:
+        dialogue_menu(player, 40, 30, screen_width, screen_height)
         
     
 
@@ -132,7 +134,7 @@ def clear_all(con, entities):
 def draw_entity(con, entity, fov_map, game_map):
     if libtcod.map_is_in_fov(fov_map, entity.x, entity.y) or (entity.stairs and game_map.tiles[entity.x][entity.y].explored):
         libtcod.console_set_default_foreground(con, entity.color)    
-        libtcod.console_put_char(con, entity.x, entity.y, entity.char, libtcod.BKGND_NONE)
+        libtcod.console_put_char(con, entity.x, entity.y, entity.image, libtcod.BKGND_NONE)
 
 def clear_entity(con, entity):
     #erase the character that represents this object

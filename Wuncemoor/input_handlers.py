@@ -14,10 +14,12 @@ def handle_keys(key, game_state):
         return handle_level_up_menu(key)
     elif game_state == GameStates.CHARACTER_MENU:
         return handle_character_menu(key)
-    elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN, GameStates.NONCOMBAT_STATS_SCREEN, GameStates.STRENGTH_FEATS, GameStates.INSTINCT_FEATS, GameStates.COORDINATION_FEATS, GameStates.VITALITY_FEATS, GameStates.ARCANA_FEATS, GameStates.IMPROVISATION_FEATS, GameStates.WISDOM_FEATS, GameStates.FINESSE_FEATS, GameStates.CHARISMA_FEATS, GameStates.DEVOTION_FEATS):
+    elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN, GameStates.NONCOMBAT_STATS_SCREEN, GameStates.INSTINCT_FEATS, GameStates.COORDINATION_FEATS, GameStates.VITALITY_FEATS, GameStates.ARCANA_FEATS, GameStates.IMPROVISATION_FEATS, GameStates.WISDOM_FEATS, GameStates.FINESSE_FEATS, GameStates.CHARISMA_FEATS, GameStates.DEVOTION_FEATS):
         return handle_stat_info(key)
-    elif game_state == GameStates.FEATS_MENU:
-        return handle_feats_menu(key)
+    elif game_state == GameStates.STRENGTH_FEATS:
+        return handle_strength(key)
+    elif game_state == GameStates.COMPETENCE_MENU:
+        return handle_competence_menu(key)
     return {}
 
 def handle_character_screen(key):
@@ -37,8 +39,6 @@ def handle_character_menu(key):
         return {'show_combat_stats': True}
     elif key_char == 'c':
         return {'show_noncombat_stats': True}
-    elif key_char == 'd':
-        return {'show_feats': True}   
     return {}
 
 def handle_stat_info(key):
@@ -47,7 +47,7 @@ def handle_stat_info(key):
         
     return {}
     
-def handle_feats_menu(key):
+def handle_competence_menu(key):
     key_char = chr(key.c)
     
     if key.vk == libtcod.KEY_ESCAPE:
@@ -73,6 +73,18 @@ def handle_feats_menu(key):
     elif key_char == 'j':
         return {'show_devotion_feats': True}
     return {}
+    
+def handle_strength(key):
+    key_char = chr(key.c)
+    
+    if key_char == 'a':
+        return {'gain_competence': ('strength','mighty_strength_flag')}
+    elif key_char == 'b':
+        return {'gain_competence': ('strength','better_slash_flag')}
+    elif key_char == 'c':
+        return {'gain_competence': ('strength','better stab_flag')}
+    elif key_char == 'd':
+        return {'gain_competence': ('strength','better_blunt_flag')}
     
     
 def handle_player_turn_keys(key):
@@ -102,6 +114,9 @@ def handle_player_turn_keys(key):
         return {'pickup': True}
     elif key_char == 'i':
         return {'show_inventory': True}
+    # Disabled until finished
+    # elif key_char == 'f':
+        # return {'show_competence': True}
     elif key_char == 'o':
         return {'drop_inventory': True}
     elif key.vk == libtcod.KEY_ENTER:

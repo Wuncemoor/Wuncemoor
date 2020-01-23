@@ -29,35 +29,53 @@ def menu(con, header, options, width, screen_width, screen_height):
     y = int(screen_height / 2 - height / 2)
     libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
     
+def dialogue_menu(con, header, target, dialogue_width, screen_width, screen_height):
+
+    window = libtcod.console_new(character_screen_width, character_screen_height)
+    
+    libtcod.console_set_default_foreground(window, libtcod.white)
+    
+    response = 'Whats up?'
+    
+    libtcod.console_print_rect_ex(window, 0, 2, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.CENTER, 'Conversation with a {0}'.format(target.shopkeeper.name))
+    libtcod.console_print_rect_ex(window, 0, 3, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.CENTER, response)
+
+    
+    options = []
+    
+    for talking_point in target.shopkeeper.dialogue.conversation:
+        options.append(talking_point)
+    menu(con, '', options, menu_width, screen_width, screen_height)
+    
 def inventory_menu(con, header, player, inventory_width, screen_width, screen_height):
     #show a menu with each item of the inventory as an option
-    if len(player.inventory.items) == 0:
+    if len(player.combatant.inventory.items) == 0:
         options = ['Inventory is empty.']
     else:
         options = []
         
-        for item in player.inventory.items:
-            if player.equipment.main_hand == item:
+        for item in player.combatant.inventory.items:
+            if player.combatant.equipment.main_hand == item:
                 options.append('{0} (Main Hand)'.format(item.name))
-            elif player.equipment.off_hand == item:
+            elif player.combatant.equipment.off_hand == item:
                 options.append('{0} (Off Hand)'.format(item.name))
-            elif player.equipment.head == item:
+            elif player.combatant.equipment.head == item:
                 options.append('{0} (Head)'.format(item.name))
-            elif player.equipment.body == item:
+            elif player.combatant.equipment.body == item:
                 options.append('{0} (Body)'.format(item.name))
-            elif player.equipment.feet == item:
+            elif player.combatant.equipment.feet == item:
                 options.append('{0} (Feet)'.format(item.name))
-            elif player.equipment.belt == item:
+            elif player.combatant.equipment.belt == item:
                 options.append('{0} (Belt)'.format(item.name))
-            elif player.equipment.hands == item:
+            elif player.combatant.equipment.hands == item:
                 options.append('{0} (Hands)'.format(item.name))
-            elif player.equipment.finger == item:
+            elif player.combatant.equipment.finger == item:
                 options.append('{0} (Finger)'.format(item.name))
-            elif player.equipment.neck == item:
+            elif player.combatant.equipment.neck == item:
                 options.append('{0} (Neck)'.format(item.name))
-            elif player.equipment.back == item:
+            elif player.combatant.equipment.back == item:
                 options.append('{0} (Back)'.format(item.name))
-            elif player.equipment.accessory == item:
+            elif player.combatant.equipment.accessory == item:
                 options.append('{0} (Accessory)'.format(item.name))
             else:
                 options.append(item.name)
@@ -76,12 +94,12 @@ def level_up_menu(con, header, player, menu_width, screen_width, screen_height):
     options = ['+1 Strength (Currently {0})'.format(player.combatant.attributes.strength), '+1 Instinct (Currently {0})'.format(player.combatant.attributes.instinct), '+1 Coordination (Currently {0})'.format(player.combatant.attributes.coordination), '+1 Vitality (Currently {0})'.format(player.combatant.attributes.vitality), '+1 Arcana (Currently {0})'.format(player.combatant.attributes.arcana), '+1 Improvisation (Currently {0})'.format(player.combatant.attributes.improvisation), '+1 Wisdom (Currently {0})'.format(player.combatant.attributes.wisdom), '+1 Finesse (Currently {0})'.format(player.combatant.attributes.finesse), '+1 Charisma (Currently {0})'.format(player.combatant.attributes.charisma), '+1 Devotion (Currently {0})'.format(player.combatant.attributes.devotion)]
     menu(con, header, options, menu_width, screen_width, screen_height)
     
-def feats_menu(con, header, menu_width, screen_width, screen_height):
-    options = ['Strength Feats', 'Instinct Feats', 'Coordination Feats', 'Vitality Feats', 'Arcana Feats', 'Improvisation Feats', 'Wisdom Feats', 'Finesse Feats', 'Charisma Feats', 'Devotion Feats']
+def competence_menu(con, header, menu_width, screen_width, screen_height):
+    options = ['Strength', 'Instinct', 'Coordination', 'Vitality', 'Arcana', 'Improvisation', 'Wisdom', 'Finesse', 'Charisma', 'Devotion']
     menu(con, header, options, menu_width, screen_width, screen_height)
     
 def strength_feats_menu(con, header, menu_width, screen_width, screen_height):
-    options = ['Mighty Strength']
+    options = ['Mighty Strength, Better Slash, Better Stab, Better Blunt']
     menu(con, 'Strength Feats', options, menu_width, screen_width, screen_height)
     
 def instinct_feats_menu(con, header, menu_width, screen_width, screen_height):
@@ -122,7 +140,7 @@ def devotion_feats_menu(con, header, menu_width, screen_width, screen_height):
     
    
 def character_menu(con, header, menu_width, screen_width, screen_height):
-    options = ['Primary Stats', 'Combat Stats', 'Non-Combat Stats', 'Feats']
+    options = ['Primary Stats', 'Combat Stats', 'Non-Combat Stats']
     menu(con, header, options, menu_width, screen_width, screen_height)
     
 
@@ -133,9 +151,9 @@ def primary_stats_screen(player, character_screen_width, character_screen_height
     libtcod.console_set_default_foreground(window, libtcod.white)
     
     libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Character Information')
-    libtcod.console_print_rect_ex(window, 0, 2, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Level: {0}'.format(player.level.current_level))
-    libtcod.console_print_rect_ex(window, 0, 3, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Experience: {0}'.format(player.level.current_xp))
-    libtcod.console_print_rect_ex(window, 0, 4, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Experience till next levelup: {0}'.format(player.level.experience_to_next_level))
+    libtcod.console_print_rect_ex(window, 0, 2, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Level: {0}'.format(player.combatant.level.current_level))
+    libtcod.console_print_rect_ex(window, 0, 3, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Experience: {0}'.format(player.combatant.level.current_xp))
+    libtcod.console_print_rect_ex(window, 0, 4, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Experience till next levelup: {0}'.format(player.combatant.level.experience_to_next_level))
     libtcod.console_print_rect_ex(window, 0, 6, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Strength: {0}'.format(player.combatant.attributes.strength)) 
     libtcod.console_print_rect_ex(window, 0, 7, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Instinct: {0}'.format(player.combatant.attributes.instinct))
     libtcod.console_print_rect_ex(window, 0, 8, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Coordination: {0}'.format(player.combatant.attributes.coordination))
@@ -172,6 +190,8 @@ def combat_stats_screen(player, css_width, css_height, screen_width, screen_heig
     libtcod.console_print_rect_ex(window, 0, 7, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Acid: {0} ({1})'.format(player.combatant.spirit_acid, player.combatant.attributes.base_spirit_acid))
     libtcod.console_print_rect_ex(window, 0, 8, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Current: {0} ({1})'.format(player.combatant.spirit_current, player.combatant.attributes.base_spirit_current))
     libtcod.console_print_rect_ex(window, 0, 9, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Aether: {0} ({1})'.format(player.combatant.spirit_aether, player.combatant.attributes.base_spirit_aether))
+    libtcod.console_print_rect_ex(window, 0, 10, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Competence: {0}'.format(player.combatant.competence_points))
+
 
     libtcod.console_print_rect_ex(window, 0, 11, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Accuracy: {0} ({1})'.format(player.combatant.accuracy, player.combatant.attributes.base_accuracy))
 
