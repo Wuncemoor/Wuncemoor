@@ -1,10 +1,10 @@
 class Level:
-    def __init__(self, current_level=1, current_xp =0, level_up_base=200, level_up_factor=150, perks=0):
+    def __init__(self, current_level=1, current_xp =0, level_up_base=200, level_up_factor=150):
         self.current_level = current_level
         self.current_xp = current_xp
         self.level_up_base = level_up_base
         self.level_up_factor = level_up_factor
-        self.perks = perks
+
         
     @property
     def experience_to_next_level(self):
@@ -16,8 +16,11 @@ class Level:
         if self.current_xp > self.experience_to_next_level:
             self.current_xp -= self.experience_to_next_level
             self.current_level += 1
-            self.perks += 1
             
             return True
         else: 
             return False
+            
+    def set_current_level(self, mob_level):
+        self.current_level = mob_level
+        

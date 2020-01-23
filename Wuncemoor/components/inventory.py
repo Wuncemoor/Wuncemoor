@@ -26,8 +26,8 @@ class Inventory:
         
         item_component = item_entity.item
         
-        if item_component.use_function is None:
-            equippable_component = item_entity.equippable
+        if item_component.equippable is not None:
+            equippable_component = item_entity.item.equippable
             
             if equippable_component:
                 results.append({'equip': item_entity})
@@ -35,11 +35,11 @@ class Inventory:
                 results.append({'message': Message('The {0} cannot be used'.format(item_entity.name), libtcod.yellow)})
                         
         else:
-            if item_component.targeting and not (kwargs.get('target_x') or kwargs.get('target_y')):
+            if item_component.useable.targeting and not (kwargs.get('target_x') or kwargs.get('target_y')):
                 results.append({'targeting': item_entity})
             else:    
-                kwargs = {**item_component.function_kwargs, **kwargs}
-                item_use_results = item_component.use_function(self.owner, **kwargs)
+                kwargs = {**item_component.useable.function_kwargs, **kwargs}
+                item_use_results = item_component.useable.use_function(self.owner, **kwargs)
                 
                 for item_use_result in item_use_results:
                     if item_use_result.get('consumed'):

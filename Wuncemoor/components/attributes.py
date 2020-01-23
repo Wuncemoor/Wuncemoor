@@ -183,6 +183,36 @@ class Attributes:
         bonus = self.strength + self.vitality
         return bonus
         
+    def set_strength(self,strength):
+        self.strength = strength
+        
+    def set_instinct(self, instinct):
+        self.instinct = instinct
+        
+    def set_coordination(self, coordination):
+        self.coordination = coordination
+        
+    def set_vitality(self, vitality):
+        self.vitality = vitality
+        
+    def set_arcana(self, arcana):
+        self.arcana = arcana
+        
+    def set_improvisation(self, improvisation):
+        self.improvisation = improvisation
+        
+    def set_wisdom(self, wisdom):
+        self.wisdom = wisdom
+        
+    def set_finesse(self, finesse):
+        self.finesse = finesse
+        
+    def set_charisma(self, charisma):
+        self.charisma = charisma
+        
+    def set_devotion(self, devotion):
+        self.devotion = devotion
+        
 
         
     

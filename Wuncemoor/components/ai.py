@@ -5,14 +5,14 @@ from game_messages import Message
 class BasicMonster:
     def take_turn(self, target, fov_map, game_map, entities):
         results = []
-        monster = self.owner
-        if libtcod.map_is_in_fov(fov_map, monster.x, monster.y):
+        entity = self.owner
+        if libtcod.map_is_in_fov(fov_map, entity.x, entity.y):
         
-            if monster.distance_to(target) >= 2:
-                monster.move_astar(target, entities, game_map)
+            if entity.distance_to(target) >= 2:
+                entity.move_astar(target, entities, game_map)
                 
             elif target.combatant.attributes.current_hp > 0:
-                attack_results = monster.combatant.attack(target)
+                attack_results = entity.combatant.attack(target)
                 results.extend(attack_results)
                 
         return results

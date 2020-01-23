@@ -5,40 +5,50 @@ import random
 import math
 
 class Combatant:
-    def __init__(self, attributes, xp=0):
+    def __init__(self, name, image, attributes, level, competence, equipment, inventory, ai=None, xp=0):
+        
+        self.name = name
+        self.image = image
         self.attributes = attributes
+        self.level = level
+        self.competence = competence
+        self.equipment = equipment
+        self.inventory = inventory
+        self.ai = ai
         self.xp = xp
+        self.competence_points = 0
+
     
 #True resource maximums
     
     @property
     def max_hp(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.max_hp_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.max_hp_bonus
         else:
             bonus = 0
         return self.attributes.base_max_hp + bonus
         
     @property
     def max_mp(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.max_mp_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.max_mp_bonus
         else:
             bonus = 0
         return self.attributes.base_max_mp + bonus
         
     @property
     def max_tp(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.max_tp_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.max_tp_bonus
         else:
             bonus = 0
         return self.attributes.base_max_tp + bonus
         
     @property
     def max_vp(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.max_vp_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.max_vp_bonus
         else:
             bonus = 0
         return self.attributes.base_max_vp + bonus
@@ -46,8 +56,8 @@ class Combatant:
 #True Power
     @property
     def power_slash(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.power_slash_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.power_slash_bonus
         else:
             bonus = 0
             
@@ -55,8 +65,8 @@ class Combatant:
         
     @property
     def power_pierce(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.power_pierce_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.power_pierce_bonus
         else:
             bonus = 0
             
@@ -64,8 +74,8 @@ class Combatant:
         
     @property
     def power_blunt(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.power_blunt_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.power_blunt_bonus
         else:
             bonus = 0
             
@@ -75,8 +85,8 @@ class Combatant:
     
     @property
     def spirit_heat(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.spirit_heat_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.spirit_heat_bonus
         else:
             bonus = 0
             
@@ -84,8 +94,8 @@ class Combatant:
         
     @property
     def spirit_cold(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.spirit_cold_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.spirit_cold_bonus
         else:
             bonus = 0
             
@@ -93,8 +103,8 @@ class Combatant:
         
     @property
     def spirit_acid(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.spirit_acid_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.spirit_acid_bonus
         else:
             bonus = 0
             
@@ -102,8 +112,8 @@ class Combatant:
         
     @property
     def spirit_current(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.spirit_current_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.spirit_current_bonus
         else:
             bonus = 0
             
@@ -111,8 +121,8 @@ class Combatant:
         
     @property
     def spirit_aether(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.spirit_aether_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.spirit_aether_bonus
         else:
             bonus = 0
             
@@ -123,8 +133,8 @@ class Combatant:
     
     @property
     def resist_slash(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.resist_slash_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.resist_slash_bonus
         else:
             bonus = 0
             
@@ -132,8 +142,8 @@ class Combatant:
         
     @property
     def resist_pierce(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.resist_pierce_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.resist_pierce_bonus
         else:
             bonus = 0
             
@@ -141,8 +151,8 @@ class Combatant:
         
     @property
     def resist_blunt(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.resist_blunt_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.resist_blunt_bonus
         else:
             bonus = 0
             
@@ -150,8 +160,8 @@ class Combatant:
         
     @property
     def resist_heat(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.resist_heat_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.resist_heat_bonus
         else:
             bonus = 0
             
@@ -159,8 +169,8 @@ class Combatant:
         
     @property
     def resist_cold(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.resist_cold_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.resist_cold_bonus
         else:
             bonus = 0
             
@@ -168,8 +178,8 @@ class Combatant:
         
     @property
     def resist_acid(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.resist_acid_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.resist_acid_bonus
         else:
             bonus = 0
             
@@ -177,8 +187,8 @@ class Combatant:
         
     @property
     def resist_current(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.resist_current_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.resist_current_bonus
         else:
             bonus = 0
             
@@ -186,8 +196,8 @@ class Combatant:
         
     @property
     def resist_aether(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.resist_aether_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.resist_aether_bonus
         else:
             bonus = 0
             
@@ -275,16 +285,16 @@ class Combatant:
     
     @property
     def accuracy(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.accuracy_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.accuracy_bonus
         else:
             bonus = 0
             
         return self.attributes.base_accuracy + bonus
     @property
     def dodge(self):
-        if self.owner and self.owner.equipment:
-            bonus = self.owner.equipment.dodge_bonus
+        if self.owner and self.equipment:
+            bonus = self.equipment.dodge_bonus
         else:
             bonus = 0
         
@@ -416,3 +426,32 @@ class Combatant:
         
             results.append({'message': Message('{0} attacks, but {1} dodges!'.format(self.owner.name.capitalize(), target.name), libtcod.white)})
             return results
+            
+
+    def set_name(self, name):
+        self.name = name
+        
+    def set_image(self, image):
+        self.image = image
+        
+    def set_attributes(self, attributes):
+        self.attributes = attributes
+        
+    def set_level(self, level):
+        self.level = level
+        
+    def set_competence(self, competence):
+        self.competence = competence
+        
+    def set_equipment(self, equipment):
+        self.equipment = equipment
+        
+    def set_inventory(self, inventory):
+        self.inventory = inventory
+        
+    def set_ai(self, ai):
+        self.ai = ai
+        
+    def set_xp(self, xp):
+        self.xp = xp
+       

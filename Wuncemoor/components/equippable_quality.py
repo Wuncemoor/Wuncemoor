@@ -9,5 +9,7 @@ class EquippableQuality:
             self.modifier = 0.5
         elif self.quality == 'average':
             self.modifier = 1.0
+        elif self.quality == 'fine':
+            self.modifier = 1.5
         
     
