@@ -2,15 +2,29 @@ import tcod as libtcod
 from entity import Entity
 from render_functions import RenderOrder
 from random import randint
+from random_item_maker import Director, EquippableBuilder
+from mob_builder import MobDirector, MobBuilder
 from game_messages import Message
+from equipment_slots import EquipmentSlots
 from map_objects.tile import Tile
 from map_objects.game_map import GameMap
 from map_objects.rectangle import Rect
+from map_objects.lloydarray import LloydArray
 from components.ai import BasicMonster
 from components.item import Item
+from components.useable import Useable
 from components.stairs import Stairs
 from components.attributes import Attributes
 from components.combatant import Combatant
+from components.equipment import Equipment
+from components.equippable import Equippable
+from components.inventory import Inventory
+from components.equippable_core import EquippableCore
+from components.equippable_material import EquippableMaterial
+from components.equippable_quality import EquippableQuality
+from components.level import Level
+from components.competence import Competence, Strength, Instinct, Coordination, Vitality, Arcana, Improvisation, Wisdom, Finesse, Charisma, Devotion
+from components.shopkeeper import ShopKeeper
 from random_utils import random_choice_from_dict, from_dungeon_level
 from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
 
@@ -117,8 +131,8 @@ class NodeAlphaMap:
                 rooms.append(new_room)
                 num_rooms += 1
                 
-        stairs_component = Stairs(self.dungeon_level + 1)
-        down_stairs = Entity(center_of_last_room_x, center_of_last_room_y, '>', libtcod.white, 'Stairs', render_order=RenderOrder.STAIRS, stairs=stairs_component)
+        downstairs_component = Stairs('Stairs Down', '>', self.dungeon_level + 1)
+        down_stairs = Entity(center_of_last_room_x, center_of_last_room_y, libtcod.white, render_order=RenderOrder.STAIRS, stairs=downstairs_component)
         entities.append(down_stairs)
 
     def place_entities(self, room, entities):
@@ -134,10 +148,10 @@ class NodeAlphaMap:
         
         item_chances = {
             'healing_potion' : 35,
-            'sword': from_dungeon_level([[5,4]], self.dungeon_level),
-            'shield': from_dungeon_level([[15, 8]], self.dungeon_level),
-            'lightning_scroll': from_dungeon_level([[25,4]], self.dungeon_level),
-            'fireball_scroll': from_dungeon_level([[25,6]], self.dungeon_level),
+            'sword': from_dungeon_level([[15,2]], self.dungeon_level),
+            'shield': from_dungeon_level([[15, 2]], self.dungeon_level),
+            'lightning_scroll': from_dungeon_level([[25,2]], self.dungeon_level),
+            'fireball_scroll': from_dungeon_level([[25,2]], self.dungeon_level),
             'confusion_scroll': from_dungeon_level([[10,2]], self.dungeon_level)
             }
             
@@ -148,16 +162,11 @@ class NodeAlphaMap:
             
             if not any([entity for entity in entities if entity.x == x and entity.y == y]):
                 monster_choice = random_choice_from_dict(monster_chances)
-                if monster_choice == 'orc':
-                    attribute_component = Attributes(5,0,0,7,10,10,10,10,10,10)
-                    combatant_component = Combatant(attribute_component, xp=350 )
-                    ai_component = BasicMonster()
-                    monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component, ai=ai_component)
-                else:
-                    attribute_component = Attributes(1,0,0,10,10,10,10,10,10,10)
-                    combatant_component = Combatant(attribute_component, xp=1000)
-                    ai_component = BasicMonster()
-                    monster = Entity(x, y, 'T', libtcod.darker_green, 'Troll', blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component, ai=ai_component)
+                mob_builder = MobBuilder(0,monster_choice)
+                mob_director = MobDirector()
+                mob_director.set_builder(mob_builder)
+                combatant_component = mob_director.get_combatant()
+                monster = Entity(x, y, libtcod.desaturated_green, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component)
                     
                 entities.append(monster)
                      
@@ -170,23 +179,31 @@ class NodeAlphaMap:
                 
                 
                 if item_choice == 'healing_potion':
-                    item_component = Item(use_function=heal, amount=400)
-                    item = Entity(x, y, '!', libtcod.violet, 'Healing Potion', render_order=RenderOrder.ITEM, item=item_component)
+                    item_component = Item(useable_component=Useable('Healing Potion', '!', use_function=heal, amount=400))
+                    item = Entity(x, y, libtcod.violet, render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'sword':
-                    equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonuses=[3,1,0], values=[5,50])
-                    item = Entity(x, y, '/', libtcod.sky, 'Sword', equippable=equippable_component)
+                    equippable_core = EquippableCore('longsword')
+                    equippable_material = EquippableMaterial('wood')
+                    equippable_quality = EquippableQuality('average')
+                    equippable_component = Equippable('Sword', '/', EquipmentSlots.MAIN_HAND, equippable_core, equippable_material, equippable_quality)
+                    item_component = Item(equippable_component)
+                    item = Entity(x, y, libtcod.sky, item=item_component)
                 elif item_choice == 'shield':
-                    equippable_component = Equippable(EquipmentSlots.OFF_HAND, resist_phys_bonuses[5,5,5], values=[5,50])
-                    item = Entity(x, y, '[', libtcod.darker_orange, 'Shield', equippable=equippable_component)
+                    equippable_core = EquippableCore('shield')
+                    equippable_material = EquippableMaterial('iron')
+                    equippable_quality = EquippableQuality('average')
+                    equippable_component = Equippable('Shield', '[', EquipmentSlots.OFF_HAND, equippable_core, equippable_material, equippable_quality)
+                    item_component = Item(equippable_component)
+                    item = Entity(x, y, libtcod.darker_orange, item=item_component)
                 elif item_choice == 'fireball_scroll':
-                    item_component = Item(use_function=cast_fireball, targeting = True, targeting_message=Message('Left-click a target tile for the fireball, or right-click to rethink your life decisions.', libtcod.light_cyan), damage=250, radius=3)
-                    item = Entity(x, y, '#', libtcod.red, 'Fireball Scroll', render_order=RenderOrder.ITEM, item=item_component)
+                    item_component = Item(useable_component=Useable('Fireball Scroll', '#', use_function=cast_fireball, targeting = True, targeting_message=Message('Left-click a target tile for the fireball, or right-click to rethink your life decisions.', libtcod.light_cyan), damage=250, radius=3))
+                    item = Entity(x, y, libtcod.red, render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'confusion_scroll':
-                    item_component = Item(use_function=cast_confuse, targeting=True, targeting_message=Message('Left-click an enemy to confuse it, or right-click to cancel.', libtcod.light_cyan))
-                    item = Entity(x, y, '#', libtcod.light_pink, 'Confusion Scroll', render_order=RenderOrder.ITEM, item=item_component)
-                else:
-                    item_component = Item(use_function = cast_lightning, damage=400, maximum_range=5)
-                    item = Entity(x, y, '#', libtcod.yellow, 'Lightning Scroll', render_order=RenderOrder.ITEM, item=item_component)
+                    item_component = Item(useable_component=Useable('Confusion Scroll', '#', use_function=cast_confuse, targeting=True, targeting_message=Message('Left-click an enemy to confuse it, or right-click to cancel.', libtcod.light_cyan)))
+                    item = Entity(x, y, libtcod.light_pink, render_order=RenderOrder.ITEM, item=item_component)
+                elif item_choice == 'lightning_scroll':
+                    item_component = Item(useable_component=Useable('Lightning Scroll', '#', use_function = cast_lightning, damage=400, maximum_range=5))
+                    item = Entity(x, y, libtcod.yellow, render_order=RenderOrder.ITEM, item=item_component)
                     
                 entities.append(item)
         
@@ -199,9 +216,21 @@ class NodeAlphaMap:
         (center_x, center_y) = town.center()
         player.x = center_x
         player.y = center_y
-        stairs_component = Stairs(self.dungeon_level + 1)
-        down_stairs = Entity(40, 40, '>', libtcod.white, 'Stairs', render_order=RenderOrder.STAIRS, stairs=stairs_component)
+        stairs_component = Stairs('Stairs', '>',self.dungeon_level + 1)
+        down_stairs = Entity(40, 40, libtcod.white, render_order=RenderOrder.STAIRS, stairs=stairs_component)
+        
+        equippable_test = EquippableBuilder(499)
+        director = Director()
+        
+        director.set_builder(equippable_test)
+        equippable_component = director.get_equippable()
+        item_component = Item(equippable_component=equippable_component)
+        test_gear = Entity(20, 20, libtcod.white, blocks=False, render_order = RenderOrder.ITEM, item=item_component)
+        
         entities.append(down_stairs)
+        entities.append(test_gear)
+    
+
 
 
         
