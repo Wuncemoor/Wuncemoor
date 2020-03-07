@@ -19,6 +19,8 @@ from components.stairs import Stairs
 from components.useable import Useable
 from map_objects.rectangle import Rect
 from map_objects.tile import Tile
+from map_objects.chances.item_chances import get_item_chances
+from map_objects.chances.mob_chances import get_mob_chances
 
 
 
@@ -63,7 +65,7 @@ class Map:
             self.tiles[x][y].block_sight = False
 
     #Create everything except stairs
-    def fill_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height):
+    def fill_map(self, dungeon_type, max_rooms, room_min_size, room_max_size, map_width, map_height):
         rooms = []
         num_rooms = 0
         center_of_last_room_x = None
@@ -108,37 +110,22 @@ class Map:
                         self.create_v_tunnel(prev_y, new_y, prev_x)
                         self.create_h_tunnel(prev_x, new_x, new_y)
                 #append room to list
-                self.place_entities(new_room)
+                self.place_entities(new_room, dungeon_type)
                 rooms.append(new_room)
                 self.exit = (center_of_last_room_x, center_of_last_room_y)
                 num_rooms += 1
         
-        #upstairs_component = Stairs('Stairs Up', '<', 'start', (40, 40), floor = 1)
-        #up_stairs = Entity(self.entrance[0], self.entrance[1], libtcod.white, render_order=RenderOrder.STAIRS, stairs=upstairs_component)
-        
-        #downstairs_component = Stairs('Stairs Down', '>', self.dungeon_level + 1)
-        #down_stairs = Entity(center_of_last_room_x, center_of_last_room_y, libtcod.white, render_order=RenderOrder.STAIRS, stairs=downstairs_component)
-        #self.map_entities.append(up_stairs)
 
-    def place_entities(self, room):
+
+    def place_entities(self, room, dungeon_type):
         #Get random number of monsters
         number_of_monsters = from_dungeon_level([[2,1], [3,4], [5,6]], self.dungeon_level)
         
         number_of_items = from_dungeon_level([[1, 1], [2, 4]], self.dungeon_level)
 
-        monster_chances = { 
-            'orc' : 80, 
-            'troll': from_dungeon_level([[20,1], [40,2], [80,3]], self.dungeon_level)
-            }
+        monster_chances = get_mob_chances(dungeon_type, self.dungeon_level)
         
-        item_chances = {
-            'healing_potion' : 35,
-            'sword': from_dungeon_level([[15,2]], self.dungeon_level),
-            'shield': from_dungeon_level([[15, 2]], self.dungeon_level),
-            'lightning_scroll': from_dungeon_level([[25,2]], self.dungeon_level),
-            'fireball_scroll': from_dungeon_level([[25,2]], self.dungeon_level),
-            'confusion_scroll': from_dungeon_level([[10,2]], self.dungeon_level)
-            }
+        item_chances = get_item_chances(dungeon_type, self.dungeon_level)
             
         for i in range(number_of_monsters):
             #choose location in room

@@ -1,9 +1,10 @@
 class Dungeon:
     
-    def __init__(self, name, floors, maps):
+    def __init__(self, name, floors, maps, edges=None):
         self.name = name
         self.floors = floors
         self.maps = maps
+        self.edges = edges
         
     def set_name(self, name):
         self.name = name
