@@ -4,6 +4,7 @@ from components.level import Level
 from components.attributes import Attributes
 from components.equipment import Equipment
 from components.inventory import Inventory
+from components.phylo import Phylo
 from components.ai import BasicMonster
 
 class MobDirector:
@@ -14,13 +15,16 @@ class MobDirector:
         self.__builder = builder
         
     def get_combatant(self):
-        combatant = Combatant('NAME_UNDEFINED', 'IMAGE_UNDEFINED', Attributes(), Level(), Competence(Strength(), Instinct(), Coordination(), Vitality(), Arcana(), Improvisation(), Wisdom(), Finesse(), Charisma(), Devotion()), Equipment(), Inventory(26))
+        combatant = Combatant('NAME_UNDEFINED', 'IMAGE_UNDEFINED', Phylo(), Attributes(), Level(), Competence(Strength(), Instinct(), Coordination(), Vitality(), Arcana(), Improvisation(), Wisdom(), Finesse(), Charisma(), Devotion()), Equipment(), Inventory(26))
         
         name = self.__builder.get_name()
         combatant.set_name(name)
         
         image = self.__builder.get_image()
         combatant.set_image(image)
+        
+        phylo = self.__builder.get_phylo()
+        combatant.set_phylo(phylo)
         
         attributes = self.__builder.get_attributes()
         combatant.set_attributes(attributes)
@@ -57,13 +61,20 @@ class MobBuilder:
             return self.mob
             
         def get_image(self):
-            mobs = { 'orc': 'o', 'troll': 'T' }
+            mobs = { 'goblin': 'g', 'orc': 'o', 'troll': 'T' }
             image = mobs[self.mob]
             return image
             
+        def get_phylo(self):
+            mobs = { 'orc': Phylo('sentient','orcish','orc','regular','melee_dps'),
+            'goblin': Phylo('sentient','goblinoid','goblin','regular','melee_dps'),
+            'troll': Phylo('sentient','giant','troll','regular','melee_dps') }
+            
         def get_attributes(self):
             
-            mobs = { 'orc': Attributes(5,0,0,7,10,10,10,10,10,10), 'troll': Attributes(1,0,0,10,10,10,10,10,10,10)}
+            mobs = { 'goblin': Attributes(2,2,2,2,2,2,2,2,2,2),
+            'orc': Attributes(5,0,0,7,10,10,10,10,10,10), 
+            'troll': Attributes(1,0,0,10,10,10,10,10,10,10)}
             attributes = mobs[self.mob]
             return attributes
             
@@ -92,7 +103,7 @@ class MobBuilder:
             
         def get_xp(self):
             
-            dict = { 'orc': 350, 'troll': 1000}
+            dict = { 'goblin': 100, 'orc': 350, 'troll': 1000}
             xp = dict[self.mob]
             return xp
             

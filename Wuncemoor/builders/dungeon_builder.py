@@ -66,7 +66,7 @@ class DungeonBuilder:
         #Fill in the maps except for stairs
         for map in maps:
         
-            map.fill_map(constants['max_rooms'], constants['room_min_size'], constants['room_max_size'], constants['map_width'], constants['map_height'])
+            map.fill_map(self.name, constants['max_rooms'], constants['room_min_size'], constants['room_max_size'], constants['map_width'], constants['map_height'])
 
         current_floor = 0
             
