@@ -5,13 +5,14 @@ from death_functions import kill_monster, kill_player
 from game_states import GameStates
 from game_messages import Message
 from input_handlers import handle_keys, handle_mouse, handle_main_menu
-from render_functions import clear_all, render_all, render_bar
-from loader_functions.initialize_new_game import get_constants, get_game_variables
+from render_functions import clear_all, render_nearby, render_all, render_bar
+from loader_functions.constants import get_constants
+from loader_functions.initialize_new_game import get_game_variables
 from loader_functions.data_loaders import load_game, save_game
 from menus import main_menu, message_box
 from PIL import Image
 
-def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
+def play_game(player, dungeons, entities, game_map, camera, message_log, game_state, con, panel, constants):
     
     fov_recompute = True
     fov_map = initialize_fov(game_map)
@@ -27,7 +28,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         if fov_recompute:
             recompute_fov(fov_map, player.x, player.y, constants['fov_radius'], constants['fov_light_walls'], constants['fov_algorithm'])
             
-        render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, message_log, constants['screen_width'], constants['screen_height'], constants['bar_width'], constants['panel_height'], constants['panel_y'], mouse, constants['colors'], game_state)
+        render_nearby(con, panel, entities, player, game_map, camera, fov_map, fov_recompute, message_log, constants['map_width'], constants['map_height'], constants['bar_width'], constants['panel_height'], constants['panel_y'], mouse, constants['colors'], game_state)
         
         fov_recompute = False
         
@@ -39,7 +40,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         mouse_action = handle_mouse(mouse)
         
         move = action.get('move')
-        pickup = action.get('pickup')
+        interact = action.get('interact')
         show_inventory = action.get('show_inventory')
         drop_inventory = action.get('drop_inventory')
         show_competence = action.get('show_competence')
@@ -60,7 +61,6 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         show_devotion_feats = action.get('show_devotion_feats')
         gain_competence = action.get('gain_competence')
         exit = action.get('exit')
-        take_stairs = action.get('take_stairs')
         fullscreen = action.get('fullscreen')
         level_up = action.get('level_up')
         wait = action.get('wait')
@@ -90,20 +90,38 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                         game_state = GameStates.DIALOGUE
                 else:
                     player.move(dx,dy)
+                    camera.refocus(player.x,player.y, game_map, constants)
+
                     
                     fov_recompute = True
                     
                 game_state = GameStates.ENEMY_TURN
-        elif pickup and game_state == GameStates.PLAYERS_TURN:
-            for entity in entities:
-                if entity.item and entity.x == player.x and entity.y == player.y:
-                    pickup_results = player.combatant.inventory.add_item(entity)
-                    player_turn_results.extend(pickup_results)
-                    
-                    break
-            else: 
-                message_log.add_message(Message('There is nothing to pick up here.', libtcod.yellow))
         
+        if interact and game_state == GameStates.PLAYERS_TURN:
+            for entity in entities:
+                if entity.x == player.x and entity.y == player.y:
+                    if entity.item:
+                        game_map.current_map.map_entities.remove(entity)
+                        pickup_results = player.combatant.inventory.add_item(entity)
+                        player_turn_results.extend(pickup_results)
+                        break
+                    elif entity.stairs:
+                        new_dungeon = dungeons[entity.stairs.go_to_dungeon]
+                        new_map = new_dungeon.maps[entity.stairs.go_to_floor]
+                        game_map.set_current_map(new_map)
+                        player.x, player.y = entity.stairs.go_to_xy[0], entity.stairs.go_to_xy[1]
+                        camera.refocus(player.x, player.y, game_map, constants)
+                        entities = [player]
+                        entities.extend(game_map.current_map.map_entities)
+                        fov_map = initialize_fov(game_map)
+                        fov_recompute = True
+                        libtcod.console_clear(con)
+                        
+                        break
+            else:
+                message_log.add_message(Message('Nothing to see here, move along...', libtcod.yellow))
+                
+
         if show_inventory:
             previous_game_state = game_state
             game_state = GameStates.SHOW_INVENTORY
@@ -133,19 +151,6 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             
             player_turn_results.extend(player.competencies.comp_setter(attribute, competence))
             
-            
-        
-        if take_stairs and game_state == GameStates.PLAYERS_TURN:
-            for entity in entities:
-                if entity.stairs and entity.x == player.x and entity.y == player.y:
-                    entities = game_map.next_floor(player, message_log, constants)
-                    fov_map = initialize_fov(game_map)
-                    fov_recompute = True
-                    libtcod.console_clear(con)
-                    
-                    break
-            else:
-                message_log.add_message(Message("Doesn't look like there's any stairs here, buddy...", libtcod.yellow))
         if show_stats_menu:
             previous_game_state = game_state
             game_state = GameStates.CHARACTER_MENU
@@ -257,7 +262,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             elif game_state == GameStates.TARGETING:
                 player_turn_results.append({'targeting_cancelled': True})
             else:
-                save_game(player, entities, game_map, message_log, game_state)
+                save_game(player, dungeons, entities, game_map, message_log, game_state)
    
                 return True
                 
@@ -373,14 +378,18 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 def main():
     constants = get_constants()
     
-    libtcod.console_set_custom_font('Desktop\Projects\Wuncemoor\\arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+    libtcod.console_set_custom_font(r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\\arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
     
     libtcod.console_init_root(constants['screen_width'], constants['screen_height'], constants['window_title'], False)
     
-    con = libtcod.console_new(constants['screen_width'],constants['screen_height'])
-    panel = libtcod.console_new(constants['screen_width'], constants['panel_height'])
+    con = libtcod.console_new(constants['map_width'],constants['map_height'])
+    panel = libtcod.console_new(constants['map_width'], constants['map_height'])
+    
+    view_con = libtcod.console_new(constants['alpha_width'], constants['alpha_height'])
+    view_panel = libtcod.console_new(constants['alpha_width'], constants['alpha_height'])
     
     player = None
+    dungeons = { }
     entities = []
     game_map = None
     message_log = None
@@ -415,23 +424,22 @@ def main():
             if show_load_error_message and (new_game or load_saved_game or exit_game):
                 show_load_error_message = False
             elif new_game:
-                player, entities, game_map, message_log, game_state = get_game_variables(constants)
+                player, dungeons, entities, game_map, camera, message_log, game_state = get_game_variables(constants)
                 game_state = GameStates.PLAYERS_TURN
                 
                 show_main_menu = False
             elif load_saved_game:
                 try:
-                    player, entities, game_map, message_log, game_state = load_game()
+                    player, dungeons, entities, game_map, camera, message_log, game_state = load_game()
                     show_main_menu = False
                 except FileNotFoundError:
-                    print('file not found')
                     show_load_error_message = True
             elif exit_game:
                 break
             
         else:
             libtcod.console_clear(con)
-            play_game(player, entities, game_map, message_log, game_state, con, panel, constants)
+            play_game(player, dungeons, entities, game_map, camera, message_log, game_state, con, panel, constants)
             
             show_main_menu = True
       

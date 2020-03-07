@@ -85,15 +85,12 @@ class Entity:
                 libtcod.map_set_properties(fov, entity.x, entity.y, True, False)
 
         # Allocate a A* path
-        # The 1.41 is the normal diagonal cost of moving, it can be set as 0.0 if diagonal moves are prohibited
         my_path = libtcod.path_new_using_map(fov, 1.41)
 
         # Compute the path between self's coordinates and the target's coordinates
         libtcod.path_compute(my_path, self.x, self.y, target.x, target.y)
 
         # Check if the path exists, and in this case, also the path is shorter than 25 tiles
-        # The path size matters if you want the monster to use alternative longer paths (for example through other rooms) if for example the player is in a corridor
-        # It makes sense to keep path size relatively low to keep the monsters from running around the map if there's an alternative path really far away
         if not libtcod.path_is_empty(my_path) and libtcod.path_size(my_path) < 25:
             # Find the next coordinates in the computed full path
             x, y = libtcod.path_walk(my_path, True)

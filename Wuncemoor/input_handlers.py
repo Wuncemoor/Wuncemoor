@@ -110,8 +110,6 @@ def handle_player_turn_keys(key):
         return {'show_stats_menu': True}
     elif key_char == 's':
         return {'wait': True}
-    if key_char == 'g':
-        return {'pickup': True}
     elif key_char == 'i':
         return {'show_inventory': True}
     # Disabled until finished
@@ -119,8 +117,8 @@ def handle_player_turn_keys(key):
         # return {'show_competence': True}
     elif key_char == 'o':
         return {'drop_inventory': True}
-    elif key.vk == libtcod.KEY_ENTER:
-        return {'take_stairs': True}
+    elif key.vk == libtcod.KEY_SPACE:
+        return {'interact': True}
     
     #Alt+Enter = Fullscreen
     if key.vk == libtcod.KEY_ENTER and key.lalt:
