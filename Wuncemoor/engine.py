@@ -244,6 +244,7 @@ def play_game(player, dungeons, entities, game_map, camera, message_log, game_st
                 player_turn_results.extend(item_use_results)
             elif right_click:
                 player_turn_results.append({'targeting_cancelled': True})
+
         
         if wait:
             game_state = GameStates.ENEMY_TURN
@@ -424,6 +425,7 @@ def main():
             if show_load_error_message and (new_game or load_saved_game or exit_game):
                 show_load_error_message = False
             elif new_game:
+
                 player, dungeons, entities, game_map, camera, message_log, game_state = get_game_variables(constants)
                 game_state = GameStates.PLAYERS_TURN
                 

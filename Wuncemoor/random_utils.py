@@ -24,3 +24,8 @@ def from_dungeon_level(table, dungeon_level):
             return value
     return 0
     
+def from_node_power(table, np):
+    for (value, level) in reversed(table):
+        if np >= level:
+            return value
+    return 0
