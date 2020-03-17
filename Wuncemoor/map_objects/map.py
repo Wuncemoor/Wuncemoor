@@ -20,7 +20,7 @@ from components.useable import Useable
 from map_objects.rectangle import Rect
 from map_objects.tile import Tile
 from map_objects.chances.item_chances import get_item_chances
-from map_objects.chances.mob_chances import get_mob_chances
+from map_objects.chances.mob_chances import MobChances
 
 
 
@@ -65,7 +65,7 @@ class Map:
             self.tiles[x][y].block_sight = False
 
     #Create everything except stairs
-    def fill_map(self, dungeon_type, max_rooms, room_min_size, room_max_size, map_width, map_height):
+    def fill_map(self, dungeon_type, subtype, node_power, max_rooms, room_min_size, room_max_size, map_width, map_height):
         rooms = []
         num_rooms = 0
         center_of_last_room_x = None
@@ -110,21 +110,21 @@ class Map:
                         self.create_v_tunnel(prev_y, new_y, prev_x)
                         self.create_h_tunnel(prev_x, new_x, new_y)
                 #append room to list
-                self.place_entities(new_room, dungeon_type)
+                self.place_entities(new_room, dungeon_type, subtype, node_power)
                 rooms.append(new_room)
                 self.exit = (center_of_last_room_x, center_of_last_room_y)
                 num_rooms += 1
         
 
 
-    def place_entities(self, room, dungeon_type):
+    def place_entities(self, room, dungeon_type, subtype, node_power):
         #Get random number of monsters
         number_of_monsters = from_dungeon_level([[2,1], [3,4], [5,6]], self.dungeon_level)
         
         number_of_items = from_dungeon_level([[1, 1], [2, 4]], self.dungeon_level)
 
-        monster_chances = get_mob_chances(dungeon_type, self.dungeon_level)
-        
+        mob_chances = MobChances(dungeon_type, subtype, node_power)
+        mcs = mob_chances.get_mob_chances()
         item_chances = get_item_chances(dungeon_type, self.dungeon_level)
             
         for i in range(number_of_monsters):
@@ -133,7 +133,7 @@ class Map:
             y = randint(room.y1 +1, room.y2 -1)
             
             if not any([entity for entity in self.map_entities if entity.x == x and entity.y == y]):
-                monster_choice = random_choice_from_dict(monster_chances)
+                monster_choice = random_choice_from_dict(mcs)
                 mob_builder = MobBuilder(0,monster_choice)
                 mob_director = MobDirector()
                 mob_director.set_builder(mob_builder)
@@ -179,3 +179,17 @@ class Map:
                     
                 self.map_entities.append(item)
                     
+    def add_boss(self, d_type, subtype, node_power):
+    
+        mob_chances = MobChances(d_type, subtype, node_power*100)
+
+    
+        monster_choice = random_choice_from_dict(mob_chances.get_mob_chances())
+        mob_builder = MobBuilder(0,monster_choice)
+        mob_director = MobDirector()
+        mob_director.set_builder(mob_builder)
+        combatant_component = mob_director.get_combatant()
+        monster = Entity(self.exit[0], self.exit[1], libtcod.desaturated_green, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component)
+            
+        self.map_entities.append(monster)
+        
