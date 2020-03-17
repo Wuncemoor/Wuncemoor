@@ -8,7 +8,7 @@ def get_constants():
     fps = 60
     
     bar_width = 20
-    panel_height = 7
+    panel_height = 8
     panel_y = screen_height - panel_height
     
     message_x = bar_width + 2
@@ -16,7 +16,10 @@ def get_constants():
     message_height = panel_height -1
     
     map_width = 80
-    map_height = 43
+    map_height = 42
+    
+    alpha_width = 150
+    alpha_height = 100
     
     room_max_size = 10
     room_min_size = 6
@@ -34,7 +37,8 @@ def get_constants():
         'dark_ground': libtcod.Color(50, 50, 150),
         'light_wall': libtcod.Color(130, 110, 50),
         'light_ground': libtcod.Color(200, 180, 50),
-        'white' : libtcod.Color(255,255,255)
+        'grass': libtcod.Color(0, 191, 0),
+        'water': libtcod.Color(0, 191, 191)
         }
     
     constants = {
@@ -47,6 +51,8 @@ def get_constants():
         'message_x': message_x,
         'message_width': message_width,
         'message_height': message_height,
+        'alpha_width': alpha_width,
+        'alpha_height': alpha_height,
         'map_width': map_width,
         'map_height': map_height,
         'room_max_size': room_max_size,
