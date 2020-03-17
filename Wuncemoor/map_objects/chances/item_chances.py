@@ -12,12 +12,12 @@ def get_item_chances(d_type, d_level):
             'fireball_scroll': from_dungeon_level([[25,2]], d_level),
             'confusion_scroll': from_dungeon_level([[10,2]], d_level)
             }
-    elif d_type == 'goblin_cave':
+    else:
         
         item_chances = {
             'healing_potion': 100
             }
-        
+
     return item_chances
         
         
