@@ -88,10 +88,14 @@ class DungeonBuilder:
         #Fill in stairs connecting floors except for dungeon connection to world
         while current_floor < self.floors:
         
+            downstairsimg = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\stairsdown.png'
+            upstairsimg = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\stairsup.png'
+
+        
             if current_floor == 0:
                 
                 #Don't know where you're coming from, leave entrance blank, gets filled in world map building
-                exit_stairs_component = Stairs('Stairs going deeper', '>', self.name, current_floor+1, maps[current_floor+1].entrance)
+                exit_stairs_component = Stairs('Stairs going deeper', downstairsimg, self.name, current_floor+1, maps[current_floor+1].entrance)
                 exit_stairs = Entity(maps[current_floor].exit[0], maps[current_floor].exit[1], libtcod.white, render_order=RenderOrder.STAIRS, stairs=exit_stairs_component)
                 maps[current_floor].map_entities.append(exit_stairs)
                 current_floor += 1
@@ -99,9 +103,9 @@ class DungeonBuilder:
 
             elif current_floor < (self.floors - 1):
                 
-                entrance_stairs_component = Stairs('Stairs going up', '<', self.name, current_floor-1, maps[current_floor-1].exit)
+                entrance_stairs_component = Stairs('Stairs going up', upstairsimg, self.name, current_floor-1, maps[current_floor-1].exit)
                 entrance_stairs = Entity(maps[current_floor].entrance[0], maps[current_floor].entrance[1], libtcod.white, render_order=RenderOrder.STAIRS, stairs = entrance_stairs_component)
-                exit_stairs_component = Stairs('Stairs going deeper', '>', self.name, current_floor+1, maps[current_floor+1].entrance)
+                exit_stairs_component = Stairs('Stairs going deeper', downstairsimg, self.name, current_floor+1, maps[current_floor+1].entrance)
                 exit_stairs = Entity(maps[current_floor].exit[0], maps[current_floor].exit[1], libtcod.white, render_order=RenderOrder.STAIRS, stairs=exit_stairs_component)
                 maps[current_floor].map_entities.append(entrance_stairs)
                 maps[current_floor].map_entities.append(exit_stairs)
@@ -110,7 +114,7 @@ class DungeonBuilder:
             elif current_floor == (self.floors - 1):
                 
                 #Deepest floor has no stairs to go deeper
-                entrance_stairs_component = Stairs('Stairs going up', '<', self.name, current_floor-1, maps[current_floor-1].exit)
+                entrance_stairs_component = Stairs('Stairs going up', upstairsimg, self.name, current_floor-1, maps[current_floor-1].exit)
                 entrance_stairs = Entity(maps[current_floor].entrance[0], maps[current_floor].entrance[1], libtcod.white, render_order=RenderOrder.STAIRS, stairs=entrance_stairs_component)
                 maps[current_floor].map_entities.append(entrance_stairs)
                 current_floor += 1

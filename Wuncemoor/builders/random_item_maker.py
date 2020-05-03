@@ -31,7 +31,7 @@ class Director:
         name = self.__builder.get_name()
         equippable.set_name(name)
         
-        image = self.__builder.get_image()
+        image = self.__builder.get_image(core)
         equippable.set_image(image)
         
         return equippable
@@ -46,8 +46,10 @@ class EquippableBuilder:
     def get_name(self):
         return 'test item'
         
-    def get_image(self):
-        return '+'
+    def get_image(self, core):
+        
+            
+        return core.image
         
        
         

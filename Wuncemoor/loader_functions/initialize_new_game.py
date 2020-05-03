@@ -18,7 +18,6 @@ from entity import Entity
 from equipment_slots import EquipmentSlots
 from game_messages import MessageLog
 from game_states import GameStates
-from lloydtest import voronoi_generate, continents_generate
 from map_objects.game_map import GameMap
 from map_objects.dungeon import Dungeon
 from render_functions import RenderOrder
@@ -33,11 +32,6 @@ def get_game_variables(constants):
     entities = [player]
     
     dungeons = get_dungeons(constants)
-        
-    
-    
-    #wm = get_world_map(constants['map_width'], constants['map_height'], 100)
-    
     game_map = GameMap(dungeons['start'].maps[0])
     
     entities.extend(game_map.current_map.map_entities)

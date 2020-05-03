@@ -16,10 +16,10 @@ from components.item import Item
 
 def get_starting_town(constants):
     
-    starting_map = get_map(constants['alpha_height'], constants['alpha_height'])
+    starting_map = get_map(constants['alpha_width'], constants['alpha_height'])
 
     
-    town = Rect(0,0,constants['alpha_height']-1,constants['alpha_height']-1)
+    town = Rect(0,0,constants['alpha_width']-1,constants['alpha_height']-1)
     starting_map.create_room(town)
     
     equippable_test = EquippableBuilder(499)

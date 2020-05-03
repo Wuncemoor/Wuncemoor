@@ -14,7 +14,7 @@ class EquippableCore:
 
         if self.core == 'staff':
         
-            self.image = '/'
+            self.image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\staff.png'
             self.resource_bonuses = [0,0,0,0]
             self.power_bonuses = [0,0,32]
             self.spirit_bonuses = [0,0,0,0,0]
@@ -25,7 +25,7 @@ class EquippableCore:
             
         elif self.core == 'dagger':
         
-            self.image = '-'
+            self.image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\dagger.png'
             self.resource_bonuses = [0,0,0,0]
             self.power_bonuses = [6,10,0]
             self.spirit_bonuses = [0,0,0,0,0]
@@ -36,7 +36,7 @@ class EquippableCore:
 
         elif self.core == 'longsword':
             
-            self.image = '-'
+            self.image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\longsword.png'
             self.resource_bonuses = [0,0,0,0]
             self.power_bonuses = [32,6,0]
             self.spirit_bonuses = [0,0,0,0,0]
@@ -47,7 +47,7 @@ class EquippableCore:
 
         elif self.core == 'shield':
 
-            self.image = '['
+            self.image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\shield.png'
             self.resource_bonuses = [0,0,0,0]
             self.power_bonuses = [0,0,0]
             self.spirit_bonuses = [0,0,0,0,0]

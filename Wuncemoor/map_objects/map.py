@@ -151,30 +151,36 @@ class Map:
                 
                 
                 if item_choice == 'healing_potion':
-                    item_component = Item(useable_component=Useable('Healing Potion', '!', use_function=heal, amount=400))
+                    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\potion.png'
+                    item_component = Item(useable_component=Useable('Healing Potion', image, use_function=heal, amount=400))
                     item = Entity(x, y, libtcod.violet, render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'sword':
                     equippable_core = EquippableCore('longsword')
                     equippable_material = EquippableMaterial('wood')
                     equippable_quality = EquippableQuality('average')
-                    equippable_component = Equippable('Sword', '/', EquipmentSlots.MAIN_HAND, equippable_core, equippable_material, equippable_quality)
+                    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\longsword.png'
+                    equippable_component = Equippable('Sword', image, EquipmentSlots.MAIN_HAND, equippable_core, equippable_material, equippable_quality)
                     item_component = Item(equippable_component)
                     item = Entity(x, y, libtcod.sky, item=item_component)
                 elif item_choice == 'shield':
                     equippable_core = EquippableCore('shield')
                     equippable_material = EquippableMaterial('iron')
                     equippable_quality = EquippableQuality('average')
-                    equippable_component = Equippable('Shield', '[', EquipmentSlots.OFF_HAND, equippable_core, equippable_material, equippable_quality)
+                    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\shield.png'
+                    equippable_component = Equippable('Shield', image, EquipmentSlots.OFF_HAND, equippable_core, equippable_material, equippable_quality)
                     item_component = Item(equippable_component)
                     item = Entity(x, y, libtcod.darker_orange, item=item_component)
                 elif item_choice == 'fireball_scroll':
-                    item_component = Item(useable_component=Useable('Fireball Scroll', '#', use_function=cast_fireball, targeting = True, targeting_message=Message('Left-click a target tile for the fireball, or right-click to rethink your life decisions.', libtcod.light_cyan), damage=250, radius=3))
+                    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\scroll.png'
+                    item_component = Item(useable_component=Useable('Fireball Scroll', image, use_function=cast_fireball, targeting = True, targeting_message=Message('Left-click a target tile for the fireball, or right-click to rethink your life decisions.', libtcod.light_cyan), damage=250, radius=3))
                     item = Entity(x, y, libtcod.red, render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'confusion_scroll':
-                    item_component = Item(useable_component=Useable('Confusion Scroll', '#', use_function=cast_confuse, targeting=True, targeting_message=Message('Left-click an enemy to confuse it, or right-click to cancel.', libtcod.light_cyan)))
+                    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\scroll.png'
+                    item_component = Item(useable_component=Useable('Confusion Scroll', image, use_function=cast_confuse, targeting=True, targeting_message=Message('Left-click an enemy to confuse it, or right-click to cancel.', libtcod.light_cyan)))
                     item = Entity(x, y, libtcod.light_pink, render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'lightning_scroll':
-                    item_component = Item(useable_component=Useable('Lightning Scroll', '#', use_function = cast_lightning, damage=400, maximum_range=5))
+                    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\scroll.png'
+                    item_component = Item(useable_component=Useable('Lightning Scroll', image, use_function = cast_lightning, damage=400, maximum_range=5))
                     item = Entity(x, y, libtcod.yellow, render_order=RenderOrder.ITEM, item=item_component)
                     
                 self.map_entities.append(item)

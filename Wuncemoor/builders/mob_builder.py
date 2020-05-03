@@ -6,7 +6,7 @@ from components.equipment import Equipment
 from components.inventory import Inventory
 from components.phylo import Phylo
 from components.ai import BasicMonster
-from map_objects.mobs import orc, troll, goblin, goblin_mage, goblin_rogue, goblin_shaman, mini_goblin, mini_goblin_mage, mini_goblin_rogue, mini_goblin_shaman, mega_goblin, mega_goblin_rogue, mega_goblin_mage, mega_goblin_shaman, mini_kobold, mini_kobold_harasser, mini_kobold_trickster, mini_kobold_zealot, kobold, kobold_harasser, kobold_trickster, kobold_zealot, mega_kobold, mega_kobold_harasser, mega_kobold_trickster, mega_kobold_zealot, mini_rat, rat, mega_rat, mini_bat, bat, mega_bat, mini_salamander, salamander, mega_salamander, mini_spider, spider, mega_spider, mini_snail, snail, mega_snail, mini_shrimp, shrimp, mega_shrimp, mini_raccoon, raccoon, mega_raccoon, mini_bear, bear, mega_bear
+from map_objects.mobs import orc, troll, goblin, goblin_mage, goblin_rogue, goblin_shaman, mini_goblin, mini_goblin_mage, mini_goblin_rogue, mini_goblin_shaman, mega_goblin, mega_goblin_rogue, mega_goblin_mage, mega_goblin_shaman, mini_kobold, mini_kobold_harasser, mini_kobold_trickster, mini_kobold_zealot, kobold, kobold_harasser, kobold_trickster, kobold_zealot, mega_kobold, mega_kobold_harasser, mega_kobold_trickster, mega_kobold_zealot, mini_rat, rat, mega_rat, mini_bat, bat, mega_bat, mini_salamander, salamander, mega_salamander, mini_spider, spider, mega_spider, mini_snail, snail, mega_snail, mini_shrimp, shrimp, mega_shrimp, mini_raccoon, raccoon, mega_raccoon, mini_bear, bear, mega_bear, mini_bramblelasher, bramblelasher, mega_bramblelasher
 
 class MobDirector:
     
@@ -80,6 +80,9 @@ class MobBuilder:
             'mini_bear': mini_bear(),
             'bear': bear(),
             'mega_bear': mega_bear(),
+            'mini_bramblelasher' : mini_bramblelasher(),
+            'bramblelasher': bramblelasher(),
+            'mega_bramblelasher': mega_bramblelasher(),
             }
             return mobs[self.mob]            
             

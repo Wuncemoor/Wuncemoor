@@ -898,7 +898,7 @@ class Equipment:
                 results.append({'dequipped': equippable_entity})
             else:
                 if self.main_hand:
-                    results.append({'dequipped': equippable_entity})
+                    results.append({'dequipped': self.main_hand})
                     
                 self.main_hand = equippable_entity
                 results.append({'equipped': equippable_entity})
