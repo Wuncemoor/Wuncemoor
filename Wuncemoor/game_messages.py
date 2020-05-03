@@ -1,9 +1,9 @@
-import tcod as libtcod
+import pygame
 
 import textwrap
 
 class Message:
-    def __init__(self, text, color=libtcod.white):
+    def __init__(self, text, color=pygame.Color(255, 255, 255)):
         self.text = text
         self.color = color
         
