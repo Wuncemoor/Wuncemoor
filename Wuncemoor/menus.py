@@ -1,59 +1,43 @@
 import tcod as libtcod
+import pygame
 
 
-def menu(con, header, options, width, screen_width, screen_height):
+def menu(screen, header, fontsize, options, width, camera_width, camera_height):
     if len(options) > 26: raise ValueError('Cannot have a menu with more than 26 options.')
-    
-    #calculate total height for the header (after auto-wrap)
-    header_height = libtcod.console_get_height_rect(con, 0, 0, width, screen_height, header)
-    height = len(options) + header_height
-    
-    #create an off-screen console that represents the menu's window
-    window = libtcod.console_new(width, height)
-    
-    #print the header, with auto-wrap
-    libtcod.console_set_default_foreground(window, libtcod.white)
-    libtcod.console_print_rect_ex(window, 0, 0, width, height, libtcod.BKGND_NONE, libtcod.LEFT, header)
-    
-    #print all the options
-    y = header_height
+
+    # calculate total height for the header (after auto-wrap)
+
+    height = len(options) * fontsize + fontsize * .4
+
+    # create an off-screen console that represents the menu's window
+    menu = pygame.Surface((width, height))
+
+    # print the header, with auto-wrap
+
+    font = pygame.font.SysFont("comicsansms", fontsize)
+
+    # print all the options
+    q = 0
     letter_index = ord('a')
     for option_text in options:
-        text = '(' + chr(letter_index) + ') ' + option_text
-        libtcod.console_print_ex(window, 0, y, libtcod.BKGND_NONE, libtcod.LEFT, text)
-        y += 1
+        text = font.render('(' + chr(letter_index) + ') ' + option_text, True, (255, 255, 255))
+        menu.blit(text, (0, q * fontsize))
+        q += 1
         letter_index += 1
-        
-    #blit the contents of "window" to the root console
-    x = int(screen_width / 2 - width / 2)
-    y = int(screen_height / 2 - height / 2)
-    libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
-    
-def dialogue_menu(con, header, target, dialogue_width, screen_width, screen_height):
 
-    window = libtcod.console_new(character_screen_width, character_screen_height)
-    
-    libtcod.console_set_default_foreground(window, libtcod.white)
-    
-    response = 'Whats up?'
-    
-    libtcod.console_print_rect_ex(window, 0, 2, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.CENTER, 'Conversation with a {0}'.format(target.shopkeeper.name))
-    libtcod.console_print_rect_ex(window, 0, 3, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.CENTER, response)
+    # blit the contents of "window" to the root console
+    x = int((camera_width / 2) - (width / 2))
+    y = int((camera_height / 2) - (height / 2))
+    screen.blit(menu, (x, y))
 
-    
-    options = []
-    
-    for talking_point in target.shopkeeper.dialogue.conversation:
-        options.append(talking_point)
-    menu(con, '', options, menu_width, screen_width, screen_height)
-    
-def inventory_menu(con, header, player, inventory_width, screen_width, screen_height):
-    #show a menu with each item of the inventory as an option
+
+def inventory_menu(screen, header, fontsize, player, inventory_width, camera_width, camera_height):
+    # show a menu with each item of the inventory as an option
     if len(player.combatant.inventory.items) == 0:
         options = ['Inventory is empty.']
     else:
         options = []
-        
+
         for item in player.combatant.inventory.items:
             if player.combatant.equipment.main_hand == item:
                 options.append('{0} (Main Hand)'.format(item.name))
@@ -79,179 +63,243 @@ def inventory_menu(con, header, player, inventory_width, screen_width, screen_he
                 options.append('{0} (Accessory)'.format(item.name))
             else:
                 options.append(item.name)
-        
-    menu(con, header, options, inventory_width, screen_width, screen_height)
 
-def main_menu(con, background_image, screen_width, screen_height):
-    libtcod.image_blit_2x(background_image, 0, 0, 0)
-    libtcod.console_set_default_foreground(0, libtcod.light_yellow)
-    libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height / 2 )- 4, libtcod.BKGND_NONE, libtcod.CENTER, 'WUNCEMOOR: THE ETERNAL DREAM' )
-    libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height - 2), libtcod.BKGND_NONE, libtcod.CENTER, 'A ZenSymphony Production')
-    
-    menu(con, '', ['Start A New Game', 'Continue Previous Game', 'Quit'], 24, screen_width, screen_height) 
+    menu(screen, header, fontsize, options, inventory_width, camera_width, camera_height)
 
-def level_up_menu(con, header, player, menu_width, screen_width, screen_height):
-    options = ['+1 Strength (Currently {0})'.format(player.combatant.attributes.strength), '+1 Instinct (Currently {0})'.format(player.combatant.attributes.instinct), '+1 Coordination (Currently {0})'.format(player.combatant.attributes.coordination), '+1 Vitality (Currently {0})'.format(player.combatant.attributes.vitality), '+1 Arcana (Currently {0})'.format(player.combatant.attributes.arcana), '+1 Improvisation (Currently {0})'.format(player.combatant.attributes.improvisation), '+1 Wisdom (Currently {0})'.format(player.combatant.attributes.wisdom), '+1 Finesse (Currently {0})'.format(player.combatant.attributes.finesse), '+1 Charisma (Currently {0})'.format(player.combatant.attributes.charisma), '+1 Devotion (Currently {0})'.format(player.combatant.attributes.devotion)]
-    menu(con, header, options, menu_width, screen_width, screen_height)
-    
-def competence_menu(con, header, menu_width, screen_width, screen_height):
-    options = ['Strength', 'Instinct', 'Coordination', 'Vitality', 'Arcana', 'Improvisation', 'Wisdom', 'Finesse', 'Charisma', 'Devotion']
-    menu(con, header, options, menu_width, screen_width, screen_height)
-    
-def strength_feats_menu(con, header, menu_width, screen_width, screen_height):
+
+def main_menu(screen, background_image, screen_width, screen_height, fontsize):
+    screen.blit(background_image, (0, 0))
+    font = pygame.font.SysFont("comicsansms", fontsize)
+    titletext = font.render('WUNCEMOOR: THE ETERNAL DREAM', True, (255, 255, 255))
+    extratext = font.render('A ZenSymphony Production', True, (255, 255, 255))
+    menu_width = 650
+
+    screen.blit(titletext, (int(screen_width / 8), int(screen_height / 10)))
+    screen.blit(extratext, (int(screen_width / 8), int(3 * screen_height / 4)))
+    menu(screen, '', fontsize, ['Start A New Game', 'Continue Previous Game', 'Quit'], menu_width, screen_width,
+         screen_height)
+
+
+def level_up_menu(screen, header, player, menu_width, camera_width, camera_height):
+    options = ['+1 Strength (Currently {0})'.format(player.combatant.attributes.strength),
+               '+1 Instinct (Currently {0})'.format(player.combatant.attributes.instinct),
+               '+1 Coordination (Currently {0})'.format(player.combatant.attributes.coordination),
+               '+1 Vitality (Currently {0})'.format(player.combatant.attributes.vitality),
+               '+1 Arcana (Currently {0})'.format(player.combatant.attributes.arcana),
+               '+1 Improvisation (Currently {0})'.format(player.combatant.attributes.improvisation),
+               '+1 Wisdom (Currently {0})'.format(player.combatant.attributes.wisdom),
+               '+1 Finesse (Currently {0})'.format(player.combatant.attributes.finesse),
+               '+1 Charisma (Currently {0})'.format(player.combatant.attributes.charisma),
+               '+1 Devotion (Currently {0})'.format(player.combatant.attributes.devotion)]
+    fontsize = 12
+    menu(screen, header, fontsize, options, menu_width, camera_width, camera_height)
+
+
+def competence_menu(screen, header, cm_width, camera_width, camera_height):
+    options = ['Strength', 'Instinct', 'Coordination', 'Vitality', 'Arcana', 'Improvisation', 'Wisdom', 'Finesse',
+               'Charisma', 'Devotion']
+    fontsize = 12
+    menu(screen, header, fontsize, options, cm_width, camera_width, camera_height)
+
+
+def strength_feats_menu(screen, header, menu_width, camera_width, camera_height):
     options = ['Mighty Strength, Better Slash, Better Stab, Better Blunt']
-    menu(con, 'Strength Feats', options, menu_width, screen_width, screen_height)
-    
-def instinct_feats_menu(con, header, menu_width, screen_width, screen_height):
+    fontsize = 12
+    menu(screen, 'Strength Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+
+def instinct_feats_menu(screen, header, menu_width, camera_width, camera_height):
     options = ['Mighty Instinct']
-    menu(con, 'Instinct Feats', options, menu_width, screen_width, screen_height)
+    fontsize = 12
+    menu(screen, 'Instinct Feats', fontsize, options, menu_width, camera_width, camera_height)
 
-def coordinaton_feats_menu(con, header, menu_width, screen_width, screen_height):
+
+def coordinaton_feats_menu(screen, header, menu_width, camera_width, camera_height):
     options = ['Mighty Coordination']
-    menu(con, 'Coordination Feats', options, menu_width, screen_width, screen_height)
+    fontsize = 12
+    menu(screen, 'Coordination Feats', fontsize, options, menu_width, camera_width, camera_height)
 
-def vitality_feats_menu(con, header, menu_width, screen_width, screen_height):
+
+def vitality_feats_menu(screen, header, menu_width, camera_width, camera_height):
     options = ['Mighty Vitality']
-    menu(con, 'Vitality Feats', options, menu_width, screen_width, screen_height)
+    fontsize = 12
+    menu(screen, 'Vitality Feats', fontsize, options, menu_width, camera_width, camera_height)
 
-def arcana_feats_menu(con, header, menu_width, screen_width, screen_height):
+
+def arcana_feats_menu(screen, header, menu_width, camera_width, camera_height):
     options = ['Mighty Arcana']
-    menu(con, 'Arcana Feats', options, menu_width, screen_width, screen_height)
+    fontsize = 12
+    menu(screen, 'Arcana Feats', fontsize, options, menu_width, camera_width, camera_height)
 
-def improvisation_feats_menu(con, header, menu_width, screen_width, screen_height):
+
+def improvisation_feats_menu(screen, header, menu_width, camera_width, camera_height):
     options = ['Mighty Improvisation']
-    menu(con, 'Improvisation Feats', options, menu_width, screen_width, screen_height)
+    fontsize = 12
+    menu(screen, 'Improvisation Feats', fontsize, options, menu_width, camera_width, camera_height)
 
-def wisdom_feats_menu(con, header, menu_width, screen_width, screen_height):
+
+def wisdom_feats_menu(screen, header, menu_width, camera_width, camera_height):
     options = ['Mighty Wisdom']
-    menu(con, 'Wisdom Feats', options, menu_width, screen_width, screen_height)
+    fontsize = 12
+    menu(screen, 'Wisdom Feats', fontsize, options, menu_width, camera_width, camera_height)
 
-def finesse_feats_menu(con, header, menu_width, screen_width, screen_height):
+
+def finesse_feats_menu(screen, header, menu_width, camera_width, camera_height):
     options = ['Mighty Finesse']
-    menu(con, 'Finesse Feats', options, menu_width, screen_width, screen_height)
-    
-def charisma_feats_menu(con, header, menu_width, screen_width, screen_height):
+    fontsize = 12
+    menu(screen, 'Finesse Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+
+def charisma_feats_menu(screen, header, menu_width, camera_width, camera_height):
     options = ['Mighty Charisma']
-    menu(con, 'Charisma Feats', options, menu_width, screen_width, screen_height)
+    fontsize = 12
+    menu(screen, 'Charisma Feats', fontsize, options, menu_width, camera_width, camera_height)
 
-def devotion_feats_menu(con, header, menu_width, screen_width, screen_height):
+
+def devotion_feats_menu(screen, header, menu_width, camera_width, camera_height):
     options = ['Mighty Devotion']
-    menu(con, 'Devotion Feats', options, menu_width, screen_width, screen_height)
-    
-   
-def character_menu(con, header, menu_width, screen_width, screen_height):
+    fontsize = 12
+    menu(screen, 'Devotion Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+
+def character_menu(screen, header, menu_width, camera_width, camera_height):
     options = ['Primary Stats', 'Combat Stats', 'Non-Combat Stats']
-    menu(con, header, options, menu_width, screen_width, screen_height)
-    
+    fontsize = 12
+    menu(screen, header, fontsize, options, menu_width, camera_width, camera_height)
 
-def primary_stats_screen(player, character_screen_width, character_screen_height, screen_width, screen_height):  
-    window = libtcod.console_new(character_screen_width, character_screen_height)
-    
-    
+
+def primary_stats_screen(screen, player, character_screen_width, character_screen_height, camera_width, camera_height):
+    window = pygame.Surface((character_screen_width, character_screen_height))
+
+    fontsize = 15
+    font = pygame.font.SysFont("comicsansms", fontsize)
+
+    lines = [
+        'Character Information',
+        'Level: {0}'.format(player.combatant.level.current_level),
+        'Experience: {0}'.format(player.combatant.level.current_xp),
+        'Experience till next levelup: {0}'.format(player.combatant.level.experience_to_next_level),
+        'Strength: {0}'.format(player.combatant.attributes.strength),
+        'Instinct: {0}'.format(player.combatant.attributes.instinct),
+        'Coordination: {0}'.format(player.combatant.attributes.coordination),
+        'Vitality: {0}'.format(player.combatant.attributes.vitality),
+        'Arcana: {0}'.format(player.combatant.attributes.arcana),
+        'Improvisation: {0}'.format(player.combatant.attributes.improvisation),
+        'Wisdom: {0}'.format(player.combatant.attributes.wisdom),
+        'Finesse: {0}'.format(player.combatant.attributes.finesse),
+        'Charisma: {0}'.format(player.combatant.attributes.charisma),
+        'Devotion: {0}'.format(player.combatant.attributes.devotion),
+    ]
+
     libtcod.console_set_default_foreground(window, libtcod.white)
-    
-    libtcod.console_print_rect_ex(window, 0, 1, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Character Information')
-    libtcod.console_print_rect_ex(window, 0, 2, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Level: {0}'.format(player.combatant.level.current_level))
-    libtcod.console_print_rect_ex(window, 0, 3, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Experience: {0}'.format(player.combatant.level.current_xp))
-    libtcod.console_print_rect_ex(window, 0, 4, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Experience till next levelup: {0}'.format(player.combatant.level.experience_to_next_level))
-    libtcod.console_print_rect_ex(window, 0, 6, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Strength: {0}'.format(player.combatant.attributes.strength)) 
-    libtcod.console_print_rect_ex(window, 0, 7, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Instinct: {0}'.format(player.combatant.attributes.instinct))
-    libtcod.console_print_rect_ex(window, 0, 8, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Coordination: {0}'.format(player.combatant.attributes.coordination))
-    libtcod.console_print_rect_ex(window, 0, 9, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Vitality: {0}'.format(player.combatant.attributes.vitality))
-    libtcod.console_print_rect_ex(window, 0, 10, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Arcana: {0}'.format(player.combatant.attributes.arcana))
-    libtcod.console_print_rect_ex(window, 0, 11, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Improvisation: {0}'.format(player.combatant.attributes.improvisation))
-    libtcod.console_print_rect_ex(window, 0, 12, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Wisdom: {0}'.format(player.combatant.attributes.wisdom))
-    libtcod.console_print_rect_ex(window, 0, 13, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Finesse: {0}'.format(player.combatant.attributes.finesse))
-    libtcod.console_print_rect_ex(window, 0, 14, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Charisma: {0}'.format(player.combatant.attributes.charisma))
-    libtcod.console_print_rect_ex(window, 0, 15, character_screen_width, character_screen_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Devotion: {0}'.format(player.combatant.attributes.devotion))
+    for count, elem in enumerate(lines):
+        text = font.render(elem, True, (255, 255, 255))
+        window.blit(text, (0, fontsize * (count + 1)))
 
-    
-
-    
-    
-    x = screen_width // 2 - character_screen_width // 2
-    y = screen_height // 2 - character_screen_height // 2
-    libtcod.console_blit(window, 0, 0, character_screen_width, character_screen_height, 0, x, y, 1.0, 0.7)
-    
-def combat_stats_screen(player, css_width, css_height, screen_width, screen_height):
-    window = libtcod.console_new(css_width, css_height)
-    
-    libtcod.console_set_default_foreground(window, libtcod.white)
-    
-    libtcod.console_print_rect_ex(window, 10, 0, css_width, css_height, libtcod.BKGND_NONE, libtcod.CENTER, 'Power')
-    libtcod.console_print_rect_ex(window, 30, 0, css_width, css_height, libtcod.BKGND_NONE, libtcod.CENTER, 'Resistance')
+    x = camera_width // 2 - character_screen_width // 2
+    y = camera_height // 2 - character_screen_height // 2
+    screen.blit(window, (camera_width / 4, camera_height / 4))
 
 
-    libtcod.console_print_rect_ex(window, 0, 2, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Slash: {0} ({1})'.format(player.combatant.power_slash, player.combatant.attributes.base_power_slash))
-    libtcod.console_print_rect_ex(window, 0, 3, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Pierce: {0} ({1})'.format(player.combatant.power_pierce, player.combatant.attributes.base_power_pierce))
-    libtcod.console_print_rect_ex(window, 0, 4, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Blunt: {0} ({1})'.format(player.combatant.power_blunt, player.combatant.attributes.base_power_blunt))
-    libtcod.console_print_rect_ex(window, 0, 5, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Heat: {0} ({1})'.format(player.combatant.spirit_heat, player.combatant.attributes.base_spirit_heat))
-    libtcod.console_print_rect_ex(window, 0, 6, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Cold: {0} ({1})'.format(player.combatant.spirit_cold, player.combatant.attributes.base_spirit_cold))
-    libtcod.console_print_rect_ex(window, 0, 7, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Acid: {0} ({1})'.format(player.combatant.spirit_acid, player.combatant.attributes.base_spirit_acid))
-    libtcod.console_print_rect_ex(window, 0, 8, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Current: {0} ({1})'.format(player.combatant.spirit_current, player.combatant.attributes.base_spirit_current))
-    libtcod.console_print_rect_ex(window, 0, 9, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Aether: {0} ({1})'.format(player.combatant.spirit_aether, player.combatant.attributes.base_spirit_aether))
-    libtcod.console_print_rect_ex(window, 0, 10, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Competence: {0}'.format(player.combatant.competence_points))
+def combat_stats_screen(screen, player, css_width, css_height, camera_width, camera_height):
+    window = pygame.Surface((css_width, css_height))
+    fontsize = 12
+    font = pygame.font.SysFont("comicsansms", fontsize)
+
+    power = font.render('Power', True, (255, 255, 255))
+    window.blit(power, (css_width / 3, 0))
+    resist = font.render('Resistance', True, (255, 255, 255))
+    window.blit(resist, ((2 * css_width) / 3, 0))
+
+    # x, y, data
+    lines = [
+        (0, 0, 'Power'),
+        (css_width / 2, 0, 'Resistance'),
+        (0, fontsize * 2,
+         'Slash: {0} ({1})'.format(player.combatant.power_slash, player.combatant.attributes.base_power_slash)),
+        (0, fontsize * 3,
+         'Pierce: {0} ({1})'.format(player.combatant.power_pierce, player.combatant.attributes.base_power_pierce)),
+        (0, fontsize * 4,
+         'Blunt: {0} ({1})'.format(player.combatant.power_blunt, player.combatant.attributes.base_power_blunt)),
+        (0, fontsize * 5,
+         'Heat: {0} ({1})'.format(player.combatant.spirit_heat, player.combatant.attributes.base_spirit_heat)),
+        (0, fontsize * 6,
+         'Cold: {0} ({1})'.format(player.combatant.spirit_cold, player.combatant.attributes.base_spirit_cold)),
+        (0, fontsize * 7,
+         'Acid: {0} ({1})'.format(player.combatant.spirit_acid, player.combatant.attributes.base_spirit_acid)),
+        (0, fontsize * 8,
+         'Current: {0} ({1})'.format(player.combatant.spirit_current, player.combatant.attributes.base_spirit_current)),
+        (0, fontsize * 9,
+         'Aether: {0} ({1})'.format(player.combatant.spirit_aether, player.combatant.attributes.base_spirit_aether)),
+        (0, fontsize * 10, 'Competence: {0}'.format(player.combatant.competence_points)),
+        (0, fontsize * 11,
+         'Accuracy: {0} ({1})'.format(player.combatant.accuracy, player.combatant.attributes.base_accuracy)),
+        (css_width / 2, fontsize * 2,
+         'Slash: {0} ({1})'.format(player.combatant.resist_slash, player.combatant.attributes.base_resist_slash)),
+        (css_width / 2, fontsize * 3,
+         'Pierce: {0} ({1})'.format(player.combatant.resist_pierce, player.combatant.attributes.base_resist_pierce)),
+        (css_width / 2, fontsize * 4,
+         'Blunt: {0} ({1})'.format(player.combatant.resist_blunt, player.combatant.attributes.base_resist_blunt)),
+        (css_width / 2, fontsize * 5,
+         'Heat: {0} ({1})'.format(player.combatant.resist_heat, player.combatant.attributes.base_resist_heat)),
+        (css_width / 2, fontsize * 6,
+         'Cold: {0} ({1})'.format(player.combatant.resist_cold, player.combatant.attributes.base_resist_cold)),
+        (css_width / 2, fontsize * 7,
+         'Acid: {0} ({1})'.format(player.combatant.resist_acid, player.combatant.attributes.base_resist_acid)),
+        (css_width / 2, fontsize * 8,
+         'Current: {0} ({1})'.format(player.combatant.resist_current, player.combatant.attributes.base_resist_current)),
+        (css_width / 2, fontsize * 9,
+         'Aether: {0} ({1})'.format(player.combatant.resist_aether, player.combatant.attributes.base_resist_aether)),
+        (css_width / 2, fontsize * 11,
+         'Dodge: {0} ({1})'.format(player.combatant.dodge, player.combatant.attributes.base_dodge)),
+        (css_width / 3, fontsize * 14, 'Saving Throws'),
+        (0, fontsize * 16, 'Athletics'),
+        (css_width / 3, fontsize * 16, 'Fortitude'),
+        (2 * css_width / 3, fontsize * 16, 'Resilience'),
+        (0, fontsize * 18, 'Reflex: {0}'.format(player.combatant.savethrow_reflex)),
+        (0, fontsize * 19, 'Balance: {0}'.format(player.combatant.savethrow_balance)),
+        (0, fontsize * 20, 'Breath: {0}'.format(player.combatant.savethrow_breath)),
+        (0, fontsize * 21, 'Grapple: {0}'.format(player.combatant.savethrow_grapple)),
+        (0, fontsize * 22, 'Stun: {0}'.format(player.combatant.savethrow_stun)),
+        (css_width / 3, fontsize * 18, 'Panic: {0}'.format(player.combatant.savethrow_panic)),
+        (css_width / 3, fontsize * 19, 'Apathy: {0}'.format(player.combatant.savethrow_apathy)),
+        (css_width / 3, fontsize * 20, 'Pain: {0}'.format(player.combatant.savethrow_pain)),
+        (css_width / 3, fontsize * 21, 'Bewitch: {0}'.format(player.combatant.savethrow_bewitch)),
+        (css_width / 3, fontsize * 22, 'Enrage: {0}'.format(player.combatant.savethrow_enrage)),
+        (2 * css_width / 3, fontsize * 18, 'Illness: {0}'.format(player.combatant.savethrow_illness)),
+        (2 * css_width / 3, fontsize * 19, 'Tenacity: {0}'.format(player.combatant.savethrow_tenacity)),
+        (2 * css_width / 3, fontsize * 20, 'Pressure: {0}'.format(player.combatant.savethrow_pressure)),
+        (2 * css_width / 3, fontsize * 21, 'Bleed: {0}'.format(player.combatant.savethrow_bleed)),
+        (2 * css_width / 3, fontsize * 22, 'Injury: {0}'.format(player.combatant.savethrow_injury)),
+        (0, fontsize * 24, 'Presence: {0}'.format(player.combatant.presence)),
+        (css_width / 3, fontsize * 24, 'Initiative: {0}'.format(player.combatant.initiative)),
+        (2 * css_width / 3, fontsize * 24, 'Speed: {0}'.format(player.combatant.speed)),
+        (0, fontsize * 25, 'Teamwork: {0}'.format(player.combatant.teamwork)),
+        (css_width / 3, fontsize * 25, 'Leadership: {0}'.format(player.combatant.leadership))
+    ]
+
+    for i in lines:
+        info = font.render(i[2], True, (255, 255, 255))
+        window.blit(info, (i[0], i[1]))
+
+    x = camera_width // 2 - css_width // 2
+    y = camera_height // 2 - css_height // 2
+    screen.blit(window, (x, y))
 
 
-    libtcod.console_print_rect_ex(window, 0, 11, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Accuracy: {0} ({1})'.format(player.combatant.accuracy, player.combatant.attributes.base_accuracy))
+def noncombat_stats_screen(screen, player, css_width, css_height, camera_width, camera_height):
+    window = pygame.Surface((css_width, css_height))
+    fontsize = 12
+    font = pygame.font.SysFont("comicsansms", fontsize)
+    info = font.render('Leadership: {0}'.format(player.combatant.leadership), True, (255, 255, 255))
+    window.blit(info, (css_width / 3, fontsize * 25))
 
-    libtcod.console_print_rect_ex(window, 20, 2, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Slash: {0} ({1})'.format(player.combatant.resist_slash, player.combatant.attributes.base_resist_slash))
-    libtcod.console_print_rect_ex(window, 20, 3, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Pierce: {0} ({1})'.format(player.combatant.resist_pierce, player.combatant.attributes.base_resist_pierce))
-    libtcod.console_print_rect_ex(window, 20, 4, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Blunt: {0} ({1})'.format(player.combatant.resist_blunt, player.combatant.attributes.base_resist_blunt))
-    libtcod.console_print_rect_ex(window, 20, 5, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Heat: {0} ({1})'.format(player.combatant.resist_heat, player.combatant.attributes.base_resist_heat))
-    libtcod.console_print_rect_ex(window, 20, 6, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Cold: {0} ({1})'.format(player.combatant.resist_cold, player.combatant.attributes.base_resist_cold))
-    libtcod.console_print_rect_ex(window, 20, 7, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Acid: {0} ({1})'.format(player.combatant.resist_acid, player.combatant.attributes.base_resist_acid))
-    libtcod.console_print_rect_ex(window, 20, 8, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Current: {0} ({1})'.format(player.combatant.resist_current, player.combatant.attributes.base_resist_current))
-    libtcod.console_print_rect_ex(window, 20, 9, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Aether: {0} ({1})'.format(player.combatant.resist_aether, player.combatant.attributes.base_resist_aether))
-    
-    libtcod.console_print_rect_ex(window, 20, 11, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Dodge: {0} ({1})'.format(player.combatant.dodge, player.combatant.attributes.base_dodge))
+    x = camera_width // 2 - css_width // 2
+    y = camera_height // 2 - css_height // 2
+    screen.blit(window, (x, y))
 
 
-    libtcod.console_print_rect_ex(window, 20, 14, css_width, css_height, libtcod.BKGND_NONE, libtcod.CENTER, 'Saving Throws')
-    libtcod.console_print_rect_ex(window, 0, 16, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Athletics')
-    libtcod.console_print_rect_ex(window, 20, 16, css_width, css_height, libtcod.BKGND_NONE, libtcod.CENTER, 'Fortitude')
-    libtcod.console_print_rect_ex(window, 28, 16, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Resilience')
-    
-    libtcod.console_print_rect_ex(window, 0, 18, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Reflex: {0}'.format(player.combatant.savethrow_reflex))
-    libtcod.console_print_rect_ex(window, 0, 19, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Balance: {0}'.format(player.combatant.savethrow_balance))
-    libtcod.console_print_rect_ex(window, 0, 20, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Breath: {0}'.format(player.combatant.savethrow_breath))
-    libtcod.console_print_rect_ex(window, 0, 21, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Grapple: {0}'.format(player.combatant.savethrow_grapple))
-    libtcod.console_print_rect_ex(window, 0, 22, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Stun: {0}'.format(player.combatant.savethrow_stun))
+def message_box(screen, width, screen_width, screen_height):
+    fontsize = 12
 
-    libtcod.console_print_rect_ex(window, 14, 18, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Panic: {0}'.format(player.combatant.savethrow_panic))
-    libtcod.console_print_rect_ex(window, 14, 19, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Apathy: {0}'.format(player.combatant.savethrow_apathy))
-    libtcod.console_print_rect_ex(window, 14, 20, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Pain: {0}'.format(player.combatant.savethrow_pain))
-    libtcod.console_print_rect_ex(window, 14, 21, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Bewitch: {0}'.format(player.combatant.savethrow_bewitch))
-    libtcod.console_print_rect_ex(window, 14, 22, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Enrage: {0}'.format(player.combatant.savethrow_enrage))
-
-    libtcod.console_print_rect_ex(window, 28, 18, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Illness: {0}'.format(player.combatant.savethrow_illness))
-    libtcod.console_print_rect_ex(window, 28, 19, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Tenacity: {0}'.format(player.combatant.savethrow_tenacity))
-    libtcod.console_print_rect_ex(window, 28, 20, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Pressure: {0}'.format(player.combatant.savethrow_pressure))
-    libtcod.console_print_rect_ex(window, 28, 21, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Bleed: {0}'.format(player.combatant.savethrow_bleed))
-    libtcod.console_print_rect_ex(window, 28, 22, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Injury: {0}'.format(player.combatant.savethrow_injury))
-
-    libtcod.console_print_rect_ex(window, 0, 24, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Presence: {0}'.format(player.combatant.presence))
-    libtcod.console_print_rect_ex(window, 14, 24, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Initiative: {0}'.format(player.combatant.initiative))
-    libtcod.console_print_rect_ex(window, 28, 24, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Speed: {0}'.format(player.combatant.speed))
-    libtcod.console_print_rect_ex(window, 0, 25, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Teamwork: {0}'.format(player.combatant.teamwork))
-    libtcod.console_print_rect_ex(window, 14, 25, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Leadership: {0}'.format(player.combatant.leadership))
-    
-    x = screen_width // 2 - css_width // 2
-    y = screen_height // 2 - css_height // 2
-    libtcod.console_blit(window, 0, 0, css_width, css_height, 0, x, y, 1.0, 0.7)
-
-def noncombat_stats_screen(player, css_width, css_height, screen_width, screen_height):
-    window = libtcod.console_new(css_width, css_height)
-    libtcod.console_set_default_foreground(window, libtcod.white)
-    
-    libtcod.console_print_rect_ex(window, 14, 25, css_width, css_height, libtcod.BKGND_NONE, libtcod.LEFT, 'Leadership: {0}'.format(player.combatant.leadership))
-
-    
-    x = screen_width // 2 - css_width // 2
-    y = screen_height // 2 - css_height // 2
-    libtcod.console_blit(window, 0, 0, css_width, css_height, 0, x, y, 1.0, 0.7)
-    
-    
-    
-def message_box(con, header, width, screen_width, screen_height):
-    menu(con, header, [], width, screen_width, screen_height)
+    menu(screen, '', fontsize, ['No save game to load :('], width, screen_width, screen_height)
