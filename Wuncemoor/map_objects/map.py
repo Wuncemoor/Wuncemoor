@@ -7,15 +7,12 @@ from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
 from random import randint
 from random_utils import random_choice_from_dict, from_dungeon_level
 from render_functions import RenderOrder
-
-from builders.random_item_maker import Director, EquippableBuilder
 from builders.mob_builder import MobDirector, MobBuilder
 from components.equippable import Equippable
 from components.equippable_core import EquippableCore
 from components.equippable_material import EquippableMaterial
 from components.equippable_quality import EquippableQuality
 from components.item import Item
-from components.stairs import Stairs
 from components.useable import Useable
 from map_objects.rectangle import Rect
 from map_objects.tile import Tile
@@ -33,8 +30,19 @@ class Map:
         self.tiles = self.initialize_tiles()
         self.dungeon_level = dungeon_level
         self.map_entities = self.initialize_entities()
+        self.structures = []
         self.entrance = None
         self.exit = None
+
+    def add_road(self, road):
+        i = 0
+        j = 0
+        for y in self.tiles:
+            for x in y:
+                if road.x1 <= i < road.x2 and road.y1 <= j < road.y2:
+                    self.tiles[x][y].type = 'road'
+                i += 1
+            j += 1
         
     def initialize_tiles(self):
         tiles = [[Tile(True) for y in range(self.height)] for x in range(self.width)]
@@ -53,6 +61,12 @@ class Map:
             for y in range(room.y1 + 1, room.y2):
                 self.tiles[x][y].blocked = False
                 self.tiles[x][y].block_sight = False
+
+    def add_road(self, road):
+        for x in range(road.x1, road.x2):
+            for y in range(road.y1, road.y2):
+                self.tiles[x][y].type = 'road'
+                self.tiles[x][y].blocked = False
                 
     def create_h_tunnel(self, x1, x2, y):
         for x in range(min(x1, x2), max(x1, x2) + 1):

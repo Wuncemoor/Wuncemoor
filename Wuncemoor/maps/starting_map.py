@@ -1,17 +1,31 @@
 import tcod as libtcod
 from entity import Entity
-from lloydtest import voronoi_generate, continents_generate
 from render_functions import RenderOrder
 from builders.dungeon_builder import DungeonDirector, DungeonBuilder
 from builders.random_item_maker import EquippableBuilder, Director
 from map_objects.rectangle import Rect
 from map_objects.map import Map
-from map_objects.tile import Tile
 from map_objects.dungeon import Dungeon
-from components.stairs import Stairs
+from map_objects.object_files.get_house import get_house_obj
 from components.item import Item
 
 
+
+def get_town(width, height):
+
+    map = get_map(width, height)
+    rect = Rect(0, 0, width - 1, height - 1)
+    map.create_room(rect)
+
+    road = Rect(0, int(height/2) -2, width, 4)
+    map.add_road(road)
+    house_obj = get_house_obj()
+    house = ['house', Rect(10, int(height/2)-8, 5, 6), house_obj]
+    map.structures.extend(house)
+
+    town = Dungeon('town', 1, [map], np=0)
+
+    return town
 
 
 def get_starting_town(constants):
@@ -78,37 +92,37 @@ def get_map(width, height):
     tiles = []
     map_entities = []
     map = Map(width, height, tiles, map_entities)
-    tiles = map.initialize_tiles()
+    map.initialize_tiles()
     
     return map
     
-def get_world_map(width, height, num_cells):
-
-    tiles = []
-    map_entities = []
-    world_map = Map(width, height, tiles, map_entities)
-    tiles = world_map.initialize_tiles()
-    
-
-    vor = voronoi_generate(width, height, num_cells)
-    cont = continents_generate(vor[0],vor[1], vor[2], vor[3], vor[4], vor[5], vor[6])
-    bslist = []
-    for i in cont[1]:
-        if i in cont[2]:
-            bslist.append(i)
-    print(cont[2])       
-    print(bslist)
-    
-    #for each tile in finalarray
-    for i in cont[0]:
-        
-        #if its a continent tile
-        if i[0] in cont[2]:
-        
-            world_map.tiles[i[1]][i[2]].blocked = False
-            world_map.tiles[i[1]][i[2]].block_sight = False
-        
-    world_dungeon = Dungeon('world', 1, [world_map])
-
-    return world_dungeon
+# def get_world_map(width, height, num_cells):
+#
+#     tiles = []
+#     map_entities = []
+#     world_map = Map(width, height, tiles, map_entities)
+#     tiles = world_map.initialize_tiles()
+#
+#
+#     vor = voronoi_generate(width, height, num_cells)
+#     cont = continents_generate(vor[0],vor[1], vor[2], vor[3], vor[4], vor[5], vor[6])
+#     bslist = []
+#     for i in cont[1]:
+#         if i in cont[2]:
+#             bslist.append(i)
+#     print(cont[2])
+#     print(bslist)
+#
+#     #for each tile in finalarray
+#     for i in cont[0]:
+#
+#         #if its a continent tile
+#         if i[0] in cont[2]:
+#
+#             world_map.tiles[i[1]][i[2]].blocked = False
+#             world_map.tiles[i[1]][i[2]].block_sight = False
+#
+#     world_dungeon = Dungeon('world', 1, [world_map])
+#
+#     return world_dungeon
 

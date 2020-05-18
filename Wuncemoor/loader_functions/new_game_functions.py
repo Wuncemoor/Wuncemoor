@@ -12,9 +12,7 @@ from components.phylo import Phylo
 from components.stairs import Stairs
 from components.equipment import Equipment
 from components.combatant import Combatant
-from loader_functions.constants import get_constants
-from maps.starting_map import get_starting_town, get_directed_dungeon, get_cave, get_goblin_cave, get_kobold_cave, get_map, get_world_map
-from map_objects.dungeon import Dungeon
+from maps.starting_map import get_starting_town, get_directed_dungeon, get_cave, get_town
 from camera import Camera
 from entity import Entity
 from equipment_slots import EquipmentSlots
@@ -27,31 +25,36 @@ def get_player():
     level_component = Level()
     competence_component = Competence(Strength(), Instinct(), Coordination(), Vitality(), Arcana(), Improvisation(), Wisdom(), Finesse(), Charisma(), Devotion())
     equipment_component = Equipment()
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\hero.png'
+    image = 'images\\hero.png'
     combatant_component = Combatant('Player', image, phylo=phylo_component, attributes=attribute_component, level=level_component, competence=competence_component, equipment=equipment_component, inventory=inventory_component)
 
     
-    player = Entity(64, 25, libtcod.white, blocks=True, render_order = RenderOrder.ACTOR, combatant=combatant_component)
+    player = Entity(20, 20, libtcod.white, blocks=True, render_order = RenderOrder.ACTOR, combatant=combatant_component)
     
     return player
+
+
 def get_camera(player, constants):
 
     camera = Camera(player.x - int(constants['map_width']/2), player.y - int(constants['map_height']/2))
     return camera
-    
+
+
 def equip_player(player):
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\\stick.png'
+    image = 'images\\stick.png'
     item_component = Item(Equippable('Stick', image, EquipmentSlots.MAIN_HAND, EquippableCore('staff'), EquippableMaterial('wood'), EquippableQuality('average')))
     stick = Entity(0, 0, libtcod.sky, item=item_component)
     player.combatant.inventory.add_item(stick)
     player.combatant.equipment.toggle_equip(stick)
+
 
 def get_dungeons(constants):
     
     dungeons = {}
     
     town_alpha = get_starting_town(constants)
-    dungeons[town_alpha.name] = town_alpha
+    town = get_town(constants['alpha_width'], constants['alpha_height'])
+    dungeons[town_alpha.name] = town
     
     
     directed_dungeon = get_directed_dungeon(constants)
@@ -66,8 +69,8 @@ def get_dungeons(constants):
     cave = get_cave(constants, None)
     dungeons[cave.name] = cave
     
-    downstairsimg = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\stairsdown.png'
-    upstairsimg = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\stairsup.png'
+    downstairsimg = 'images\\stairsdown.png'
+    upstairsimg = 'images\\stairsup.png'
 
     directed_entrance = directed_dungeon.maps[0].entrance
     directed_stairs_component = Stairs('Stairs', downstairsimg, 'directed_dungeon', 0, directed_entrance)

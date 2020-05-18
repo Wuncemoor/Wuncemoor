@@ -1,6 +1,6 @@
 import tcod as libtcod
 import pygame
-from PIL import Image
+
 
 def get_constants():
     window_title = 'Wuncemoor: The Eternal Dream'
@@ -26,8 +26,8 @@ def get_constants():
 
 
     fps = 60
-    alpha_width = 150
-    alpha_height = 100
+    alpha_width = 80
+    alpha_height = 37
     
     room_max_size = 10
     room_min_size = 6
@@ -35,17 +35,19 @@ def get_constants():
     
     fov_algorithm = 0
     fov_light_walls = True
-    fov_radius = 10000
+    fov_radius = 50
     
     max_monsters_per_room = 3
     max_items_per_room = 2
     
     tiles = {
-        'black': pygame.image.load(r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\black.png'),
-        'dark_wall': pygame.image.load(r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\dark_wall.png'),
-        'dark_ground': pygame.image.load(r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\dark_ground.png'),
-        'light_wall': pygame.image.load(r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\light_wall.png'),
-        'light_ground': pygame.image.load(r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\light_ground.png'),
+        'black': pygame.image.load('images\\black.png'),
+        'dark_wall': pygame.image.load('images\\dark_wall.png'),
+        'dark_ground': pygame.image.load('images\\dark_ground.png'),
+        'light_wall': pygame.image.load('images\\light_wall.png'),
+        'light_ground': pygame.image.load('images\\light_ground.png'),
+        'light_road': pygame.image.load('images\\light_road.png'),
+        'dark_road': pygame.image.load('images\\dark_road.png'),
         }
     
     colors = {
