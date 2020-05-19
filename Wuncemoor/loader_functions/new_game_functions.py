@@ -29,7 +29,7 @@ def get_player():
     combatant_component = Combatant('Player', image, phylo=phylo_component, attributes=attribute_component, level=level_component, competence=competence_component, equipment=equipment_component, inventory=inventory_component)
 
     
-    player = Entity(20, 20, libtcod.white, blocks=True, render_order = RenderOrder.ACTOR, combatant=combatant_component)
+    player = Entity(20, 20, blocks=True, render_order = RenderOrder.ACTOR, combatant=combatant_component)
     
     return player
 
@@ -43,7 +43,7 @@ def get_camera(player, constants):
 def equip_player(player):
     image = 'images\\stick.png'
     item_component = Item(Equippable('Stick', image, EquipmentSlots.MAIN_HAND, EquippableCore('staff'), EquippableMaterial('wood'), EquippableQuality('average')))
-    stick = Entity(0, 0, libtcod.sky, item=item_component)
+    stick = Entity(0, 0, item=item_component)
     player.combatant.inventory.add_item(stick)
     player.combatant.equipment.toggle_equip(stick)
 
@@ -79,32 +79,32 @@ def get_dungeons(constants):
     directed_stairs_up_component = Stairs('Stairs', upstairsimg, 'start', 0, (40,10))
     directed_stairs_up = Entity(directed_dungeon.maps[0].entrance[0], directed_dungeon.maps[0].entrance[1], libtcod.white, render_order=RenderOrder.STAIRS, stairs=directed_stairs_up_component)
     
-    town_alpha.maps[0].map_entities.append(directed_stairs)
-    directed_dungeon.maps[0].map_entities.append(directed_stairs_up)
+    town_alpha.maps[0].transitions.append(directed_stairs)
+    directed_dungeon.maps[0].transitions.append(directed_stairs_up)
     
     gob_stairs_comp = Stairs('Stairs', downstairsimg, 'goblin_cave', 0, goblin_cave.maps[0].entrance)
     gob_stairs = Entity(10, 30, libtcod.white, render_order=RenderOrder.STAIRS, stairs=gob_stairs_comp)
-    town_alpha.maps[0].map_entities.append(gob_stairs)
+    town_alpha.maps[0].transitions.append(gob_stairs)
     
     gob_stairs_up_comp = Stairs('Stairs', upstairsimg, 'start', 0, (10,30))
     gob_stairs_up = Entity(goblin_cave.maps[0].entrance[0], goblin_cave.maps[0].entrance[1], libtcod.white, render_order=RenderOrder.STAIRS, stairs=gob_stairs_up_comp)
-    goblin_cave.maps[0].map_entities.append(gob_stairs_up)
+    goblin_cave.maps[0].transitions.append(gob_stairs_up)
     
     kob_stairs_comp = Stairs('Stairs', downstairsimg, 'kobold_cave', 0, kobold_cave.maps[0].entrance)
     kob_stairs = Entity(10, 25, libtcod.white, render_order=RenderOrder.STAIRS, stairs=kob_stairs_comp)
-    town_alpha.maps[0].map_entities.append(kob_stairs)
+    town_alpha.maps[0].transitions.append(kob_stairs)
     
     kob_stairs_up_comp = Stairs('Stairs', upstairsimg, 'start', 0, (10,25))
     kob_stairs_up = Entity(kobold_cave.maps[0].entrance[0], kobold_cave.maps[0].entrance[1], libtcod.white, render_order=RenderOrder.STAIRS, stairs=kob_stairs_up_comp)
-    kobold_cave.maps[0].map_entities.append(kob_stairs_up)
+    kobold_cave.maps[0].transitions.append(kob_stairs_up)
     
     cave_stairs_comp = Stairs('Stairs', downstairsimg, 'cave', 0, cave.maps[0].entrance)
     cave_stairs = Entity(10, 20, libtcod.white, render_order=RenderOrder.STAIRS, stairs=cave_stairs_comp)
-    town_alpha.maps[0].map_entities.append(cave_stairs)
+    town_alpha.maps[0].transitions.append(cave_stairs)
     
     cave_stairs_up_comp = Stairs('Stairs', upstairsimg, 'start', 0, (10,20))
     cave_stairs_up = Entity(cave.maps[0].entrance[0], cave.maps[0].entrance[1], libtcod.white, render_order=RenderOrder.STAIRS, stairs=cave_stairs_up_comp)
-    cave.maps[0].map_entities.append(cave_stairs_up)
+    cave.maps[0].transitions.append(cave_stairs_up)
     
 
 

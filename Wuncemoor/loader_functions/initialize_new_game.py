@@ -4,7 +4,7 @@ from game_states import GameStates
 from map_objects.game_map import GameMap
 
 
-    
+
 def get_game_variables(constants):
 
     player = get_player()
@@ -13,16 +13,19 @@ def get_game_variables(constants):
     
     entities = [player]
     structures = []
+    transitions = []
     
     dungeons = get_dungeons(constants)
     game_map = GameMap(dungeons['start'].maps[0])
     
     entities.extend(game_map.current_map.map_entities)
-    structures.append(game_map.current_map.structures)
+    structures.extend(game_map.current_map.structures)
+    transitions.extend(game_map.current_map.transitions)
+
     
     message_log = MessageLog(constants['message_x'], constants['message_width'], constants['message_height'])
     
     game_state = GameStates.PLAYERS_TURN
     
-    return player, dungeons, entities, structures, game_map,  camera, message_log, game_state
+    return player, dungeons, entities, structures, transitions, game_map,  camera, message_log, game_state
     

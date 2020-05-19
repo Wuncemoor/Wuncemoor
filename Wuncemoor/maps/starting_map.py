@@ -6,9 +6,10 @@ from builders.random_item_maker import EquippableBuilder, Director
 from map_objects.rectangle import Rect
 from map_objects.map import Map
 from map_objects.dungeon import Dungeon
-from map_objects.object_files.get_house import get_house_obj
+from map_objects.object_files.get_structures import get_house_obj, get_town_obj, get_hut_obj
+from map_objects.structure import Structure
+from map_objects.road import Road
 from components.item import Item
-
 
 
 def get_town(width, height):
@@ -17,11 +18,18 @@ def get_town(width, height):
     rect = Rect(0, 0, width - 1, height - 1)
     map.create_room(rect)
 
-    road = Rect(0, int(height/2) -2, width, 4)
+    road = Road(Rect(0, int(height/2) -2, width, 4), 'start', 0, (40,40))
+    road.set_transitions('vertical')
+    map.floor_image = 'grass'
     map.add_road(road)
-    house_obj = get_house_obj()
-    house = ['house', Rect(10, int(height/2)-8, 5, 6), house_obj]
-    map.structures.extend(house)
+    house = Structure(Rect(10, int(height/2)-8, 5, 6), get_house_obj())
+    town = Structure(Rect(70, int(height/2)-6, 8, 4), get_town_obj())
+    hut = Structure(Rect(30, int(height/2)- 19, 17, 17), get_hut_obj())
+    map.structures.append(hut)
+    map.structures.append(house)
+    map.structures.append(town)
+
+
 
     town = Dungeon('town', 1, [map], np=0)
 
@@ -35,6 +43,7 @@ def get_starting_town(constants):
     
     town = Rect(0,0,constants['alpha_width']-1,constants['alpha_height']-1)
     starting_map.create_room(town)
+    starting_map.floor_image = 'grass'
     
     equippable_test = EquippableBuilder(499)
     director = Director()
@@ -42,7 +51,7 @@ def get_starting_town(constants):
     director.set_builder(equippable_test)
     equippable_component = director.get_equippable()
     item_component = Item(equippable_component=equippable_component)
-    test_gear = Entity(20, 20, libtcod.white, blocks=False, render_order = RenderOrder.ITEM, item=item_component)
+    test_gear = Entity(20, 20, blocks=False, render_order = RenderOrder.ITEM, item=item_component)
     
     starting_map.map_entities.append(test_gear)
     
@@ -89,9 +98,8 @@ def get_kobold_cave(constants):
     
 def get_map(width, height):
     
-    tiles = []
-    map_entities = []
-    map = Map(width, height, tiles, map_entities)
+
+    map = Map(width, height)
     map.initialize_tiles()
     
     return map
