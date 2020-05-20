@@ -223,31 +223,43 @@ def print_message(message_surface, message, mlogx, y):
 
 def draw_tile(camera_surface, fov_map, game_map, x, y, cx, cy, tiles, tilesize, options):
     visible = libtcod.map_is_in_fov(fov_map, cx + x, cy + y)
-    wall = game_map.tiles[cx + x][cy + y].block_sight
 
+    tile = game_map.tiles[cx + x][cy + y]
+    tt = tile.type
     if visible:
-        if game_map.tiles[cx + x][cy + y].type == 'road':
-            obj = tiles.get('light_road').get(game_map.tiles[cx + x][cy + y].mode)
+        prefix = 'light_'
+        if tt == 'road':
+            obj = tiles.get(prefix + tt).get(tile.mode)
             camera_surface.blit(obj, (x * tilesize, y * tilesize))
-        elif wall:
-            camera_surface.blit(tiles.get('light_wall'), (x * tilesize, y * tilesize))
+        elif tt == 'wall':
+            camera_surface.blit(tiles.get(prefix + tt), (x * tilesize, y * tilesize))
         else:
-            img = game_map.current_map.floor_image
-            choice = str(pseudorandom_seed(x, y, options.get(img)))
-            obj = tiles.get('light_' + img).get('light_' + img + choice)
+            try:
+
+                choice = str(pseudorandom_seed(x, y, options.get(tt)))
+                camera_surface.blit(tiles.get(prefix + tt).get(prefix + tt + choice), (x * tilesize, y * tilesize))
+            except:
+                img = game_map.current_map.floor_image
+                choice = str(pseudorandom_seed(x, y, options.get(img)))
+                obj = tiles.get(prefix + img).get(prefix + img + choice)
+                camera_surface.blit(obj, (x * tilesize, y * tilesize))
+        tile.explored = True
+    elif tile.explored:
+        prefix = 'dark_'
+        if tt == 'road':
+            obj = tiles.get(prefix + tt).get(game_map.tiles[cx + x][cy + y].mode)
             camera_surface.blit(obj, (x * tilesize, y * tilesize))
-        game_map.tiles[cx + x][cy + y].explored = True
-    elif game_map.tiles[cx + x][cy + y].explored:
-        if game_map.tiles[cx + x][cy + y].type == 'road':
-            obj = tiles.get('dark_road').get(game_map.tiles[cx + x][cy + y].mode)
-            camera_surface.blit(obj, (x * tilesize, y * tilesize))
-        elif wall:
-            camera_surface.blit(tiles.get('dark_wall'), (x * tilesize, y * tilesize))
+        elif tt == 'wall':
+            camera_surface.blit(tiles.get(prefix + tt), (x * tilesize, y * tilesize))
         else:
-            img = game_map.current_map.floor_image
-            choice = str(pseudorandom_seed(x, y, options.get(img)))
-            obj = tiles.get('dark_' + img).get('dark_' + img + choice)
-            camera_surface.blit(obj, (x * tilesize, y * tilesize))
+            try:
+                choice = str(pseudorandom_seed(x, y, options.get(tt)))
+                camera_surface.blit(tiles.get(prefix + tt).get(prefix + tt + choice), (x * tilesize, y * tilesize))
+            except:
+                img = game_map.current_map.floor_image
+                choice = str(pseudorandom_seed(x, y, options.get(img)))
+                obj = tiles.get(prefix + img).get(prefix + img + choice)
+                camera_surface.blit(obj, (x * tilesize, y * tilesize))
 
     else:
         camera_surface.blit(tiles.get('black'), (x * tilesize, y * tilesize))

@@ -62,6 +62,9 @@ class Map:
 
     def initialize_tiles(self):
         tiles = [[Tile(True) for y in range(self.height)] for x in range(self.width)]
+        for row in tiles:
+            for tile in row:
+                tile.type = 'wall'
         return tiles
 
     def initialize_entities(self):
@@ -73,20 +76,28 @@ class Map:
 
     def create_room(self, room):
         # go through the tiles in the rectangle and make them not blocked
+
         for x in range(room.x1 + 1, room.x2):
             for y in range(room.y1 + 1, room.y2):
                 self.tiles[x][y].blocked = False
                 self.tiles[x][y].block_sight = False
+                self.tiles[x][y].type = 'ground'
+
+
 
     def create_h_tunnel(self, x1, x2, y):
         for x in range(min(x1, x2), max(x1, x2) + 1):
             self.tiles[x][y].blocked = False
             self.tiles[x][y].block_sight = False
+            self.tiles[x][y].type = 'ground'
+
 
     def create_v_tunnel(self, y1, y2, x):
         for y in range(min(y1, y2), max(y1, y2) + 1):
             self.tiles[x][y].blocked = False
             self.tiles[x][y].block_sight = False
+            self.tiles[x][y].type = 'ground'
+
 
     # Create everything except stairs
     def fill_map(self, dungeon_type, subtype, node_power, max_rooms, room_min_size, room_max_size, map_width,
@@ -170,7 +181,8 @@ class Map:
             x = randint(room.x1 + 1, room.x2 - 1)
             y = randint(room.y1 + 1, room.y2 - 1)
 
-            if not any([entity for entity in self.map_entities if entity.x == x and entity.y == y]):
+            if not any([entity for entity in self.map_entities if entity.x == x and entity.y == y]) and not \
+                    any([transition for transition in self.transitions if transition.x == x and transition.y == y]):
                 item_choice = random_choice_from_dict(item_chances)
 
                 if item_choice == 'healing_potion':

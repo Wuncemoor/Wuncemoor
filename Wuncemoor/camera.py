@@ -18,3 +18,4 @@ class Camera:
             self.y = game_map.height - constants['map_height']
         else:
             self.y = int(py - constants['map_height']/2)
+            

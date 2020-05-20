@@ -39,6 +39,18 @@ def get_constants():
     max_monsters_per_room = 3
     max_items_per_room = 2
 
+    world_map_constants = {
+        'width': 700,
+        'height': 700,
+        'octaves': 5,
+        'persist': 0.5,
+        'lacuna': 2.5,
+        'scale': 0.0075,
+        'moist_mod': 0.5,
+        'temp_mod': 0.1,
+        'water_level': 0.15  # -1 to 'water_level' is water, above to 1 is land
+    }
+
     tiles = {
         'black': py.image.load('images\\black.png'),
         'dark_wall': py.image.load('images\\dark_wall.png'),
@@ -92,7 +104,7 @@ def get_constants():
         'taiga': 9,
         'temprain': 9,
         'tropicrain': 9,
-        'tundra':  9,
+        'tundra': 9,
     }
 
 
@@ -127,6 +139,7 @@ def get_constants():
         'fps': fps,
         'map_width': map_width,
         'map_height': map_height,
+        'world_map_constants': world_map_constants,
     }
     return constants
 
