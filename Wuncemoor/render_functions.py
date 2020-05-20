@@ -1,235 +1,258 @@
 import tcod as libtcod
-import math
+import pygame
 from game_states import GameStates
-from menus import inventory_menu, dialogue_menu, level_up_menu, competence_menu, character_menu, primary_stats_screen, combat_stats_screen, noncombat_stats_screen, strength_feats_menu, instinct_feats_menu, coordinaton_feats_menu, vitality_feats_menu, arcana_feats_menu, improvisation_feats_menu, wisdom_feats_menu, finesse_feats_menu, charisma_feats_menu, devotion_feats_menu
+from menus import inventory_menu, level_up_menu, competence_menu, character_menu, primary_stats_screen, \
+    combat_stats_screen, noncombat_stats_screen, strength_feats_menu, instinct_feats_menu, coordinaton_feats_menu, \
+    vitality_feats_menu, arcana_feats_menu, improvisation_feats_menu, wisdom_feats_menu, finesse_feats_menu, \
+    charisma_feats_menu, devotion_feats_menu
+from random_utils import pseudorandom_seed
 
 
 from enum import Enum
 
 
 class RenderOrder(Enum):
-    CAMERA = 1
-    CORPSE = 2
-    STAIRS = 3
-    ITEM = 4
-    ACTOR = 5
-    
-def get_names_under_mouse(mouse, entities, fov_map):
-    (x, y) = (mouse.cx, mouse.cy)
-    
-    names = [entity.name for entity in entities if entity.x == x and entity.y == y and libtcod.map_is_in_fov(fov_map, entity.x, entity.y)]
+    CORPSE = 1
+    STAIRS = 2
+    ITEM = 3
+    ACTOR = 4
+
+
+def get_names_under_mouse(entities, fov_map):
+    (x, y) = pygame.mouse.get_pos()
+
+    names = [entity.name for entity in entities if
+             entity.x == x and entity.y == y and libtcod.map_is_in_fov(fov_map, entity.x, entity.y)]
     names = ', '.join(names)
-   
+
     return names.capitalize()
-    
-def render_bar(panel, x, y, total_width, name, value, maximum, bar_color, back_color):
-    bar_width = int(float(value) / maximum * total_width)
-    
-    libtcod.console_set_default_background(panel, back_color)
-    libtcod.console_rect(panel, x, y, total_width, 1, False, libtcod.BKGND_SCREEN)
-    
-    libtcod.console_set_default_background(panel, bar_color)
-    if bar_width > 0:
-        libtcod.console_rect(panel, x, y, bar_width, 1, False, libtcod.BKGND_SCREEN)
-        
-    libtcod.console_set_default_foreground(panel, libtcod.white)
-    libtcod.console_print_ex(panel, int(x + total_width/2), y, libtcod.BKGND_NONE, libtcod.CENTER, '{0}: {1}/{2}'.format(name, value, maximum))
-    
-def render_nearby(con, panel, entities, player, game_map, camera, fov_map, fov_recompute, message_log, screen_width, screen_height, bar_width, panel_height, panel_y, mouse, colors, game_state):
 
-#Draw tiles near player
+
+def render_bar(resource_surface, x, y, bar_x, bar_y, name, val, maxval):
+
+    window = pygame.Surface((bar_x, bar_y))
+
+    full = get_render_bar_asset(name, full=True)
+    empty = get_render_bar_asset(name, full=False)
+
+    percent = float(val / maxval) * 100
+    assetwidth = 15
+
+    for i in range(20):
+        if percent >= (i + 1) * 5:
+            window.blit(full, ((i * assetwidth), 0))
+        else:
+            window.blit(empty, ((i * assetwidth), 0))
+
+    resource_surface.blit(window, (x, y))
+    fontsize = 20
+    font = pygame.font.SysFont("comicsansms", fontsize)
+    text = font.render('{0}: {1}/{2}'.format(name, val, maxval), True, (255, 255, 255))
+    window.blit(text, (50, -5))
+    resource_surface.blit(window, (x, y))
+
+
+def get_render_bar_asset(name, full):
+    dict = {
+        'HP': ['images\\render_bar_assets\\hp_full.png',
+               'images\\render_bar_assets\\hp_empty.png'],
+        'MP': ['images\\render_bar_assets\\mp_full.png',
+               'images\\render_bar_assets\\mp_empty.png'],
+        'TP': ['images\\render_bar_assets\\tp_full.png',
+               'images\\render_bar_assets\\tp_empty.png'],
+        'VP': ['images\\render_bar_assets\\vp_full.png',
+               'images\\render_bar_assets\\vp_empty.png']
+    }
+    try:
+        pack = dict.get(name)
+        if full == True:
+            asset = pack[0]
+        else:
+            asset = pack[1]
+    except:
+        asset = 'images\\render_bar_assets\\blank.png'
+    return pygame.image.load(asset)
+
+
+def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions, game_map, camera, fov_map,
+               fov_recompute, message_log, camera_width, camera_height, map_width, map_height, tiles, game_state, options):
+
+    tilesize = 16
+    # Draw tiles near player
     if fov_recompute:
-        for y in range(game_map.height):
-            for x in range(game_map.width):
-                visible = libtcod.map_is_in_fov(fov_map, x, y)
-                wall = game_map.tiles[x][y].block_sight
-                
-                if visible:
-                    if wall:
-                        libtcod.console_set_char_background(con, x, y, colors.get('light_wall'), libtcod.BKGND_SET)
-                    else:
-                        libtcod.console_set_char_background(con, x, y, colors.get('light_ground'), libtcod.BKGND_SET)
-                    game_map.tiles[x][y].explored = True
-                elif game_map.tiles[x][y].explored:
-                    if wall:
-                        libtcod.console_set_char_background(con,x, y, colors.get('dark_wall'), libtcod.BKGND_SET)
-                    else:
-                        libtcod.console_set_char_background(con, x, y, colors.get('dark_ground'), libtcod.BKGND_SET)
-    #draw all entities in list
+        for y in range(map_height):
+            for x in range(map_width):
+                draw_tile(camera_surface, fov_map, game_map, x, y, camera.x, camera.y, tiles, tilesize, options)
+
+    for structure in structures:
+        draw_structure(camera_surface, camera.x, camera.y, structure, fov_map, game_map, tiles, tilesize)
+    for transition in transitions:
+        draw_entity(camera_surface, camera.x, camera.y, transition, fov_map, game_map, tilesize)
+    # draw all entities in list
     entities_in_render_order = sorted(entities, key=lambda x: x.render_order.value)
     for entity in entities_in_render_order:
-        draw_entity(con,entity, fov_map, game_map)
-    
-    
-    libtcod.console_blit(con, camera.x, camera.y, screen_width, screen_height, 0, 0, 0)
-    libtcod.console_set_default_background(panel, libtcod.black)
-    libtcod.console_clear(panel)
-    
-    #Print game messages one line at a time
-    y=1
+        draw_entity(camera_surface, camera.x, camera.y, entity, fov_map, game_map, tilesize)
+
+    screen.blit(camera_surface, (0, 0))
+
+    # Print game messages one line at a time
+    y = 0
     for message in message_log.messages:
-        libtcod.console_set_default_foreground(panel, message.color)
-        libtcod.console_print_ex(panel, message_log.x, y, libtcod.BKGND_NONE, libtcod.LEFT, message.text)
+        print_message(message_surface, message, 20, y)
         y += 1
-    
-    render_bar(panel, 1, 1, bar_width, 'HP', player.combatant.attributes.current_hp, player.combatant.max_hp, libtcod.light_red, libtcod.darker_red)
-    render_bar(panel, 1, 2, bar_width, 'MP', player.combatant.attributes.current_mp, player.combatant.max_mp, libtcod.light_blue, libtcod.darker_blue)
-    render_bar(panel, 1, 3, bar_width, 'TP', player.combatant.attributes.current_tp, player.combatant.max_tp, libtcod.light_green, libtcod.darker_green)
-    render_bar(panel, 1, 4, bar_width, 'VP', player.combatant.attributes.current_vp, player.combatant.max_vp, libtcod.light_orange, libtcod.darker_orange)
-    
-    libtcod.console_print_ex(panel, 1, 5, libtcod.BKGND_NONE, libtcod.LEFT, 'Dungeon Level: {0}'.format(game_map.dungeon_level))
-    libtcod.console_set_default_foreground(panel, libtcod.light_grey)
-    libtcod.console_print_ex(panel, 1, 0, libtcod.BKGND_NONE, libtcod.LEFT, get_names_under_mouse(mouse, entities, fov_map))
-    libtcod.console_blit(panel, 0, 0, screen_width, panel_height, 0, 0, panel_y)
-    
+
+    screen.blit(message_surface, (300, 592))
+    message_surface.fill((0, 0, 0))
+
+    render_bar(resource_surface, 0, 0, 300, 25, get_names_under_mouse(entities, fov_map), 1, 1)
+    render_bar(resource_surface, 0, 20, 300, 25, 'HP', player.combatant.attributes.current_hp, player.combatant.max_hp)
+    render_bar(resource_surface, 0, 40, 300, 25, 'MP', player.combatant.attributes.current_mp, player.combatant.max_mp)
+    render_bar(resource_surface, 0, 60, 300, 25, 'TP', player.combatant.attributes.current_tp, player.combatant.max_tp)
+    render_bar(resource_surface, 0, 80, 300, 25, 'VP', player.combatant.attributes.current_vp, player.combatant.max_vp)
+    render_bar(resource_surface, 0, 100, 300, 25, 'Dungeon Level: {0}'.format(game_map.dungeon_level), 1, 1)
+
+    screen.blit(resource_surface, (0, 592))
+
     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
-        
+
         if game_state == GameStates.SHOW_INVENTORY:
             inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
-        
+
         else:
             inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
-            
-        inventory_menu(con, inventory_title, player, 50, screen_width, screen_height)
+
+        inventory_menu(screen, inventory_title, 12, player, 200, camera_width, camera_height)
     elif game_state == GameStates.LEVEL_UP:
-        level_up_menu(con, 'Level up! Choose a stat boost:', player, 40, screen_width, screen_height)
+        lm_width = 400
+        level_up_menu(screen, 'Level up! Choose a stat boost:', player, lm_width, camera_width, camera_height)
     elif game_state == GameStates.CHARACTER_MENU:
-        character_menu(con, 'What would you like to look at?', 40, screen_width, screen_height)
+        cm_width = 400
+        character_menu(screen, 'What would you like to look at?', cm_width, camera_width, camera_height)
     elif game_state == GameStates.PRIMARY_STATS_SCREEN:
-        primary_stats_screen(player, 40, 30, screen_width, screen_height)
+        ps_width = 400
+        ps_height = 300
+        primary_stats_screen(screen, player, ps_width, ps_height, camera_width, camera_height)
     elif game_state == GameStates.COMBAT_STATS_SCREEN:
-        combat_stats_screen(player, 40, 30, screen_width, screen_height)
+        css_width = 400
+        css_height = 400
+        combat_stats_screen(screen, player, css_width, css_height, camera_width, camera_height)
     elif game_state == GameStates.NONCOMBAT_STATS_SCREEN:
-        noncombat_stats_screen(player, 40, 30, screen_width, screen_height)
+        nss_width = 400
+        nss_height = 400
+        noncombat_stats_screen(screen, player, nss_width, nss_height, camera_width, camera_height)
     elif game_state == GameStates.COMPETENCE_MENU:
-        competence_menu(con, 'What would you like to be more competent at?', 40, screen_width, screen_height)
+        cm_width = 400
+        competence_menu(screen, 'What would you like to be more competent at?', cm_width, camera_width, camera_height)
     elif game_state == GameStates.STRENGTH_FEATS:
-        strength_feats_menu(player, 40, 30, screen_width, screen_height)
+        sf_width = 400
+        sf_height = 300
+        strength_feats_menu(player, sf_width, sf_height, camera_width, camera_height)
     elif game_state == GameStates.INSTINCT_FEATS:
-        instinct_feats_menu(player, 40, 30, screen_width, screen_height)
+        if_width = 400
+        if_height = 300
+        instinct_feats_menu(player, if_width, if_height, camera_width, camera_height)
     elif game_state == GameStates.COORDINATION_FEATS:
-        coordinaton_feats_menu(player, 40, 30, screen_width, screen_height)
+        cf_width = 400
+        cf_height = 300
+        coordinaton_feats_menu(player, cf_width, cf_height, camera_width, camera_height)
     elif game_state == GameStates.VITALITY_FEATS:
-        vitality_feats_menu(player, 40, 30, screen_width, screen_height)
+        vf_width = 400
+        vf_height = 300
+        vitality_feats_menu(player, vf_width, vf_height, camera_width, camera_height)
     elif game_state == GameStates.ARCANA_FEATS:
-        arcana_feats_menu(player, 40, 30, screen_width, screen_height)
+        af_width = 400
+        af_height = 300
+        arcana_feats_menu(player, af_width, af_height, camera_width, camera_height)
     elif game_state == GameStates.IMPROVISATION_FEATS:
-        improvisation_feats_menu(player, 40, 30, screen_width, screen_height)
+        if_width = 400
+        if_height = 300
+        improvisation_feats_menu(player, if_width, if_height, camera_width, camera_height)
     elif game_state == GameStates.WISDOM_FEATS:
-        wisdom_feats_menu(player, 40, 30, screen_width, screen_height)
+        wf_width = 400
+        wf_height = 300
+        wisdom_feats_menu(player, wf_width, wf_height, camera_width, camera_height)
     elif game_state == GameStates.FINESSE_FEATS:
-        finesse_feats_menu(player, 40, 30, screen_width, screen_height)
+        ff_width = 400
+        ff_height = 300
+        finesse_feats_menu(player, ff_width, ff_height, camera_width, camera_height)
     elif game_state == GameStates.CHARISMA_FEATS:
-        charisma_feats_menu(player, 40, 30, screen_width, screen_height)
+        cf_width = 400
+        cf_height = 300
+        charisma_feats_menu(player, cf_width, cf_height, camera_width, camera_height)
     elif game_state == GameStates.DEVOTION_FEATS:
-        devotion_feats_menu(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.DIALOGUE:
-        dialogue_menu(player, 40, 30, screen_width, screen_height)
-        
+        df_width = 400
+        df_height = 300
+        devotion_feats_menu(player, df_width, df_height, camera_width, camera_height)
 
-                        
-def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width, screen_height, bar_width, panel_height, panel_y, mouse, colors, game_state):
-#draw all tiles in game_map
-    if fov_recompute:
-        for y in range(game_map.height):
-            for x in range(game_map.width):
-                visible = libtcod.map_is_in_fov(fov_map, x, y)
-                wall = game_map.tiles[x][y].block_sight
-                
-                if visible:
-                    if wall:
-                        libtcod.console_set_char_background(con, x, y, colors.get('light_wall'), libtcod.BKGND_SET)
-                    else:
-                        libtcod.console_set_char_background(con, x, y, colors.get('light_ground'), libtcod.BKGND_SET)
-                    game_map.tiles[x][y].explored = True
-                elif game_map.tiles[x][y].explored:
-                    if wall:
-                        libtcod.console_set_char_background(con, x, y, colors.get('dark_wall'), libtcod.BKGND_SET)
-                    else:
-                        libtcod.console_set_char_background(con, x, y, colors.get('dark_ground'), libtcod.BKGND_SET)
-    #draw all entities in list
-    entities_in_render_order = sorted(entities, key=lambda x: x.render_order.value)
-    for entity in entities_in_render_order:
-        draw_entity(con,entity, fov_map, game_map)
-    
-    
-    libtcod.console_blit(con, 0, 0, screen_width, screen_height, 0, 0, 0)
-    libtcod.console_set_default_background(panel, libtcod.black)
-    libtcod.console_clear(panel)
-    
-    #Print game messages one line at a time
-    y=1
-    for message in message_log.messages:
-        libtcod.console_set_default_foreground(panel, message.color)
-        libtcod.console_print_ex(panel, message_log.x, y, libtcod.BKGND_NONE, libtcod.LEFT, message.text)
-        y += 1
-    
-    render_bar(panel, 1, 1, bar_width, 'HP', player.combatant.attributes.current_hp, player.combatant.max_hp, libtcod.light_red, libtcod.darker_red)
-    render_bar(panel, 1, 2, bar_width, 'MP', player.combatant.attributes.current_mp, player.combatant.max_mp, libtcod.light_blue, libtcod.darker_blue)
-    render_bar(panel, 1, 3, bar_width, 'TP', player.combatant.attributes.current_tp, player.combatant.max_tp, libtcod.light_green, libtcod.darker_green)
-    render_bar(panel, 1, 4, bar_width, 'VP', player.combatant.attributes.current_vp, player.combatant.max_vp, libtcod.light_orange, libtcod.darker_orange)
-    
-    libtcod.console_print_ex(panel, 1, 5, libtcod.BKGND_NONE, libtcod.LEFT, 'Dungeon Level: {0}'.format(game_map.dungeon_level))
-    libtcod.console_set_default_foreground(panel, libtcod.light_grey)
-    libtcod.console_print_ex(panel, 1, 0, libtcod.BKGND_NONE, libtcod.LEFT, get_names_under_mouse(mouse, entities, fov_map))
-    libtcod.console_blit(panel, 0, 0, screen_width, panel_height, 0, 0, panel_y)
-    
-    if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
-        
-        if game_state == GameStates.SHOW_INVENTORY:
-            inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
-        
-        else:
-            inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
-            
-        inventory_menu(con, inventory_title, player, 50, screen_width, screen_height)
-    elif game_state == GameStates.LEVEL_UP:
-        level_up_menu(con, 'Level up! Choose a stat boost:', player, 40, screen_width, screen_height)
-    elif game_state == GameStates.CHARACTER_MENU:
-        character_menu(con, 'What would you like to look at?', 40, screen_width, screen_height)
-    elif game_state == GameStates.PRIMARY_STATS_SCREEN:
-        primary_stats_screen(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.COMBAT_STATS_SCREEN:
-        combat_stats_screen(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.NONCOMBAT_STATS_SCREEN:
-        noncombat_stats_screen(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.COMPETENCE_MENU:
-        competence_menu(con, 'What would you like to be more competent at?', 40, screen_width, screen_height)
-    elif game_state == GameStates.STRENGTH_FEATS:
-        strength_feats_menu(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.INSTINCT_FEATS:
-        instinct_feats_menu(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.COORDINATION_FEATS:
-        coordinaton_feats_menu(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.VITALITY_FEATS:
-        vitality_feats_menu(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.ARCANA_FEATS:
-        arcana_feats_menu(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.IMPROVISATION_FEATS:
-        improvisation_feats_menu(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.WISDOM_FEATS:
-        wisdom_feats_menu(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.FINESSE_FEATS:
-        finesse_feats_menu(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.CHARISMA_FEATS:
-        charisma_feats_menu(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.DEVOTION_FEATS:
-        devotion_feats_menu(player, 40, 30, screen_width, screen_height)
-    elif game_state == GameStates.DIALOGUE:
-        dialogue_menu(player, 40, 30, screen_width, screen_height)
-        
-    
 
-def clear_all(con, entities):
-
+def clear_all(screen, entities):
     for entity in entities:
-        clear_entity(con, entity)
+        clear_entity(screen, entity)
 
-def draw_entity(con, entity, fov_map, game_map):
-    if libtcod.map_is_in_fov(fov_map, entity.x, entity.y) or (entity.stairs and game_map.tiles[entity.x][entity.y].explored):
-        libtcod.console_set_default_foreground(con, entity.color)    
-        libtcod.console_put_char(con, entity.x, entity.y, entity.image, libtcod.BKGND_NONE)
 
-def clear_entity(con, entity):
-    #erase the character that represents this object
-    libtcod.console_put_char(con, entity.x, entity.y, ' ', libtcod.BKGND_NONE)
+def draw_entity(camera_surface, cx, cy, entity, fov_map, game_map, tilesize):
+    surfimg = pygame.image.load(entity.image)
+    if libtcod.map_is_in_fov(fov_map, entity.x, entity.y) or (
+            entity.stairs and game_map.tiles[entity.x][entity.y].explored):
+        camera_surface.blit(surfimg, ((entity.x - cx) * tilesize, (entity.y - cy) * tilesize))
+
+
+def draw_structure(camera_surface, cx, cy, structure, fov_map, game_map, tiles, tilesize):
+
+    count = 0
+    for j in range(structure.rect.y1, structure.rect.y2):
+        for i in range(structure.rect.x1, structure.rect.x2):
+            visible = libtcod.map_is_in_fov(fov_map, i, j)
+            if visible:
+                camera_surface.blit(structure.file_objs[0][count], ((i - cx) * tilesize, (j - cy) * tilesize))
+                count += 1
+            elif game_map.tiles[i][j].explored:
+                camera_surface.blit(structure.file_objs[1][count], ((i - cx) * tilesize, (j - cy) * tilesize))
+                count += 1
+            else:
+                camera_surface.blit(tiles.get('black'), ((i - cx) * tilesize, (j - cy) * tilesize))
+                count += 1
+
+
+def print_message(message_surface, message, mlogx, y):
+    fontsize = 12
+    font = pygame.font.SysFont("comicsansms", fontsize)
+    pm = font.render(message.text, True, message.color)
+    message_surface.blit(pm, (mlogx, y * fontsize))
+
+
+def draw_tile(camera_surface, fov_map, game_map, x, y, cx, cy, tiles, tilesize, options):
+    visible = libtcod.map_is_in_fov(fov_map, cx + x, cy + y)
+    wall = game_map.tiles[cx + x][cy + y].block_sight
+
+    if visible:
+        if game_map.tiles[cx + x][cy + y].type == 'road':
+            obj = tiles.get('light_road').get(game_map.tiles[cx + x][cy + y].mode)
+            camera_surface.blit(obj, (x * tilesize, y * tilesize))
+        elif wall:
+            camera_surface.blit(tiles.get('light_wall'), (x * tilesize, y * tilesize))
+        else:
+            img = game_map.current_map.floor_image
+            choice = str(pseudorandom_seed(x, y, options.get(img)))
+            obj = tiles.get('light_' + img).get('light_' + img + choice)
+            camera_surface.blit(obj, (x * tilesize, y * tilesize))
+        game_map.tiles[cx + x][cy + y].explored = True
+    elif game_map.tiles[cx + x][cy + y].explored:
+        if game_map.tiles[cx + x][cy + y].type == 'road':
+            obj = tiles.get('dark_road').get(game_map.tiles[cx + x][cy + y].mode)
+            camera_surface.blit(obj, (x * tilesize, y * tilesize))
+        elif wall:
+            camera_surface.blit(tiles.get('dark_wall'), (x * tilesize, y * tilesize))
+        else:
+            img = game_map.current_map.floor_image
+            choice = str(pseudorandom_seed(x, y, options.get(img)))
+            obj = tiles.get('dark_' + img).get('dark_' + img + choice)
+            camera_surface.blit(obj, (x * tilesize, y * tilesize))
+
+    else:
+        camera_surface.blit(tiles.get('black'), (x * tilesize, y * tilesize))
+
+
+def clear_entity(screen, entity):
+    # erase the character that represents this object
+    libtcod.console_put_char(screen, entity.x, entity.y, ' ', libtcod.BKGND_NONE)

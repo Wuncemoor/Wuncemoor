@@ -162,12 +162,14 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, cam
                         game_state = GameStates.ENEMY_TURN
 
                 if interact and game_state == GameStates.PLAYERS_TURN:
+                    nothing = True
                     for entity in entities:
                         if entity.x == player.x and entity.y == player.y:
                             if entity.item:
                                 game_map.current_map.map_entities.remove(entity)
                                 pickup_results = player.combatant.inventory.add_item(entity)
                                 player_turn_results.extend(pickup_results)
+                                nothing = False
                                 break
                     for transition in transitions:
                         if transition.x == player.x and transition.y == player.y:
@@ -180,11 +182,13 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, cam
                             entities.extend(game_map.current_map.map_entities)
                             transitions =[]
                             transitions.extend(game_map.current_map.transitions)
+                            structures = []
+                            structures.extend(game_map.current_map.structures)
                             fov_map = initialize_fov(game_map)
                             fov_recompute = True
-
+                            nothing = False
                             break
-                    else:
+                    if nothing:
                         message_log.add_message(Message('Nothing to see here, move along...', libtcod.yellow))
 
                 if show_inventory:

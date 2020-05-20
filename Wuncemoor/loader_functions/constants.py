@@ -1,4 +1,4 @@
-import tcod as libtcod
+
 import pygame as py
 
 
@@ -45,52 +45,56 @@ def get_constants():
         'dark_ground': py.image.load('images\\dark_ground.png'),
         'light_wall': py.image.load('images\\light_wall.png'),
         'light_ground': py.image.load('images\\light_ground.png'),
-        'light_road': py.image.load('images\\light_road.png'),
-        'dark_road': py.image.load('images\\dark_road.png'),
         'light_grass': light_grass_dict(),
         'dark_grass': dark_grass_dict(),
         'light_road': road_dict(True),
         'dark_road': road_dict(False),
         'light_dirt': dirt_dict(True),
         'dark_dirt': dirt_dict(False),
+        'light_deep': biome_dict('deep', True),
+        'dark_deep': biome_dict('deep', False),
+        'light_desert': biome_dict('desert', True),
+        'dark_desert': biome_dict('desert', False),
+        'light_forest': biome_dict('forest', True),
+        'dark_forest': biome_dict('forest', False),
+        'light_jungle': biome_dict('jungle', True),
+        'dark_jungle': biome_dict('jungle', False),
+        'light_plains': biome_dict('plains', True),
+        'dark_plains': biome_dict('plains', False),
+        'light_savannah': biome_dict('savannah', True),
+        'dark_savannah': biome_dict('savannah', False),
+        'light_shallow': biome_dict('shallow', True),
+        'dark_shallow': biome_dict('shallow', False),
+        'light_snow': biome_dict('snow', True),
+        'dark_snow': biome_dict('snow', False),
+        'light_taiga': biome_dict('taiga', True),
+        'dark_taiga': biome_dict('taiga', False),
+        'light_temprain': biome_dict('temprain', True),
+        'dark_temprain': biome_dict('temprain', False),
+        'light_tropicrain': biome_dict('tropicrain', True),
+        'dark_tropicrain': biome_dict('tropicrain', False),
+        'light_tundra': biome_dict('tundra', True),
+        'dark_tundra': biome_dict('tundra', False),
+
     }
 
     options = {
         'grass': 13,
         'dirt': 9,
+        'deep': 9,
+        'desert': 9,
+        'forest': 9,
+        'jungle': 9,
+        'plains': 9,
+        'savannah': 9,
+        'shallow': 9,
+        'snow': 9,
+        'taiga': 9,
+        'temprain': 9,
+        'tropicrain': 9,
+        'tundra':  9,
     }
 
-    colors = {
-        'dark_wall': libtcod.Color(0, 0, 100),
-        'dark_ground': libtcod.Color(50, 50, 150),
-        'light_wall': libtcod.Color(130, 110, 50),
-        'light_ground': libtcod.Color(200, 180, 50),
-        'grass': libtcod.Color(0, 191, 0),
-        'water': libtcod.Color(0, 191, 191)
-    }
-
-    pycolors = {
-        'TAIGA': py.Color(0, 75, 0),
-        'FOREST': py.Color(0, 135, 0),
-        'JUNGLE': py.Color(69, 65, 35),
-        'TROPICRAIN': py.Color(0, 255, 0),
-        'TEMPRAIN': py.Color(90, 180, 0),
-        'SHALLOW': py.Color(100, 175, 255),
-        'BLUE': py.Color(0, 0, 255),
-        'DEEP': py.Color(0, 0, 175),
-        'WHITE': py.Color(255, 255, 255),
-        'BLACK': py.Color(0, 0, 0),
-        'BROWN': py.Color(162, 42, 42),
-        'GREY': py.Color(84, 84, 84),
-        'TUNDRA': py.Color(173, 216, 230),
-        'PLAINS': py.Color(245, 222, 179),
-        'RED': py.Color(255, 0, 0),
-        'ORANGE': py.Color(255, 165, 0),
-        'YELLOW': py.Color(255, 255, 0),
-        'SAVANNAH': py.Color(128, 128, 0),
-        'DESERT': py.Color(213, 164, 117),
-        'OLIVE': py.Color(128, 128, 0),
-    }
 
     constants = {
         'window_title': window_title,
@@ -118,8 +122,6 @@ def get_constants():
         'fov_radius': fov_radius,
         'max_monsters_per_room': max_monsters_per_room,
         'max_items_per_room': max_items_per_room,
-        'colors': colors,
-        'pycolors': pycolors,
         'tiles': tiles,
         'options': options,
         'fps': fps,
@@ -230,3 +232,291 @@ def dirt_dict(visible):
             'dark_dirt8': py.image.load('images\\dirt\\dark_dirt8.png'),
         }
     return dirt_dict
+
+
+def biome_dict(biome, visible):
+
+    if visible:
+        deep_dict = {
+            'light_deep0': py.image.load('images\\world_map\\deep\\light_deep0.png'),
+            'light_deep1': py.image.load('images\\world_map\\deep\\light_deep1.png'),
+            'light_deep2': py.image.load('images\\world_map\\deep\\light_deep2.png'),
+            'light_deep3': py.image.load('images\\world_map\\deep\\light_deep3.png'),
+            'light_deep4': py.image.load('images\\world_map\\deep\\light_deep4.png'),
+            'light_deep5': py.image.load('images\\world_map\\deep\\light_deep5.png'),
+            'light_deep6': py.image.load('images\\world_map\\deep\\light_deep6.png'),
+            'light_deep7': py.image.load('images\\world_map\\deep\\light_deep7.png'),
+            'light_deep8': py.image.load('images\\world_map\\deep\\light_deep8.png'),
+        }
+        desert_dict = {
+            'light_desert0': py.image.load('images\\world_map\\desert\\light_desert0.png'),
+            'light_desert1': py.image.load('images\\world_map\\desert\\light_desert1.png'),
+            'light_desert2': py.image.load('images\\world_map\\desert\\light_desert2.png'),
+            'light_desert3': py.image.load('images\\world_map\\desert\\light_desert3.png'),
+            'light_desert4': py.image.load('images\\world_map\\desert\\light_desert4.png'),
+            'light_desert5': py.image.load('images\\world_map\\desert\\light_desert5.png'),
+            'light_desert6': py.image.load('images\\world_map\\desert\\light_desert6.png'),
+            'light_desert7': py.image.load('images\\world_map\\desert\\light_desert7.png'),
+            'light_desert8': py.image.load('images\\world_map\\desert\\light_desert8.png'),
+        }
+        forest_dict = {
+            'light_forest0': py.image.load('images\\world_map\\forest\\light_forest0.png'),
+            'light_forest1': py.image.load('images\\world_map\\forest\\light_forest1.png'),
+            'light_forest2': py.image.load('images\\world_map\\forest\\light_forest2.png'),
+            'light_forest3': py.image.load('images\\world_map\\forest\\light_forest3.png'),
+            'light_forest4': py.image.load('images\\world_map\\forest\\light_forest4.png'),
+            'light_forest5': py.image.load('images\\world_map\\forest\\light_forest5.png'),
+            'light_forest6': py.image.load('images\\world_map\\forest\\light_forest6.png'),
+            'light_forest7': py.image.load('images\\world_map\\forest\\light_forest7.png'),
+            'light_forest8': py.image.load('images\\world_map\\forest\\light_forest8.png'),
+        }
+        jungle_dict = {
+            'light_jungle0': py.image.load('images\\world_map\\jungle\\light_jungle0.png'),
+            'light_jungle1': py.image.load('images\\world_map\\jungle\\light_jungle1.png'),
+            'light_jungle2': py.image.load('images\\world_map\\jungle\\light_jungle2.png'),
+            'light_jungle3': py.image.load('images\\world_map\\jungle\\light_jungle3.png'),
+            'light_jungle4': py.image.load('images\\world_map\\jungle\\light_jungle4.png'),
+            'light_jungle5': py.image.load('images\\world_map\\jungle\\light_jungle5.png'),
+            'light_jungle6': py.image.load('images\\world_map\\jungle\\light_jungle6.png'),
+            'light_jungle7': py.image.load('images\\world_map\\jungle\\light_jungle7.png'),
+            'light_jungle8': py.image.load('images\\world_map\\jungle\\light_jungle8.png'),
+        }
+        plains_dict = {
+            'light_plains0': py.image.load('images\\world_map\\plains\\light_plains0.png'),
+            'light_plains1': py.image.load('images\\world_map\\plains\\light_plains1.png'),
+            'light_plains2': py.image.load('images\\world_map\\plains\\light_plains2.png'),
+            'light_plains3': py.image.load('images\\world_map\\plains\\light_plains3.png'),
+            'light_plains4': py.image.load('images\\world_map\\plains\\light_plains4.png'),
+            'light_plains5': py.image.load('images\\world_map\\plains\\light_plains5.png'),
+            'light_plains6': py.image.load('images\\world_map\\plains\\light_plains6.png'),
+            'light_plains7': py.image.load('images\\world_map\\plains\\light_plains7.png'),
+            'light_plains8': py.image.load('images\\world_map\\plains\\light_plains8.png'),
+        }
+
+        savannah_dict = {
+            'light_savannah0': py.image.load('images\\world_map\\savannah\\light_savannah0.png'),
+            'light_savannah1': py.image.load('images\\world_map\\savannah\\light_savannah1.png'),
+            'light_savannah2': py.image.load('images\\world_map\\savannah\\light_savannah2.png'),
+            'light_savannah3': py.image.load('images\\world_map\\savannah\\light_savannah3.png'),
+            'light_savannah4': py.image.load('images\\world_map\\savannah\\light_savannah4.png'),
+            'light_savannah5': py.image.load('images\\world_map\\savannah\\light_savannah5.png'),
+            'light_savannah6': py.image.load('images\\world_map\\savannah\\light_savannah6.png'),
+            'light_savannah7': py.image.load('images\\world_map\\savannah\\light_savannah7.png'),
+            'light_savannah8': py.image.load('images\\world_map\\savannah\\light_savannah8.png'),
+        }
+        shallow_dict = {
+            'light_shallow0': py.image.load('images\\world_map\\shallow\\light_shallow0.png'),
+            'light_shallow1': py.image.load('images\\world_map\\shallow\\light_shallow1.png'),
+            'light_shallow2': py.image.load('images\\world_map\\shallow\\light_shallow2.png'),
+            'light_shallow3': py.image.load('images\\world_map\\shallow\\light_shallow3.png'),
+            'light_shallow4': py.image.load('images\\world_map\\shallow\\light_shallow4.png'),
+            'light_shallow5': py.image.load('images\\world_map\\shallow\\light_shallow5.png'),
+            'light_shallow6': py.image.load('images\\world_map\\shallow\\light_shallow6.png'),
+            'light_shallow7': py.image.load('images\\world_map\\shallow\\light_shallow7.png'),
+            'light_shallow8': py.image.load('images\\world_map\\shallow\\light_shallow8.png'),
+        }
+        snow_dict = {
+            'light_snow0': py.image.load('images\\world_map\\snow\\light_snow0.png'),
+            'light_snow1': py.image.load('images\\world_map\\snow\\light_snow1.png'),
+            'light_snow2': py.image.load('images\\world_map\\snow\\light_snow2.png'),
+            'light_snow3': py.image.load('images\\world_map\\snow\\light_snow3.png'),
+            'light_snow4': py.image.load('images\\world_map\\snow\\light_snow4.png'),
+            'light_snow5': py.image.load('images\\world_map\\snow\\light_snow5.png'),
+            'light_snow6': py.image.load('images\\world_map\\snow\\light_snow6.png'),
+            'light_snow7': py.image.load('images\\world_map\\snow\\light_snow7.png'),
+            'light_snow8': py.image.load('images\\world_map\\snow\\light_snow8.png'),
+        }
+        taiga_dict = {
+            'light_taiga0': py.image.load('images\\world_map\\taiga\\light_taiga0.png'),
+            'light_taiga1': py.image.load('images\\world_map\\taiga\\light_taiga1.png'),
+            'light_taiga2': py.image.load('images\\world_map\\taiga\\light_taiga2.png'),
+            'light_taiga3': py.image.load('images\\world_map\\taiga\\light_taiga3.png'),
+            'light_taiga4': py.image.load('images\\world_map\\taiga\\light_taiga4.png'),
+            'light_taiga5': py.image.load('images\\world_map\\taiga\\light_taiga5.png'),
+            'light_taiga6': py.image.load('images\\world_map\\taiga\\light_taiga6.png'),
+            'light_taiga7': py.image.load('images\\world_map\\taiga\\light_taiga7.png'),
+            'light_taiga8': py.image.load('images\\world_map\\taiga\\light_taiga8.png'),
+        }
+        temprain_dict = {
+            'light_temprain0': py.image.load('images\\world_map\\temprain\\light_temprain0.png'),
+            'light_temprain1': py.image.load('images\\world_map\\temprain\\light_temprain1.png'),
+            'light_temprain2': py.image.load('images\\world_map\\temprain\\light_temprain2.png'),
+            'light_temprain3': py.image.load('images\\world_map\\temprain\\light_temprain3.png'),
+            'light_temprain4': py.image.load('images\\world_map\\temprain\\light_temprain4.png'),
+            'light_temprain5': py.image.load('images\\world_map\\temprain\\light_temprain5.png'),
+            'light_temprain6': py.image.load('images\\world_map\\temprain\\light_temprain6.png'),
+            'light_temprain7': py.image.load('images\\world_map\\temprain\\light_temprain7.png'),
+            'light_temprain8': py.image.load('images\\world_map\\temprain\\light_temprain8.png'),
+        }
+        tropicrain_dict = {
+            'light_tropicrain0': py.image.load('images\\world_map\\tropicrain\\light_tropicrain0.png'),
+            'light_tropicrain1': py.image.load('images\\world_map\\tropicrain\\light_tropicrain1.png'),
+            'light_tropicrain2': py.image.load('images\\world_map\\tropicrain\\light_tropicrain2.png'),
+            'light_tropicrain3': py.image.load('images\\world_map\\tropicrain\\light_tropicrain3.png'),
+            'light_tropicrain4': py.image.load('images\\world_map\\tropicrain\\light_tropicrain4.png'),
+            'light_tropicrain5': py.image.load('images\\world_map\\tropicrain\\light_tropicrain5.png'),
+            'light_tropicrain6': py.image.load('images\\world_map\\tropicrain\\light_tropicrain6.png'),
+            'light_tropicrain7': py.image.load('images\\world_map\\tropicrain\\light_tropicrain7.png'),
+            'light_tropicrain8': py.image.load('images\\world_map\\tropicrain\\light_tropicrain8.png'),
+        }
+        tundra_dict = {
+            'light_tundra0': py.image.load('images\\world_map\\tundra\\light_tundra0.png'),
+            'light_tundra1': py.image.load('images\\world_map\\tundra\\light_tundra1.png'),
+            'light_tundra2': py.image.load('images\\world_map\\tundra\\light_tundra2.png'),
+            'light_tundra3': py.image.load('images\\world_map\\tundra\\light_tundra3.png'),
+            'light_tundra4': py.image.load('images\\world_map\\tundra\\light_tundra4.png'),
+            'light_tundra5': py.image.load('images\\world_map\\tundra\\light_tundra5.png'),
+            'light_tundra6': py.image.load('images\\world_map\\tundra\\light_tundra6.png'),
+            'light_tundra7': py.image.load('images\\world_map\\tundra\\light_tundra7.png'),
+            'light_tundra8': py.image.load('images\\world_map\\tundra\\light_tundra8.png'),
+        }
+    else:
+        deep_dict = {
+            'dark_deep0': py.image.load('images\\world_map\\deep\\dark_deep0.png'),
+            'dark_deep1': py.image.load('images\\world_map\\deep\\dark_deep1.png'),
+            'dark_deep2': py.image.load('images\\world_map\\deep\\dark_deep2.png'),
+            'dark_deep3': py.image.load('images\\world_map\\deep\\dark_deep3.png'),
+            'dark_deep4': py.image.load('images\\world_map\\deep\\dark_deep4.png'),
+            'dark_deep5': py.image.load('images\\world_map\\deep\\dark_deep5.png'),
+            'dark_deep6': py.image.load('images\\world_map\\deep\\dark_deep6.png'),
+            'dark_deep7': py.image.load('images\\world_map\\deep\\dark_deep7.png'),
+            'dark_deep8': py.image.load('images\\world_map\\deep\\dark_deep8.png'),
+        }
+        desert_dict = {
+            'dark_desert0': py.image.load('images\\world_map\\desert\\dark_desert0.png'),
+            'dark_desert1': py.image.load('images\\world_map\\desert\\dark_desert1.png'),
+            'dark_desert2': py.image.load('images\\world_map\\desert\\dark_desert2.png'),
+            'dark_desert3': py.image.load('images\\world_map\\desert\\dark_desert3.png'),
+            'dark_desert4': py.image.load('images\\world_map\\desert\\dark_desert4.png'),
+            'dark_desert5': py.image.load('images\\world_map\\desert\\dark_desert5.png'),
+            'dark_desert6': py.image.load('images\\world_map\\desert\\dark_desert6.png'),
+            'dark_desert7': py.image.load('images\\world_map\\desert\\dark_desert7.png'),
+            'dark_desert8': py.image.load('images\\world_map\\desert\\dark_desert8.png'),
+        }
+        forest_dict = {
+            'dark_forest0': py.image.load('images\\world_map\\forest\\dark_forest0.png'),
+            'dark_forest1': py.image.load('images\\world_map\\forest\\dark_forest1.png'),
+            'dark_forest2': py.image.load('images\\world_map\\forest\\dark_forest2.png'),
+            'dark_forest3': py.image.load('images\\world_map\\forest\\dark_forest3.png'),
+            'dark_forest4': py.image.load('images\\world_map\\forest\\dark_forest4.png'),
+            'dark_forest5': py.image.load('images\\world_map\\forest\\dark_forest5.png'),
+            'dark_forest6': py.image.load('images\\world_map\\forest\\dark_forest6.png'),
+            'dark_forest7': py.image.load('images\\world_map\\forest\\dark_forest7.png'),
+            'dark_forest8': py.image.load('images\\world_map\\forest\\dark_forest8.png'),
+        }
+        jungle_dict = {
+            'dark_jungle0': py.image.load('images\\world_map\\jungle\\dark_jungle0.png'),
+            'dark_jungle1': py.image.load('images\\world_map\\jungle\\dark_jungle1.png'),
+            'dark_jungle2': py.image.load('images\\world_map\\jungle\\dark_jungle2.png'),
+            'dark_jungle3': py.image.load('images\\world_map\\jungle\\dark_jungle3.png'),
+            'dark_jungle4': py.image.load('images\\world_map\\jungle\\dark_jungle4.png'),
+            'dark_jungle5': py.image.load('images\\world_map\\jungle\\dark_jungle5.png'),
+            'dark_jungle6': py.image.load('images\\world_map\\jungle\\dark_jungle6.png'),
+            'dark_jungle7': py.image.load('images\\world_map\\jungle\\dark_jungle7.png'),
+            'dark_jungle8': py.image.load('images\\world_map\\jungle\\dark_jungle8.png'),
+        }
+        plains_dict = {
+            'dark_plains0': py.image.load('images\\world_map\\plains\\dark_plains0.png'),
+            'dark_plains1': py.image.load('images\\world_map\\plains\\dark_plains1.png'),
+            'dark_plains2': py.image.load('images\\world_map\\plains\\dark_plains2.png'),
+            'dark_plains3': py.image.load('images\\world_map\\plains\\dark_plains3.png'),
+            'dark_plains4': py.image.load('images\\world_map\\plains\\dark_plains4.png'),
+            'dark_plains5': py.image.load('images\\world_map\\plains\\dark_plains5.png'),
+            'dark_plains6': py.image.load('images\\world_map\\plains\\dark_plains6.png'),
+            'dark_plains7': py.image.load('images\\world_map\\plains\\dark_plains7.png'),
+            'dark_plains8': py.image.load('images\\world_map\\plains\\dark_plains8.png'),
+        }
+        savannah_dict = {
+            'dark_savannah0': py.image.load('images\\world_map\\savannah\\dark_savannah0.png'),
+            'dark_savannah1': py.image.load('images\\world_map\\savannah\\dark_savannah1.png'),
+            'dark_savannah2': py.image.load('images\\world_map\\savannah\\dark_savannah2.png'),
+            'dark_savannah3': py.image.load('images\\world_map\\savannah\\dark_savannah3.png'),
+            'dark_savannah4': py.image.load('images\\world_map\\savannah\\dark_savannah4.png'),
+            'dark_savannah5': py.image.load('images\\world_map\\savannah\\dark_savannah5.png'),
+            'dark_savannah6': py.image.load('images\\world_map\\savannah\\dark_savannah6.png'),
+            'dark_savannah7': py.image.load('images\\world_map\\savannah\\dark_savannah7.png'),
+            'dark_savannah8': py.image.load('images\\world_map\\savannah\\dark_savannah8.png'),
+        }
+        shallow_dict = {
+            'dark_shallow0': py.image.load('images\\world_map\\shallow\\dark_shallow0.png'),
+            'dark_shallow1': py.image.load('images\\world_map\\shallow\\dark_shallow1.png'),
+            'dark_shallow2': py.image.load('images\\world_map\\shallow\\dark_shallow2.png'),
+            'dark_shallow3': py.image.load('images\\world_map\\shallow\\dark_shallow3.png'),
+            'dark_shallow4': py.image.load('images\\world_map\\shallow\\dark_shallow4.png'),
+            'dark_shallow5': py.image.load('images\\world_map\\shallow\\dark_shallow5.png'),
+            'dark_shallow6': py.image.load('images\\world_map\\shallow\\dark_shallow6.png'),
+            'dark_shallow7': py.image.load('images\\world_map\\shallow\\dark_shallow7.png'),
+            'dark_shallow8': py.image.load('images\\world_map\\shallow\\dark_shallow8.png'),
+        }
+        snow_dict = {
+            'dark_snow0': py.image.load('images\\world_map\\snow\\dark_snow0.png'),
+            'dark_snow1': py.image.load('images\\world_map\\snow\\dark_snow1.png'),
+            'dark_snow2': py.image.load('images\\world_map\\snow\\dark_snow2.png'),
+            'dark_snow3': py.image.load('images\\world_map\\snow\\dark_snow3.png'),
+            'dark_snow4': py.image.load('images\\world_map\\snow\\dark_snow4.png'),
+            'dark_snow5': py.image.load('images\\world_map\\snow\\dark_snow5.png'),
+            'dark_snow6': py.image.load('images\\world_map\\snow\\dark_snow6.png'),
+            'dark_snow7': py.image.load('images\\world_map\\snow\\dark_snow7.png'),
+            'dark_snow8': py.image.load('images\\world_map\\snow\\dark_snow8.png'),
+        }
+        taiga_dict = {
+            'dark_taiga0': py.image.load('images\\world_map\\taiga\\dark_taiga0.png'),
+            'dark_taiga1': py.image.load('images\\world_map\\taiga\\dark_taiga1.png'),
+            'dark_taiga2': py.image.load('images\\world_map\\taiga\\dark_taiga2.png'),
+            'dark_taiga3': py.image.load('images\\world_map\\taiga\\dark_taiga3.png'),
+            'dark_taiga4': py.image.load('images\\world_map\\taiga\\dark_taiga4.png'),
+            'dark_taiga5': py.image.load('images\\world_map\\taiga\\dark_taiga5.png'),
+            'dark_taiga6': py.image.load('images\\world_map\\taiga\\dark_taiga6.png'),
+            'dark_taiga7': py.image.load('images\\world_map\\taiga\\dark_taiga7.png'),
+            'dark_taiga8': py.image.load('images\\world_map\\taiga\\dark_taiga8.png'),
+        }
+        temprain_dict = {
+            'dark_temprain0': py.image.load('images\\world_map\\temprain\\dark_temprain0.png'),
+            'dark_temprain1': py.image.load('images\\world_map\\temprain\\dark_temprain1.png'),
+            'dark_temprain2': py.image.load('images\\world_map\\temprain\\dark_temprain2.png'),
+            'dark_temprain3': py.image.load('images\\world_map\\temprain\\dark_temprain3.png'),
+            'dark_temprain4': py.image.load('images\\world_map\\temprain\\dark_temprain4.png'),
+            'dark_temprain5': py.image.load('images\\world_map\\temprain\\dark_temprain5.png'),
+            'dark_temprain6': py.image.load('images\\world_map\\temprain\\dark_temprain6.png'),
+            'dark_temprain7': py.image.load('images\\world_map\\temprain\\dark_temprain7.png'),
+            'dark_temprain8': py.image.load('images\\world_map\\temprain\\dark_temprain8.png'),
+        }
+        tropicrain_dict = {
+            'dark_tropicrain0': py.image.load('images\\world_map\\tropicrain\\dark_tropicrain0.png'),
+            'dark_tropicrain1': py.image.load('images\\world_map\\tropicrain\\dark_tropicrain1.png'),
+            'dark_tropicrain2': py.image.load('images\\world_map\\tropicrain\\dark_tropicrain2.png'),
+            'dark_tropicrain3': py.image.load('images\\world_map\\tropicrain\\dark_tropicrain3.png'),
+            'dark_tropicrain4': py.image.load('images\\world_map\\tropicrain\\dark_tropicrain4.png'),
+            'dark_tropicrain5': py.image.load('images\\world_map\\tropicrain\\dark_tropicrain5.png'),
+            'dark_tropicrain6': py.image.load('images\\world_map\\tropicrain\\dark_tropicrain6.png'),
+            'dark_tropicrain7': py.image.load('images\\world_map\\tropicrain\\dark_tropicrain7.png'),
+            'dark_tropicrain8': py.image.load('images\\world_map\\tropicrain\\dark_tropicrain8.png'),
+        }
+        tundra_dict = {
+            'dark_tundra0': py.image.load('images\\world_map\\tundra\\dark_tundra0.png'),
+            'dark_tundra1': py.image.load('images\\world_map\\tundra\\dark_tundra1.png'),
+            'dark_tundra2': py.image.load('images\\world_map\\tundra\\dark_tundra2.png'),
+            'dark_tundra3': py.image.load('images\\world_map\\tundra\\dark_tundra3.png'),
+            'dark_tundra4': py.image.load('images\\world_map\\tundra\\dark_tundra4.png'),
+            'dark_tundra5': py.image.load('images\\world_map\\tundra\\dark_tundra5.png'),
+            'dark_tundra6': py.image.load('images\\world_map\\tundra\\dark_tundra6.png'),
+            'dark_tundra7': py.image.load('images\\world_map\\tundra\\dark_tundra7.png'),
+            'dark_tundra8': py.image.load('images\\world_map\\tundra\\dark_tundra8.png'),
+        }
+    biomes_dict = {
+        'deep': deep_dict,
+        'desert': desert_dict,
+        'forest': forest_dict,
+        'jungle': jungle_dict,
+        'plains': plains_dict,
+        'savannah': savannah_dict,
+        'shallow': shallow_dict,
+        'snow': snow_dict,
+        'taiga': taiga_dict,
+        'temprain': temprain_dict,
+        'tropicrain': tropicrain_dict,
+        'tundra': tundra_dict,
+    }
+
+    return biomes_dict.get(biome)
+

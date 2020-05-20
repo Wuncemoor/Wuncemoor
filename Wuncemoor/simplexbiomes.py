@@ -1,5 +1,4 @@
 from opensimplex import OpenSimplex
-import numpy as np
 import pygame
 import random
 
@@ -112,20 +111,10 @@ def draw_simplex_map(screen, width, height, octaves, persist, lacuna):
                     screen.set_at((j,i), DEEP)
                 else:
                     screen.set_at((j,i), DEEP)
-                    
+
             else:
-                # testdict = {
-                      # 'very_hot': RED,
-                      # 'hot': ORANGE,
-                      # 'warm': YELLOW,
-                      # 'cool': TROPICRAIN,
-                      # 'cold': FOREST,
-                      # 'very_cold': SHALLOW,
-                      # 'polar': WHITE,
-                      # }
                  
                 temp = temperature(templist, temp)
-                #biome = testdict[temp]
                 moistlist = get_moistlist(temp)
                 biome = moisture(moistlist, moist)
                 screen.set_at((j,i), biome)
@@ -138,8 +127,8 @@ def main():
     pygame.display.set_caption('Opensimplex')
     
 
-    screen_width = 700
-    screen_height = 700
+    screen_width = 350
+    screen_height = 350
     octaves = 5
     persist = 0.5
     lacuna = 2.5

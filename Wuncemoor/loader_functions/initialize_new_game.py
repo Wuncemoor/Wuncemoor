@@ -16,7 +16,7 @@ def get_game_variables(constants):
     transitions = []
     
     dungeons = get_dungeons(constants)
-    game_map = GameMap(dungeons['start'].maps[0])
+    game_map = GameMap(dungeons['town'].maps[0])
     
     entities.extend(game_map.current_map.map_entities)
     structures.extend(game_map.current_map.structures)
