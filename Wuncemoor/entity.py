@@ -1,13 +1,12 @@
 import math
 import tcod as libtcod
-from PIL import Image
 from render_functions import RenderOrder
 from components.item import Item
 #Generic object representing PC and NPC, items, etc
 class Entity:
 
     #Creation
-    def __init__(self, x, y, image=None, blocks=False, render_order=RenderOrder.CORPSE, combatant=None, item=None, stairs=None):
+    def __init__(self, x, y, blocks=False, render_order=RenderOrder.CORPSE, combatant=None, item=None, stairs=None):
         self.x = x
         self.y = y
         self.blocks = blocks
