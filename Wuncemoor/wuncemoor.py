@@ -73,7 +73,7 @@ def main():
                 show_load_error_message = False
             elif new_game:
 
-                player, dungeons, entities, structures, transitions, game_map, camera, message_log, game_state = get_game_variables(
+                player, dungeons, entities, structures, transitions, game_map, world_map, camera, message_log, game_state = get_game_variables(
                     constants)
                 camera.refocus(player.x, player.y, game_map, constants)
                 game_state = GameStates.PLAYERS_TURN
@@ -81,7 +81,7 @@ def main():
                 show_main_menu = False
             elif load_saved_game:
                 try:
-                    player, dungeons, entities, structures, transitions, game_map, camera, message_log, game_state = load_game()
+                    player, dungeons, entities, structures, transitions, game_map, world_map, camera, message_log, game_state = load_game()
                     show_main_menu = False
                 except FileNotFoundError:
                     show_load_error_message = True
@@ -92,12 +92,12 @@ def main():
         else:
             screen.fill((0, 0, 0))
             show_main_menu = False
-            play_game(player, dungeons, entities, structures, transitions, game_map, camera, message_log, game_state,
+            play_game(player, dungeons, entities, structures, transitions, game_map, world_map, camera, message_log, game_state,
                       screen, camera_surface,
                       resource_surface, message_surface, constants)
 
 
-def play_game(player, dungeons, entities, structures, transitions, game_map, camera, message_log, game_state, screen,
+def play_game(player, dungeons, entities, structures, transitions, game_map, world_map, camera, message_log, game_state, screen,
               camera_surface,
               resource_surface, message_surface, constants):
     fov_recompute = True
@@ -119,6 +119,7 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, cam
                 interact = action.get('interact')
                 show_inventory = action.get('show_inventory')
                 drop_inventory = action.get('drop_inventory')
+                show_map = action.get('show_map')
                 show_competence = action.get('show_competence')
                 inventory_index = action.get('inventory_index')
                 show_stats_menu = action.get('show_stats_menu')
@@ -206,6 +207,10 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, cam
                 if encounter:
                     previous_game_state = game_state
                     game_state = GameStates.ENCOUNTER
+
+                if show_map:
+                    previous_game_state = game_state
+                    game_state = GameStates.SHOW_MAP
 
                 if inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and inventory_index < \
                         len(player.combatant.inventory.items):
@@ -308,7 +313,8 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, cam
                 if wait:
                     game_state = GameStates.ENEMY_TURN
                 if exit_game:
-                    if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU):
+                    if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU,
+                                      GameStates.SHOW_MAP):
                         game_state = previous_game_state
                     elif game_state in (
                             GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN,
@@ -322,7 +328,6 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, cam
                             GameStates.DEVOTION_FEATS):
                         game_state = previous_game_state
                         previous_game_state = older_game_state
-                        older_game_state = even_older_game_state
                     elif game_state == GameStates.COMPETENCE_MENU:
                         game_state = GameStates.PLAYERS_TURN
                     elif game_state == GameStates.TARGETING:
@@ -437,7 +442,7 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, cam
                           constants['fov_algorithm'])
 
         render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
-                   game_map,camera, fov_map, fov_recompute, message_log, constants['cscreen_width'],
+                   game_map, world_map, constants['mini_map'], camera, fov_map, fov_recompute, message_log, constants['cscreen_width'],
                    constants['cscreen_height'], constants['map_width'], constants['map_height'], constants['tiles'],
                    game_state, constants['options'])
 

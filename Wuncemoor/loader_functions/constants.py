@@ -25,8 +25,8 @@ def get_constants():
     map_height = 37
 
     fps = 60
-    alpha_width = 80
-    alpha_height = 37
+    start_town_width = 80
+    start_town_height = 37
 
     room_max_size = 10
     room_min_size = 6
@@ -40,8 +40,8 @@ def get_constants():
     max_items_per_room = 2
 
     world_map_constants = {
-        'width': 700,
-        'height': 700,
+        'width': 100,
+        'height': 100,
         'octaves': 5,
         'persist': 0.5,
         'lacuna': 2.5,
@@ -90,6 +90,22 @@ def get_constants():
 
     }
 
+    mini_map = {
+        'deep': py.image.load('images\\world_map\\mini_map\\deep.png'),
+        'desert': py.image.load('images\\world_map\\mini_map\\desert.png'),
+        'forest': py.image.load('images\\world_map\\mini_map\\forest.png'),
+        'jungle': py.image.load('images\\world_map\\mini_map\\jungle.png'),
+        'plains': py.image.load('images\\world_map\\mini_map\\plains.png'),
+        'savannah': py.image.load('images\\world_map\\mini_map\\savannah.png'),
+        'shallow': py.image.load('images\\world_map\\mini_map\\shallow.png'),
+        'snow': py.image.load('images\\world_map\\mini_map\\snow.png'),
+        'taiga': py.image.load('images\\world_map\\mini_map\\taiga.png'),
+        'temprain': py.image.load('images\\world_map\\mini_map\\temprain.png'),
+        'tropicrain': py.image.load('images\\world_map\\mini_map\\tropicrain.png'),
+        'tundra': py.image.load('images\\world_map\\mini_map\\tundra.png')
+
+    }
+
     options = {
         'grass': 13,
         'dirt': 9,
@@ -105,6 +121,10 @@ def get_constants():
         'temprain': 9,
         'tropicrain': 9,
         'tundra': 9,
+    }
+    stairs = {
+        'down': 'images\\stairsdown.png',
+        'up': 'images\\stairsup.png',
     }
 
 
@@ -124,8 +144,8 @@ def get_constants():
         'message_x': message_x,
         'message_width': message_width,
         'message_height': message_height,
-        'alpha_width': alpha_width,
-        'alpha_height': alpha_height,
+        'start_town_width': start_town_width,
+        'start_town_height': start_town_height,
         'room_max_size': room_max_size,
         'room_min_size': room_min_size,
         'max_rooms': max_rooms,
@@ -140,6 +160,8 @@ def get_constants():
         'map_width': map_width,
         'map_height': map_height,
         'world_map_constants': world_map_constants,
+        'mini_map': mini_map,
+        'stairs': stairs,
     }
     return constants
 

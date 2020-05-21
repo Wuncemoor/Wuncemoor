@@ -25,3 +25,4 @@ class GameStates(Enum):
     DEVOTION_FEATS = 22
     ENCOUNTER = 23
     DIALOGUE = 24
+    SHOW_MAP = 25

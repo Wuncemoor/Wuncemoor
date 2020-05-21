@@ -1,7 +1,8 @@
 class DungeonTree:
     
     def __init__(self, root):
-        self.root = worldmap
+        self.root = root
+
 
 class DungeonTreeNode:
 

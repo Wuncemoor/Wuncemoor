@@ -299,6 +299,27 @@ def noncombat_stats_screen(screen, player, css_width, css_height, camera_width, 
     screen.blit(window, (x, y))
 
 
+def map_menu(screen, world_map, images, mm_width, mm_height, camera_width, camera_height):
+    window = pygame.Surface((mm_width, mm_height))
+    offset_x = 50
+    offset_y = 50
+    i, j = 0, 0
+
+    for row in world_map:
+        for tile in row:
+            img = images.get(tile.type)
+            window.blit(img, (offset_x + i, offset_y + j))
+            j += 1
+        i += 1
+        j = 0
+
+
+    x = camera_width // 2 - mm_width // 2
+    y = camera_height // 2 - mm_height // 2
+    screen.blit(window, (x, y))
+
+
+
 def message_box(screen, width, screen_width, screen_height):
     fontsize = 12
 

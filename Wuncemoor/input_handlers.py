@@ -22,6 +22,8 @@ def handle_keys(key, game_state):
         return handle_strength(key)
     elif game_state == GameStates.COMPETENCE_MENU:
         return handle_competence_menu(key)
+    elif game_state == GameStates.SHOW_MAP:
+        return handle_map_screen(key)
     return {}
 
 
@@ -60,6 +62,8 @@ def handle_player_turn_keys(key):
         return {'wait': True}
     elif key == pygame.K_i:
         return {'show_inventory': True}
+    elif key == pygame.K_m:
+        return {'show_map': True}
     # Disabled until finished
     # elif key == pygame.K_f:
     # return {'show_competence': True}
@@ -99,8 +103,10 @@ def handle_inventory_keys(key):
     return {}
 
 
-def handle_character_screen(key):
-    if event.key == pygame.K_ESCAPE:
+def handle_map_screen(key):
+    if key == pygame.K_ESCAPE:
+        return {'exit': True}
+    elif key == pygame.K_m:
         return {'exit': True}
         
     return {}

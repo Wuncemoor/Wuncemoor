@@ -4,7 +4,7 @@ from game_states import GameStates
 from menus import inventory_menu, level_up_menu, competence_menu, character_menu, primary_stats_screen, \
     combat_stats_screen, noncombat_stats_screen, strength_feats_menu, instinct_feats_menu, coordinaton_feats_menu, \
     vitality_feats_menu, arcana_feats_menu, improvisation_feats_menu, wisdom_feats_menu, finesse_feats_menu, \
-    charisma_feats_menu, devotion_feats_menu
+    charisma_feats_menu, devotion_feats_menu, map_menu
 from random_utils import pseudorandom_seed
 
 
@@ -74,7 +74,7 @@ def get_render_bar_asset(name, full):
     return pygame.image.load(asset)
 
 
-def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions, game_map, camera, fov_map,
+def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions, game_map, world_map, images, camera, fov_map,
                fov_recompute, message_log, camera_width, camera_height, map_width, map_height, tiles, game_state, options):
 
     tilesize = 16
@@ -122,6 +122,10 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
             inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
 
         inventory_menu(screen, inventory_title, 12, player, 200, camera_width, camera_height)
+    elif game_state == GameStates.SHOW_MAP:
+        mm_width = 400
+        mm_height = 400
+        map_menu(screen, world_map, images, mm_width, mm_height, camera_width, camera_height)
     elif game_state == GameStates.LEVEL_UP:
         lm_width = 400
         level_up_menu(screen, 'Level up! Choose a stat boost:', player, lm_width, camera_width, camera_height)
