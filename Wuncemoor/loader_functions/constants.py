@@ -40,8 +40,8 @@ def get_constants():
     max_items_per_room = 2
 
     world_map_constants = {
-        'width': 100,
-        'height': 100,
+        'width': 150,
+        'height': 150,
         'octaves': 5,
         'persist': 0.5,
         'lacuna': 2.5,

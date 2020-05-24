@@ -5,7 +5,7 @@ from death_functions import kill_monster, kill_player
 from game_states import GameStates
 from game_messages import Message
 from input_handlers import handle_keys, handle_mouse, handle_main_menu
-from render_functions import clear_all, render_all, render_bar
+from render_functions import render_all
 from loader_functions.initialize_new_game import get_game_variables
 from loader_functions.data_loaders import load_game, save_game
 from loader_functions.constants import get_constants
@@ -449,8 +449,6 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, wor
         fov_recompute = False
 
         pygame.display.flip()
-
-        clear_all(screen, entities)
 
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:

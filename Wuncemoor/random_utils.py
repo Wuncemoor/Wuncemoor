@@ -37,3 +37,5 @@ def from_node_power(table, np):
 
 def pseudorandom_seed(x, y, options):
     return (x + y) % options
+
+

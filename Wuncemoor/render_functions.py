@@ -189,11 +189,6 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         devotion_feats_menu(player, df_width, df_height, camera_width, camera_height)
 
 
-def clear_all(screen, entities):
-    for entity in entities:
-        clear_entity(screen, entity)
-
-
 def draw_entity(camera_surface, cx, cy, entity, fov_map, game_map, tilesize):
     surfimg = pygame.image.load(entity.image)
     if libtcod.map_is_in_fov(fov_map, entity.x, entity.y) or (
@@ -240,8 +235,7 @@ def draw_tile(camera_surface, fov_map, game_map, x, y, cx, cy, tiles, tilesize, 
         else:
             try:
 
-                choice = str(pseudorandom_seed(x, y, options.get(tt)))
-                camera_surface.blit(tiles.get(prefix + tt).get(prefix + tt + choice), (x * tilesize, y * tilesize))
+                camera_surface.blit(tiles.get(prefix + tt).get(prefix + tt + tile.mode), (x * tilesize, y * tilesize))
             except:
                 img = game_map.current_map.floor_image
                 choice = str(pseudorandom_seed(x, y, options.get(img)))
@@ -257,8 +251,8 @@ def draw_tile(camera_surface, fov_map, game_map, x, y, cx, cy, tiles, tilesize, 
             camera_surface.blit(tiles.get(prefix + tt), (x * tilesize, y * tilesize))
         else:
             try:
-                choice = str(pseudorandom_seed(x, y, options.get(tt)))
-                camera_surface.blit(tiles.get(prefix + tt).get(prefix + tt + choice), (x * tilesize, y * tilesize))
+
+                camera_surface.blit(tiles.get(prefix + tt).get(prefix + tt + tile.mode), (x * tilesize, y * tilesize))
             except:
                 img = game_map.current_map.floor_image
                 choice = str(pseudorandom_seed(x, y, options.get(img)))
@@ -268,7 +262,3 @@ def draw_tile(camera_surface, fov_map, game_map, x, y, cx, cy, tiles, tilesize, 
     else:
         camera_surface.blit(tiles.get('black'), (x * tilesize, y * tilesize))
 
-
-def clear_entity(screen, entity):
-    # erase the character that represents this object
-    libtcod.console_put_char(screen, entity.x, entity.y, ' ', libtcod.BKGND_NONE)

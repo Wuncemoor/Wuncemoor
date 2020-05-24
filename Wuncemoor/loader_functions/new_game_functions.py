@@ -33,7 +33,7 @@ def get_player():
                                     level=level_component, competence=competence_component,
                                     equipment=equipment_component, inventory=inventory_component)
 
-    player = Entity(20, 20, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component)
+    player = Entity(5, 20, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component)
 
     return player
 
@@ -56,11 +56,21 @@ def equip_player(player):
 def get_dungeons(constants):
     dungeons = {}
 
-    town = get_town(constants['alpha_width'], constants['alpha_height'])
+    world, nodes = get_world_map(constants['world_map_constants'])
+    wm_tiles = world.maps[0].tiles
+    dungeons[world.name] = world
+
+    town = get_town(constants['start_town_width'], constants['start_town_height'], nodes[0])
     dungeons[town.name] = town
 
-    world = get_world_map(constants['world_map_constants'])
-    dungeons[world.name] = world
+    town2 = get_town(constants['start_town_width'], constants['start_town_height'], nodes[1])
+    dungeons[town2.name] = town2
+
+    town3 = get_town(constants['start_town_width'], constants['start_town_height'], nodes[2])
+    dungeons[town3.name] = town3
+
+    town4 = get_town(constants['start_town_width'], constants['start_town_height'], nodes[3])
+    dungeons[town4.name] = town4
 
     goblin_cave = get_cave(constants, 'goblin')
     dungeons[goblin_cave.name] = goblin_cave
@@ -71,8 +81,8 @@ def get_dungeons(constants):
     cave = get_cave(constants, None)
     dungeons[cave.name] = cave
 
-    downstairsimg = 'images\\stairsdown.png'
-    upstairsimg = 'images\\stairsup.png'
+    downstairsimg = constants['stairs'].get('down')
+    upstairsimg = constants['stairs'].get('up')
 
     gob_stairs_comp = Stairs('Stairs', downstairsimg, 'goblin_cave', 0, goblin_cave.maps[0].entrance)
     gob_stairs = Entity(10, 30, libtcod.white, render_order=RenderOrder.STAIRS, stairs=gob_stairs_comp)
@@ -101,4 +111,4 @@ def get_dungeons(constants):
                             render_order=RenderOrder.STAIRS, stairs=cave_stairs_up_comp)
     cave.maps[0].transitions.append(cave_stairs_up)
 
-    return dungeons
+    return dungeons, wm_tiles

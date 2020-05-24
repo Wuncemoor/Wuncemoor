@@ -12,12 +12,14 @@ from maps.world_map.core_nodes import get_core_plot_nodes
 from maps.town.add_structure import add_house, add_hut, add_town
 from components.item import Item
 from components.stairs import Stairs
+from random import randint
 
 
 
 def get_town(width, height, node):
 
-    name, node_x, node_y = node
+    name, node_x, node_y = node.name, node.x, node.y
+
 
     map = get_map(width, height, name)
 
@@ -60,7 +62,7 @@ def get_map(width, height, type=None):
 
     map = Map(width, height)
     map.initialize_tiles()
-    if type == 'town':
+    if type == 'town' or 'second_town':
         map.create_room(Rect(0, 0, width - 1, height - 1))
     elif type == 'world':
         for row in map.tiles:
@@ -75,14 +77,21 @@ def get_world_map(constants):
 
     map = get_map(constants['width'], constants['height'], type='world')
     apply_simplex_biomes(map, constants)
+    apply_mode(map)
     nodes = get_core_plot_nodes(constants['width'], constants['height'])
     for node in nodes:
-        add_town(map, node[1], node[2])
-        stairs = Stairs('Stairs', 'images\\alpha.png', node[0], 0, (node[1], node[2]))
-        ent = Entity(node[1], node[2], stairs=stairs)
+        add_town(map, node.x, node.y)
+        stairs = Stairs('Stairs', 'images\\alpha.png', node.name, 0, node.entrance)
+        ent = Entity(node.x, node.y, stairs=stairs)
         map.transitions.append(ent)
 
     world = Dungeon('world', 1, [map], np=0)
     return world, nodes
+
+
+def apply_mode(map):
+    for row in map.tiles:
+        for tile in row:
+            tile.mode = str(randint(0, 8))
 
 
