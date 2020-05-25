@@ -1,5 +1,4 @@
 from components.attributes import Attributes
-from components.ai import BasicMonster
 from components.combatant import Combatant
 from components.phylo import Phylo
 from components.level import Level
@@ -8,9 +7,9 @@ from components.equipment import Equipment
 from components.inventory import Inventory
 from components.ai import BasicMonster
 
-def orc():
+
+def orc(obj):
     name = 'Orc'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'orcish', 'orc', 'regular', 'default')
     attribute_component = Attributes(5,0,0,7,10,10,10,10,10,10)
     level = Level()
@@ -20,12 +19,11 @@ def orc():
     ai_component = BasicMonster()
     xp=350
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
     
-def troll():
+def troll(obj):
     name = 'Troll'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'giant', 'troll', 'regular', 'default')
     attribute_component = Attributes(1,0,0,10,10,10,10,10,10,10)
     level = Level()
@@ -35,10 +33,9 @@ def troll():
     ai_component = BasicMonster()
     xp=1000
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
-def mini_goblin():
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+def mini_goblin(obj):
     name = 'Goblin'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mini', 'default')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -48,11 +45,10 @@ def mini_goblin():
     ai_component = BasicMonster()
     xp=50
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def goblin():
+def goblin(obj):
     name = 'Goblin'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'regular', 'default')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -62,11 +58,10 @@ def goblin():
     ai_component = BasicMonster()
     xp=100
 
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def mega_goblin():
+def mega_goblin(obj):
     name = 'Goblin'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mega', 'default')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -76,11 +71,10 @@ def mega_goblin():
     ai_component = BasicMonster()
     xp=5000
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def mini_goblin_mage():
+def mini_goblin_mage(obj):
     name = 'Goblin Mage'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mini', 'magic_dps')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -90,11 +84,10 @@ def mini_goblin_mage():
     ai_component = BasicMonster()
     xp=50
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def goblin_mage():
+def goblin_mage(obj):
     name = 'Goblin Mage'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'regular', 'magic_dps')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -104,11 +97,10 @@ def goblin_mage():
     ai_component = BasicMonster()
     xp=100
 
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def mega_goblin_mage():
+def mega_goblin_mage(obj):
     name = 'Goblin Mage'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mega', 'magic_dps')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -118,11 +110,10 @@ def mega_goblin_mage():
     ai_component = BasicMonster()
     xp=5000
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def mini_goblin_rogue():
+def mini_goblin_rogue(obj):
     name = 'Goblin Rogue'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mini', 'melee_dps')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -132,11 +123,10 @@ def mini_goblin_rogue():
     ai_component = BasicMonster()
     xp=50
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def goblin_rogue():
+def goblin_rogue(obj):
     name = 'Goblin Rogue'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'regular', 'melee_dps')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -146,11 +136,10 @@ def goblin_rogue():
     ai_component = BasicMonster()
     xp=100
 
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def mega_goblin_rogue():
+def mega_goblin_rogue(obj):
     name = 'Goblin Rogue'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mega', 'melee_dps')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -160,11 +149,10 @@ def mega_goblin_rogue():
     ai_component = BasicMonster()
     xp=5000
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def mini_goblin_shaman():
+def mini_goblin_shaman(obj):
     name = 'Goblin Shaman'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mini', 'healer')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -174,11 +162,10 @@ def mini_goblin_shaman():
     ai_component = BasicMonster()
     xp=50
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def goblin_shaman():
+def goblin_shaman(obj):
     name = 'Goblin Shaman'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'regular', 'healer')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -188,11 +175,10 @@ def goblin_shaman():
     ai_component = BasicMonster()
     xp=100
 
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def mega_goblin_shaman():
+def mega_goblin_shaman(obj):
     name = 'Goblin'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mega', 'healer')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -202,11 +188,10 @@ def mega_goblin_shaman():
     ai_component = BasicMonster()
     xp=5000
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mini_kobold_trickster():
+def mini_kobold_trickster(obj):
     name = 'Kobold Trickster'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mini', 'rogue')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -216,11 +201,10 @@ def mini_kobold_trickster():
     ai_component = BasicMonster()
     xp=25
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def kobold_trickster():
+def kobold_trickster(obj):
     name = 'Kobold Trickster'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'regular', 'rogue')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -230,11 +214,10 @@ def kobold_trickster():
     ai_component = BasicMonster()
     xp=75
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mega_kobold_trickster():
+def mega_kobold_trickster(obj):
     name = 'Kobold Trickster'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mega', 'rogue')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -244,11 +227,10 @@ def mega_kobold_trickster():
     ai_component = BasicMonster()
     xp=3500
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def mini_kobold_harasser():
+def mini_kobold_harasser(obj):
     name = 'Kobold Harasser'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mini', 'ranger')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -258,11 +240,10 @@ def mini_kobold_harasser():
     ai_component = BasicMonster()
     xp=25
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def kobold_harasser():
+def kobold_harasser(obj):
     name = 'Kobold Harasser'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'regular', 'ranger')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -272,11 +253,10 @@ def kobold_harasser():
     ai_component = BasicMonster()
     xp=75
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mega_kobold_harasser():
+def mega_kobold_harasser(obj):
     name = 'Kobold Harasser'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mega', 'ranger')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -286,11 +266,10 @@ def mega_kobold_harasser():
     ai_component = BasicMonster()
     xp=3500
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mini_kobold_zealot():
+def mini_kobold_zealot(obj):
     name = 'Kobold Zealot'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mini', 'paladin')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -300,11 +279,10 @@ def mini_kobold_zealot():
     ai_component = BasicMonster()
     xp=25
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def kobold_zealot():
+def kobold_zealot(obj):
     name = 'Kobold Zealot'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'regular', 'paladin')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -314,11 +292,10 @@ def kobold_zealot():
     ai_component = BasicMonster()
     xp=75
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mega_kobold_zealot():
+def mega_kobold_zealot(obj):
     name = 'Kobold Zealot'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mega', 'paladin')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -328,11 +305,10 @@ def mega_kobold_zealot():
     ai_component = BasicMonster()
     xp=3500
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mini_kobold():
+def mini_kobold(obj):
     name = 'Kobold'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mini', 'default')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -342,11 +318,10 @@ def mini_kobold():
     ai_component = BasicMonster()
     xp=25
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def kobold():
+def kobold(obj):
     name = 'Kobold'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'regular', 'default')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -356,11 +331,10 @@ def kobold():
     ai_component = BasicMonster()
     xp=75
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mega_kobold():
+def mega_kobold(obj):
     name = 'Kobold'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mega', 'default')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -370,11 +344,10 @@ def mega_kobold():
     ai_component = BasicMonster()
     xp=3500
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mini_rat():
+def mini_rat(obj):
     name = 'Rat'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('beast', 'rodent', 'rat', 'mini', 'default')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -384,11 +357,10 @@ def mini_rat():
     ai_component = BasicMonster()
     xp=25
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def rat():
+def rat(obj):
     name = 'Rat'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('beast', 'rodent', 'rat', 'regular', 'default')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -398,11 +370,10 @@ def rat():
     ai_component = BasicMonster()
     xp=75
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mega_rat():
+def mega_rat(obj):
     name = 'Rat'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('beast', 'rodent', 'rat', 'mega', 'default')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -412,11 +383,10 @@ def mega_rat():
     ai_component = BasicMonster()
     xp=3500
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def mini_bat():
+def mini_bat(obj):
     name = 'Bat'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('beast', 'chiroptera', 'bat', 'mini', 'default')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -426,11 +396,10 @@ def mini_bat():
     ai_component = BasicMonster()
     xp=25
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def bat():
+def bat(obj):
     name = 'Bat'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('beast', 'chiroptera', 'bat', 'regular', 'default')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -440,11 +409,10 @@ def bat():
     ai_component = BasicMonster()
     xp=75
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mega_bat():
+def mega_bat(obj):
     name = 'Bat'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('beast', 'chiroptera', 'bat', 'mega', 'default')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -454,11 +422,10 @@ def mega_bat():
     ai_component = BasicMonster()
     xp=3500
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mini_salamander():
+def mini_salamander(obj):
     name = 'Salamander'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('herptile', 'lizard', 'salamander', 'mini', 'default')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -468,11 +435,10 @@ def mini_salamander():
     ai_component = BasicMonster()
     xp=25
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def salamander():
+def salamander(obj):
     name = 'Salamander'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('herptile', 'lizard', 'salamander', 'regular', 'default')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -482,11 +448,10 @@ def salamander():
     ai_component = BasicMonster()
     xp=75
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mega_salamander():
+def mega_salamander(obj):
     name = 'Salamander'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('herptile', 'lizard', 'salamander', 'mega', 'default')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -496,11 +461,10 @@ def mega_salamander():
     ai_component = BasicMonster()
     xp=3500
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def mini_spider():
+def mini_spider(obj):
     name = 'Spider'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('nature', 'insect', 'spider', 'mini', 'default')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -510,11 +474,10 @@ def mini_spider():
     ai_component = BasicMonster()
     xp=25
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def spider():
+def spider(obj):
     name = 'Spider'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('nature', 'insect', 'spider', 'regular', 'default')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -524,11 +487,10 @@ def spider():
     ai_component = BasicMonster()
     xp=75
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mega_spider():
+def mega_spider(obj):
     name = 'Spider'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('nature', 'insect', 'spider', 'mega', 'default')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -538,11 +500,10 @@ def mega_spider():
     ai_component = BasicMonster()
     xp=3500
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mini_snail():
+def mini_snail(obj):
     name = 'Snail'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('aquatic', 'mollusk', 'snail', 'mini', 'default')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -552,11 +513,10 @@ def mini_snail():
     ai_component = BasicMonster()
     xp=25
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def snail():
+def snail(obj):
     name = 'Snail'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('aquatic', 'mollusk', 'snail', 'regular', 'default')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -566,11 +526,10 @@ def snail():
     ai_component = BasicMonster()
     xp=75
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mega_snail():
+def mega_snail(obj):
     name = 'Snail'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('aquatic', 'mollusk', 'snail', 'mega', 'default')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -580,11 +539,10 @@ def mega_snail():
     ai_component = BasicMonster()
     xp=3500
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mini_shrimp():
+def mini_shrimp(obj):
     name = 'Shrimp'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('aquatic', 'crustacean', 'shrimp', 'mini', 'default')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -594,11 +552,10 @@ def mini_shrimp():
     ai_component = BasicMonster()
     xp=25
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def shrimp():
+def shrimp(obj):
     name = 'Shrimp'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('aquatic', 'crustacean', 'shrimp', 'regular', 'default')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -608,11 +565,10 @@ def shrimp():
     ai_component = BasicMonster()
     xp=75
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mega_shrimp():
+def mega_shrimp(obj):
     name = 'Shrimp'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('aquatic', 'crustacean', 'shrimp', 'mega', 'default')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -622,11 +578,10 @@ def mega_shrimp():
     ai_component = BasicMonster()
     xp=3500
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def mini_raccoon():
+def mini_raccoon(obj):
     name = 'Raccoon'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('beast', 'carnivora', 'raccoon', 'mini', 'default')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -636,11 +591,10 @@ def mini_raccoon():
     ai_component = BasicMonster()
     xp=25
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def raccoon():
+def raccoon(obj):
     name = 'Raccoon'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('beast', 'carnivora', 'raccoon', 'regular', 'default')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -650,11 +604,10 @@ def raccoon():
     ai_component = BasicMonster()
     xp=75
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mega_raccoon():
+def mega_raccoon(obj):
     name = 'Raccoon'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('beast', 'carnivora', 'raccoon', 'mega', 'default')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -664,11 +617,10 @@ def mega_raccoon():
     ai_component = BasicMonster()
     xp=3500
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mini_bear():
+def mini_bear(obj):
     name = 'Bear'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('beast', 'carnivora', 'ursa', 'mini', 'default')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -678,11 +630,10 @@ def mini_bear():
     ai_component = BasicMonster()
     xp=25
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def bear():
+def bear(obj):
     name = 'Bear'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('beast', 'carnivora', 'ursa', 'regular', 'default')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -692,11 +643,10 @@ def bear():
     ai_component = BasicMonster()
     xp=75
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mega_bear():
+def mega_bear(obj):
     name = 'Bear'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('beast', 'carnivora', 'ursa', 'mega', 'default')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -706,11 +656,10 @@ def mega_bear():
     ai_component = BasicMonster()
     xp=3500
     
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
     
-def mini_bramblelasher():
+def mini_bramblelasher(obj):
     name = 'Bramblelasher'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('nature', 'plantae', 'bramblelasher', 'mini', 'default')
     attribute_component = Attributes(1,1,1,1,1,1,1,1,1,1)
     level = Level()
@@ -720,11 +669,10 @@ def mini_bramblelasher():
     ai_component = BasicMonster()
     xp=100
 
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def bramblelasher():
+def bramblelasher(obj):
     name = 'Bramblelasher'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('nature', 'plantae', 'bramblelasher', 'regular', 'default')
     attribute_component = Attributes(2,2,2,2,2,2,2,2,2,2)
     level = Level()
@@ -734,11 +682,10 @@ def bramblelasher():
     ai_component = BasicMonster()
     xp=500
 
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
-def mega_bramblelasher():
+def mega_bramblelasher(obj):
     name = 'Bramblelasher'
-    image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\goblin.png'
     phylo = Phylo('nature', 'plantae', 'bramblelasher', 'mega', 'default')
     attribute_component = Attributes(5,5,5,5,5,5,5,5,5,5)
     level = Level()
@@ -748,6 +695,6 @@ def mega_bramblelasher():
     ai_component = BasicMonster()
     xp=5000
 
-    return Combatant(name, image, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
+    return Combatant(name, obj, phylo, attribute_component, level, competence, equipment, inventory, ai_component, xp)
 
     

@@ -37,7 +37,7 @@ def main():
     show_main_menu = True
     show_load_error_message = False
 
-    main_menu_background_image = pygame.image.load('images\\maxresdefault.jpg')
+    main_menu_background_image = constants.get('images').get('backgrounds').get('mm_bg')
 
     clock = pygame.time.Clock()
     clock.tick(constants['fps'])
@@ -311,6 +311,7 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, wor
 
                     game_state = previous_game_state
                 if wait:
+
                     game_state = GameStates.ENEMY_TURN
                 if exit_game:
                     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU,
@@ -353,10 +354,11 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, wor
                         message_log.add_message(message)
 
                     if dead_entity:
+                        corpse = constants.get('images').get('entities').get('combatants').get('corpse')
                         if dead_entity == player:
-                            message, game_state = kill_player(dead_entity)
+                            message, game_state = kill_player(dead_entity, corpse)
                         else:
-                            message = kill_monster(dead_entity)
+                            message = kill_monster(dead_entity, corpse)
 
                         message_log.add_message(message)
 
@@ -440,11 +442,11 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, wor
         if fov_recompute:
             recompute_fov(fov_map, player.x, player.y, constants['fov_radius'], constants['fov_light_walls'],
                           constants['fov_algorithm'])
-
+        mini_map = constants.get('images').get('world_map').get('mini_map')
         render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
-                   game_map, world_map, constants['mini_map'], camera, fov_map, fov_recompute, message_log, constants['cscreen_width'],
-                   constants['cscreen_height'], constants['map_width'], constants['map_height'], constants['tiles'],
-                   game_state, constants['options'])
+                   game_map, world_map, mini_map, camera, fov_map, fov_recompute, message_log, constants['cscreen_width'],
+                   constants['cscreen_height'], constants['map_width'], constants['map_height'],
+                   constants.get('images').get('tiles'), game_state, constants['options'])
 
         fov_recompute = False
 
@@ -464,10 +466,11 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, wor
                                 message_log.add_message(message)
 
                             if dead_entity:
+                                corpse = constants.get('images').get('entities').get('combatants').get('corpse')
                                 if dead_entity == player:
-                                    message, game_state = kill_player(dead_entity)
+                                    message, game_state = kill_player(dead_entity, corpse)
                                 else:
-                                    message = kill_monster(dead_entity)
+                                    message = kill_monster(dead_entity, corpse)
 
                                 message_log.add_message(message)
 

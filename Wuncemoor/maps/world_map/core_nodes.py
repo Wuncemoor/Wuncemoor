@@ -2,11 +2,11 @@ import random
 from maps.world_map.plot_node import PlotNode
 
 
-
 def get_core_plot_nodes(width, height):
 
     xys = get_intro_nodes(width, height)
     return xys
+
 
 def get_intro_nodes(width, height):
     tw, th = 8, 4
@@ -24,7 +24,6 @@ def get_intro_nodes(width, height):
 
 
 def make_nodes(nodes_to_make, completed_nodes, observed_node, nodes, width, height, tw, th, spawn, delta, name, buffer):
-    print(nodes_to_make)
     if nodes_to_make == 0:
         pass
     else:
@@ -79,7 +78,6 @@ def get_options(width, height, nodes, delta, tw, th, completed_nodes):
                         x_options.append(x)
                         y_options.append(y)
     return xy_options, x_options, y_options
-
 
 
 def apply_noflyzone(node, nodes, rand_xy, tw, th, buffer):

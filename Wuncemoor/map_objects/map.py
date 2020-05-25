@@ -101,7 +101,7 @@ class Map:
 
     # Create everything except stairs
     def fill_map(self, dungeon_type, subtype, node_power, max_rooms, room_min_size, room_max_size, map_width,
-                 map_height):
+                 map_height, objs):
         rooms = []
         num_rooms = 0
         center_of_last_room_x = None
@@ -146,12 +146,12 @@ class Map:
                         self.create_v_tunnel(prev_y, new_y, prev_x)
                         self.create_h_tunnel(prev_x, new_x, new_y)
                 # append room to list
-                self.place_entities(new_room, dungeon_type, subtype, node_power)
+                self.place_entities(new_room, dungeon_type, subtype, node_power, objs)
                 rooms.append(new_room)
                 self.exit = (center_of_last_room_x, center_of_last_room_y)
                 num_rooms += 1
 
-    def place_entities(self, room, dungeon_type, subtype, node_power):
+    def place_entities(self, room, dungeon_type, subtype, node_power, objs):
         # Get random number of monsters
         number_of_monsters = from_dungeon_level([[2, 1], [3, 4], [5, 6]], self.dungeon_level)
 
@@ -160,6 +160,9 @@ class Map:
         mob_chances = MobChances(dungeon_type, subtype, node_power)
         mcs = mob_chances.get_mob_chances()
         item_chances = get_item_chances(dungeon_type, self.dungeon_level)
+        combatants = objs.get('combatants')
+        items = objs.get('items')
+
 
         for i in range(number_of_monsters):
             # choose location in room
@@ -168,7 +171,7 @@ class Map:
 
             if not any([entity for entity in self.map_entities if entity.x == x and entity.y == y]):
                 monster_choice = random_choice_from_dict(mcs)
-                mob_builder = MobBuilder(0, monster_choice)
+                mob_builder = MobBuilder(0, monster_choice, combatants['goblin'])
                 mob_director = MobDirector()
                 mob_director.set_builder(mob_builder)
                 combatant_component = mob_director.get_combatant()
@@ -186,7 +189,7 @@ class Map:
                 item_choice = random_choice_from_dict(item_chances)
 
                 if item_choice == 'healing_potion':
-                    image = 'images\\potion.png'
+                    image = items.get('useables').get('potion')
                     item_component = Item(
                         useable_component=Useable('Healing Potion', image, use_function=heal, amount=400))
                     item = Entity(x, y, render_order=RenderOrder.ITEM, item=item_component)
@@ -194,7 +197,7 @@ class Map:
                     equippable_core = EquippableCore('longsword')
                     equippable_material = EquippableMaterial('wood')
                     equippable_quality = EquippableQuality('average')
-                    image = '\\images\\longsword.png'
+                    image = items.get('equippables').get('weapons').get('longsword')
                     equippable_component = Equippable('Sword', image, EquipmentSlots.MAIN_HAND, equippable_core,
                                                       equippable_material, equippable_quality)
                     item_component = Item(equippable_component)
@@ -203,13 +206,13 @@ class Map:
                     equippable_core = EquippableCore('shield')
                     equippable_material = EquippableMaterial('iron')
                     equippable_quality = EquippableQuality('average')
-                    image = '\\images\\shield.png'
+                    image = items.get('equippables').get('weapons').get('shield')
                     equippable_component = Equippable('Shield', image, EquipmentSlots.OFF_HAND, equippable_core,
                                                       equippable_material, equippable_quality)
                     item_component = Item(equippable_component)
                     item = Entity(x, y, item=item_component)
                 elif item_choice == 'fireball_scroll':
-                    image = '\\images\\scroll.png'
+                    image = items.get('useables').get('scroll')
                     item_component = Item(
                         useable_component=Useable('Fireball Scroll', image, use_function=cast_fireball, targeting=True,
                                                   targeting_message=Message(
@@ -217,7 +220,7 @@ class Map:
                                                       libtcod.light_cyan), damage=250, radius=3))
                     item = Entity(x, y, render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'confusion_scroll':
-                    image = '\\images\\scroll.png'
+                    image = items.get('useables').get('scroll')
                     item_component = Item(
                         useable_component=Useable('Confusion Scroll', image, use_function=cast_confuse, targeting=True,
                                                   targeting_message=Message(
@@ -225,7 +228,7 @@ class Map:
                                                       libtcod.light_cyan)))
                     item = Entity(x, y, render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'lightning_scroll':
-                    image = '\\images\\scroll.png'
+                    image = items.get('useables').get('scroll')
                     item_component = Item(
                         useable_component=Useable('Lightning Scroll', image, use_function=cast_lightning, damage=400,
                                                   maximum_range=5))
@@ -233,12 +236,12 @@ class Map:
 
                 self.map_entities.append(item)
 
-    def add_boss(self, d_type, subtype, node_power):
+    def add_boss(self, d_type, subtype, node_power, obj):
 
         mob_chances = MobChances(d_type, subtype, node_power * 100)
 
         monster_choice = random_choice_from_dict(mob_chances.get_mob_chances())
-        mob_builder = MobBuilder(0, monster_choice)
+        mob_builder = MobBuilder(0, monster_choice, obj)
         mob_director = MobDirector()
         mob_director.set_builder(mob_builder)
         combatant_component = mob_director.get_combatant()

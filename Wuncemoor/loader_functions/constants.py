@@ -1,4 +1,3 @@
-
 import pygame as py
 
 
@@ -52,11 +51,9 @@ def get_constants():
     }
 
     tiles = {
-        'black': py.image.load('images\\black.png'),
-        'dark_wall': py.image.load('images\\dark_wall.png'),
-        'dark_ground': py.image.load('images\\dark_ground.png'),
-        'light_wall': py.image.load('images\\light_wall.png'),
-        'light_ground': py.image.load('images\\light_ground.png'),
+        'black': py.image.load('images\\tiles\\black.png'),
+        'dark_wall': py.image.load('images\\tiles\\dark_wall.png'),
+        'light_wall': py.image.load('images\\tiles\\light_wall.png'),
         'light_grass': light_grass_dict(),
         'dark_grass': dark_grass_dict(),
         'light_road': road_dict(True),
@@ -105,6 +102,11 @@ def get_constants():
         'tundra': py.image.load('images\\world_map\\mini_map\\tundra.png')
 
     }
+    combatants = {
+        'hero': py.image.load('images\\entities\\combatants\\hero.png'),
+        'goblin': py.image.load('images\\entities\\combatants\\goblin.png'),
+        'corpse': py.image.load('images\\entities\\combatants\\corpse.png'),
+    }
 
     options = {
         'grass': 13,
@@ -122,9 +124,54 @@ def get_constants():
         'tropicrain': 9,
         'tundra': 9,
     }
-    stairs = {
-        'down': 'images\\stairsdown.png',
-        'up': 'images\\stairsup.png',
+    transitions = {
+        'down': py.image.load('images\\entities\\transitions\\stairsdown.png'),
+        'up': py.image.load('images\\entities\\transitions\\stairsup.png'),
+        'alpha': py.image.load('images\\entities\\transitions\\alpha.png')
+    }
+
+    backgrounds = {
+        'mm_bg': py.image.load('images\\background\\maxresdefault.jpg'),
+    }
+
+    weapons = {
+        'staff': py.image.load('images\\entities\\items\\equippables\\weapons\\staff.png'),
+        'dagger': py.image.load('images\\entities\\items\\equippables\\weapons\\dagger.png'),
+        'shield': py.image.load('images\\entities\\items\\equippables\\weapons\\shield.png'),
+        'longsword': py.image.load('images\\entities\\items\\equippables\\weapons\\longsword.png'),
+        'stick': py.image.load('images\\entities\\items\\equippables\\weapons\\stick.png'),
+    }
+
+    equippables = {
+        'weapons': weapons,
+    }
+
+    useables = {
+        'potion': py.image.load('images\\entities\\items\\useables\\potion.png'),
+        'scroll': py.image.load('images\\entities\\items\\useables\\scroll.png'),
+    }
+
+    items = {
+        'equippables': equippables,
+        'useables': useables,
+    }
+
+    entities = {
+        'combatants': combatants,
+        'items': items,
+        'transitions': transitions,
+    }
+
+    world_map = {
+        'mini_map': mini_map,
+    }
+
+    images = {
+        'backgrounds': backgrounds,
+        'entities': entities,
+        'world_map': world_map,
+        'tiles': tiles,
+
     }
 
 
@@ -154,52 +201,52 @@ def get_constants():
         'fov_radius': fov_radius,
         'max_monsters_per_room': max_monsters_per_room,
         'max_items_per_room': max_items_per_room,
-        'tiles': tiles,
         'options': options,
         'fps': fps,
         'map_width': map_width,
         'map_height': map_height,
         'world_map_constants': world_map_constants,
-        'mini_map': mini_map,
-        'stairs': stairs,
+        'images': images,
+
+
     }
     return constants
 
 
 def light_grass_dict():
     light_grass_dict = {
-        'light_grass0': py.image.load('images\\grass\\light_grass00.png'),
-        'light_grass1': py.image.load('images\\grass\\light_grass01.png'),
-        'light_grass2': py.image.load('images\\grass\\light_grass02.png'),
-        'light_grass3': py.image.load('images\\grass\\light_grass03.png'),
-        'light_grass4': py.image.load('images\\grass\\light_grass04.png'),
-        'light_grass5': py.image.load('images\\grass\\light_grass05.png'),
-        'light_grass6': py.image.load('images\\grass\\light_grass06.png'),
-        'light_grass7': py.image.load('images\\grass\\light_grass07.png'),
-        'light_grass8': py.image.load('images\\grass\\light_grass08.png'),
-        'light_grass9': py.image.load('images\\grass\\light_grass09.png'),
-        'light_grass10': py.image.load('images\\grass\\light_grass10.png'),
-        'light_grass11': py.image.load('images\\grass\\light_grass11.png'),
-        'light_grass12': py.image.load('images\\grass\\light_grass12.png'),
+        'light_grass0': py.image.load('images\\tiles\\grass\\light_grass00.png'),
+        'light_grass1': py.image.load('images\\tiles\\grass\\light_grass01.png'),
+        'light_grass2': py.image.load('images\\tiles\\grass\\light_grass02.png'),
+        'light_grass3': py.image.load('images\\tiles\\grass\\light_grass03.png'),
+        'light_grass4': py.image.load('images\\tiles\\grass\\light_grass04.png'),
+        'light_grass5': py.image.load('images\\tiles\\grass\\light_grass05.png'),
+        'light_grass6': py.image.load('images\\tiles\\grass\\light_grass06.png'),
+        'light_grass7': py.image.load('images\\tiles\\grass\\light_grass07.png'),
+        'light_grass8': py.image.load('images\\tiles\\grass\\light_grass08.png'),
+        'light_grass9': py.image.load('images\\tiles\\grass\\light_grass09.png'),
+        'light_grass10': py.image.load('images\\tiles\\grass\\light_grass10.png'),
+        'light_grass11': py.image.load('images\\tiles\\grass\\light_grass11.png'),
+        'light_grass12': py.image.load('images\\tiles\\grass\\light_grass12.png'),
     }
     return light_grass_dict
 
 
 def dark_grass_dict():
     dark_grass_dict = {
-        'dark_grass0': py.image.load('images\\grass\\dark_grass00.png'),
-        'dark_grass1': py.image.load('images\\grass\\dark_grass01.png'),
-        'dark_grass2': py.image.load('images\\grass\\dark_grass02.png'),
-        'dark_grass3': py.image.load('images\\grass\\dark_grass03.png'),
-        'dark_grass4': py.image.load('images\\grass\\dark_grass04.png'),
-        'dark_grass5': py.image.load('images\\grass\\dark_grass05.png'),
-        'dark_grass6': py.image.load('images\\grass\\dark_grass06.png'),
-        'dark_grass7': py.image.load('images\\grass\\dark_grass07.png'),
-        'dark_grass8': py.image.load('images\\grass\\dark_grass08.png'),
-        'dark_grass9': py.image.load('images\\grass\\dark_grass09.png'),
-        'dark_grass10': py.image.load('images\\grass\\dark_grass10.png'),
-        'dark_grass11': py.image.load('images\\grass\\dark_grass11.png'),
-        'dark_grass12': py.image.load('images\\grass\\dark_grass12.png'),
+        'dark_grass0': py.image.load('images\\tiles\\grass\\dark_grass00.png'),
+        'dark_grass1': py.image.load('images\\tiles\\grass\\dark_grass01.png'),
+        'dark_grass2': py.image.load('images\\tiles\\grass\\dark_grass02.png'),
+        'dark_grass3': py.image.load('images\\tiles\\grass\\dark_grass03.png'),
+        'dark_grass4': py.image.load('images\\tiles\\grass\\dark_grass04.png'),
+        'dark_grass5': py.image.load('images\\tiles\\grass\\dark_grass05.png'),
+        'dark_grass6': py.image.load('images\\tiles\\grass\\dark_grass06.png'),
+        'dark_grass7': py.image.load('images\\tiles\\grass\\dark_grass07.png'),
+        'dark_grass8': py.image.load('images\\tiles\\grass\\dark_grass08.png'),
+        'dark_grass9': py.image.load('images\\tiles\\grass\\dark_grass09.png'),
+        'dark_grass10': py.image.load('images\\tiles\\grass\\dark_grass10.png'),
+        'dark_grass11': py.image.load('images\\tiles\\grass\\dark_grass11.png'),
+        'dark_grass12': py.image.load('images\\tiles\\grass\\dark_grass12.png'),
     }
     return dark_grass_dict
 
@@ -244,33 +291,32 @@ def road_dict(vis):
 def dirt_dict(visible):
     if visible:
         dirt_dict = {
-            'light_dirt0': py.image.load('images\\dirt\\light_dirt0.png'),
-            'light_dirt1': py.image.load('images\\dirt\\light_dirt1.png'),
-            'light_dirt2': py.image.load('images\\dirt\\light_dirt2.png'),
-            'light_dirt3': py.image.load('images\\dirt\\light_dirt3.png'),
-            'light_dirt4': py.image.load('images\\dirt\\light_dirt4.png'),
-            'light_dirt5': py.image.load('images\\dirt\\light_dirt5.png'),
-            'light_dirt6': py.image.load('images\\dirt\\light_dirt6.png'),
-            'light_dirt7': py.image.load('images\\dirt\\light_dirt7.png'),
-            'light_dirt8': py.image.load('images\\dirt\\light_dirt8.png'),
+            'light_dirt0': py.image.load('images\\tiles\\dirt\\light_dirt0.png'),
+            'light_dirt1': py.image.load('images\\tiles\\dirt\\light_dirt1.png'),
+            'light_dirt2': py.image.load('images\\tiles\\dirt\\light_dirt2.png'),
+            'light_dirt3': py.image.load('images\\tiles\\dirt\\light_dirt3.png'),
+            'light_dirt4': py.image.load('images\\tiles\\dirt\\light_dirt4.png'),
+            'light_dirt5': py.image.load('images\\tiles\\dirt\\light_dirt5.png'),
+            'light_dirt6': py.image.load('images\\tiles\\dirt\\light_dirt6.png'),
+            'light_dirt7': py.image.load('images\\tiles\\dirt\\light_dirt7.png'),
+            'light_dirt8': py.image.load('images\\tiles\\dirt\\light_dirt8.png'),
         }
     else:
         dirt_dict = {
-            'dark_dirt0': py.image.load('images\\dirt\\dark_dirt0.png'),
-            'dark_dirt1': py.image.load('images\\dirt\\dark_dirt1.png'),
-            'dark_dirt2': py.image.load('images\\dirt\\dark_dirt2.png'),
-            'dark_dirt3': py.image.load('images\\dirt\\dark_dirt3.png'),
-            'dark_dirt4': py.image.load('images\\dirt\\dark_dirt4.png'),
-            'dark_dirt5': py.image.load('images\\dirt\\dark_dirt5.png'),
-            'dark_dirt6': py.image.load('images\\dirt\\dark_dirt6.png'),
-            'dark_dirt7': py.image.load('images\\dirt\\dark_dirt7.png'),
-            'dark_dirt8': py.image.load('images\\dirt\\dark_dirt8.png'),
+            'dark_dirt0': py.image.load('images\\tiles\\dirt\\dark_dirt0.png'),
+            'dark_dirt1': py.image.load('images\\tiles\\dirt\\dark_dirt1.png'),
+            'dark_dirt2': py.image.load('images\\tiles\\dirt\\dark_dirt2.png'),
+            'dark_dirt3': py.image.load('images\\tiles\\dirt\\dark_dirt3.png'),
+            'dark_dirt4': py.image.load('images\\tiles\\dirt\\dark_dirt4.png'),
+            'dark_dirt5': py.image.load('images\\tiles\\dirt\\dark_dirt5.png'),
+            'dark_dirt6': py.image.load('images\\tiles\\dirt\\dark_dirt6.png'),
+            'dark_dirt7': py.image.load('images\\tiles\\dirt\\dark_dirt7.png'),
+            'dark_dirt8': py.image.load('images\\tiles\\dirt\\dark_dirt8.png'),
         }
     return dirt_dict
 
 
 def biome_dict(biome, visible):
-
     if visible:
         deep_dict = {
             'light_deep0': py.image.load('images\\world_map\\deep\\light_deep0.png'),
@@ -554,4 +600,5 @@ def biome_dict(biome, visible):
     }
 
     return biomes_dict.get(biome)
+
 

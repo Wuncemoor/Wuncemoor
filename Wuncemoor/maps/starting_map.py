@@ -16,14 +16,16 @@ from random import randint
 
 
 
-def get_town(width, height, node):
+def get_town(width, height, node, img_objs):
 
     name, node_x, node_y = node.name, node.x, node.y
 
 
+
     map = get_map(width, height, name)
 
-    road = Road(Rect(0, int(height/2) -2, width, 4), 'world', 0, (node_x, node_y))
+    alpha = img_objs.get('transitions').get('alpha')
+    road = Road(Rect(0, int(height/2) -2, width, 4), 'world', 0, (node_x, node_y), alpha)
     road.set_transitions('vertical')
     map.floor_image = 'grass'
     map.add_road(road)
@@ -32,7 +34,7 @@ def get_town(width, height, node):
     add_town(map, 70, int(height/2) - 6)
 
 
-    equippable_test = EquippableBuilder(499)
+    equippable_test = EquippableBuilder(499, img_objs.get('items').get('equippables').get('weapons'))
     director = Director()
 
     director.set_builder(equippable_test)
@@ -49,7 +51,10 @@ def get_town(width, height, node):
     
 def get_cave(constants, subtype):
 
-    dungeon_builder = DungeonBuilder('cave', subtype, 5, constants['map_width'], constants['map_height'], 75)
+    objs = constants.get('images').get('entities').get('combatants')
+
+    dungeon_builder = DungeonBuilder('cave', subtype, 5, constants['map_width'], constants['map_height'], 75,
+                                     objs.get('goblin'))
     dungeon_director = DungeonDirector()
     dungeon_director.set_builder(dungeon_builder)
     cave = dungeon_director.get_dungeon()
@@ -73,7 +78,7 @@ def get_map(width, height, type=None):
     return map
 
 
-def get_world_map(constants):
+def get_world_map(constants, alpha_img):
 
     map = get_map(constants['width'], constants['height'], type='world')
     apply_simplex_biomes(map, constants)
@@ -81,7 +86,7 @@ def get_world_map(constants):
     nodes = get_core_plot_nodes(constants['width'], constants['height'])
     for node in nodes:
         add_town(map, node.x, node.y)
-        stairs = Stairs('Stairs', 'images\\alpha.png', node.name, 0, node.entrance)
+        stairs = Stairs('Stairs', alpha_img, node.name, 0, node.entrance)
         ent = Entity(node.x, node.y, stairs=stairs)
         map.transitions.append(ent)
 

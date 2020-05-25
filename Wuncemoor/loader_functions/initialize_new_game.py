@@ -4,12 +4,12 @@ from game_states import GameStates
 from map_objects.game_map import GameMap
 
 
-
 def get_game_variables(constants):
 
-    player = get_player()
+    ent = constants.get('images').get('entities')
+    player = get_player(ent.get('combatants').get('hero'))
     camera = get_camera(player, constants)
-    equip_player(player)
+    equip_player(player, ent.get('items').get('equippables').get('weapons').get('stick'))
     
     entities = [player]
     structures = []

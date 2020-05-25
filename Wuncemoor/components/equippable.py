@@ -2,7 +2,9 @@ from equipment_slots import EquipmentSlots
 from components.equippable_core import EquippableCore
 from components.equippable_material import EquippableMaterial
 from components.equippable_quality import EquippableQuality
+from components.item import Item
 import math
+
 
 class Equippable:
     def __init__(self, name=None, image=None, slot=None, core=None, material=None, quality=None, *modifiers):
@@ -115,7 +117,8 @@ class Equippable:
         
     def set_slot(self, slot):
         self.slot = slot
-        
+
+
 def get_equippable(input):
 
     if input == 'stick':

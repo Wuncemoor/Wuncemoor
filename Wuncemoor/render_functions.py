@@ -188,9 +188,8 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         df_height = 300
         devotion_feats_menu(player, df_width, df_height, camera_width, camera_height)
 
-
 def draw_entity(camera_surface, cx, cy, entity, fov_map, game_map, tilesize):
-    surfimg = pygame.image.load(entity.image)
+    surfimg = entity.image
     if libtcod.map_is_in_fov(fov_map, entity.x, entity.y) or (
             entity.stairs and game_map.tiles[entity.x][entity.y].explored):
         camera_surface.blit(surfimg, ((entity.x - cx) * tilesize, (entity.y - cy) * tilesize))

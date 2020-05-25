@@ -1,22 +1,21 @@
 THINGS THAT ARE BROKEN
-
-biggermap algorithm is wrong
-most stats are basically useless
+Save/Load 
+Biggermap Algorithm
+Noncombat stats screen wrong
 up/down stair collision when only 1 room on a dungeon map
-render/blit has been buggy since camera update
-stairs leaving depest level of dungeons take you to previous floor entrance instead of exit
-alpha town walls can cause fatal list error out of range
+"something" is wrong with entities/combat/collision/corpse rendering. (could just wait until combat update and it wont matter)
 
-TASKS
 
-attach node power to dungeon level (spawn mobs based on node power)
 
-make map size modular
+
 
 
 
 
 THINGS THAT NEED IMPROVING
+Where is the best place to put .convert?
+Why is there an invisible wall around the world map?
+Most stats are useless
 
 keybinds need to be objects
 mouseclick backspaces on most screens
@@ -24,7 +23,7 @@ levelup timing needs to be manual
 feats needs to be object owned by entity
 entity needs to be broken up w/ inheritence
 tile class expanded
-migrate to pygame/scipy
+
 
 THINGS TO LEARN:
 

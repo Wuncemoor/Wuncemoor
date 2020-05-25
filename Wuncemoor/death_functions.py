@@ -1,22 +1,21 @@
 import tcod as libtcod
-import pygame
+
 
 from game_messages import Message
 from game_states import GameStates
 from render_functions import RenderOrder
 
 
-def kill_player(player):
-    player.image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\\corpse.png'
-    player.color = libtcod.dark_red
+def kill_player(player, corpse):
+    make_corpse(player, corpse)
 
     return Message('You died!', libtcod.red), GameStates.PLAYER_DEAD
 
 
-def kill_monster(monster):
+def kill_monster(monster, corpse):
     death_message = Message('{0} is dead!'.format(monster.name.capitalize()), libtcod.orange)
 
-    monster.image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\corpse.png'
+    make_corpse(monster, corpse)
     monster.color = libtcod.dark_red
     monster.blocks = False
     monster.combatant = None
@@ -25,3 +24,8 @@ def kill_monster(monster):
     monster.render_order = RenderOrder.CORPSE
 
     return death_message
+
+
+def make_corpse(entity, corpse):
+
+    entity.image = corpse

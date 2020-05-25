@@ -1,6 +1,7 @@
+
 class EquippableCore:
     
-    def __init__(self, core):
+    def __init__(self, core, obj):
         self.core = core
         self.image = None
         self.resource_bonuses = [0,0,0,0]
@@ -14,7 +15,7 @@ class EquippableCore:
 
         if self.core == 'staff':
         
-            self.image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\staff.png'
+            self.image = obj
             self.resource_bonuses = [0,0,0,0]
             self.power_bonuses = [0,0,32]
             self.spirit_bonuses = [0,0,0,0,0]
@@ -25,7 +26,7 @@ class EquippableCore:
             
         elif self.core == 'dagger':
         
-            self.image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\dagger.png'
+            self.image = obj
             self.resource_bonuses = [0,0,0,0]
             self.power_bonuses = [6,10,0]
             self.spirit_bonuses = [0,0,0,0,0]
@@ -36,7 +37,7 @@ class EquippableCore:
 
         elif self.core == 'longsword':
             
-            self.image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\longsword.png'
+            self.image = obj
             self.resource_bonuses = [0,0,0,0]
             self.power_bonuses = [32,6,0]
             self.spirit_bonuses = [0,0,0,0,0]
@@ -47,7 +48,7 @@ class EquippableCore:
 
         elif self.core == 'shield':
 
-            self.image = r'C:\Users\penic\Desktop\Projects\wuncemoor_testzone\images\shield.png'
+            self.image = obj
             self.resource_bonuses = [0,0,0,0]
             self.power_bonuses = [0,0,0]
             self.spirit_bonuses = [0,0,0,0,0]
