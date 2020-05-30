@@ -117,7 +117,7 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
 
     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
         gui_img = images.get('gui').get('inventory_menu')
-        im_width = 200
+
 
         if game_state == GameStates.SHOW_INVENTORY:
             inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
@@ -125,15 +125,15 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         else:
             inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
 
-        inventory_menu(screen, inventory_title, gui_img, 12, player, im_width, camera_width, camera_height)
+        inventory_menu(screen, inventory_title, gui_img, 12, player, camera_width, camera_height)
     elif game_state == GameStates.SHOW_MAP:
         mm_width = 400
         mm_height = 400
         mm_images = tiles.get('world_map').get('mini_map')
         map_menu(screen, world_map, mm_images, mm_width, mm_height, camera_width, camera_height)
     elif game_state == GameStates.LEVEL_UP:
-        lm_width = 400
-        level_up_menu(screen, 'Level up! Choose a stat boost:', player, lm_width, camera_width, camera_height)
+        gui_img = images.get('gui').get('levelup_menu')
+        level_up_menu(screen, 'Level up! Choose a stat boost:', gui_img, player, camera_width, camera_height)
     elif game_state == GameStates.CHARACTER_MENU:
         cm_width = 400
         character_menu(screen, 'What would you like to look at?', cm_width, camera_width, camera_height)

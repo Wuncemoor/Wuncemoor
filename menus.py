@@ -34,7 +34,7 @@ def menu(screen, header, gui_img, fontsize, options, width, height, camera_width
     screen.blit(menu, (x, y))
 
 
-def inventory_menu(screen, header, gui_img, fontsize, player, inventory_width, camera_width, camera_height):
+def inventory_menu(screen, header, gui_img, fontsize, player, camera_width, camera_height):
     # show a menu with each item of the inventory as an option
     if len(player.combatant.inventory.items) == 0:
         options = ['Inventory is empty.']
@@ -67,6 +67,7 @@ def inventory_menu(screen, header, gui_img, fontsize, player, inventory_width, c
             else:
                 options.append(item.name)
 
+    inventory_width = 200
     inventory_height = 400
     off_x = 16
     off_y = 21
@@ -92,19 +93,24 @@ def main_menu(screen, screen_width, screen_height, bg_img, gui_img, fontsize):
          screen_width, screen_height, off_x, off_y)
 
 
-def level_up_menu(screen, header, player, menu_width, camera_width, camera_height):
-    options = ['+1 Strength (Currently {0})'.format(player.combatant.attributes.strength),
-               '+1 Instinct (Currently {0})'.format(player.combatant.attributes.instinct),
-               '+1 Coordination (Currently {0})'.format(player.combatant.attributes.coordination),
-               '+1 Vitality (Currently {0})'.format(player.combatant.attributes.vitality),
-               '+1 Arcana (Currently {0})'.format(player.combatant.attributes.arcana),
-               '+1 Improvisation (Currently {0})'.format(player.combatant.attributes.improvisation),
-               '+1 Wisdom (Currently {0})'.format(player.combatant.attributes.wisdom),
-               '+1 Finesse (Currently {0})'.format(player.combatant.attributes.finesse),
-               '+1 Charisma (Currently {0})'.format(player.combatant.attributes.charisma),
-               '+1 Devotion (Currently {0})'.format(player.combatant.attributes.devotion)]
-    fontsize = 12
-    menu(screen, header, fontsize, options, menu_width, camera_width, camera_height)
+def level_up_menu(screen, header, gui_img, player, camera_width, camera_height):
+    att = player.combatant.attributes
+    options = ['Strength ({0} -> {1})'.format(att.strength, att.strength + 1),
+               'Instinct ({0} -> {1})'.format(att.instinct, att.instinct + 1),
+               'Coordination ({0} -> {1})'.format(att.coordination, att.coordination + 1),
+               'Vitality ({0} -> {1})'.format(att.vitality, att.vitality + 1),
+               'Arcana ({0} -> {1})'.format(att.arcana, att.arcana + 1),
+               'Improvisation ({0} -> {1})'.format(att.improvisation, att.improvisation + 1),
+               'Wisdom ({0} -> {1})'.format(att.wisdom, att.wisdom + 1),
+               'Finesse ({0} -> {1})'.format(att.finesse, att.finesse + 1),
+               'Charisma ({0} -> {1})'.format(att.charisma, att.charisma + 1),
+               'Devotion ({0} -> {1})'.format(att.devotion, att.devotion + 1)]
+    fontsize = 14
+    menu_width = 200
+    menu_height = 200
+    off_x = 16
+    off_y = 21
+    menu(screen, header, gui_img, fontsize, options, menu_width, menu_height, camera_width, camera_height, off_x, off_y)
 
 
 def competence_menu(screen, header, cm_width, camera_width, camera_height):
