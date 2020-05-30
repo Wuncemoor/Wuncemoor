@@ -1,27 +1,30 @@
 import tcod as libtcod
 import pygame
+import math
 
 
-def menu(screen, header, fontsize, options, width, camera_width, camera_height):
+def menu(screen, header, gui_img, fontsize, options, width, height, camera_width, camera_height, off_x, off_y):
     if len(options) > 26: raise ValueError('Cannot have a menu with more than 26 options.')
 
-    # calculate total height for the header (after auto-wrap)
 
-    height = len(options) * fontsize + fontsize * .4
+
 
     # create an off-screen console that represents the menu's window
     menu = pygame.Surface((width, height))
+
+    menu.blit(gui_img, (0, 0))
 
     # print the header, with auto-wrap
 
     font = pygame.font.SysFont("comicsansms", fontsize)
 
     # print all the options
+    gap = math.ceil(fontsize * 0.2)
     q = 0
     letter_index = ord('a')
     for option_text in options:
         text = font.render('(' + chr(letter_index) + ') ' + option_text, True, (255, 255, 255))
-        menu.blit(text, (0, q * fontsize))
+        menu.blit(text, (off_x, off_y + ((q * fontsize) + (q + 1) * gap)))
         q += 1
         letter_index += 1
 
@@ -31,7 +34,7 @@ def menu(screen, header, fontsize, options, width, camera_width, camera_height):
     screen.blit(menu, (x, y))
 
 
-def inventory_menu(screen, header, fontsize, player, inventory_width, camera_width, camera_height):
+def inventory_menu(screen, header, gui_img, fontsize, player, inventory_width, camera_width, camera_height):
     # show a menu with each item of the inventory as an option
     if len(player.combatant.inventory.items) == 0:
         options = ['Inventory is empty.']
@@ -64,20 +67,29 @@ def inventory_menu(screen, header, fontsize, player, inventory_width, camera_wid
             else:
                 options.append(item.name)
 
-    menu(screen, header, fontsize, options, inventory_width, camera_width, camera_height)
+    inventory_height = 400
+    off_x = 16
+    off_y = 21
+
+    menu(screen, header, gui_img, fontsize, options, inventory_width, inventory_height, camera_width, camera_height,
+         off_x, off_y)
 
 
-def main_menu(screen, background_image, screen_width, screen_height, fontsize):
-    screen.blit(background_image, (0, 0))
+def main_menu(screen, screen_width, screen_height, bg_img, gui_img, fontsize):
+    screen.blit(bg_img, (0, 0))
     font = pygame.font.SysFont("comicsansms", fontsize)
     titletext = font.render('WUNCEMOOR: THE ETERNAL DREAM', True, (255, 255, 255))
-    extratext = font.render('A ZenSymphony Production', True, (255, 255, 255))
-    menu_width = 650
 
-    screen.blit(titletext, (int(screen_width / 8), int(screen_height / 10)))
-    screen.blit(extratext, (int(screen_width / 8), int(3 * screen_height / 4)))
-    menu(screen, '', fontsize, ['Start A New Game', 'Continue Previous Game', 'Quit'], menu_width, screen_width,
-         screen_height)
+
+    menu_width = 650
+    menu_height = 170
+    off_x = 35
+    off_y = -3
+
+    screen.blit(titletext, (int(screen_width / 4), int(screen_height / 10)))
+
+    menu(screen, '', gui_img, fontsize, ['Start A New Game', 'Continue Previous Game', 'Quit'], menu_width, menu_height,
+         screen_width, screen_height, off_x, off_y)
 
 
 def level_up_menu(screen, header, player, menu_width, camera_width, camera_height):

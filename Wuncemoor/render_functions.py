@@ -53,7 +53,7 @@ def render_bar(resource_surface, x, y, bar_x, bar_y, name, val, maxval):
 
 
 def get_render_bar_asset(name, full):
-    dict = {
+    render_dict = {
         'HP': ['images\\render_bar_assets\\hp_full.png',
                'images\\render_bar_assets\\hp_empty.png'],
         'MP': ['images\\render_bar_assets\\mp_full.png',
@@ -64,19 +64,21 @@ def get_render_bar_asset(name, full):
                'images\\render_bar_assets\\vp_empty.png']
     }
     try:
-        pack = dict.get(name)
-        if full == True:
+        pack = render_dict.get(name)
+        if full:
             asset = pack[0]
         else:
             asset = pack[1]
-    except:
+    except TypeError:
         asset = 'images\\render_bar_assets\\blank.png'
     return pygame.image.load(asset)
 
 
-def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions, game_map, world_map, images, camera, fov_map,
-               fov_recompute, message_log, camera_width, camera_height, map_width, map_height, tiles, game_state, options):
-
+def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
+               game_map, world_map, images, camera, fov_map, fov_recompute, message_log, camera_width, camera_height, map_width, map_height, game_state):
+    tiles = images.get('tiles')
+    options = images.get('options')
+    ents = images.get('entities')
     tilesize = 16
     # Draw tiles near player
     if fov_recompute:
@@ -114,6 +116,8 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
     screen.blit(resource_surface, (0, 592))
 
     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
+        gui_img = images.get('gui').get('inventory_menu')
+        im_width = 200
 
         if game_state == GameStates.SHOW_INVENTORY:
             inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
@@ -121,11 +125,12 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         else:
             inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
 
-        inventory_menu(screen, inventory_title, 12, player, 200, camera_width, camera_height)
+        inventory_menu(screen, inventory_title, gui_img, 12, player, im_width, camera_width, camera_height)
     elif game_state == GameStates.SHOW_MAP:
         mm_width = 400
         mm_height = 400
-        map_menu(screen, world_map, images, mm_width, mm_height, camera_width, camera_height)
+        mm_images = tiles.get('world_map').get('mini_map')
+        map_menu(screen, world_map, mm_images, mm_width, mm_height, camera_width, camera_height)
     elif game_state == GameStates.LEVEL_UP:
         lm_width = 400
         level_up_menu(screen, 'Level up! Choose a stat boost:', player, lm_width, camera_width, camera_height)
@@ -188,10 +193,11 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         df_height = 300
         devotion_feats_menu(player, df_width, df_height, camera_width, camera_height)
 
+
 def draw_entity(camera_surface, cx, cy, entity, fov_map, game_map, tilesize):
     surfimg = entity.image
     if libtcod.map_is_in_fov(fov_map, entity.x, entity.y) or (
-            entity.stairs and game_map.tiles[entity.x][entity.y].explored):
+            entity.transition and game_map.tiles[entity.x][entity.y].explored):
         camera_surface.blit(surfimg, ((entity.x - cx) * tilesize, (entity.y - cy) * tilesize))
 
 
@@ -223,6 +229,7 @@ def draw_tile(camera_surface, fov_map, game_map, x, y, cx, cy, tiles, tilesize, 
     visible = libtcod.map_is_in_fov(fov_map, cx + x, cy + y)
 
     tile = game_map.tiles[cx + x][cy + y]
+    gmv = tiles.get(game_map.variant)
     tt = tile.type
     if visible:
         prefix = 'light_'
@@ -233,8 +240,7 @@ def draw_tile(camera_surface, fov_map, game_map, x, y, cx, cy, tiles, tilesize, 
             camera_surface.blit(tiles.get(prefix + tt), (x * tilesize, y * tilesize))
         else:
             try:
-
-                camera_surface.blit(tiles.get(prefix + tt).get(prefix + tt + tile.mode), (x * tilesize, y * tilesize))
+                camera_surface.blit(gmv.get(prefix + tt).get(prefix + tt + tile.mode), (x * tilesize, y * tilesize))
             except:
                 img = game_map.current_map.floor_image
                 choice = str(pseudorandom_seed(x, y, options.get(img)))
@@ -250,8 +256,7 @@ def draw_tile(camera_surface, fov_map, game_map, x, y, cx, cy, tiles, tilesize, 
             camera_surface.blit(tiles.get(prefix + tt), (x * tilesize, y * tilesize))
         else:
             try:
-
-                camera_surface.blit(tiles.get(prefix + tt).get(prefix + tt + tile.mode), (x * tilesize, y * tilesize))
+                camera_surface.blit(gmv.get(prefix + tt).get(prefix + tt + tile.mode), (x * tilesize, y * tilesize))
             except:
                 img = game_map.current_map.floor_image
                 choice = str(pseudorandom_seed(x, y, options.get(img)))

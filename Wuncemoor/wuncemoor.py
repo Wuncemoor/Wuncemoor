@@ -1,6 +1,6 @@
 import tcod as libtcod
 from fov_function import initialize_fov, recompute_fov
-from entity import get_blocking_entities_at_location
+from ECS.entity import get_blocking_entities_at_location
 from death_functions import kill_monster, kill_player
 from game_states import GameStates
 from game_messages import Message
@@ -9,6 +9,7 @@ from render_functions import render_all
 from loader_functions.initialize_new_game import get_game_variables
 from loader_functions.data_loaders import load_game, save_game
 from loader_functions.constants import get_constants
+from loader_functions.image_objects import get_image_objects
 from menus import main_menu, message_box
 import sys
 import pygame
@@ -17,6 +18,7 @@ import pygame
 # Main Loop
 def main():
     constants = get_constants()
+    images = get_image_objects()
     pygame.init()
 
     screen = pygame.display.set_mode((constants['screen_width'], constants['screen_height']))
@@ -37,7 +39,8 @@ def main():
     show_main_menu = True
     show_load_error_message = False
 
-    main_menu_background_image = constants.get('images').get('backgrounds').get('mm_bg')
+    main_menu_background_image = images.get('backgrounds').get('mm_bg')
+    mm_gui_img = images.get('gui').get('main_menu')
 
     clock = pygame.time.Clock()
     clock.tick(constants['fps'])
@@ -54,8 +57,8 @@ def main():
 
         # Game Logic Here
         if show_main_menu:
-            main_menu(screen, main_menu_background_image, constants['screen_width'], constants['screen_height'],
-                      fontsize=50)
+            main_menu(screen, constants['screen_width'], constants['screen_height'], main_menu_background_image,
+                      mm_gui_img, fontsize=40)
 
             if show_load_error_message:
                 message_box(screen, 50, constants['screen_width'],
@@ -73,15 +76,16 @@ def main():
                 show_load_error_message = False
             elif new_game:
 
-                player, dungeons, entities, structures, transitions, game_map, world_map, camera, message_log, game_state = get_game_variables(
-                    constants)
+                player, dungeons, entities, structures, transitions, game_map, world_map, camera, \
+                message_log, game_state = get_game_variables(constants, images)
                 camera.refocus(player.x, player.y, game_map, constants)
                 game_state = GameStates.PLAYERS_TURN
 
                 show_main_menu = False
             elif load_saved_game:
                 try:
-                    player, dungeons, entities, structures, transitions, game_map, world_map, camera, message_log, game_state = load_game()
+                    player, dungeons, entities, structures, transitions, game_map, world_map, camera, \
+                    message_log, game_state = load_game()
                     show_main_menu = False
                 except FileNotFoundError:
                     show_load_error_message = True
@@ -92,14 +96,12 @@ def main():
         else:
             screen.fill((0, 0, 0))
             show_main_menu = False
-            play_game(player, dungeons, entities, structures, transitions, game_map, world_map, camera, message_log, game_state,
-                      screen, camera_surface,
-                      resource_surface, message_surface, constants)
+            play_game(player, dungeons, entities, structures, transitions, game_map, world_map, camera, message_log,
+                      game_state, screen, camera_surface, resource_surface, message_surface, constants, images)
 
 
-def play_game(player, dungeons, entities, structures, transitions, game_map, world_map, camera, message_log, game_state, screen,
-              camera_surface,
-              resource_surface, message_surface, constants):
+def play_game(player, dungeons, entities, structures, transitions, game_map, world_map, camera, message_log, game_state,
+              screen, camera_surface, resource_surface, message_surface, constants, images):
     fov_recompute = True
     fov_map = initialize_fov(game_map)
     game_state = game_state
@@ -174,14 +176,14 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, wor
                                 break
                     for transition in transitions:
                         if transition.x == player.x and transition.y == player.y:
-                            new_dungeon = dungeons[transition.stairs.go_to_dungeon]
-                            new_map = new_dungeon.maps[transition.stairs.go_to_floor]
+                            new_dungeon = dungeons[transition.transition.go_to_dungeon]
+                            new_map = new_dungeon.maps[transition.transition.go_to_floor]
                             game_map.set_current_map(new_map)
-                            player.x, player.y = transition.stairs.go_to_xy[0], transition.stairs.go_to_xy[1]
+                            player.x, player.y = transition.transition.go_to_xy[0], transition.transition.go_to_xy[1]
                             camera.refocus(player.x, player.y, game_map, constants)
                             entities = [player]
                             entities.extend(game_map.current_map.map_entities)
-                            transitions =[]
+                            transitions = []
                             transitions.extend(game_map.current_map.transitions)
                             structures = []
                             structures.extend(game_map.current_map.structures)
@@ -311,7 +313,6 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, wor
 
                     game_state = previous_game_state
                 if wait:
-
                     game_state = GameStates.ENEMY_TURN
                 if exit_game:
                     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU,
@@ -354,7 +355,7 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, wor
                         message_log.add_message(message)
 
                     if dead_entity:
-                        corpse = constants.get('images').get('entities').get('combatants').get('corpse')
+                        corpse = images.get('entities').get('combatants').get('corpse')
                         if dead_entity == player:
                             message, game_state = kill_player(dead_entity, corpse)
                         else:
@@ -442,11 +443,11 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, wor
         if fov_recompute:
             recompute_fov(fov_map, player.x, player.y, constants['fov_radius'], constants['fov_light_walls'],
                           constants['fov_algorithm'])
-        mini_map = constants.get('images').get('world_map').get('mini_map')
+
         render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
-                   game_map, world_map, mini_map, camera, fov_map, fov_recompute, message_log, constants['cscreen_width'],
-                   constants['cscreen_height'], constants['map_width'], constants['map_height'],
-                   constants.get('images').get('tiles'), game_state, constants['options'])
+                   game_map, world_map, images, camera, fov_map, fov_recompute, message_log,
+                   constants['cscreen_width'], constants['cscreen_height'], constants['map_width'],
+                   constants['map_height'], game_state)
 
         fov_recompute = False
 
@@ -466,7 +467,7 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, wor
                                 message_log.add_message(message)
 
                             if dead_entity:
-                                corpse = constants.get('images').get('entities').get('combatants').get('corpse')
+                                corpse = images.get('entities').get('combatants').get('corpse')
                                 if dead_entity == player:
                                     message, game_state = kill_player(dead_entity, corpse)
                                 else:

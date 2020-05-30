@@ -1,11 +1,11 @@
-from components.attributes import Attributes
-from components.combatant import Combatant
-from components.phylo import Phylo
-from components.level import Level
-from components.competence import Competence, Strength, Instinct, Coordination, Vitality, Arcana, Improvisation, Wisdom, Finesse, Charisma, Devotion
-from components.equipment import Equipment
-from components.inventory import Inventory
-from components.ai import BasicMonster
+from ECS.__entity.__combatant.attributes import Attributes
+from ECS.__entity.combatant import Combatant
+from ECS.__entity.__combatant.phylo import Phylo
+from ECS.__entity.__combatant.level import Level
+from ECS.__entity.__combatant.competence import Competence, Strength, Instinct, Coordination, Vitality, Arcana, Improvisation, Wisdom, Finesse, Charisma, Devotion
+from ECS.__entity.__combatant.equipment import Equipment
+from ECS.__entity.__combatant.inventory import Inventory
+from ECS.__entity.__combatant.ai import BasicMonster
 
 
 def orc(obj):

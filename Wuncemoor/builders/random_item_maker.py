@@ -1,7 +1,7 @@
-from components.equippable import Equippable
-from components.equippable_core import EquippableCore
-from components.equippable_material import EquippableMaterial
-from components.equippable_quality import EquippableQuality
+from ECS.__entity.__item.equippable import Equippable
+from ECS.__entity.__item.__equippable.equippable_core import EquippableCore
+from ECS.__entity.__item.__equippable.equippable_material import EquippableMaterial
+from ECS.__entity.__item.__equippable.equippable_quality import EquippableQuality
 from equipment_slots import EquipmentSlots
 import random
 

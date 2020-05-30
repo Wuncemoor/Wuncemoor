@@ -1,6 +1,6 @@
 import tcod as libtcod
 
-from entity import Entity
+from ECS.entity import Entity
 from equipment_slots import EquipmentSlots
 from game_messages import Message
 from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
@@ -8,12 +8,12 @@ from random import randint
 from random_utils import random_choice_from_dict, from_dungeon_level
 from render_functions import RenderOrder
 from builders.mob_builder import MobDirector, MobBuilder
-from components.equippable import Equippable
-from components.equippable_core import EquippableCore
-from components.equippable_material import EquippableMaterial
-from components.equippable_quality import EquippableQuality
-from components.item import Item
-from components.useable import Useable
+from ECS.__entity.__item.equippable import Equippable
+from ECS.__entity.__item.__equippable.equippable_core import EquippableCore
+from ECS.__entity.__item.__equippable.equippable_material import EquippableMaterial
+from ECS.__entity.__item.__equippable.equippable_quality import EquippableQuality
+from ECS.__entity.item import Item
+from ECS.__entity.__item.useable import Useable
 from map_objects.rectangle import Rect
 from map_objects.tile import Tile
 from map_objects.chances.item_chances import get_item_chances
@@ -22,7 +22,7 @@ from map_objects.chances.mob_chances import MobChances
 
 class Map:
 
-    def __init__(self, width, height, dungeon_level=0):
+    def __init__(self, width, height, variant=None, dungeon_level=0):
 
         self.width = width
         self.height = height
@@ -34,6 +34,7 @@ class Map:
         self.entrance = None
         self.exit = None
         self.floor_image = None
+        self.variant = variant
 
     def add_road(self, road):
         for x in range(road.rect.x1, road.rect.x2):
@@ -159,7 +160,7 @@ class Map:
 
         mob_chances = MobChances(dungeon_type, subtype, node_power)
         mcs = mob_chances.get_mob_chances()
-        item_chances = get_item_chances(dungeon_type, self.dungeon_level)
+        item_chances = get_item_chances(self.dungeon_level)
         combatants = objs.get('combatants')
         items = objs.get('items')
 
@@ -171,6 +172,7 @@ class Map:
 
             if not any([entity for entity in self.map_entities if entity.x == x and entity.y == y]):
                 monster_choice = random_choice_from_dict(mcs)
+
                 mob_builder = MobBuilder(0, monster_choice, combatants['goblin'])
                 mob_director = MobDirector()
                 mob_director.set_builder(mob_builder)
@@ -183,30 +185,35 @@ class Map:
         for i in range(number_of_items):
             x = randint(room.x1 + 1, room.x2 - 1)
             y = randint(room.y1 + 1, room.y2 - 1)
+            equippables = items.get('equippables')
+            weapons = equippables.get('weapons')
+            useables = items.get('useables')
 
             if not any([entity for entity in self.map_entities if entity.x == x and entity.y == y]) and not \
                     any([transition for transition in self.transitions if transition.x == x and transition.y == y]):
                 item_choice = random_choice_from_dict(item_chances)
 
                 if item_choice == 'healing_potion':
-                    image = items.get('useables').get('potion')
+                    image = useables.get('potion')
                     item_component = Item(
                         useable_component=Useable('Healing Potion', image, use_function=heal, amount=400))
                     item = Entity(x, y, render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'sword':
-                    equippable_core = EquippableCore('longsword')
+                    image = weapons.get('longsword')
+                    equippable_core = EquippableCore('longsword', image)
                     equippable_material = EquippableMaterial('wood')
                     equippable_quality = EquippableQuality('average')
-                    image = items.get('equippables').get('weapons').get('longsword')
+
                     equippable_component = Equippable('Sword', image, EquipmentSlots.MAIN_HAND, equippable_core,
                                                       equippable_material, equippable_quality)
                     item_component = Item(equippable_component)
                     item = Entity(x, y, item=item_component)
                 elif item_choice == 'shield':
-                    equippable_core = EquippableCore('shield')
+                    image = weapons.get('shield')
+                    equippable_core = EquippableCore('shield', image)
                     equippable_material = EquippableMaterial('iron')
                     equippable_quality = EquippableQuality('average')
-                    image = items.get('equippables').get('weapons').get('shield')
+
                     equippable_component = Equippable('Shield', image, EquipmentSlots.OFF_HAND, equippable_core,
                                                       equippable_material, equippable_quality)
                     item_component = Item(equippable_component)

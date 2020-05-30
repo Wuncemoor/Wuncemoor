@@ -1,6 +1,7 @@
 from random_utils import from_dungeon_level, from_node_power
 from collections import Counter
 
+
 class MobChances:
 
     def __init__(self, d_type, subtype, np, mob='mob'):
@@ -15,11 +16,8 @@ class MobChances:
 
     def get_mob_chances(self):
 
-        self.type_dict = type_dict = {
-            'directed_dungeon': self.get_dd_type_chances(),
+        self.type_dict = {
             'cave': self.get_cave_type_chances(),
-            'goblin_cave': self.get_goblin_subtype_chances(),
-            'kobold_cave': self.get_kobold_subtype_chances(),
             }
             
         self.subtype_dict = {
@@ -58,17 +56,6 @@ class MobChances:
         bonus_chances = self.subtype_dict[self.subtype]
         
         return base_chances + bonus_chances
-
-
-        
-    def get_dd_type_chances(self):
-
-        dd = Counter({ 
-                'orc' : 80,
-                'goblin' : 50,
-                'troll': 20
-                })
-        return dd  
 
     def get_cave_type_chances(self):
 

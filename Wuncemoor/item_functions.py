@@ -1,6 +1,6 @@
 import tcod as libtcod
 from game_messages import Message
-from components.ai import ConfusedMonster
+from ECS.__entity.__combatant.ai import ConfusedMonster
 
 def heal(*args, **kwargs):
     combatant = args[0].combatant

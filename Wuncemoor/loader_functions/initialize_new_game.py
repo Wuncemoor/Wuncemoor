@@ -4,9 +4,9 @@ from game_states import GameStates
 from map_objects.game_map import GameMap
 
 
-def get_game_variables(constants):
+def get_game_variables(constants, images):
 
-    ent = constants.get('images').get('entities')
+    ent = images.get('entities')
     player = get_player(ent.get('combatants').get('hero'))
     camera = get_camera(player, constants)
     equip_player(player, ent.get('items').get('equippables').get('weapons').get('stick'))
@@ -15,7 +15,7 @@ def get_game_variables(constants):
     structures = []
     transitions = []
     
-    dungeons, world_map = get_dungeons(constants)
+    dungeons, world_map = get_dungeons(constants, images)
     game_map = GameMap(dungeons['town'].maps[0])
     
     entities.extend(game_map.current_map.map_entities)

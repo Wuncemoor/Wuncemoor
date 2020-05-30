@@ -17,6 +17,10 @@ class GameMap:
         return self.current_map.tiles
 
     @property
+    def variant(self):
+        return self.current_map.variant
+
+    @property
     def dungeon_level(self):
         return self.current_map.dungeon_level
 

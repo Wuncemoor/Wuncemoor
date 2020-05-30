@@ -1,5 +1,5 @@
-from components.stairs import Stairs
-from entity import Entity
+from ECS.__entity.transition import Transition
+from ECS.entity import Entity
 
 class Road:
 
@@ -12,13 +12,13 @@ class Road:
         self.transitions_img = transitions_img
 
     def set_transitions(self, dimension):
-        stairs = Stairs('Stairs', self.transitions_img, self.go_to_dungeon, self.go_to_floor, self.go_to_xy)
+        stairs = Transition('Stairs', self.transitions_img, self.go_to_dungeon, self.go_to_floor, self.go_to_xy)
         if dimension == 'vertical':
             for j in range(self.rect.y1, self.rect.y2):
-                self.transitions.append(Entity(self.rect.x1, j, stairs=stairs))
-                self.transitions.append(Entity(self.rect.x2-1, j, stairs=stairs))
+                self.transitions.append(Entity(self.rect.x1, j, transition=stairs))
+                self.transitions.append(Entity(self.rect.x2-1, j, transition=stairs))
 
         elif dimension == 'horizontal':
             for i in range(self.rect.x1, self.rect.x2):
-                self.transitions.append(Entity(i, self.rect.y1, stairs=stairs))
-                self.transitions.append(Entity(i, self.rect.y2-1, stairs=stairs))
+                self.transitions.append(Entity(i, self.rect.y1, transition=stairs))
+                self.transitions.append(Entity(i, self.rect.y2-1, transition=stairs))

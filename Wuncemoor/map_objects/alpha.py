@@ -1,5 +1,5 @@
 import tcod as libtcod
-from entity import Entity
+from ECS.entity import Entity
 from render_functions import RenderOrder
 from random import randint
 from random_item_maker import Director, EquippableBuilder
@@ -7,24 +7,14 @@ from mob_builder import MobDirector, MobBuilder
 from game_messages import Message
 from equipment_slots import EquipmentSlots
 from map_objects.tile import Tile
-from map_objects.game_map import GameMap
 from map_objects.rectangle import Rect
-from map_objects.lloydarray import LloydArray
-from components.ai import BasicMonster
 from components.item import Item
-from components.useable import Useable
+from components.item.useable import Useable
 from components.stairs import Stairs
-from components.attributes import Attributes
-from components.combatant import Combatant
-from components.equipment import Equipment
-from components.equippable import Equippable
-from components.inventory import Inventory
-from components.equippable_core import EquippableCore
-from components.equippable_material import EquippableMaterial
-from components.equippable_quality import EquippableQuality
-from components.level import Level
-from components.competence import Competence, Strength, Instinct, Coordination, Vitality, Arcana, Improvisation, Wisdom, Finesse, Charisma, Devotion
-from components.shopkeeper import ShopKeeper
+from components.item.equippable import Equippable
+from components.item.equippable.equippable_core import EquippableCore
+from components.item.equippable.equippable_material import EquippableMaterial
+from components.item.equippable.equippable_quality import EquippableQuality
 from random_utils import random_choice_from_dict, from_dungeon_level
 from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
 
