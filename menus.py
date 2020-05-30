@@ -209,7 +209,6 @@ def primary_stats_screen(screen, player, character_screen_width, character_scree
         'Devotion: {0}'.format(player.combatant.attributes.devotion),
     ]
 
-    libtcod.console_set_default_foreground(window, libtcod.white)
     for count, elem in enumerate(lines):
         text = font.render(elem, True, (255, 255, 255))
         window.blit(text, (0, fontsize * (count + 1)))
