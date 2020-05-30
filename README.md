@@ -6,11 +6,17 @@ You live in a small village, grow up with your friends, marry your childhood swe
 
 
 Permadeath - When your allies die they are gone; when you die you wake back up and start over
+
 Procedurally generated - Never the same game twice; learn from your mistakes and die more creatively next time
+
 Turn Based Gameplay - Take all the time you need to make the best move
+
 "Time" management - Major actions cost time. Waste too much time and you'll grow old without ever being a hero
+
 Customization - Level and equip your hero and allies to fit the world you're living in.
+
 Nonlinear gameplay - The decisions you make matter.
+
 ...and much more!
 
 Currently in pre-alpha so only posting source code. Will release an executable once it's in alpha.
