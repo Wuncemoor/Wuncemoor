@@ -12,3 +12,5 @@ Turn Based Gameplay - Take all the time you need to make the best move
 Customization - Level and equip your hero and allies to fit the world you're living in.
 Nonlinear gameplay - The decisions you make matter.
 ...and much more!
+
+Currently in pre-alpha so only posting source code. Will release an executable once it's in alpha.
