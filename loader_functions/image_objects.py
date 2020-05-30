@@ -34,8 +34,12 @@ def get_image_objects():
 def get_gui_objs():
     gui_objs = {
         'main_menu': py.image.load('images\\GUI\\main_menu.png'),
+        'character_menu': py.image.load('images\\GUI\\character_menu.png'),
         'inventory_menu': py.image.load('images\\GUI\\inventory_menu.png'),
         'levelup_menu': py.image.load('images\\GUI\\levelup_menu.png'),
+        'primary_stats_screen': py.image.load('images\\GUI\\primary_stats_screen.png'),
+
+
     }
 
     return gui_objs

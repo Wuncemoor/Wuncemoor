@@ -135,12 +135,11 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         gui_img = images.get('gui').get('levelup_menu')
         level_up_menu(screen, 'Level up! Choose a stat boost:', gui_img, player, camera_width, camera_height)
     elif game_state == GameStates.CHARACTER_MENU:
-        cm_width = 400
-        character_menu(screen, 'What would you like to look at?', cm_width, camera_width, camera_height)
+        gui_img = images.get('gui').get('character_menu')
+        character_menu(screen, 'What would you like to look at?', gui_img, camera_width, camera_height)
     elif game_state == GameStates.PRIMARY_STATS_SCREEN:
-        ps_width = 400
-        ps_height = 300
-        primary_stats_screen(screen, player, ps_width, ps_height, camera_width, camera_height)
+        gui_img = images.get('gui').get('primary_stats_screen')
+        primary_stats_screen(screen, player, gui_img, camera_width, camera_height)
     elif game_state == GameStates.COMBAT_STATS_SCREEN:
         css_width = 400
         css_height = 400

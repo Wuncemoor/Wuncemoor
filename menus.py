@@ -113,90 +113,35 @@ def level_up_menu(screen, header, gui_img, player, camera_width, camera_height):
     menu(screen, header, gui_img, fontsize, options, menu_width, menu_height, camera_width, camera_height, off_x, off_y)
 
 
-def competence_menu(screen, header, cm_width, camera_width, camera_height):
-    options = ['Strength', 'Instinct', 'Coordination', 'Vitality', 'Arcana', 'Improvisation', 'Wisdom', 'Finesse',
-               'Charisma', 'Devotion']
-    fontsize = 12
-    menu(screen, header, fontsize, options, cm_width, camera_width, camera_height)
+def character_menu(screen, header, gui_img, camera_width, camera_height):
+    options = ['Primary', 'Combat', 'Non-Combat']
+    fontsize = 40
+    menu_width = 400
+    menu_height = 170
+    x_off = 25
+    y_off = -3
+    menu(screen, header, gui_img, fontsize, options, menu_width, menu_height, camera_width, camera_height, x_off, y_off)
 
 
-def strength_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Strength, Better Slash, Better Stab, Better Blunt']
-    fontsize = 12
-    menu(screen, 'Strength Feats', fontsize, options, menu_width, camera_width, camera_height)
+def primary_stats_screen(screen, player, gui_img, camera_width, camera_height):
+    pss_width = 200
+    pss_height = 350
+    x_off = 20
+    y_off = -2
+    window = pygame.Surface((pss_width, pss_height))
+    window.blit(gui_img, (0, 0))
 
-
-def instinct_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Instinct']
-    fontsize = 12
-    menu(screen, 'Instinct Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def coordinaton_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Coordination']
-    fontsize = 12
-    menu(screen, 'Coordination Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def vitality_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Vitality']
-    fontsize = 12
-    menu(screen, 'Vitality Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def arcana_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Arcana']
-    fontsize = 12
-    menu(screen, 'Arcana Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def improvisation_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Improvisation']
-    fontsize = 12
-    menu(screen, 'Improvisation Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def wisdom_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Wisdom']
-    fontsize = 12
-    menu(screen, 'Wisdom Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def finesse_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Finesse']
-    fontsize = 12
-    menu(screen, 'Finesse Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def charisma_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Charisma']
-    fontsize = 12
-    menu(screen, 'Charisma Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def devotion_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Devotion']
-    fontsize = 12
-    menu(screen, 'Devotion Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def character_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Primary Stats', 'Combat Stats', 'Non-Combat Stats']
-    fontsize = 12
-    menu(screen, header, fontsize, options, menu_width, camera_width, camera_height)
-
-
-def primary_stats_screen(screen, player, character_screen_width, character_screen_height, camera_width, camera_height):
-    window = pygame.Surface((character_screen_width, character_screen_height))
-
-    fontsize = 15
+    fontsize = 18
     font = pygame.font.SysFont("comicsansms", fontsize)
 
     lines = [
-        'Character Information',
+        'Character',
+        'Information',
+        '',
         'Level: {0}'.format(player.combatant.level.current_level),
         'Experience: {0}'.format(player.combatant.level.current_xp),
-        'Experience till next levelup: {0}'.format(player.combatant.level.experience_to_next_level),
+        'Exp till level: {0}'.format(player.combatant.level.experience_to_next_level),
+        '',
         'Strength: {0}'.format(player.combatant.attributes.strength),
         'Instinct: {0}'.format(player.combatant.attributes.instinct),
         'Coordination: {0}'.format(player.combatant.attributes.coordination),
@@ -211,11 +156,11 @@ def primary_stats_screen(screen, player, character_screen_width, character_scree
 
     for count, elem in enumerate(lines):
         text = font.render(elem, True, (255, 255, 255))
-        window.blit(text, (0, fontsize * (count + 1)))
+        window.blit(text, (x_off, y_off + (fontsize * (count + 1))))
 
-    x = camera_width // 2 - character_screen_width // 2
-    y = camera_height // 2 - character_screen_height // 2
-    screen.blit(window, (camera_width / 4, camera_height / 4))
+    x = camera_width // 2 - pss_width // 2
+    y = camera_height // 2 - pss_height // 2
+    screen.blit(window, (x, y))
 
 
 def combat_stats_screen(screen, player, css_width, css_height, camera_width, camera_height):
@@ -341,3 +286,70 @@ def message_box(screen, width, screen_width, screen_height):
     fontsize = 12
 
     menu(screen, '', fontsize, ['No save game to load :('], width, screen_width, screen_height)
+
+def competence_menu(screen, header, cm_width, camera_width, camera_height):
+    options = ['Strength', 'Instinct', 'Coordination', 'Vitality', 'Arcana', 'Improvisation', 'Wisdom', 'Finesse',
+               'Charisma', 'Devotion']
+    fontsize = 12
+    menu(screen, header, fontsize, options, cm_width, camera_width, camera_height)
+
+
+def strength_feats_menu(screen, header, menu_width, camera_width, camera_height):
+    options = ['Mighty Strength, Better Slash, Better Stab, Better Blunt']
+    fontsize = 12
+    menu(screen, 'Strength Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+
+def instinct_feats_menu(screen, header, menu_width, camera_width, camera_height):
+    options = ['Mighty Instinct']
+    fontsize = 12
+    menu(screen, 'Instinct Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+
+def coordinaton_feats_menu(screen, header, menu_width, camera_width, camera_height):
+    options = ['Mighty Coordination']
+    fontsize = 12
+    menu(screen, 'Coordination Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+
+def vitality_feats_menu(screen, header, menu_width, camera_width, camera_height):
+    options = ['Mighty Vitality']
+    fontsize = 12
+    menu(screen, 'Vitality Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+
+def arcana_feats_menu(screen, header, menu_width, camera_width, camera_height):
+    options = ['Mighty Arcana']
+    fontsize = 12
+    menu(screen, 'Arcana Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+
+def improvisation_feats_menu(screen, header, menu_width, camera_width, camera_height):
+    options = ['Mighty Improvisation']
+    fontsize = 12
+    menu(screen, 'Improvisation Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+
+def wisdom_feats_menu(screen, header, menu_width, camera_width, camera_height):
+    options = ['Mighty Wisdom']
+    fontsize = 12
+    menu(screen, 'Wisdom Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+
+def finesse_feats_menu(screen, header, menu_width, camera_width, camera_height):
+    options = ['Mighty Finesse']
+    fontsize = 12
+    menu(screen, 'Finesse Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+
+def charisma_feats_menu(screen, header, menu_width, camera_width, camera_height):
+    options = ['Mighty Charisma']
+    fontsize = 12
+    menu(screen, 'Charisma Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+
+def devotion_feats_menu(screen, header, menu_width, camera_width, camera_height):
+    options = ['Mighty Devotion']
+    fontsize = 12
+    menu(screen, 'Devotion Feats', fontsize, options, menu_width, camera_width, camera_height)
+
