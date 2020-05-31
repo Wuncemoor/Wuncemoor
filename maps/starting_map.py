@@ -20,6 +20,7 @@ def get_town(width, height, node, img_objs):
 
     map = get_map(width, height, name)
 
+
     alpha = img_objs.get('transitions').get('alpha')
     road = Road(Rect(0, int(height / 2) - 2, width, 4), 'world', 0, (node_x, node_y), alpha)
     road.set_transitions('vertical')
@@ -64,11 +65,13 @@ def get_cave(constants, images, subtype):
 
 
 def get_map(width, height, variant=None):
+    
     map = Map(width, height, variant=variant)
-    map.initialize_tiles()
-    if variant == 'town' or 'second_town':
+
+    if variant in ('town', 'second_town', 'third_town', 'fourth_town'):
+
         map.create_room(Rect(0, 0, width - 1, height - 1))
-    elif variant == 'world':
+    elif variant == 'world_map':
         for row in map.tiles:
             for tile in row:
                 tile.blocked = False
