@@ -58,6 +58,8 @@ def get_entities_objs():
         'combatants': get_combatants_objs(),
         'items': get_items_objs(),
         'transitions': get_transitions_objs(),
+        'noncombatants': get_noncombatants_objs(),
+
     }
 
     return entities
@@ -576,3 +578,12 @@ def get_dirt_objs(visible):
             'dark_dirt8': py.image.load('images\\tiles\\dirt\\dark_dirt8.png'),
         }
     return dirt_dict
+
+
+def get_noncombatants_objs():
+
+    noncom = {
+        'samwise': py.image.load('images\\entities\\noncombatants\\samwise.png'),
+    }
+
+    return noncom

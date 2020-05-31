@@ -14,6 +14,7 @@ def get_game_variables(constants, images):
     entities = [player]
     structures = []
     transitions = []
+    noncombatants = []
     
     dungeons, world_map = get_dungeons(constants, images)
     game_map = GameMap(dungeons['town'].maps[0])
@@ -21,11 +22,12 @@ def get_game_variables(constants, images):
     entities.extend(game_map.current_map.map_entities)
     structures.extend(game_map.current_map.structures)
     transitions.extend(game_map.current_map.transitions)
+    noncombatants.extend(game_map.current_map.noncombatants)
 
     
     message_log = MessageLog(constants['message_x'], constants['message_width'], constants['message_height'])
     
     game_state = GameStates.PLAYERS_TURN
     
-    return player, dungeons, entities, structures, transitions, game_map,  world_map, camera, message_log, game_state
+    return player, dungeons, entities, structures, transitions, noncombatants, game_map,  world_map, camera, message_log, game_state
     

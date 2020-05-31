@@ -75,7 +75,8 @@ def get_render_bar_asset(name, full):
 
 
 def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
-               game_map, world_map, images, camera, fov_map, fov_recompute, message_log, camera_width, camera_height, map_width, map_height, game_state):
+               noncombatants, game_map, world_map, images, camera, fov_map, fov_recompute, message_log, camera_width,
+               camera_height, map_width, map_height, game_state):
     tiles = images.get('tiles')
     options = images.get('options')
     ents = images.get('entities')
@@ -90,6 +91,8 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         draw_structure(camera_surface, camera.x, camera.y, structure, fov_map, game_map, tiles, tilesize)
     for transition in transitions:
         draw_entity(camera_surface, camera.x, camera.y, transition, fov_map, game_map, tilesize)
+    for noncom in noncombatants:
+        draw_entity(camera_surface, camera.x, camera.y, noncom, fov_map, game_map, tilesize)
     # draw all entities in list
     entities_in_render_order = sorted(entities, key=lambda x: x.render_order.value)
     for entity in entities_in_render_order:

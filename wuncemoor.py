@@ -76,7 +76,7 @@ def main():
                 show_load_error_message = False
             elif new_game:
 
-                player, dungeons, entities, structures, transitions, game_map, world_map, camera, \
+                player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, \
                 message_log, game_state = get_game_variables(constants, images)
                 camera.refocus(player.x, player.y, game_map, constants)
                 game_state = GameStates.PLAYERS_TURN
@@ -84,7 +84,7 @@ def main():
                 show_main_menu = False
             elif load_saved_game:
                 try:
-                    player, dungeons, entities, structures, transitions, game_map, world_map, camera, \
+                    player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, \
                     message_log, game_state = load_game()
                     show_main_menu = False
                 except FileNotFoundError:
@@ -96,11 +96,11 @@ def main():
         else:
             screen.fill((0, 0, 0))
             show_main_menu = False
-            play_game(player, dungeons, entities, structures, transitions, game_map, world_map, camera, message_log,
+            play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, message_log,
                       game_state, screen, camera_surface, resource_surface, message_surface, constants, images)
 
 
-def play_game(player, dungeons, entities, structures, transitions, game_map, world_map, camera, message_log, game_state,
+def play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, message_log, game_state,
               screen, camera_surface, resource_surface, message_surface, constants, images):
     fov_recompute = True
     fov_map = initialize_fov(game_map)
@@ -445,7 +445,7 @@ def play_game(player, dungeons, entities, structures, transitions, game_map, wor
                           constants['fov_algorithm'])
 
         render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
-                   game_map, world_map, images, camera, fov_map, fov_recompute, message_log,
+                   noncombatants, game_map, world_map, images, camera, fov_map, fov_recompute, message_log,
                    constants['cscreen_width'], constants['cscreen_height'], constants['map_width'],
                    constants['map_height'], game_state)
 

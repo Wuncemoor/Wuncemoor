@@ -11,6 +11,7 @@ from maps.world_map.core_nodes import get_core_plot_nodes
 from maps.town.add_structure import add_house, add_hut, add_town
 from ECS.__entity.item import Item
 from ECS.__entity.transition import Transition
+from ECS.__entity.noncombatant import Noncombatant
 from random import randint
 
 
@@ -23,7 +24,9 @@ def get_town(width, height, node, img_objs):
     road = Road(Rect(0, int(height / 2) - 2, width, 4), 'world', 0, (node_x, node_y), alpha)
     road.set_transitions('vertical')
     map.floor_image = 'grass'
+    # add_road also adds transitions
     map.add_road(road)
+    # convert to add_structures later
     add_house(map, 10, int(height / 2) - 8)
     add_hut(map, 30, int(height / 2) - 19)
     add_town(map, 70, int(height / 2) - 6)
@@ -37,6 +40,14 @@ def get_town(width, height, node, img_objs):
     test_gear = Entity(20, 20, blocks=False, render_order=RenderOrder.ITEM, item=item_component)
 
     map.map_entities.append(test_gear)
+
+    # Get samwise but only in first town
+    if name == 'town':
+        samwise_obj = img_objs.get('noncombatants').get('samwise')
+        noncom = Noncombatant('samwise', samwise_obj)
+        samwise = Entity(38, 16, blocks=True, render_order=RenderOrder.ACTOR, noncombatant=noncom)
+
+        map.noncombatants.append(samwise)
 
     town = Dungeon(name, 1, [map], np=0)
 

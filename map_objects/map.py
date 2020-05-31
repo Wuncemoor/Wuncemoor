@@ -31,6 +31,7 @@ class Map:
         self.map_entities = self.initialize_entities()
         self.transitions = []
         self.structures = []
+        self.noncombatants = []
         self.entrance = None
         self.exit = None
         self.floor_image = None
