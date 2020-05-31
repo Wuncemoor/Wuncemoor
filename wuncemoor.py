@@ -187,6 +187,8 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             transitions.extend(game_map.current_map.transitions)
                             structures = []
                             structures.extend(game_map.current_map.structures)
+                            noncombatants = []
+                            noncombatants.extend(game_map.current_map.noncombatants)
                             fov_map = initialize_fov(game_map)
                             fov_recompute = True
                             nothing = False
