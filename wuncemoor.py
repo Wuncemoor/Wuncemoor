@@ -2,7 +2,7 @@ import tcod as libtcod
 from fov_function import initialize_fov, recompute_fov
 from ECS.entity import get_blocking_entities_at_location
 from death_functions import kill_monster, kill_player
-from game_states import GameStates
+from enums.game_states import GameStates
 from game_messages import Message
 from input_handlers import handle_keys, handle_mouse, handle_main_menu
 from render_functions import render_all

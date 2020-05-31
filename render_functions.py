@@ -1,6 +1,6 @@
 import tcod as libtcod
 import pygame
-from game_states import GameStates
+from enums.game_states import GameStates
 from menus import inventory_menu, level_up_menu, competence_menu, character_menu, primary_stats_screen, \
     combat_stats_screen, noncombat_stats_screen, strength_feats_menu, instinct_feats_menu, coordinaton_feats_menu, \
     vitality_feats_menu, arcana_feats_menu, improvisation_feats_menu, wisdom_feats_menu, finesse_feats_menu, \

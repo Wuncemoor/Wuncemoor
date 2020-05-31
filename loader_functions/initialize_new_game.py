@@ -1,6 +1,6 @@
 from loader_functions.new_game_functions import get_player, get_camera, equip_player, get_dungeons
 from game_messages import MessageLog
-from game_states import GameStates
+from enums.game_states import GameStates
 from map_objects.game_map import GameMap
 
 

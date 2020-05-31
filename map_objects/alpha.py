@@ -5,7 +5,7 @@ from random import randint
 from random_item_maker import Director, EquippableBuilder
 from mob_builder import MobDirector, MobBuilder
 from game_messages import Message
-from equipment_slots import EquipmentSlots
+from enums.equipment_slots import EquipmentSlots
 from map_objects.tile import Tile
 from map_objects.rectangle import Rect
 from components.item import Item

@@ -1,4 +1,4 @@
-from equipment_slots import EquipmentSlots
+from enums.equipment_slots import EquipmentSlots
 
 class Equipment:
     def __init__(self, main_hand=None, off_hand=None, head=None, body=None, feet=None, belt=None, hands=None, finger=None, neck=None, back=None, accessory=None):

@@ -16,7 +16,7 @@ from ECS.__entity.combatant import Combatant
 from maps.starting_map import get_cave, get_town, get_world_map
 from camera import Camera
 from ECS.entity import Entity
-from equipment_slots import EquipmentSlots
+from enums.equipment_slots import EquipmentSlots
 from render_functions import RenderOrder
 
 

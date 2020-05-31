@@ -1,6 +1,5 @@
-import tcod as libtcod
 import pygame
-from game_states import GameStates
+from enums.game_states import GameStates
 
 
 def handle_keys(key, game_state):

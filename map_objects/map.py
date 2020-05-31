@@ -1,7 +1,7 @@
 import tcod as libtcod
 
 from ECS.entity import Entity
-from equipment_slots import EquipmentSlots
+from enums.equipment_slots import EquipmentSlots
 from game_messages import Message
 from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
 from random import randint
