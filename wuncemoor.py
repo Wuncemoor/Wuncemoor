@@ -322,15 +322,18 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
                     game_state = previous_game_state
                 if converse:
-                    key = converse
+                    key = chr(converse)
                     dialogue = dialogue_partner.noncombatant.dialogue
                     try:
                         current_node = dialogue.graph_dict.get(dialogue.current_convo)
-                        results = current_node.results.get(key)
-                        if results is None:
+
+                        dialogue.current_convo = current_node.results.get(key)
+                        current_node = dialogue.graph_dict.get(dialogue.current_convo)
+                        current_node.visited = True
+
+                        if dialogue.current_convo == 'exit':
+                            dialogue.current_convo = 'root'
                             game_state = previous_game_state
-                        else:
-                            dialogue.current_convo = results
                     except KeyError:
                         pass
 
