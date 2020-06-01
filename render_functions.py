@@ -4,7 +4,7 @@ from enums.game_states import GameStates
 from menus import inventory_menu, level_up_menu, competence_menu, character_menu, primary_stats_screen, \
     combat_stats_screen, noncombat_stats_screen, strength_feats_menu, instinct_feats_menu, coordinaton_feats_menu, \
     vitality_feats_menu, arcana_feats_menu, improvisation_feats_menu, wisdom_feats_menu, finesse_feats_menu, \
-    charisma_feats_menu, devotion_feats_menu, map_menu
+    charisma_feats_menu, devotion_feats_menu, map_menu, dialogue_menu
 from random_utils import pseudorandom_seed
 
 
@@ -128,7 +128,7 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         else:
             inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
 
-        inventory_menu(screen, inventory_title, gui_img, 12, player, camera_width, camera_height)
+        inventory_menu(screen, inventory_title, gui_img, player, camera_width, camera_height)
     elif game_state == GameStates.SHOW_MAP:
         mm_width = 400
         mm_height = 400
@@ -151,6 +151,9 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         nss_width = 400
         nss_height = 400
         noncombat_stats_screen(screen, player, nss_width, nss_height, camera_width, camera_height)
+    elif game_state == GameStates.DIALOGUE:
+        gui_img = images.get('gui').get('dialogue_menu')
+        dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height)
     elif game_state == GameStates.COMPETENCE_MENU:
         cm_width = 400
         competence_menu(screen, 'What would you like to be more competent at?', cm_width, camera_width, camera_height)

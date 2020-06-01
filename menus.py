@@ -1,5 +1,4 @@
-import tcod as libtcod
-import pygame
+import pygame as py
 import math
 
 
@@ -10,13 +9,13 @@ def menu(screen, header, gui_img, fontsize, options, width, height, camera_width
 
 
     # create an off-screen console that represents the menu's window
-    menu = pygame.Surface((width, height))
+    menu = py.Surface((width, height))
 
     menu.blit(gui_img, (0, 0))
 
     # print the header, with auto-wrap
 
-    font = pygame.font.SysFont("comicsansms", fontsize)
+    font = py.font.SysFont("comicsansms", fontsize)
 
     # print all the options
     gap = math.ceil(fontsize * 0.2)
@@ -34,7 +33,8 @@ def menu(screen, header, gui_img, fontsize, options, width, height, camera_width
     screen.blit(menu, (x, y))
 
 
-def inventory_menu(screen, header, gui_img, fontsize, player, camera_width, camera_height):
+def inventory_menu(screen, header, gui_img, player, camera_width, camera_height):
+    fontsize = 12
     # show a menu with each item of the inventory as an option
     if len(player.combatant.inventory.items) == 0:
         options = ['Inventory is empty.']
@@ -78,7 +78,7 @@ def inventory_menu(screen, header, gui_img, fontsize, player, camera_width, came
 
 def main_menu(screen, screen_width, screen_height, bg_img, gui_img, fontsize):
     screen.blit(bg_img, (0, 0))
-    font = pygame.font.SysFont("comicsansms", fontsize)
+    font = py.font.SysFont("comicsansms", fontsize)
     titletext = font.render('WUNCEMOOR: THE ETERNAL DREAM', True, (255, 255, 255))
 
 
@@ -128,11 +128,11 @@ def primary_stats_screen(screen, player, gui_img, camera_width, camera_height):
     pss_height = 350
     x_off = 20
     y_off = -2
-    window = pygame.Surface((pss_width, pss_height))
+    window = py.Surface((pss_width, pss_height))
     window.blit(gui_img, (0, 0))
 
     fontsize = 18
-    font = pygame.font.SysFont("comicsansms", fontsize)
+    font = py.font.SysFont("comicsansms", fontsize)
 
     lines = [
         'Character',
@@ -164,9 +164,9 @@ def primary_stats_screen(screen, player, gui_img, camera_width, camera_height):
 
 
 def combat_stats_screen(screen, player, css_width, css_height, camera_width, camera_height):
-    window = pygame.Surface((css_width, css_height))
+    window = py.Surface((css_width, css_height))
     fontsize = 12
-    font = pygame.font.SysFont("comicsansms", fontsize)
+    font = py.font.SysFont("comicsansms", fontsize)
 
     power = font.render('Power', True, (255, 255, 255))
     window.blit(power, (css_width / 3, 0))
@@ -250,9 +250,9 @@ def combat_stats_screen(screen, player, css_width, css_height, camera_width, cam
 
 
 def noncombat_stats_screen(screen, player, css_width, css_height, camera_width, camera_height):
-    window = pygame.Surface((css_width, css_height))
+    window = py.Surface((css_width, css_height))
     fontsize = 12
-    font = pygame.font.SysFont("comicsansms", fontsize)
+    font = py.font.SysFont("comicsansms", fontsize)
     info = font.render('Leadership: {0}'.format(player.combatant.leadership), True, (255, 255, 255))
     window.blit(info, (css_width / 3, fontsize * 25))
 
@@ -262,7 +262,7 @@ def noncombat_stats_screen(screen, player, css_width, css_height, camera_width, 
 
 
 def map_menu(screen, world_map, images, mm_width, mm_height, camera_width, camera_height):
-    window = pygame.Surface((mm_width, mm_height))
+    window = py.Surface((mm_width, mm_height))
     offset_x = 50
     offset_y = 50
     i, j = 0, 0
@@ -279,6 +279,38 @@ def map_menu(screen, world_map, images, mm_width, mm_height, camera_width, camer
     x = camera_width // 2 - mm_width // 2
     y = camera_height // 2 - mm_height // 2
     screen.blit(window, (x, y))
+
+
+def dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height):
+
+    gap = 5
+    portrait_off_x = 20
+    name_off_y = 40
+    noncom_off_x = 1030
+    interactor_width = 250
+
+    actor_name_fontsize = 20
+    actor_font = py.font.SysFont("comicsansms", actor_name_fontsize)
+
+    window = py.Surface((camera_width, camera_height))
+    window.blit(gui_img, (0, 0))
+
+    player_name = actor_font.render(player.name, True, (255, 255, 255))
+    pnw, pnh = player_name.get_width(), player_name.get_height()
+    pn_off_x = (interactor_width / 2) - (pnw / 2)
+    window.blit(player.combatant.portrait, (portrait_off_x, name_off_y + pnh + gap))
+    window.blit(player_name, (pn_off_x, name_off_y))
+
+
+    noncom_name = actor_font.render(noncom.name.capitalize(), True, (255, 255, 255))
+    nnw, nnh = noncom_name.get_width(), noncom_name.get_height()
+    nn_off_x = (interactor_width / 2) - (nnw / 2)
+    window.blit(noncom.noncombatant.portrait, (noncom_off_x + portrait_off_x, name_off_y + nnh + gap))
+    window.blit(noncom_name, (noncom_off_x + nn_off_x, name_off_y))
+
+
+
+    screen.blit(window, (0, 0))
 
 
 

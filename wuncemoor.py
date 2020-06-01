@@ -193,6 +193,10 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             fov_recompute = True
                             nothing = False
                             break
+                    for noncom in noncombatants:
+                        if noncom.x == player.x and noncom.y == player.y:
+                            previous_game_state = game_state
+                            game_state = GameStates.DIALOGUE
                     if nothing:
                         message_log.add_message(Message('Nothing to see here, move along...', libtcod.yellow))
 

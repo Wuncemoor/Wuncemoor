@@ -5,10 +5,12 @@ import random
 import math
 
 class Combatant:
-    def __init__(self, name, image, phylo, attributes, level, competence, equipment, inventory, ai=None, xp=0):
+    def __init__(self, name, image, phylo, attributes, level, competence, equipment, inventory, ai=None, xp=0,
+                 portrait=None):
         
         self.name = name
         self.image = image
+        self.portrait = portrait
         self.phylo = phylo
         self.attributes = attributes
         self.level = level

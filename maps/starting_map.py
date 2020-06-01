@@ -20,8 +20,9 @@ def get_town(width, height, node, img_objs):
 
     map = get_map(width, height, name)
 
+    ents = img_objs.get('entities')
 
-    alpha = img_objs.get('transitions').get('alpha')
+    alpha = ents.get('transitions').get('alpha')
     road = Road(Rect(0, int(height / 2) - 2, width, 4), 'world', 0, (node_x, node_y), alpha)
     road.set_transitions('vertical')
     map.floor_image = 'grass'
@@ -32,7 +33,7 @@ def get_town(width, height, node, img_objs):
     add_hut(map, 30, int(height / 2) - 19)
     add_town(map, 70, int(height / 2) - 6)
 
-    equippable_test = EquippableBuilder(499, img_objs.get('items').get('equippables').get('weapons'))
+    equippable_test = EquippableBuilder(499, ents.get('items').get('equippables').get('weapons'))
     director = Director()
 
     director.set_builder(equippable_test)
@@ -44,9 +45,11 @@ def get_town(width, height, node, img_objs):
 
     # Get samwise but only in first town
     if name == 'town':
-        samwise_obj = img_objs.get('noncombatants').get('samwise')
-        noncom = Noncombatant('samwise', samwise_obj)
-        samwise = Entity(38, 16, blocks=True, render_order=RenderOrder.ACTOR, noncombatant=noncom)
+
+        samwise_obj = ents.get('noncombatants').get('samwise')
+        samwise_portrait = img_objs.get('portraits').get('samwise')
+        noncom = Noncombatant('samwise', samwise_obj, samwise_portrait)
+        samwise = Entity(38, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom)
 
         map.noncombatants.append(samwise)
 
@@ -65,7 +68,7 @@ def get_cave(constants, images, subtype):
 
 
 def get_map(width, height, variant=None):
-    
+
     map = Map(width, height, variant=variant)
 
     if variant in ('town', 'second_town', 'third_town', 'fourth_town'):

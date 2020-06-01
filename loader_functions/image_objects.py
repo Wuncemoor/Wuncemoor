@@ -25,6 +25,7 @@ def get_image_objects():
         'entities': get_entities_objs(),
         'tiles': get_tiles_objs(),
         'gui': get_gui_objs(),
+        'portraits': get_portrait_objs(),
 
     }
 
@@ -38,6 +39,7 @@ def get_gui_objs():
         'inventory_menu': py.image.load('images\\GUI\\inventory_menu.png'),
         'levelup_menu': py.image.load('images\\GUI\\levelup_menu.png'),
         'primary_stats_screen': py.image.load('images\\GUI\\primary_stats_screen.png'),
+        'dialogue_menu': py.image.load('images\\GUI\\dialogue_menu.png'),
 
 
     }
@@ -587,3 +589,13 @@ def get_noncombatants_objs():
     }
 
     return noncom
+
+
+def get_portrait_objs():
+
+    portraits = {
+        'hero': py.image.load('images\\portraits\\hero.png'),
+        'samwise': py.image.load('images\\portraits\\samwise.png'),
+    }
+
+    return portraits
