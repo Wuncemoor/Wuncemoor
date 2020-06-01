@@ -13,6 +13,7 @@ from ECS.__entity.item import Item
 from ECS.__entity.transition import Transition
 from ECS.__entity.noncombatant import Noncombatant
 from random import randint
+from dialogue.get_dialogue import get_samwise_dialogue
 
 
 def get_town(width, height, node, img_objs):
@@ -48,7 +49,8 @@ def get_town(width, height, node, img_objs):
 
         samwise_obj = ents.get('noncombatants').get('samwise')
         samwise_portrait = img_objs.get('portraits').get('samwise')
-        noncom = Noncombatant('samwise', samwise_obj, samwise_portrait)
+        dialogue = get_samwise_dialogue()
+        noncom = Noncombatant('samwise', samwise_obj, dialogue, samwise_portrait)
         samwise = Entity(38, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom)
 
         map.noncombatants.append(samwise)

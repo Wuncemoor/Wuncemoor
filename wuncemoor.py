@@ -107,6 +107,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
     game_state = game_state
     previous_game_state = game_state
     targeting_item = None
+    dialogue_partner = None
 
     while True:
         for event in pygame.event.get():
@@ -143,6 +144,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 level_up = action.get('level_up')
                 wait = action.get('wait')
                 encounter = action.get('encounter')
+                converse = action.get('converse')
 
                 if move and game_state == GameStates.PLAYERS_TURN:
                     dx, dy = move
@@ -195,6 +197,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             break
                     for noncom in noncombatants:
                         if noncom.x == player.x and noncom.y == player.y:
+                            dialogue_partner = noncom
                             previous_game_state = game_state
                             game_state = GameStates.DIALOGUE
                     if nothing:
@@ -318,6 +321,19 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         player.combatant.attributes.devotion += 1
 
                     game_state = previous_game_state
+                if converse:
+                    key = converse
+                    dialogue = dialogue_partner.noncombatant.dialogue
+                    try:
+                        current_node = dialogue.graph_dict.get(dialogue.current_convo)
+                        results = current_node.results.get(key)
+                        if results is None:
+                            game_state = previous_game_state
+                        else:
+                            dialogue.current_convo = results
+                    except KeyError:
+                        pass
+
                 if wait:
                     game_state = GameStates.ENEMY_TURN
                 if exit_game:

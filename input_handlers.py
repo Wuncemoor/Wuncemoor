@@ -23,6 +23,8 @@ def handle_keys(key, game_state):
         return handle_competence_menu(key)
     elif game_state == GameStates.SHOW_MAP:
         return handle_map_screen(key)
+    elif game_state == GameStates.DIALOGUE:
+        return handle_dialogue_menu(key)
     return {}
 
 
@@ -154,6 +156,12 @@ def handle_competence_menu(key):
     elif key == pygame.K_j:
         return {'show_devotion_feats': True}
     return {}
+
+
+def handle_dialogue_menu(key):
+
+    return {'converse': key}
+
     
 def handle_strength(key):
 

@@ -292,6 +292,9 @@ def dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height):
     actor_name_fontsize = 20
     actor_font = py.font.SysFont("comicsansms", actor_name_fontsize)
 
+    fontsize = 12
+    font = py.font.SysFont("comicsansms", fontsize)
+
     window = py.Surface((camera_width, camera_height))
     window.blit(gui_img, (0, 0))
 
@@ -307,6 +310,28 @@ def dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height):
     nn_off_x = (interactor_width / 2) - (nnw / 2)
     window.blit(noncom.noncombatant.portrait, (noncom_off_x + portrait_off_x, name_off_y + nnh + gap))
     window.blit(noncom_name, (noncom_off_x + nn_off_x, name_off_y))
+
+    dialogue = noncom.noncombatant.dialogue
+    current_node = dialogue.graph_dict.get(dialogue.current_convo)
+
+    words_off_x = 285
+    words_off_y = 25
+    options_off_y = 296
+
+    words = font.render(current_node.words, True, (255, 255, 255))
+
+    window.blit(words, (words_off_x, words_off_y))
+
+    text_gap = math.ceil(fontsize * 0.2)
+    letter_index = ord('a')
+    q = 0
+    for option in current_node.options:
+
+        text = font.render('(' + chr(letter_index) + ') ' + option, True, (255, 255, 255))
+        window.blit(text, (words_off_x, words_off_y + options_off_y + ((q * fontsize) + (q + 1) * text_gap)))
+        q += 1
+        letter_index += 1
+
 
 
 
