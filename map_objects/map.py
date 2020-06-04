@@ -22,7 +22,7 @@ from map_objects.chances.mob_chances import MobChances
 
 class Map:
 
-    def __init__(self, width, height, variant=None, dungeon_level=0):
+    def __init__(self, width, height, variant=None, dungeon_level=0, dangerous=False):
 
         self.width = width
         self.height = height
@@ -36,6 +36,7 @@ class Map:
         self.exit = None
         self.floor_image = None
         self.variant = variant
+        self.dangerous = dangerous
 
     def add_road(self, road):
         for x in range(road.rect.x1, road.rect.x2):

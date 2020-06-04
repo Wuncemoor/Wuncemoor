@@ -43,7 +43,7 @@ class DungeonBuilder:
 
     def initialize_maps(self):
 
-        map = Map(self.width, self.height, variant=self.basename)
+        map = Map(self.width, self.height, variant=self.basename, dangerous=True)
         map.initialize_tiles()
 
         return map

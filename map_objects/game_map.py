@@ -24,6 +24,10 @@ class GameMap:
     def dungeon_level(self):
         return self.current_map.dungeon_level
 
+    @property
+    def dangerous(self):
+        return self.current_map.dangerous
+
     def is_blocked(self, x, y):
         if self.current_map.tiles[x][y].blocked:
             return True

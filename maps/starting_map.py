@@ -69,9 +69,9 @@ def get_cave(constants, images, subtype):
     return cave
 
 
-def get_map(width, height, variant=None):
+def get_map(width, height, variant=None, dangerous=False):
 
-    map = Map(width, height, variant=variant)
+    map = Map(width, height, variant=variant, dangerous=dangerous)
 
     if variant in ('town', 'second_town', 'third_town', 'fourth_town'):
 
@@ -86,7 +86,7 @@ def get_map(width, height, variant=None):
 
 
 def get_world_map(constants, alpha_img):
-    map = get_map(constants['width'], constants['height'], variant='world_map')
+    map = get_map(constants['width'], constants['height'], variant='world_map', dangerous=True)
     apply_simplex_biomes(map, constants)
     apply_mode(map)
     nodes = get_core_plot_nodes(constants['width'], constants['height'])

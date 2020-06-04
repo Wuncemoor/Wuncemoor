@@ -40,6 +40,7 @@ def get_gui_objs():
         'levelup_menu': py.image.load('images\\GUI\\levelup_menu.png'),
         'primary_stats_screen': py.image.load('images\\GUI\\primary_stats_screen.png'),
         'dialogue_menu': py.image.load('images\\GUI\\dialogue_menu.png'),
+        'encounter_screen': py.image.load('images\\GUI\\encounter_screen.png'),
 
 
     }
@@ -49,7 +50,18 @@ def get_gui_objs():
 
 def get_backgrounds_objs():
     backgrounds = {
-        'mm_bg': py.image.load('images\\background\\maxresdefault.jpg'),
+        'mm_bg': py.image.load('images\\background\\main_menu.jpg'),
+        'deep_bg': py.image.load('images\\background\\deep.png'),
+        'desert_bg': py.image.load('images\\background\\desert.png'),
+        'forest_bg': py.image.load('images\\background\\forest.png'),
+        'jungle_bg': py.image.load('images\\background\\jungle.png'),
+        'plains_bg': py.image.load('images\\background\\plains.png'),
+        'savannah_bg': py.image.load('images\\background\\savannah.png'),
+        'shallow_bg': py.image.load('images\\background\\shallow.png'),
+        'snow_bg': py.image.load('images\\background\\snow.png'),
+        'taiga_bg': py.image.load('images\\background\\taiga.png'),
+        'temprain_bg': py.image.load('images\\background\\temprain.png'),
+        'troprain_bg': py.image.load('images\\background\\troprain.png'),
     }
 
     return backgrounds

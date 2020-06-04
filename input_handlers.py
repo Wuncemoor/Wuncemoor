@@ -25,6 +25,8 @@ def handle_keys(key, game_state):
         return handle_map_screen(key)
     elif game_state == GameStates.DIALOGUE:
         return handle_dialogue_menu(key)
+    elif game_state == GameStates.ENCOUNTER:
+        return handle_encounter_screen(key)
     return {}
 
 
@@ -130,7 +132,18 @@ def handle_stat_info(key):
         return {'exit': True}
         
     return {}
-    
+
+
+def handle_dialogue_menu(key):
+
+    return {'converse': key}
+
+
+def handle_encounter_screen(key):
+    if key == pygame.K_ESCAPE:
+        return {'exit': True}
+
+
 def handle_competence_menu(key):
     
     if key == pygame.K_ESCAPE:
@@ -156,11 +169,6 @@ def handle_competence_menu(key):
     elif key == pygame.K_j:
         return {'show_devotion_feats': True}
     return {}
-
-
-def handle_dialogue_menu(key):
-
-    return {'converse': key}
 
     
 def handle_strength(key):

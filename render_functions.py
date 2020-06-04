@@ -4,7 +4,7 @@ from enums.game_states import GameStates
 from menus import inventory_menu, level_up_menu, competence_menu, character_menu, primary_stats_screen, \
     combat_stats_screen, noncombat_stats_screen, strength_feats_menu, instinct_feats_menu, coordinaton_feats_menu, \
     vitality_feats_menu, arcana_feats_menu, improvisation_feats_menu, wisdom_feats_menu, finesse_feats_menu, \
-    charisma_feats_menu, devotion_feats_menu, map_menu, dialogue_menu
+    charisma_feats_menu, devotion_feats_menu, map_menu, dialogue_menu, encounter_screen
 from random_utils import pseudorandom_seed
 
 
@@ -76,7 +76,7 @@ def get_render_bar_asset(name, full):
 
 def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
                noncombatants, game_map, world_map, images, camera, fov_map, fov_recompute, message_log, camera_width,
-               camera_height, map_width, map_height, game_state):
+               camera_height, map_width, map_height, game_state, encounter=None):
     tiles = images.get('tiles')
     options = images.get('options')
     ents = images.get('entities')
@@ -154,6 +154,9 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
     elif game_state == GameStates.DIALOGUE:
         gui_img = images.get('gui').get('dialogue_menu')
         dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height)
+    elif game_state == GameStates.ENCOUNTER:
+        gui_img = images.get('gui').get('dialogue_menu')
+        encounter_screen(screen, gui_img, player, encounter)
     elif game_state == GameStates.COMPETENCE_MENU:
         cm_width = 400
         competence_menu(screen, 'What would you like to be more competent at?', cm_width, camera_width, camera_height)

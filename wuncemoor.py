@@ -11,6 +11,7 @@ from loader_functions.data_loaders import load_game, save_game
 from loader_functions.constants import get_constants
 from loader_functions.image_objects import get_image_objects
 from menus import main_menu, message_box
+from random_utils import encounter_check
 import sys
 import pygame
 
@@ -108,6 +109,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
     previous_game_state = game_state
     targeting_item = None
     dialogue_partner = None
+    encounter = None
 
     while True:
         for event in pygame.event.get():
@@ -116,6 +118,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+
                 action = handle_keys(event.key, game_state)
 
                 move = action.get('move')
@@ -143,7 +146,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 exit_game = action.get('exit')
                 level_up = action.get('level_up')
                 wait = action.get('wait')
-                encounter = action.get('encounter')
                 converse = action.get('converse')
 
                 if move and game_state == GameStates.PLAYERS_TURN:
@@ -158,13 +160,22 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             if target.combatant:
                                 attack_results = player.combatant.attack(target)
                                 player_turn_results.extend(attack_results)
+                                game_state = GameStates.ENEMY_TURN
                         else:
                             player.move(dx, dy)
                             camera.refocus(player.x, player.y, game_map, constants)
 
                             fov_recompute = True
 
-                        game_state = GameStates.ENEMY_TURN
+                            game_state = GameStates.ENEMY_TURN
+
+                            if game_map.dangerous:
+                                encountering = encounter_check()
+                                if encountering:
+                                    biome = game_map.tiles[destination_x][destination_y].type
+                                    encounter = images.get('backgrounds').get(biome + '_bg')
+                                    previous_game_state = game_state
+                                    game_state = GameStates.ENCOUNTER
 
                 if interact and game_state == GameStates.PLAYERS_TURN:
                     nothing = True
@@ -200,6 +211,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             dialogue_partner = noncom
                             previous_game_state = game_state
                             game_state = GameStates.DIALOGUE
+                            nothing = False
                     if nothing:
                         message_log.add_message(Message('Nothing to see here, move along...', libtcod.yellow))
 
@@ -214,10 +226,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 if show_competence:
                     previous_game_state = game_state
                     game_state = GameStates.COMPETENCE_MENU
-
-                if encounter:
-                    previous_game_state = game_state
-                    game_state = GameStates.ENCOUNTER
 
                 if show_map:
                     previous_game_state = game_state
@@ -341,7 +349,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     game_state = GameStates.ENEMY_TURN
                 if exit_game:
                     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU,
-                                      GameStates.SHOW_MAP):
+                                      GameStates.SHOW_MAP, GameStates.ENCOUNTER):
                         game_state = previous_game_state
                     elif game_state in (
                             GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN,
@@ -472,7 +480,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
         render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
                    noncombatants, game_map, world_map, images, camera, fov_map, fov_recompute, message_log,
                    constants['cscreen_width'], constants['cscreen_height'], constants['map_width'],
-                   constants['map_height'], game_state)
+                   constants['map_height'], game_state, encounter)
 
         fov_recompute = False
 

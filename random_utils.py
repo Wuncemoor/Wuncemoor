@@ -39,3 +39,6 @@ def pseudorandom_seed(x, y, options):
     return (x + y) % options
 
 
+def encounter_check():
+    x = randint(1, 20)
+    return x == 1

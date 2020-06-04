@@ -343,6 +343,10 @@ def dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height):
     screen.blit(window, (0, 0))
 
 
+def encounter_screen(screen, gui_img, player, encounter):
+    screen.blit(encounter, (0, 0))
+
+
 
 def message_box(screen, width, screen_width, screen_height):
     fontsize = 12
