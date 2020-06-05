@@ -8,7 +8,8 @@ def get_game_variables(constants, images):
 
     ent = images.get('entities')
     port = images.get('portraits').get('hero')
-    player = get_player(ent.get('combatants').get('hero'), port)
+    port_mini = images.get('portraits').get('hero_mini')
+    player = get_player(ent.get('combatants').get('hero'), port, port_mini)
     camera = get_camera(player, constants)
     equip_player(player, ent.get('items').get('equippables').get('weapons').get('stick'))
     

@@ -1,6 +1,7 @@
 import pygame as py
 import math
 from dialogue.deja_vu_check import deja_vu_check
+from screens.resources_HUD import player_resource_display
 
 
 def menu(screen, header, gui_img, fontsize, options, width, height, camera_width, camera_height, off_x, off_y):
@@ -337,14 +338,16 @@ def dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height):
         q += 1
         letter_index += 1
 
-
-
-
     screen.blit(window, (0, 0))
 
 
-def encounter_screen(screen, gui_img, player, encounter):
+def encounter_screen(screen, resources_hud_imgs, player, encounter):
     screen.blit(encounter, (0, 0))
+
+    resource_hud = player_resource_display(player, resources_hud_imgs)
+
+    screen.blit(resource_hud, (0, 0))
+
 
 
 

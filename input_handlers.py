@@ -143,6 +143,8 @@ def handle_encounter_screen(key):
     if key == pygame.K_ESCAPE:
         return {'exit': True}
 
+    return {}
+
 
 def handle_competence_menu(key):
     

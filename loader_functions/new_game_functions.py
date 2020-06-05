@@ -20,7 +20,7 @@ from enums.equipment_slots import EquipmentSlots
 from render_functions import RenderOrder
 
 
-def get_player(hero_obj, hero_portrait):
+def get_player(hero_obj, hero_portrait, hero_port_mini):
     phylo_component = Phylo('sapient', 'human', 'hero', 'regular', 'tabula_rasa')
     attribute_component = Attributes(10, 10, 10, 10, 10, 10, 10, 10, 10, 10)
     inventory_component = Inventory(26)
@@ -31,7 +31,8 @@ def get_player(hero_obj, hero_portrait):
 
     combatant_component = Combatant('Player', hero_obj, phylo=phylo_component, attributes=attribute_component,
                                     level=level_component, competence=competence_component,
-                                    equipment=equipment_component, inventory=inventory_component, portrait=hero_portrait)
+                                    equipment=equipment_component, inventory=inventory_component,
+                                    portrait=hero_portrait, port_mini=hero_port_mini)
 
     player = Entity(5, 20, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component)
 

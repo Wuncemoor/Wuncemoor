@@ -121,6 +121,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
                 action = handle_keys(event.key, game_state)
 
+
                 move = action.get('move')
                 interact = action.get('interact')
                 show_inventory = action.get('show_inventory')
@@ -176,6 +177,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                     encounter = images.get('backgrounds').get(biome + '_bg')
                                     previous_game_state = game_state
                                     game_state = GameStates.ENCOUNTER
+
 
                 if interact and game_state == GameStates.PLAYERS_TURN:
                     nothing = True

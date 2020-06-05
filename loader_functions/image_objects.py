@@ -41,11 +41,71 @@ def get_gui_objs():
         'primary_stats_screen': py.image.load('images\\GUI\\primary_stats_screen.png'),
         'dialogue_menu': py.image.load('images\\GUI\\dialogue_menu.png'),
         'encounter_screen': py.image.load('images\\GUI\\encounter_screen.png'),
-
+        'resource_hud_objs': get_resource_hud_objs(),
 
     }
 
     return gui_objs
+
+
+def get_real_objs(stat):
+    if stat == 'HP':
+        real_dict = {
+            'left0': py.image.load('images\\GUI\\resources_hud\\real_hp\\left0.png'),
+            'left1': py.image.load('images\\GUI\\resources_hud\\real_hp\\left1.png'),
+            'mid': py.image.load('images\\GUI\\resources_hud\\real_hp\\mid.png'),
+            'right0': py.image.load('images\\GUI\\resources_hud\\real_hp\\right0.png'),
+            'right1': py.image.load('images\\GUI\\resources_hud\\real_hp\\right1.png'),
+        }
+    elif stat == 'MP':
+
+        real_dict = {
+            'left0': py.image.load('images\\GUI\\resources_hud\\real_mp\\left0.png'),
+            'left1': py.image.load('images\\GUI\\resources_hud\\real_mp\\left1.png'),
+            'mid': py.image.load('images\\GUI\\resources_hud\\real_mp\\mid.png'),
+            'right0': py.image.load('images\\GUI\\resources_hud\\real_mp\\right0.png'),
+            'right1': py.image.load('images\\GUI\\resources_hud\\real_mp\\right1.png'),
+        }
+
+    elif stat == 'TP':
+
+        real_dict = {
+            'left0': py.image.load('images\\GUI\\resources_hud\\real_tp\\left0.png'),
+            'left1': py.image.load('images\\GUI\\resources_hud\\real_tp\\left1.png'),
+            'mid': py.image.load('images\\GUI\\resources_hud\\real_tp\\mid.png'),
+            'right0': py.image.load('images\\GUI\\resources_hud\\real_tp\\right0.png'),
+            'right1': py.image.load('images\\GUI\\resources_hud\\real_tp\\right1.png'),
+        }
+
+    elif stat == 'VP':
+
+        real_dict = {
+            'left0': py.image.load('images\\GUI\\resources_hud\\real_vp\\left0.png'),
+            'left1': py.image.load('images\\GUI\\resources_hud\\real_vp\\left1.png'),
+            'mid': py.image.load('images\\GUI\\resources_hud\\real_vp\\mid.png'),
+            'right0': py.image.load('images\\GUI\\resources_hud\\real_vp\\right0.png'),
+            'right1': py.image.load('images\\GUI\\resources_hud\\real_vp\\right1.png'),
+        }
+
+    return real_dict
+
+
+def get_resource_hud_objs():
+    objs = {
+        'portrait_mini_frame': py.image.load('images\\GUI\\resources_hud\\portrait_mini_frame.png'),
+        'resource_bar': py.image.load('images\\GUI\\resources_hud\\resource_bar.png'),
+        'real_HP': get_real_objs('HP'),
+        'real_MP': get_real_objs('MP'),
+        'real_TP': get_real_objs('TP'),
+        'real_VP': get_real_objs('VP'),
+        'HP': py.image.load('images\\GUI\\resources_hud\\HP.png'),
+        'MP': py.image.load('images\\GUI\\resources_hud\\MP.png'),
+        'TP': py.image.load('images\\GUI\\resources_hud\\TP.png'),
+        'VP': py.image.load('images\\GUI\\resources_hud\\VP.png'),
+
+    }
+
+    return objs
 
 
 def get_backgrounds_objs():
@@ -62,6 +122,7 @@ def get_backgrounds_objs():
         'taiga_bg': py.image.load('images\\background\\taiga.png'),
         'temprain_bg': py.image.load('images\\background\\temprain.png'),
         'troprain_bg': py.image.load('images\\background\\troprain.png'),
+        'tundra_bg': py.image.load('images\\background\\tundra.png'),
     }
 
     return backgrounds
@@ -595,7 +656,6 @@ def get_dirt_objs(visible):
 
 
 def get_noncombatants_objs():
-
     noncom = {
         'samwise': py.image.load('images\\entities\\noncombatants\\samwise.png'),
     }
@@ -604,10 +664,12 @@ def get_noncombatants_objs():
 
 
 def get_portrait_objs():
-
     portraits = {
         'hero': py.image.load('images\\portraits\\hero.png'),
+        'hero_mini': py.image.load('images\\portraits\\hero_mini.png'),
         'samwise': py.image.load('images\\portraits\\samwise.png'),
+        'samwise_mini': py.image.load('images\\portraits\\samwise_mini.png'),
+
     }
 
     return portraits
