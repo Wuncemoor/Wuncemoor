@@ -88,8 +88,8 @@ class DungeonBuilder:
         # Fill in stairs connecting floors except for dungeon connection to world
         while current_floor < self.floors:
 
-            downstairsimg = ImageBundle(images.get('transitions').get('down'))
-            upstairsimg = ImageBundle(images.get('transitions').get('up'))
+            downstairsimg = ImageBundle(images.get('entities').get('transitions').get('down'))
+            upstairsimg = ImageBundle(images.get('entities').get('transitions').get('up'))
 
             if current_floor == 0:
 
@@ -127,6 +127,6 @@ class DungeonBuilder:
                 maps[current_floor].transitions.append(entrance_stairs)
                 current_floor += 1
 
-        boss_obj = ImageBundle(images.get('combatants').get('goblin'))
+        boss_obj = ImageBundle(images.get('entities').get('combatants').get('goblin'))
         maps[-1].add_boss(self.basename, self.subtype, self.np, boss_obj)
         return maps

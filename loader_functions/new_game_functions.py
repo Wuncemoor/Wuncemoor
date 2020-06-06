@@ -75,13 +75,13 @@ def get_dungeons(constants, images):
     town4 = get_town(constants['start_town_width'], constants['start_town_height'], nodes[3], images)
     dungeons[town4.name] = town4
 
-    goblin_cave = get_cave(constants, objs, 'goblin')
+    goblin_cave = get_cave(constants, images, 'goblin')
     dungeons[goblin_cave.name] = goblin_cave
 
-    kobold_cave = get_cave(constants, objs, 'kobold')
+    kobold_cave = get_cave(constants, images, 'kobold')
     dungeons[kobold_cave.name] = kobold_cave
 
-    cave = get_cave(constants, objs, None)
+    cave = get_cave(constants, images, None)
     dungeons[cave.name] = cave
 
     downstairsimg = ImageBundle(objs.get('transitions').get('down'))

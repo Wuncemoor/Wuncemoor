@@ -7,10 +7,10 @@ from ECS.__entity.__combatant.competence import Competence, Strength, Instinct, 
 from ECS.__entity.__combatant.equipment import Equipment
 from ECS.__entity.__combatant.inventory import Inventory
 from ECS.__entity.__combatant.ai import BasicMonster
-from ECS.image_bundle import ImageBundle
+from loader_functions.image_objects import get_image_bundle
 
 
-def orc(obj):
+def orc(bundle):
     name = 'Orc'
     phylo = Phylo('humanoid', 'orcish', 'orc', 'regular', 'default')
     attribute_component = Attributes(5, 0, 0, 7, 10, 10, 10, 10, 10, 10)
@@ -20,13 +20,14 @@ def orc(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 350
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def troll(obj):
+def troll(bundle):
     name = 'Troll'
     phylo = Phylo('humanoid', 'giant', 'troll', 'regular', 'default')
     attribute_component = Attributes(1, 0, 0, 10, 10, 10, 10, 10, 10, 10)
@@ -36,13 +37,14 @@ def troll(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 1000
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_goblin(obj):
+def mini_goblin(bundle):
     name = 'Goblin'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mini', 'default')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -52,13 +54,14 @@ def mini_goblin(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 50
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def goblin(obj):
+def goblin(bundle):
     name = 'Goblin'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'regular', 'default')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -68,13 +71,14 @@ def goblin(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 100
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_goblin(obj):
+def mega_goblin(bundle):
     name = 'Goblin'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mega', 'default')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -84,13 +88,14 @@ def mega_goblin(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 5000
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_goblin_mage(obj):
+def mini_goblin_mage(bundle):
     name = 'Goblin Mage'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mini', 'magic_dps')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -100,13 +105,14 @@ def mini_goblin_mage(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 50
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def goblin_mage(obj):
+def goblin_mage(bundle):
     name = 'Goblin Mage'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'regular', 'magic_dps')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -116,13 +122,14 @@ def goblin_mage(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 100
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_goblin_mage(obj):
+def mega_goblin_mage(bundle):
     name = 'Goblin Mage'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mega', 'magic_dps')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -132,13 +139,14 @@ def mega_goblin_mage(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 5000
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_goblin_rogue(obj):
+def mini_goblin_rogue(bundle):
     name = 'Goblin Rogue'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mini', 'melee_dps')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -148,13 +156,14 @@ def mini_goblin_rogue(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 50
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def goblin_rogue(obj):
+def goblin_rogue(bundle):
     name = 'Goblin Rogue'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'regular', 'melee_dps')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -164,13 +173,14 @@ def goblin_rogue(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 100
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_goblin_rogue(obj):
+def mega_goblin_rogue(bundle):
     name = 'Goblin Rogue'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mega', 'melee_dps')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -180,13 +190,14 @@ def mega_goblin_rogue(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 5000
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_goblin_shaman(obj):
+def mini_goblin_shaman(bundle):
     name = 'Goblin Shaman'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mini', 'healer')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -196,13 +207,14 @@ def mini_goblin_shaman(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 50
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def goblin_shaman(obj):
+def goblin_shaman(bundle):
     name = 'Goblin Shaman'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'regular', 'healer')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -212,13 +224,14 @@ def goblin_shaman(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 100
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_goblin_shaman(obj):
+def mega_goblin_shaman(bundle):
     name = 'Goblin'
     phylo = Phylo('humanoid', 'goblinoid', 'goblin', 'mega', 'healer')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -228,13 +241,14 @@ def mega_goblin_shaman(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 5000
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_kobold_trickster(obj):
+def mini_kobold_trickster(bundle):
     name = 'Kobold Trickster'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mini', 'rogue')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -244,13 +258,14 @@ def mini_kobold_trickster(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 25
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def kobold_trickster(obj):
+def kobold_trickster(bundle):
     name = 'Kobold Trickster'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'regular', 'rogue')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -260,13 +275,14 @@ def kobold_trickster(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 75
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_kobold_trickster(obj):
+def mega_kobold_trickster(bundle):
     name = 'Kobold Trickster'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mega', 'rogue')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -276,13 +292,14 @@ def mega_kobold_trickster(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 3500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_kobold_harasser(obj):
+def mini_kobold_harasser(bundle):
     name = 'Kobold Harasser'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mini', 'ranger')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -292,13 +309,14 @@ def mini_kobold_harasser(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 25
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def kobold_harasser(obj):
+def kobold_harasser(bundle):
     name = 'Kobold Harasser'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'regular', 'ranger')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -308,13 +326,14 @@ def kobold_harasser(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 75
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_kobold_harasser(obj):
+def mega_kobold_harasser(bundle):
     name = 'Kobold Harasser'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mega', 'ranger')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -324,13 +343,14 @@ def mega_kobold_harasser(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 3500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_kobold_zealot(obj):
+def mini_kobold_zealot(bundle):
     name = 'Kobold Zealot'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mini', 'paladin')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -340,13 +360,14 @@ def mini_kobold_zealot(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 25
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def kobold_zealot(obj):
+def kobold_zealot(bundle):
     name = 'Kobold Zealot'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'regular', 'paladin')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -356,13 +377,14 @@ def kobold_zealot(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 75
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_kobold_zealot(obj):
+def mega_kobold_zealot(bundle):
     name = 'Kobold Zealot'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mega', 'paladin')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -372,13 +394,14 @@ def mega_kobold_zealot(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 3500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_kobold(obj):
+def mini_kobold(bundle):
     name = 'Kobold'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mini', 'default')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -388,13 +411,14 @@ def mini_kobold(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 25
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def kobold(obj):
+def kobold(bundle):
     name = 'Kobold'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'regular', 'default')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -404,13 +428,14 @@ def kobold(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 75
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_kobold(obj):
+def mega_kobold(bundle):
     name = 'Kobold'
     phylo = Phylo('humanoid', 'goblinoid', 'kobold', 'mega', 'default')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -420,13 +445,14 @@ def mega_kobold(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 3500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_rat(obj):
+def mini_rat(bundle):
     name = 'Rat'
     phylo = Phylo('beast', 'rodent', 'rat', 'mini', 'default')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -436,13 +462,14 @@ def mini_rat(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 25
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def rat(obj):
+def rat(bundle):
     name = 'Rat'
     phylo = Phylo('beast', 'rodent', 'rat', 'regular', 'default')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -452,13 +479,14 @@ def rat(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 75
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_rat(obj):
+def mega_rat(bundle):
     name = 'Rat'
     phylo = Phylo('beast', 'rodent', 'rat', 'mega', 'default')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -468,13 +496,14 @@ def mega_rat(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 3500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_bat(obj):
+def mini_bat(bundle):
     name = 'Bat'
     phylo = Phylo('beast', 'chiroptera', 'bat', 'mini', 'default')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -484,13 +513,14 @@ def mini_bat(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 25
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def bat(obj):
+def bat(bundle):
     name = 'Bat'
     phylo = Phylo('beast', 'chiroptera', 'bat', 'regular', 'default')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -500,13 +530,14 @@ def bat(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 75
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_bat(obj):
+def mega_bat(bundle):
     name = 'Bat'
     phylo = Phylo('beast', 'chiroptera', 'bat', 'mega', 'default')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -516,13 +547,14 @@ def mega_bat(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 3500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_salamander(obj):
+def mini_salamander(bundle):
     name = 'Salamander'
     phylo = Phylo('herptile', 'lizard', 'salamander', 'mini', 'default')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -532,13 +564,14 @@ def mini_salamander(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 25
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def salamander(obj):
+def salamander(bundle):
     name = 'Salamander'
     phylo = Phylo('herptile', 'lizard', 'salamander', 'regular', 'default')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -548,13 +581,14 @@ def salamander(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 75
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_salamander(obj):
+def mega_salamander(bundle):
     name = 'Salamander'
     phylo = Phylo('herptile', 'lizard', 'salamander', 'mega', 'default')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -564,13 +598,14 @@ def mega_salamander(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 3500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_spider(obj):
+def mini_spider(bundle):
     name = 'Spider'
     phylo = Phylo('nature', 'insect', 'spider', 'mini', 'default')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -580,13 +615,14 @@ def mini_spider(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 25
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def spider(obj):
+def spider(bundle):
     name = 'Spider'
     phylo = Phylo('nature', 'insect', 'spider', 'regular', 'default')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -596,13 +632,14 @@ def spider(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 75
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_spider(obj):
+def mega_spider(bundle):
     name = 'Spider'
     phylo = Phylo('nature', 'insect', 'spider', 'mega', 'default')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -612,13 +649,14 @@ def mega_spider(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 3500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_snail(obj):
+def mini_snail(bundle):
     name = 'Snail'
     phylo = Phylo('aquatic', 'mollusk', 'snail', 'mini', 'default')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -628,13 +666,14 @@ def mini_snail(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 25
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def snail(obj):
+def snail(bundle):
     name = 'Snail'
     phylo = Phylo('aquatic', 'mollusk', 'snail', 'regular', 'default')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -644,13 +683,14 @@ def snail(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 75
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_snail(obj):
+def mega_snail(bundle):
     name = 'Snail'
     phylo = Phylo('aquatic', 'mollusk', 'snail', 'mega', 'default')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -660,13 +700,14 @@ def mega_snail(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 3500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_shrimp(obj):
+def mini_shrimp(bundle):
     name = 'Shrimp'
     phylo = Phylo('aquatic', 'crustacean', 'shrimp', 'mini', 'default')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -676,13 +717,14 @@ def mini_shrimp(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 25
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def shrimp(obj):
+def shrimp(bundle):
     name = 'Shrimp'
     phylo = Phylo('aquatic', 'crustacean', 'shrimp', 'regular', 'default')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -692,13 +734,14 @@ def shrimp(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 75
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_shrimp(obj):
+def mega_shrimp(bundle):
     name = 'Shrimp'
     phylo = Phylo('aquatic', 'crustacean', 'shrimp', 'mega', 'default')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -708,13 +751,14 @@ def mega_shrimp(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 3500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_raccoon(obj):
+def mini_raccoon(bundle):
     name = 'Raccoon'
     phylo = Phylo('beast', 'carnivora', 'raccoon', 'mini', 'default')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -724,13 +768,14 @@ def mini_raccoon(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 25
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def raccoon(obj):
+def raccoon(bundle):
     name = 'Raccoon'
     phylo = Phylo('beast', 'carnivora', 'raccoon', 'regular', 'default')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -740,13 +785,14 @@ def raccoon(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 75
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_raccoon(obj):
+def mega_raccoon(bundle):
     name = 'Raccoon'
     phylo = Phylo('beast', 'carnivora', 'raccoon', 'mega', 'default')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -756,13 +802,14 @@ def mega_raccoon(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 3500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_bear(obj):
+def mini_bear(bundle):
     name = 'Bear'
     phylo = Phylo('beast', 'carnivora', 'ursa', 'mini', 'default')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -772,13 +819,14 @@ def mini_bear(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 25
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def bear(obj):
+def bear(bundle):
     name = 'Bear'
     phylo = Phylo('beast', 'carnivora', 'ursa', 'regular', 'default')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -788,13 +836,14 @@ def bear(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 75
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_bear(obj):
+def mega_bear(bundle):
     name = 'Bear'
     phylo = Phylo('beast', 'carnivora', 'ursa', 'mega', 'default')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -804,13 +853,14 @@ def mega_bear(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 3500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mini_bramblelasher(obj):
+def mini_bramblelasher(bundle):
     name = 'Bramblelasher'
     phylo = Phylo('nature', 'plantae', 'bramblelasher', 'mini', 'default')
     attribute_component = Attributes(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -820,13 +870,14 @@ def mini_bramblelasher(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 100
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def bramblelasher(obj):
+def bramblelasher(bundle):
     name = 'Bramblelasher'
     phylo = Phylo('nature', 'plantae', 'bramblelasher', 'regular', 'default')
     attribute_component = Attributes(2, 2, 2, 2, 2, 2, 2, 2, 2, 2)
@@ -836,13 +887,14 @@ def bramblelasher(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 500
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)
 
 
-def mega_bramblelasher(obj):
+def mega_bramblelasher(bundle):
     name = 'Bramblelasher'
     phylo = Phylo('nature', 'plantae', 'bramblelasher', 'mega', 'default')
     attribute_component = Attributes(5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
@@ -852,7 +904,8 @@ def mega_bramblelasher(obj):
     equipment = Equipment()
     inventory = Inventory(26)
     ai_component = BasicMonster()
+    
     xp = 5000
 
-    return Combatant(name, ImageBundle(obj), phylo, attribute_component, level, competence, equipment, inventory,
+    return Combatant(name, bundle, phylo, attribute_component, level, competence, equipment, inventory,
                      ai_component, xp)

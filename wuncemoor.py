@@ -177,9 +177,9 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                 encountering = encounter_check()
                                 if encountering:
                                     biome = game_map.tiles[destination_x][destination_y].type
-                                    bg = images.get('backgrounds').get(biome + '_bg')
+
                                     options = ['FIGHT', 'ITEM', 'RUN']
-                                    encounter = game_map.current_map.get_encounter(bg, options, 0)
+                                    encounter = game_map.current_map.get_encounter(images, biome, options)
                                     previous_game_state = game_state
                                     game_state = GameStates.ENCOUNTER
 

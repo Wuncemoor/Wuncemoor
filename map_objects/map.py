@@ -20,6 +20,8 @@ from map_objects.chances.item_chances import get_item_chances
 from map_objects.chances.mob_chances import MobChances
 from map_objects.encounter import Encounter
 from ECS.image_bundle import ImageBundle
+from loader_functions.image_objects import get_image_bundle
+
 
 
 class Map:
@@ -165,8 +167,7 @@ class Map:
         mob_chances = MobChances(dungeon_type, subtype, node_power)
         mcs = mob_chances.get_mob_chances()
         item_chances = get_item_chances(self.dungeon_level)
-        combatants = objs.get('combatants')
-        items = objs.get('items')
+        items = objs.get('entities').get('items')
 
 
         for i in range(number_of_monsters):
@@ -176,8 +177,9 @@ class Map:
 
             if not any([entity for entity in self.map_entities if entity.x == x and entity.y == y]):
                 monster_choice = random_choice_from_dict(mcs)
+                mob_img_bundle = get_image_bundle(objs, monster_choice)
 
-                mob_builder = MobBuilder(0, monster_choice, combatants['goblin'])
+                mob_builder = MobBuilder(0, monster_choice, mob_img_bundle)
                 mob_director = MobDirector()
                 mob_director.set_builder(mob_builder)
                 combatant_component = mob_director.get_combatant()
@@ -239,7 +241,7 @@ class Map:
                                                       libtcod.light_cyan)))
                     item = Entity(x, y, render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'lightning_scroll':
-                    image = items.get('useables').get('scroll')
+                    image = ImageBundle(items.get('useables').get('scroll'))
                     item_component = Item(
                         useable_component=Useable('Lightning Scroll', image, use_function=cast_lightning, damage=400,
                                                   maximum_range=5))
@@ -271,5 +273,21 @@ class Map:
         self.floor_image = dict.get(string)
 
 
-    def get_encounter(self, bg, options, current_option):
-        return Encounter(bg, options, current_option)
+    def get_encounter(self, images, biome, options):
+        bg = images.get('backgrounds').get(biome + '_bg')
+
+        event = self.get_encounter_event(images)
+
+        return Encounter(bg, event, options)
+
+
+    def get_encounter_event(self, images):
+
+        mob_builder = MobBuilder(0, 'goblin', images.get('goblin'))
+        mob_director = MobDirector()
+        mob_director.set_builder(mob_builder)
+        combatant_component = mob_director.get_combatant()
+        event = Entity(0, 0, blocks=True, render_order=RenderOrder.ACTOR,
+                         combatant=combatant_component)
+
+        return event
