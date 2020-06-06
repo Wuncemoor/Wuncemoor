@@ -18,12 +18,12 @@ class Entity:
         self.transition = transition
         self.noncombatant = noncombatant
         self.name = None
-        self.image = None
+        self.images = None
 
         if self.combatant:
             self.combatant.owner = self
             self.name = self.combatant.name
-            self.image = self.combatant.image
+            self.images = self.combatant.images
             if self.combatant.ai:
                 self.combatant.ai.owner = self
             if self.combatant.level:
@@ -34,7 +34,7 @@ class Entity:
         if self.item:
             self.item.owner = self
             self.name = self.item.name
-            self.image = self.item.image
+            self.images = self.item.images
             if self.item.equippable:
                 self.item.equippable.owner = self
             if self.item.useable:
@@ -43,12 +43,12 @@ class Entity:
         if self.transition:
             self.transition.owner = self
             self.name = self.transition.name
-            self.image = self.transition.image
+            self.images = self.transition.images
 
         if self.noncombatant:
             self.noncombatant.owner = self
             self.name = self.noncombatant.name
-            self.image = self.noncombatant.image
+            self.images = self.noncombatant.images
 
     # Move the entity
     def move(self, dx, dy):
@@ -123,3 +123,5 @@ def get_blocking_entities_at_location(entities, destination_x, destination_y):
             return entity
 
     return None
+
+

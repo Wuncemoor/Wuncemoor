@@ -20,7 +20,7 @@ def blit_portrait(res_display, player, frame):
     port_off_x = frame_off_x + 3
     port_off_y = frame_off_y + 3
 
-    res_display.blit(player.combatant.port_mini, (port_off_x, port_off_y))
+    res_display.blit(player.images.port_mini, (port_off_x, port_off_y))
     res_display.blit(frame, (frame_off_x, frame_off_y))
 
 

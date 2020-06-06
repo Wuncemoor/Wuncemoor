@@ -2,14 +2,16 @@ from loader_functions.new_game_functions import get_player, get_camera, equip_pl
 from game_messages import MessageLog
 from enums.game_states import GameStates
 from map_objects.game_map import GameMap
+from loader_functions.image_objects import get_image_bundle
 
 
 def get_game_variables(constants, images):
 
+    hero_bundle = get_image_bundle(images, 'hero')
+
     ent = images.get('entities')
-    port = images.get('portraits').get('hero')
-    port_mini = images.get('portraits').get('hero_mini')
-    player = get_player(ent.get('combatants').get('hero'), port, port_mini)
+
+    player = get_player(hero_bundle)
     camera = get_camera(player, constants)
     equip_player(player, ent.get('items').get('equippables').get('weapons').get('stick'))
     

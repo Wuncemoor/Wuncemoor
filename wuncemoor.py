@@ -114,6 +114,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
     while True:
         for event in pygame.event.get():
             player_turn_results = []
+            encounter_result = None
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -149,6 +150,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 wait = action.get('wait')
                 converse = action.get('converse')
                 traverse_menu = action.get('traverse_menu')
+                choose_menu_option = action.get('choose_menu_option')
 
                 if move and game_state == GameStates.PLAYERS_TURN:
                     dx, dy = move
@@ -175,8 +177,9 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                 encountering = encounter_check()
                                 if encountering:
                                     biome = game_map.tiles[destination_x][destination_y].type
+                                    bg = images.get('backgrounds').get(biome + '_bg')
                                     options = ['FIGHT', 'ITEM', 'RUN']
-                                    encounter = [images.get('backgrounds').get(biome + '_bg'), options, 0]
+                                    encounter = game_map.current_map.get_encounter(bg, options, 0)
                                     previous_game_state = game_state
                                     game_state = GameStates.ENCOUNTER
 
@@ -350,10 +353,18 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         pass
                 if traverse_menu:
                     if game_state == GameStates.ENCOUNTER:
-                        if (traverse_menu < 0 and encounter[2] == 0) or (traverse_menu > 0 and encounter[2] == len(encounter[1]) - 1):
+                        if (traverse_menu < 0 and encounter.current_option == 0) or \
+                                (traverse_menu > 0 and encounter.current_option == len(encounter.options) - 1):
                             pass
                         else:
-                            encounter[2] += traverse_menu
+                            encounter.current_option += traverse_menu
+
+                if choose_menu_option:
+                    if game_state == GameStates.ENCOUNTER:
+
+                        encounter_result = encounter.options[encounter.current_option]
+
+
 
                 if wait:
                     game_state = GameStates.ENEMY_TURN
@@ -463,6 +474,15 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             else:
                                 previous_game_state = GameStates.PLAYERS_TURN
                                 game_state = GameStates.LEVEL_UP
+                if encounter_result is not None:
+
+                    fight = encounter_result == 'FIGHT'
+                    item = encounter_result == 'ITEM'
+                    run = encounter_result == 'RUN'
+                    print(run)
+                    if run:
+                        game_state = previous_game_state
+                        encounter = None
 
             if event.type == pygame.MOUSEBUTTONDOWN:
 

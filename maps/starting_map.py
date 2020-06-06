@@ -14,6 +14,8 @@ from ECS.__entity.transition import Transition
 from ECS.__entity.noncombatant import Noncombatant
 from random import randint
 from dialogue.get_dialogue import get_samwise_dialogue
+from ECS.image_bundle import ImageBundle
+
 
 
 def get_town(width, height, node, img_objs):
@@ -23,7 +25,7 @@ def get_town(width, height, node, img_objs):
 
     ents = img_objs.get('entities')
 
-    alpha = ents.get('transitions').get('alpha')
+    alpha = ImageBundle(ents.get('transitions').get('alpha'))
     road = Road(Rect(0, int(height / 2) - 2, width, 4), 'world', 0, (node_x, node_y), alpha)
     road.set_transitions('vertical')
     map.floor_image = 'grass'
@@ -47,10 +49,11 @@ def get_town(width, height, node, img_objs):
     # Get samwise but only in first town
     if name == 'town':
 
-        samwise_obj = ents.get('noncombatants').get('samwise')
-        samwise_portrait = img_objs.get('portraits').get('samwise')
+        samwise_obj = ImageBundle(ents.get('noncombatants').get('samwise'),
+                                  portrait=img_objs.get('portraits').get('samwise'))
+
         dialogue = get_samwise_dialogue()
-        noncom = Noncombatant('samwise', samwise_obj, dialogue, samwise_portrait)
+        noncom = Noncombatant('samwise', samwise_obj, dialogue)
         samwise = Entity(38, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom)
 
         map.noncombatants.append(samwise)
@@ -75,7 +78,7 @@ def get_map(width, height, variant=None, dangerous=False):
 
     if variant in ('town', 'second_town', 'third_town', 'fourth_town'):
 
-        map.create_room(Rect(0, 0, width - 1, height - 1))
+        map.create_room(Rect(0, 0, width - 1, height - 1), variant)
     elif variant == 'world_map':
         for row in map.tiles:
             for tile in row:
@@ -92,7 +95,7 @@ def get_world_map(constants, alpha_img):
     nodes = get_core_plot_nodes(constants['width'], constants['height'])
     for node in nodes:
         add_town(map, node.x, node.y)
-        stairs = Transition('Stairs', alpha_img, node.name, 0, node.entrance)
+        stairs = Transition('Stairs', ImageBundle(alpha_img), node.name, 0, node.entrance)
         ent = Entity(node.x, node.y, transition=stairs)
         map.transitions.append(ent)
 

@@ -4,6 +4,7 @@ from ECS.__entity.__item.__equippable.equippable_material import EquippableMater
 from ECS.__entity.__item.__equippable.equippable_quality import EquippableQuality
 from enums.equipment_slots import EquipmentSlots
 import random
+from ECS.image_bundle import ImageBundle
 
 
 class Director:
@@ -88,7 +89,8 @@ class EquippableBuilder:
         options = ['staff', 'dagger', 'longsword', 'shield']
         c = random.choice(options)
         obj = self.img_objs.get(c)
-        return EquippableCore(c, obj)
+        objs = ImageBundle(obj)
+        return EquippableCore(c, objs)
 
     def get_slot(self):
 

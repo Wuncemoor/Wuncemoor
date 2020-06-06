@@ -1,5 +1,17 @@
 import pygame as py
+from ECS.image_bundle import ImageBundle
 
+
+def get_image_bundle(images, type):
+
+    port = images.get('portraits')
+    cmb = images.get('entities').get('combatants')
+
+    bundle_dict = {
+        'hero': ImageBundle(cmb.get('hero'), port.get('hero'), port.get('hero' + '_mini')),
+    }
+
+    return bundle_dict.get(type)
 
 def get_image_objects():
     options = {
@@ -133,6 +145,7 @@ def get_backgrounds_objs():
         'temprain_bg': py.image.load('images\\background\\temprain.png'),
         'troprain_bg': py.image.load('images\\background\\troprain.png'),
         'tundra_bg': py.image.load('images\\background\\tundra.png'),
+        'cave_bg': py.image.load('images\\background\\cave.png'),
     }
 
     return backgrounds

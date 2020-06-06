@@ -140,12 +140,13 @@ def handle_dialogue_menu(key):
 
 
 def handle_encounter_screen(key):
-    if key == pygame.K_ESCAPE:
-        return {'exit': True}
-    elif key in (pygame.K_UP, pygame.K_w):
+
+    if key in (pygame.K_UP, pygame.K_w):
         return {'traverse_menu': -1}
     elif key in (pygame.K_DOWN, pygame.K_x):
         return {'traverse_menu': 1}
+    elif key == pygame.K_RETURN:
+        return {'choose_menu_option': True}
 
     return {}
 

@@ -1,6 +1,6 @@
 class Noncombatant:
-    def __init__(self, name, image, dialogue, portrait=None):
+    def __init__(self, name, images, dialogue):
         self.name = name
-        self.image = image
+        self.images = images
         self.dialogue = dialogue
-        self.portrait = portrait
+

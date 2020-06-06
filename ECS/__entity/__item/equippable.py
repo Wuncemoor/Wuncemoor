@@ -2,9 +2,9 @@ import math
 
 
 class Equippable:
-    def __init__(self, name=None, image=None, slot=None, core=None, material=None, quality=None, *modifiers):
+    def __init__(self, name=None, images=None, slot=None, core=None, material=None, quality=None, *modifiers):
         self.name = name
-        self.image = image
+        self.images = images
         self.slot = slot
         self.core = core
         self.material = material
@@ -98,8 +98,8 @@ class Equippable:
         self.name = quality + ' ' + material + ' ' + core
         
     
-    def set_image(self, image):
-        self.image = image
+    def set_image(self, images):
+        self.images = images
         
     def set_core(self,core):
         self.core = core

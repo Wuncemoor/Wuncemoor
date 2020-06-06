@@ -304,14 +304,14 @@ def dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height):
     player_name = actor_font.render(player.name, True, (255, 255, 255))
     pnw, pnh = player_name.get_width(), player_name.get_height()
     pn_off_x = (interactor_width / 2) - (pnw / 2)
-    window.blit(player.combatant.portrait, (portrait_off_x, name_off_y + pnh + gap))
+    window.blit(player.images.portrait, (portrait_off_x, name_off_y + pnh + gap))
     window.blit(player_name, (pn_off_x, name_off_y))
 
 
     noncom_name = actor_font.render(noncom.name.capitalize(), True, (255, 255, 255))
     nnw, nnh = noncom_name.get_width(), noncom_name.get_height()
     nn_off_x = (interactor_width / 2) - (nnw / 2)
-    window.blit(noncom.noncombatant.portrait, (noncom_off_x + portrait_off_x, name_off_y + nnh + gap))
+    window.blit(noncom.images.portrait, (noncom_off_x + portrait_off_x, name_off_y + nnh + gap))
     window.blit(noncom_name, (noncom_off_x + nn_off_x, name_off_y))
 
     dialogue = noncom.noncombatant.dialogue
@@ -344,15 +344,13 @@ def dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height):
 
 def encounter_screen(screen, images, player, encounter):
     resources_hud_imgs = images.get('gui').get('resource_hud_objs')
-    screen.blit(encounter[0], (0, 0))
+    screen.blit(encounter.background, (0, 0))
 
     resource_hud = player_resource_display(player, resources_hud_imgs)
 
     screen.blit(resource_hud, (0, 0))
 
-    current_option = encounter[2]
-
-    options_menu = get_encounter_menu(images.get('gui').get('encounter_menu_objs'), encounter[1], current_option)
+    options_menu = get_encounter_menu(images.get('gui').get('encounter_menu_objs'), encounter)
 
     screen.blit(options_menu, (0, 480))
 

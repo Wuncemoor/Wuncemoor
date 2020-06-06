@@ -18,6 +18,8 @@ from map_objects.rectangle import Rect
 from map_objects.tile import Tile
 from map_objects.chances.item_chances import get_item_chances
 from map_objects.chances.mob_chances import MobChances
+from map_objects.encounter import Encounter
+from ECS.image_bundle import ImageBundle
 
 
 class Map:
@@ -77,29 +79,29 @@ class Map:
     def set_dungeon_level(self, level):
         self.dungeon_level = level
 
-    def create_room(self, room):
+    def create_room(self, room, d_type):
         # go through the tiles in the rectangle and make them not blocked
 
         for x in range(room.x1 + 1, room.x2):
             for y in range(room.y1 + 1, room.y2):
                 self.tiles[x][y].blocked = False
                 self.tiles[x][y].block_sight = False
-                self.tiles[x][y].type = 'ground'
+                self.tiles[x][y].type = d_type
 
 
 
-    def create_h_tunnel(self, x1, x2, y):
+    def create_h_tunnel(self, x1, x2, y, d_type):
         for x in range(min(x1, x2), max(x1, x2) + 1):
             self.tiles[x][y].blocked = False
             self.tiles[x][y].block_sight = False
-            self.tiles[x][y].type = 'ground'
+            self.tiles[x][y].type = d_type
 
 
-    def create_v_tunnel(self, y1, y2, x):
+    def create_v_tunnel(self, y1, y2, x, d_type):
         for y in range(min(y1, y2), max(y1, y2) + 1):
             self.tiles[x][y].blocked = False
             self.tiles[x][y].block_sight = False
-            self.tiles[x][y].type = 'ground'
+            self.tiles[x][y].type = d_type
 
 
     # Create everything except stairs
@@ -124,7 +126,7 @@ class Map:
             else:
                 # No intersections, ergo valid room
                 # "paint" to map's tiles
-                self.create_room(new_room)
+                self.create_room(new_room, dungeon_type)
                 # center coordinates of new room, useful later
                 (new_x, new_y) = new_room.center()
                 center_of_last_room_x = new_x
@@ -142,12 +144,12 @@ class Map:
                     # flip a coin
                     if randint(0, 1) == 1:
                         # first horizontal, then vertical
-                        self.create_h_tunnel(prev_x, new_x, prev_y)
-                        self.create_v_tunnel(prev_y, new_y, new_x)
+                        self.create_h_tunnel(prev_x, new_x, prev_y, dungeon_type)
+                        self.create_v_tunnel(prev_y, new_y, new_x, dungeon_type)
                     else:
                         # first vertical, then horizontal
-                        self.create_v_tunnel(prev_y, new_y, prev_x)
-                        self.create_h_tunnel(prev_x, new_x, new_y)
+                        self.create_v_tunnel(prev_y, new_y, prev_x, dungeon_type)
+                        self.create_h_tunnel(prev_x, new_x, new_y, dungeon_type)
                 # append room to list
                 self.place_entities(new_room, dungeon_type, subtype, node_power, objs)
                 rooms.append(new_room)
@@ -196,12 +198,12 @@ class Map:
                 item_choice = random_choice_from_dict(item_chances)
 
                 if item_choice == 'healing_potion':
-                    image = useables.get('potion')
+                    image = ImageBundle(useables.get('potion'))
                     item_component = Item(
                         useable_component=Useable('Healing Potion', image, use_function=heal, amount=400))
                     item = Entity(x, y, render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'sword':
-                    image = weapons.get('longsword')
+                    image = ImageBundle(weapons.get('longsword'))
                     equippable_core = EquippableCore('longsword', image)
                     equippable_material = EquippableMaterial('wood')
                     equippable_quality = EquippableQuality('average')
@@ -211,7 +213,7 @@ class Map:
                     item_component = Item(equippable_component)
                     item = Entity(x, y, item=item_component)
                 elif item_choice == 'shield':
-                    image = weapons.get('shield')
+                    image = ImageBundle(weapons.get('shield'))
                     equippable_core = EquippableCore('shield', image)
                     equippable_material = EquippableMaterial('iron')
                     equippable_quality = EquippableQuality('average')
@@ -221,7 +223,7 @@ class Map:
                     item_component = Item(equippable_component)
                     item = Entity(x, y, item=item_component)
                 elif item_choice == 'fireball_scroll':
-                    image = items.get('useables').get('scroll')
+                    image = ImageBundle(items.get('useables').get('scroll'))
                     item_component = Item(
                         useable_component=Useable('Fireball Scroll', image, use_function=cast_fireball, targeting=True,
                                                   targeting_message=Message(
@@ -229,7 +231,7 @@ class Map:
                                                       libtcod.light_cyan), damage=250, radius=3))
                     item = Entity(x, y, render_order=RenderOrder.ITEM, item=item_component)
                 elif item_choice == 'confusion_scroll':
-                    image = items.get('useables').get('scroll')
+                    image = ImageBundle(items.get('useables').get('scroll'))
                     item_component = Item(
                         useable_component=Useable('Confusion Scroll', image, use_function=cast_confuse, targeting=True,
                                                   targeting_message=Message(
@@ -267,3 +269,7 @@ class Map:
         }
 
         self.floor_image = dict.get(string)
+
+
+    def get_encounter(self, bg, options, current_option):
+        return Encounter(bg, options, current_option)

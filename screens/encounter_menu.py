@@ -1,7 +1,7 @@
 from screens.gui_tools import get_alpha_surface, get_text_surface
 
 
-def get_encounter_menu(images, options, current_option):
+def get_encounter_menu(images, encounter):
 
     menu = get_alpha_surface(400, 240)
 
@@ -14,9 +14,9 @@ def get_encounter_menu(images, options, current_option):
 
     dy = 40
     num = 3
-    blit_options(menu, images.get('button'), buttons_off_x, buttons_off_y, dy, num, options)
+    blit_options(menu, images.get('button'), buttons_off_x, buttons_off_y, dy, num, encounter.options)
 
-    indicator_y = buttons_off_y - 11 + (dy * current_option)
+    indicator_y = buttons_off_y - 11 + (dy * encounter.current_option)
 
     blit_indicator(menu, images.get('indicator'), off_x=buttons_off_x - 50, off_y=indicator_y)
 

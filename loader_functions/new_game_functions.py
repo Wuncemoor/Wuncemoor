@@ -18,9 +18,10 @@ from camera import Camera
 from ECS.entity import Entity
 from enums.equipment_slots import EquipmentSlots
 from render_functions import RenderOrder
+from ECS.image_bundle import ImageBundle
 
 
-def get_player(hero_obj, hero_portrait, hero_port_mini):
+def get_player(img_bundle):
     phylo_component = Phylo('sapient', 'human', 'hero', 'regular', 'tabula_rasa')
     attribute_component = Attributes(10, 10, 10, 10, 10, 10, 10, 10, 10, 10)
     inventory_component = Inventory(26)
@@ -29,10 +30,9 @@ def get_player(hero_obj, hero_portrait, hero_port_mini):
                                       Wisdom(), Finesse(), Charisma(), Devotion())
     equipment_component = Equipment()
 
-    combatant_component = Combatant('Player', hero_obj, phylo=phylo_component, attributes=attribute_component,
+    combatant_component = Combatant('Player', img_bundle, phylo=phylo_component, attributes=attribute_component,
                                     level=level_component, competence=competence_component,
-                                    equipment=equipment_component, inventory=inventory_component,
-                                    portrait=hero_portrait, port_mini=hero_port_mini)
+                                    equipment=equipment_component, inventory=inventory_component)
 
     player = Entity(5, 20, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component)
 
@@ -84,8 +84,8 @@ def get_dungeons(constants, images):
     cave = get_cave(constants, objs, None)
     dungeons[cave.name] = cave
 
-    downstairsimg = objs.get('transitions').get('down')
-    upstairsimg = objs.get('transitions').get('up')
+    downstairsimg = ImageBundle(objs.get('transitions').get('down'))
+    upstairsimg = ImageBundle(objs.get('transitions').get('up'))
 
     gob_stairs_comp = Transition('Stairs', downstairsimg, 'goblin_cave', 0, goblin_cave.maps[0].entrance)
     gob_stairs = Entity(10, 30, libtcod.white, render_order=RenderOrder.STAIRS, transition=gob_stairs_comp)
