@@ -40,13 +40,23 @@ def get_gui_objs():
         'levelup_menu': py.image.load('images\\GUI\\levelup_menu.png'),
         'primary_stats_screen': py.image.load('images\\GUI\\primary_stats_screen.png'),
         'dialogue_menu': py.image.load('images\\GUI\\dialogue_menu.png'),
-        'encounter_screen': py.image.load('images\\GUI\\encounter_screen.png'),
         'resource_hud_objs': get_resource_hud_objs(),
+        'encounter_menu_objs': get_encounter_menu_objs(),
+        'encounter_menu': py.image.load('images\\GUI\\encounter\\options_menu.png'),
 
     }
 
     return gui_objs
 
+def get_encounter_menu_objs():
+
+    menu_dict = {
+        'encounter_menu': py.image.load('images\\GUI\\encounter\\options_menu.png'),
+        'button': py.image.load('images\\GUI\\encounter\\option_button.png'),
+        'indicator': py.image.load('images\\GUI\\encounter\\indicator.png'),
+    }
+
+    return menu_dict
 
 def get_real_objs(stat):
     if stat == 'HP':

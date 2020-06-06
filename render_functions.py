@@ -155,8 +155,7 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         gui_img = images.get('gui').get('dialogue_menu')
         dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height)
     elif game_state == GameStates.ENCOUNTER:
-        res_menu_imgs = images.get('gui').get('resource_hud_objs')
-        encounter_screen(screen, res_menu_imgs, player, encounter)
+        encounter_screen(screen, images, player, encounter)
     elif game_state == GameStates.COMPETENCE_MENU:
         cm_width = 400
         competence_menu(screen, 'What would you like to be more competent at?', cm_width, camera_width, camera_height)

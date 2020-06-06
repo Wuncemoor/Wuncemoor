@@ -148,6 +148,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 level_up = action.get('level_up')
                 wait = action.get('wait')
                 converse = action.get('converse')
+                traverse_menu = action.get('traverse_menu')
 
                 if move and game_state == GameStates.PLAYERS_TURN:
                     dx, dy = move
@@ -174,7 +175,8 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                 encountering = encounter_check()
                                 if encountering:
                                     biome = game_map.tiles[destination_x][destination_y].type
-                                    encounter = images.get('backgrounds').get(biome + '_bg')
+                                    options = ['FIGHT', 'ITEM', 'RUN']
+                                    encounter = [images.get('backgrounds').get(biome + '_bg'), options, 0]
                                     previous_game_state = game_state
                                     game_state = GameStates.ENCOUNTER
 
@@ -346,6 +348,12 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             game_state = previous_game_state
                     except KeyError:
                         pass
+                if traverse_menu:
+                    if game_state == GameStates.ENCOUNTER:
+                        if (traverse_menu < 0 and encounter[2] == 0) or (traverse_menu > 0 and encounter[2] == len(encounter[1]) - 1):
+                            pass
+                        else:
+                            encounter[2] += traverse_menu
 
                 if wait:
                     game_state = GameStates.ENEMY_TURN

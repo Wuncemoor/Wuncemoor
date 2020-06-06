@@ -1,4 +1,5 @@
 import pygame as py
+from screens.gui_tools import get_alpha_surface
 
 
 def player_resource_display(player, imgs):
@@ -9,15 +10,6 @@ def player_resource_display(player, imgs):
     blit_resource_bars(res_display, player, imgs)
 
     blit_letters(res_display, imgs)
-
-    return res_display
-
-
-def get_alpha_surface(width, height):
-    res_display = py.Surface((width, height))
-    ALPHA = py.Color(128, 175, 120)
-    res_display.set_colorkey(ALPHA)
-    res_display.fill(ALPHA)
 
     return res_display
 

@@ -2,6 +2,7 @@ import pygame as py
 import math
 from dialogue.deja_vu_check import deja_vu_check
 from screens.resources_HUD import player_resource_display
+from screens.encounter_menu import get_encounter_menu
 
 
 def menu(screen, header, gui_img, fontsize, options, width, height, camera_width, camera_height, off_x, off_y):
@@ -341,13 +342,19 @@ def dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height):
     screen.blit(window, (0, 0))
 
 
-def encounter_screen(screen, resources_hud_imgs, player, encounter):
-    screen.blit(encounter, (0, 0))
+def encounter_screen(screen, images, player, encounter):
+    resources_hud_imgs = images.get('gui').get('resource_hud_objs')
+    screen.blit(encounter[0], (0, 0))
 
     resource_hud = player_resource_display(player, resources_hud_imgs)
 
     screen.blit(resource_hud, (0, 0))
 
+    current_option = encounter[2]
+
+    options_menu = get_encounter_menu(images.get('gui').get('encounter_menu_objs'), encounter[1], current_option)
+
+    screen.blit(options_menu, (0, 480))
 
 
 
@@ -355,6 +362,7 @@ def message_box(screen, width, screen_width, screen_height):
     fontsize = 12
 
     menu(screen, '', fontsize, ['No save game to load :('], width, screen_width, screen_height)
+
 
 def competence_menu(screen, header, cm_width, camera_width, camera_height):
     options = ['Strength', 'Instinct', 'Coordination', 'Vitality', 'Arcana', 'Improvisation', 'Wisdom', 'Finesse',
