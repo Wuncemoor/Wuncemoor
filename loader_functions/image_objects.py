@@ -6,59 +6,59 @@ def get_image_bundle(images, type):
 
 
     port = images.get('portraits')
-    sprite = images.get('entities').get('combatants')
+    sprite = images.get('entities').get('combatants').get('sprites')
+    actor = images.get('entities').get('combatants').get('actors')
 
     bundle_dict = {
-        'hero': ImageBundle(sprite.get('hero'), port.get('hero'), port.get('hero' + '_mini'), port.get(type + '_cmb')),
-        'goblin': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_rat': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'rat': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_rat': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_bat': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'bat': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_bat': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_salamander': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'salamander': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_salamander': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_spider': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'spider': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_spider': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_snail': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'snail': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_snail': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_shrimp': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'shrimp': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_shrimp': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_raccoon': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'raccoon': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_raccoon': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_bear': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'bear': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_bear': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_kobold': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'kobold': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_kobold': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_kobold_harasser': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'kobold_harasser': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_kobold_harasser': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_kobold_trickster': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'kobold_trickster': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_kobold_trickster': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_kobold_zealot': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'kobold_zealot': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_kobold_zealot': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_goblin': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'goblin': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_goblin': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_goblin_rogue': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'goblin_rogue': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_goblin_rogue': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_goblin_mage': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'goblin_mage': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_goblin_mage': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mini_goblin_shaman': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'goblin_shaman': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
-        'mega_goblin_shaman': ImageBundle(sprite.get('goblin'), combatant=port.get('goblin')),
+        'hero': ImageBundle(sprite.get('hero'), port.get('hero'), port.get('hero' + '_mini'), actor.get(type)),
+        'mini_rat': ImageBundle(sprite.get('goblin'), actor=actor.get('rat')),
+        'rat': ImageBundle(sprite.get('goblin'), actor=actor.get('rat')),
+        'mega_rat': ImageBundle(sprite.get('goblin'), actor=actor.get('rat')),
+        'mini_bat': ImageBundle(sprite.get('goblin'), actor=actor.get('bat')),
+        'bat': ImageBundle(sprite.get('goblin'), actor=actor.get('bat')),
+        'mega_bat': ImageBundle(sprite.get('goblin'), actor=actor.get('bat')),
+        'mini_salamander': ImageBundle(sprite.get('goblin'), actor=actor.get('salamander')),
+        'salamander': ImageBundle(sprite.get('goblin'), actor=actor.get('salamander')),
+        'mega_salamander': ImageBundle(sprite.get('goblin'), actor=actor.get('salamander')),
+        'mini_spider': ImageBundle(sprite.get('goblin'), actor=actor.get('spider')),
+        'spider': ImageBundle(sprite.get('goblin'), actor=actor.get('spider')),
+        'mega_spider': ImageBundle(sprite.get('goblin'), actor=actor.get('spider')),
+        'mini_snail': ImageBundle(sprite.get('goblin'), actor=actor.get('snail')),
+        'snail': ImageBundle(sprite.get('goblin'), actor=actor.get('snail')),
+        'mega_snail': ImageBundle(sprite.get('goblin'), actor=actor.get('snail')),
+        'mini_shrimp': ImageBundle(sprite.get('goblin'), actor=actor.get('shrimp')),
+        'shrimp': ImageBundle(sprite.get('goblin'), actor=actor.get('shrimp')),
+        'mega_shrimp': ImageBundle(sprite.get('goblin'), actor=actor.get('shrimp')),
+        'mini_raccoon': ImageBundle(sprite.get('goblin'), actor=actor.get('raccoon')),
+        'raccoon': ImageBundle(sprite.get('goblin'), actor=actor.get('raccoon')),
+        'mega_raccoon': ImageBundle(sprite.get('goblin'), actor=actor.get('raccoon')),
+        'mini_bear': ImageBundle(sprite.get('goblin'), actor=actor.get('bear')),
+        'bear': ImageBundle(sprite.get('goblin'), actor=actor.get('bear')),
+        'mega_bear': ImageBundle(sprite.get('goblin'), actor=actor.get('bear')),
+        'mini_kobold': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
+        'kobold': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
+        'mega_kobold': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
+        'mini_kobold_harasser': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
+        'kobold_harasser': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
+        'mega_kobold_harasser': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
+        'mini_kobold_trickster': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
+        'kobold_trickster': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
+        'mega_kobold_trickster': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
+        'mini_kobold_zealot': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
+        'kobold_zealot': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
+        'mega_kobold_zealot': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
+        'mini_goblin': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
+        'goblin': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
+        'mega_goblin': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
+        'mini_goblin_rogue': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
+        'goblin_rogue': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
+        'mega_goblin_rogue': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
+        'mini_goblin_mage': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
+        'goblin_mage': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
+        'mega_goblin_mage': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
+        'mini_goblin_shaman': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
+        'goblin_shaman': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
+        'mega_goblin_shaman': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
     }
 
     return bundle_dict.get(type)
@@ -214,13 +214,40 @@ def get_entities_objs():
 
 
 def get_combatants_objs():
-    combatants = {
-        'hero': py.image.load('images\\entities\\combatants\\hero.png'),
-        'goblin': py.image.load('images\\entities\\combatants\\goblin.png'),
-        'corpse': py.image.load('images\\entities\\combatants\\corpse.png'),
+
+    img_dict = {
+        'actors': get_actor_objs(),
+        'sprites': get_sprite_objs(),
     }
 
-    return combatants
+    return img_dict
+
+def get_actor_objs():
+
+    actors = {
+        'hero': py.image.load('images\\entities\\combatants\\actors\\hero.png'),
+        'goblin': py.image.load('images\\entities\\combatants\\actors\\goblin.png'),
+        'bat': py.image.load('images\\entities\\combatants\\actors\\bat.png'),
+        'bear': py.image.load('images\\entities\\combatants\\actors\\bear.png'),
+        'kobold': py.image.load('images\\entities\\combatants\\actors\\kobold.png'),
+        'raccoon': py.image.load('images\\entities\\combatants\\actors\\raccoon.png'),
+        'rat': py.image.load('images\\entities\\combatants\\actors\\rat.png'),
+        'salamander': py.image.load('images\\entities\\combatants\\actors\\salamander.png'),
+        'shrimp': py.image.load('images\\entities\\combatants\\actors\\shrimp.png'),
+        'snail': py.image.load('images\\entities\\combatants\\actors\\snail.png'),
+        'spider': py.image.load('images\\entities\\combatants\\actors\\spider.png'),
+    }
+
+    return actors
+
+def get_sprite_objs():
+    sprites = {
+        'hero': py.image.load('images\\entities\\combatants\\sprites\\hero.png'),
+        'goblin': py.image.load('images\\entities\\combatants\\sprites\\goblin.png'),
+        'corpse': py.image.load('images\\entities\\combatants\\sprites\\corpse.png'),
+    }
+
+    return sprites
 
 
 def get_items_objs():
@@ -737,12 +764,12 @@ def get_noncombatants_objs():
 
 
 def get_portrait_objs():
+
     portraits = {
         'hero': py.image.load('images\\portraits\\hero.png'),
         'hero_mini': py.image.load('images\\portraits\\hero_mini.png'),
         'samwise': py.image.load('images\\portraits\\samwise.png'),
         'samwise_mini': py.image.load('images\\portraits\\samwise_mini.png'),
-
     }
 
     return portraits

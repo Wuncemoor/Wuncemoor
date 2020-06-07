@@ -81,7 +81,7 @@ class Map:
     def set_dungeon_level(self, level):
         self.dungeon_level = level
 
-    def create_room(self, room, d_type):
+    def create_room(self, room, d_type, subtype):
         # go through the tiles in the rectangle and make them not blocked
 
         for x in range(room.x1 + 1, room.x2):
@@ -89,21 +89,24 @@ class Map:
                 self.tiles[x][y].blocked = False
                 self.tiles[x][y].block_sight = False
                 self.tiles[x][y].type = d_type
+                self.tiles[x][y].subtype = subtype
 
 
 
-    def create_h_tunnel(self, x1, x2, y, d_type):
+    def create_h_tunnel(self, x1, x2, y, d_type, subtype=None):
         for x in range(min(x1, x2), max(x1, x2) + 1):
             self.tiles[x][y].blocked = False
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].type = d_type
+            self.tiles[x][y].subtype = subtype
 
 
-    def create_v_tunnel(self, y1, y2, x, d_type):
+    def create_v_tunnel(self, y1, y2, x, d_type, subtype=None):
         for y in range(min(y1, y2), max(y1, y2) + 1):
             self.tiles[x][y].blocked = False
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].type = d_type
+            self.tiles[x][y].subtype = subtype
 
 
     # Create everything except stairs
@@ -128,7 +131,7 @@ class Map:
             else:
                 # No intersections, ergo valid room
                 # "paint" to map's tiles
-                self.create_room(new_room, dungeon_type)
+                self.create_room(new_room, dungeon_type, subtype)
                 # center coordinates of new room, useful later
                 (new_x, new_y) = new_room.center()
                 center_of_last_room_x = new_x
@@ -146,12 +149,12 @@ class Map:
                     # flip a coin
                     if randint(0, 1) == 1:
                         # first horizontal, then vertical
-                        self.create_h_tunnel(prev_x, new_x, prev_y, dungeon_type)
-                        self.create_v_tunnel(prev_y, new_y, new_x, dungeon_type)
+                        self.create_h_tunnel(prev_x, new_x, prev_y, dungeon_type, subtype)
+                        self.create_v_tunnel(prev_y, new_y, new_x, dungeon_type, subtype)
                     else:
                         # first vertical, then horizontal
-                        self.create_v_tunnel(prev_y, new_y, prev_x, dungeon_type)
-                        self.create_h_tunnel(prev_x, new_x, new_y, dungeon_type)
+                        self.create_v_tunnel(prev_y, new_y, prev_x, dungeon_type, subtype)
+                        self.create_h_tunnel(prev_x, new_x, new_y, dungeon_type, subtype)
                 # append room to list
                 self.place_entities(new_room, dungeon_type, subtype, node_power, objs)
                 rooms.append(new_room)
@@ -273,21 +276,32 @@ class Map:
         self.floor_image = dict.get(string)
 
 
-    def get_encounter(self, images, biome, options):
-        bg = images.get('backgrounds').get(biome + '_bg')
+    def get_encounter(self, images, tile, options):
 
-        event = self.get_encounter_event(images)
+        bg = images.get('backgrounds').get(tile.type + '_bg')
+
+        event = self.get_encounter_event(images, tile)
 
         return Encounter(bg, event, options)
 
 
-    def get_encounter_event(self, images):
+    def get_encounter_event(self, images, tile):
 
-        mob_builder = MobBuilder(0, 'goblin', images.get('goblin'))
+        mob_chances = MobChances(tile.type, tile.subtype, tile.np)
+        mcs = mob_chances.get_mob_chances()
+        monster_choice = random_choice_from_dict(mcs)
+        print(monster_choice)
+        print(images)
+        mob_img_bundle = get_image_bundle(images, monster_choice)
+        print(mob_img_bundle)
+        print(mob_img_bundle.actor)
+
+        mob_builder = MobBuilder(0, monster_choice, mob_img_bundle)
         mob_director = MobDirector()
         mob_director.set_builder(mob_builder)
         combatant_component = mob_director.get_combatant()
         event = Entity(0, 0, blocks=True, render_order=RenderOrder.ACTOR,
                          combatant=combatant_component)
+
 
         return event

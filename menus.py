@@ -3,6 +3,7 @@ import math
 from dialogue.deja_vu_check import deja_vu_check
 from screens.resources_HUD import player_resource_display
 from screens.encounter_menu import get_encounter_menu
+from screens.display_actors import display_actors
 
 
 def menu(screen, header, gui_img, fontsize, options, width, height, camera_width, camera_height, off_x, off_y):
@@ -353,6 +354,9 @@ def encounter_screen(screen, images, player, encounter):
     options_menu = get_encounter_menu(images.get('gui').get('encounter_menu_objs'), encounter)
 
     screen.blit(options_menu, (0, 480))
+
+    actor_display = display_actors(player, encounter.event)
+    screen.blit(actor_display, (0, 180))
 
 
 

@@ -17,6 +17,18 @@ class MobChances:
     def get_mob_chances(self):
 
         self.type_dict = {
+            'deep': self.get_biome_chances('deep'),
+            'desert': self.get_biome_chances('desert'),
+            'forest': self.get_biome_chances('forest'),
+            'jungle': self.get_biome_chances('jungle'),
+            'plains': self.get_biome_chances('plains'),
+            'savannah': self.get_biome_chances('savannah'),
+            'shallow': self.get_biome_chances('shallow'),
+            'snow': self.get_biome_chances('snow'),
+            'taiga': self.get_biome_chances('taiga'),
+            'temptrain': self.get_biome_chances('temprain'),
+            'tropicrain': self.get_biome_chances('tropicrain'),
+            'tundra': self.get_biome_chances('tundra'),
             'cave': self.get_cave_type_chances(),
             }
             
@@ -85,9 +97,97 @@ class MobChances:
                     'bear': from_node_power([[0,0], [50,75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]], self.np),
                     'mega_bear': from_node_power([[0,0], [25, 500], [50, 1000], [100, 2500]], self.np), 
                     })
-        return cave                
-        
-            
+        return cave
+
+    def get_biome_chances(self, biome):
+
+        if biome == 'deep':
+            b = Counter({
+                'mini_shrimp': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'shrimp': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                          self.np),
+                'mega_shrimp': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+            })
+        elif biome == 'desert':
+            b = Counter({
+                'mini_salamander': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'salamander': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                              self.np),
+                'mega_salamander': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+            })
+        elif biome == 'forest':
+            b = Counter({
+                'mini_raccoon': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'raccoon': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                           self.np),
+                'mega_raccoon': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+            })
+        elif biome == 'jungle':
+            b = Counter({
+                'mini_spider': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'spider': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                          self.np),
+                'mega_spider': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+            })
+        elif biome == 'plains':
+            b = Counter({
+                'mini_rat': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'rat': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                       self.np),
+                'mega_rat': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+            })
+        elif biome == 'savannah':
+            b = Counter({
+                'mini_rat': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'rat': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                       self.np),
+                'mega_rat': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+            })
+        elif biome == 'shallow':
+            b = Counter({
+                'mini_snail': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'snail': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                         self.np),
+                'mega_snail': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+            })
+        elif biome == 'snow':
+            b = Counter({
+                'mini_bear': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'bear': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                        self.np),
+                'mega_bear': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+            })
+        elif biome == 'taiga':
+            b = Counter({
+                'mini_bear': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'bear': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                        self.np),
+                'mega_bear': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+            })
+        elif biome == 'temprain':
+            b = Counter({
+                'mini_bat': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'bat': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                       self.np),
+                'mega_bat': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+            })
+        elif biome == 'tropicrain':
+            b = Counter({
+                'mini_bat': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'bat': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                       self.np),
+                'mega_bat': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+            })
+        elif biome == 'tundra':
+            b = Counter({
+                'mini_bear': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'bear': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                        self.np),
+                'mega_bear': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+            })
+
+        return b
+
     def get_kobold_subtype_chances(self):
 
         k = Counter({

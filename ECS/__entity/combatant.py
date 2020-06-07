@@ -4,6 +4,7 @@ from game_messages import Message
 import random
 import math
 
+
 class Combatant:
     def __init__(self, name, images, phylo, attributes, level, competence, equipment, inventory, ai=None, xp=0):
         

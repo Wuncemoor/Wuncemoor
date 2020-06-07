@@ -21,7 +21,7 @@ from ECS.image_bundle import ImageBundle
 def get_town(width, height, node, img_objs):
     name, node_x, node_y = node.name, node.x, node.y
 
-    map = get_map(width, height, name)
+    map = get_map(width, height, variant=name)
 
     ents = img_objs.get('entities')
 
@@ -72,13 +72,13 @@ def get_cave(constants, images, subtype):
     return cave
 
 
-def get_map(width, height, variant=None, dangerous=False):
+def get_map(width, height, variant=None, subtype=None, dangerous=False):
 
     map = Map(width, height, variant=variant, dangerous=dangerous)
 
     if variant in ('town', 'second_town', 'third_town', 'fourth_town'):
 
-        map.create_room(Rect(0, 0, width - 1, height - 1), variant)
+        map.create_room(Rect(0, 0, width - 1, height - 1), variant, subtype)
     elif variant == 'world_map':
         for row in map.tiles:
             for tile in row:

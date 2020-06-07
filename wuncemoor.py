@@ -176,10 +176,10 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             if game_map.dangerous:
                                 encountering = encounter_check()
                                 if encountering:
-                                    biome = game_map.tiles[destination_x][destination_y].type
+                                    tile = game_map.tiles[destination_x][destination_y]
 
                                     options = ['FIGHT', 'ITEM', 'RUN']
-                                    encounter = game_map.current_map.get_encounter(images, biome, options)
+                                    encounter = game_map.current_map.get_encounter(images, tile, options)
                                     previous_game_state = game_state
                                     game_state = GameStates.ENCOUNTER
 
@@ -479,7 +479,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     fight = encounter_result == 'FIGHT'
                     item = encounter_result == 'ITEM'
                     run = encounter_result == 'RUN'
-                    print(run)
                     if run:
                         game_state = previous_game_state
                         encounter = None
