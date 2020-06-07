@@ -27,3 +27,9 @@ class GameStates(Enum):
     ENCOUNTER = 23
     DIALOGUE = 24
     SHOW_MAP = 25
+
+
+class EncounterStates(Enum):
+
+    THINKING = 1
+    FIGHTING = 2

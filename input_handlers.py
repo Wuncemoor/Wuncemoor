@@ -147,6 +147,8 @@ def handle_encounter_screen(key):
         return {'traverse_menu': 1}
     elif key == pygame.K_RETURN:
         return {'choose_menu_option': True}
+    elif key == pygame.K_ESCAPE:
+        return {'exit': True}
 
     return {}
 

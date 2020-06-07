@@ -2,7 +2,7 @@ import tcod as libtcod
 from fov_function import initialize_fov, recompute_fov
 from ECS.entity import get_blocking_entities_at_location
 from death_functions import kill_monster, kill_player
-from enums.game_states import GameStates
+from enums.game_states import GameStates, EncounterStates
 from game_messages import Message
 from input_handlers import handle_keys, handle_mouse, handle_main_menu
 from render_functions import render_all
@@ -49,7 +49,7 @@ def main():
     running = True
 
     while running:
-        for event in pygame.event.get():  # User input
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -369,8 +369,12 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 if wait:
                     game_state = GameStates.ENEMY_TURN
                 if exit_game:
-                    if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU,
-                                      GameStates.SHOW_MAP, GameStates.ENCOUNTER):
+                    if game_state == GameStates.ENCOUNTER:
+                        if encounter.state == EncounterStates.FIGHTING:
+                            encounter_result = 'UNFIGHT'
+
+                    elif game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU,
+                                      GameStates.SHOW_MAP):
                         game_state = previous_game_state
                     elif game_state in (
                             GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN,
@@ -477,8 +481,13 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 if encounter_result is not None:
 
                     fight = encounter_result == 'FIGHT'
+                    unfight = encounter_result == 'UNFIGHT'
                     item = encounter_result == 'ITEM'
                     run = encounter_result == 'RUN'
+                    if fight:
+                        encounter.state = EncounterStates.FIGHTING
+                    elif unfight:
+                        encounter.state = EncounterStates.THINKING
                     if run:
                         game_state = previous_game_state
                         encounter = None

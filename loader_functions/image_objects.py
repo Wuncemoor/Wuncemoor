@@ -103,7 +103,7 @@ def get_gui_objs():
         'primary_stats_screen': py.image.load('images\\GUI\\primary_stats_screen.png'),
         'dialogue_menu': py.image.load('images\\GUI\\dialogue_menu.png'),
         'resource_hud_objs': get_resource_hud_objs(),
-        'encounter_menu_objs': get_encounter_menu_objs(),
+        'encounter': get_encounter_menu_objs(),
         'encounter_message_bg': py.image.load('images\\GUI\\encounter\\message_bg.png'),
         'message_bg': py.image.load('images\\GUI\\message_bg.png'),
 
@@ -111,15 +111,18 @@ def get_gui_objs():
 
     return gui_objs
 
+
 def get_encounter_menu_objs():
 
     menu_dict = {
         'encounter_menu': py.image.load('images\\GUI\\encounter\\options_menu.png'),
         'button': py.image.load('images\\GUI\\encounter\\option_button.png'),
-        'indicator': py.image.load('images\\GUI\\encounter\\indicator.png'),
+        'indicator_h': py.image.load('images\\GUI\\encounter\\indicator_h.png'),
+        'indicator_v': py.image.load('images\\GUI\\encounter\\indicator_v.png'),
     }
 
     return menu_dict
+
 
 def get_real_objs(stat):
     if stat == 'HP':

@@ -1,7 +1,8 @@
 from screens.gui_tools import get_alpha_surface, get_text_surface
+from enums.game_states import EncounterStates
 
 
-def get_encounter_menu(images, encounter):
+def get_encounter_menus(images, encounter):
 
     menu = get_alpha_surface(400, 240)
 
@@ -17,8 +18,8 @@ def get_encounter_menu(images, encounter):
     blit_options(menu, images.get('button'), buttons_off_x, buttons_off_y, dy, num, encounter.options)
 
     indicator_y = buttons_off_y - 11 + (dy * encounter.current_option)
-
-    blit_indicator(menu, images.get('indicator'), off_x=buttons_off_x - 50, off_y=indicator_y)
+    if encounter.state == EncounterStates.THINKING:
+        blit_indicator(menu, images.get('indicator_h'), off_x=buttons_off_x - 50, off_y=indicator_y)
 
     return menu
 

@@ -1,7 +1,8 @@
 from screens.gui_tools import get_alpha_surface
+from enums.game_states import EncounterStates
 
 
-def display_actors(player, enemy):
+def display_actors(player, encounter, indicator):
     w, h = 1280, 300
     window = get_alpha_surface(w, h)
     dim = 160
@@ -9,6 +10,9 @@ def display_actors(player, enemy):
     off_y = (h / 2) - (dim / 2)
 
     window.blit(player.combatant.images.actor, (off_x, off_y))
-    window.blit(enemy.combatant.images.actor, (off_x + (w / 2), off_y))
+    window.blit(encounter.event.combatant.images.actor, (off_x + (w / 2), off_y))
+
+    if encounter.state == EncounterStates.FIGHTING:
+        window.blit(indicator, ((3 * w / 4) - (indicator.get_width() / 2), off_y - 40))
 
     return window
