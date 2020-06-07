@@ -290,11 +290,7 @@ class Map:
         mob_chances = MobChances(tile.type, tile.subtype, tile.np)
         mcs = mob_chances.get_mob_chances()
         monster_choice = random_choice_from_dict(mcs)
-        print(monster_choice)
-        print(images)
         mob_img_bundle = get_image_bundle(images, monster_choice)
-        print(mob_img_bundle)
-        print(mob_img_bundle.actor)
 
         mob_builder = MobBuilder(0, monster_choice, mob_img_bundle)
         mob_director = MobDirector()
