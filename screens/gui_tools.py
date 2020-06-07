@@ -17,6 +17,7 @@ def get_text_surface(text, fontsize, color):
 
     return surf
 
+
 def print_message(message_surface, message, off_x, off_y, y):
     fontsize = 12
     text = get_text_surface(message.text, fontsize, color=message.color)

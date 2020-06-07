@@ -7,6 +7,7 @@ from menus import inventory_menu, level_up_menu, competence_menu, character_menu
     charisma_feats_menu, devotion_feats_menu, map_menu, dialogue_menu, encounter_screen
 from random_utils import pseudorandom_seed
 from screens.gui_tools import print_message
+from screens.resources_HUD import player_resource_display
 
 
 from enum import Enum
@@ -27,52 +28,6 @@ def get_names_under_mouse(entities, fov_map):
     names = ', '.join(names)
 
     return names.capitalize()
-
-
-def render_bar(resource_surface, x, y, bar_x, bar_y, name, val, maxval):
-
-    window = pygame.Surface((bar_x, bar_y))
-
-    full = get_render_bar_asset(name, full=True)
-    empty = get_render_bar_asset(name, full=False)
-
-    percent = float(val / maxval) * 100
-    assetwidth = 15
-
-    for i in range(20):
-        if percent >= (i + 1) * 5:
-            window.blit(full, ((i * assetwidth), 0))
-        else:
-            window.blit(empty, ((i * assetwidth), 0))
-
-    resource_surface.blit(window, (x, y))
-    fontsize = 20
-    font = pygame.font.SysFont("comicsansms", fontsize)
-    text = font.render('{0}: {1}/{2}'.format(name, val, maxval), True, (255, 255, 255))
-    window.blit(text, (50, -5))
-    resource_surface.blit(window, (x, y))
-
-
-def get_render_bar_asset(name, full):
-    render_dict = {
-        'HP': ['images\\render_bar_assets\\hp_full.png',
-               'images\\render_bar_assets\\hp_empty.png'],
-        'MP': ['images\\render_bar_assets\\mp_full.png',
-               'images\\render_bar_assets\\mp_empty.png'],
-        'TP': ['images\\render_bar_assets\\tp_full.png',
-               'images\\render_bar_assets\\tp_empty.png'],
-        'VP': ['images\\render_bar_assets\\vp_full.png',
-               'images\\render_bar_assets\\vp_empty.png']
-    }
-    try:
-        pack = render_dict.get(name)
-        if full:
-            asset = pack[0]
-        else:
-            asset = pack[1]
-    except TypeError:
-        asset = 'images\\render_bar_assets\\blank.png'
-    return pygame.image.load(asset)
 
 
 def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
@@ -114,14 +69,9 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
     screen.blit(message_surface, (300, 592))
     message_surface.fill((0, 0, 0))
 
-    render_bar(resource_surface, 0, 0, 300, 25, get_names_under_mouse(entities, fov_map), 1, 1)
-    render_bar(resource_surface, 0, 20, 300, 25, 'HP', player.combatant.attributes.current_hp, player.combatant.max_hp)
-    render_bar(resource_surface, 0, 40, 300, 25, 'MP', player.combatant.attributes.current_mp, player.combatant.max_mp)
-    render_bar(resource_surface, 0, 60, 300, 25, 'TP', player.combatant.attributes.current_tp, player.combatant.max_tp)
-    render_bar(resource_surface, 0, 80, 300, 25, 'VP', player.combatant.attributes.current_vp, player.combatant.max_vp)
-    render_bar(resource_surface, 0, 100, 300, 25, 'Dungeon Level: {0}'.format(game_map.dungeon_level), 1, 1)
+    resource_hud = player_resource_display(player, images.get('gui').get('resource_hud_objs'))
+    screen.blit(resource_hud, (0 - 10, 540 + 40))
 
-    screen.blit(resource_surface, (0, 592))
 
     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
         gui_img = images.get('gui').get('inventory_menu')

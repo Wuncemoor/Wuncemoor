@@ -16,7 +16,7 @@ def player_resource_display(player, imgs):
 
 def blit_portrait(res_display, player, frame):
     frame_off_x = 20
-    frame_off_y = 45
+    frame_off_y = 40
     port_off_x = frame_off_x + 3
     port_off_y = frame_off_y + 3
 

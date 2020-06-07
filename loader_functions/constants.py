@@ -6,8 +6,8 @@ def get_constants():
     screen_height = 720
     cscreen_width = 1280
     cscreen_height = 592
-    rscreen_width = 300
-    rscreen_height = 128
+    rscreen_width = 320
+    rscreen_height = 180
     mscreen_width = 980
     mscreen_height = 128
 
