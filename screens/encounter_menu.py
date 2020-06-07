@@ -26,7 +26,7 @@ def get_encounter_menu(images, encounter):
 def blit_options(menu, image, off_x, off_y, dy, num, options):
 
     for i in range(num):
-        text = get_text_surface(options, i, fontsize=24)
+        text = get_text_surface(options[i], fontsize=24, color=(255, 255, 255))
         menu.blit(image, (off_x, off_y + (i * dy)))
 
         mid = image.get_width() / 2

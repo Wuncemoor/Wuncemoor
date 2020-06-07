@@ -6,6 +6,7 @@ from menus import inventory_menu, level_up_menu, competence_menu, character_menu
     vitality_feats_menu, arcana_feats_menu, improvisation_feats_menu, wisdom_feats_menu, finesse_feats_menu, \
     charisma_feats_menu, devotion_feats_menu, map_menu, dialogue_menu, encounter_screen
 from random_utils import pseudorandom_seed
+from screens.gui_tools import print_message
 
 
 from enum import Enum
@@ -102,9 +103,12 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
     screen.blit(camera_surface, (0, 0))
 
     # Print game messages one line at a time
+    message_surface.blit(images.get('gui').get('message_bg'), (0, 0))
     y = 0
     for message in message_log.messages:
-        print_message(message_surface, message, 20, y)
+        off_x = 30
+        off_y = 5
+        print_message(message_surface, message, off_x, off_y, y)
         y += 1
 
     screen.blit(message_surface, (300, 592))
@@ -156,7 +160,7 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         gui_img = images.get('gui').get('dialogue_menu')
         dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height)
     elif game_state == GameStates.ENCOUNTER:
-        encounter_screen(screen, images, player, encounter)
+        encounter_screen(screen, images, player, encounter, message_log)
     elif game_state == GameStates.COMPETENCE_MENU:
         cm_width = 400
         competence_menu(screen, 'What would you like to be more competent at?', cm_width, camera_width, camera_height)
@@ -226,12 +230,6 @@ def draw_structure(camera_surface, cx, cy, structure, fov_map, game_map, tiles, 
                 camera_surface.blit(tiles.get('black'), ((i - cx) * tilesize, (j - cy) * tilesize))
                 count += 1
 
-
-def print_message(message_surface, message, mlogx, y):
-    fontsize = 12
-    font = pygame.font.SysFont("comicsansms", fontsize)
-    pm = font.render(message.text, True, message.color)
-    message_surface.blit(pm, (mlogx, y * fontsize))
 
 
 def draw_tile(camera_surface, fov_map, game_map, x, y, cx, cy, tiles, tilesize, options):

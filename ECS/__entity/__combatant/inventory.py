@@ -12,11 +12,11 @@ class Inventory:
         results = []
         
         if len(self.items) >= self.capacity:
-            results.append({'item_added': None, 'message': Message('You cannot carry any more, your inventory is full', libtcod.yellow)})
+            results.append({'item_added': None, 'message': Message('You cannot carry any more, your inventory is full', libtcod.dark_purple)})
         else:
             results.append({
                 'item_added': item,
-                'message': Message('You pick up the {0}!'.format(item.name), libtcod.blue)})
+                'message': Message('You pick up the {0}!'.format(item.name), libtcod.dark_purple)})
             self.items.append(item)
 
         return results

@@ -418,15 +418,15 @@ class Combatant:
             damage = math.floor(((attack_type ** 2) - (resist_type))*((random.randrange(10)+95)/100))
             
             if damage > 0:
-                results.append({'message': Message('{0} attacks {1} for {2} {3} damage.'.format(self.owner.name.capitalize(), target.name, str(damage), attack), libtcod.white)})
+                results.append({'message': Message('{0} attacks {1} for {2} {3} damage.'.format(self.owner.name.capitalize(), target.name, str(damage), attack), libtcod.black)})
                 results.extend(target.combatant.lose_hp(damage))
             else:
-                results.append({'message': Message('{0} attacks {1} but does no damage!.'.format(self.owner.name.capitalize(), target.name), libtcod.white)})
+                results.append({'message': Message('{0} attacks {1} but does no damage!.'.format(self.owner.name.capitalize(), target.name), libtcod.black)})
             return results
             
         else:
         
-            results.append({'message': Message('{0} attacks, but {1} dodges!'.format(self.owner.name.capitalize(), target.name), libtcod.white)})
+            results.append({'message': Message('{0} attacks, but {1} dodges!'.format(self.owner.name.capitalize(), target.name), libtcod.black)})
             return results
             
 

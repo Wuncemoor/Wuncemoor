@@ -10,10 +10,15 @@ def get_alpha_surface(width, height):
     return res_display
 
 
-def get_text_surface(options, i, fontsize):
+def get_text_surface(text, fontsize, color):
 
     font = py.font.SysFont("comicsansms", fontsize)
-
-    surf = font.render(options[i], True, (255, 255, 255))
+    surf = font.render(text, True, color)
 
     return surf
+
+def print_message(message_surface, message, off_x, off_y, y):
+    fontsize = 12
+    text = get_text_surface(message.text, fontsize, color=message.color)
+
+    message_surface.blit(text, (off_x, (y * fontsize) + off_y))

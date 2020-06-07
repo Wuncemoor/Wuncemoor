@@ -104,7 +104,8 @@ def get_gui_objs():
         'dialogue_menu': py.image.load('images\\GUI\\dialogue_menu.png'),
         'resource_hud_objs': get_resource_hud_objs(),
         'encounter_menu_objs': get_encounter_menu_objs(),
-        'encounter_menu': py.image.load('images\\GUI\\encounter\\options_menu.png'),
+        'encounter_message_bg': py.image.load('images\\GUI\\encounter\\message_bg.png'),
+        'message_bg': py.image.load('images\\GUI\\message_bg.png'),
 
     }
 

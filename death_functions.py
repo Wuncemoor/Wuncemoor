@@ -13,10 +13,9 @@ def kill_player(player, corpse):
 
 
 def kill_monster(monster, corpse):
-    death_message = Message('{0} is dead!'.format(monster.name.capitalize()), libtcod.orange)
+    death_message = Message('{0} is dead!'.format(monster.name.capitalize()), libtcod.dark_red)
 
     make_corpse(monster, corpse)
-    monster.color = libtcod.dark_red
     monster.blocks = False
     monster.combatant = None
     monster.ai = None

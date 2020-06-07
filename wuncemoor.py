@@ -220,7 +220,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             game_state = GameStates.DIALOGUE
                             nothing = False
                     if nothing:
-                        message_log.add_message(Message('Nothing to see here, move along...', libtcod.yellow))
+                        message_log.add_message(Message('Nothing to see here, move along...', libtcod.dark_blue))
 
                 if show_inventory:
                     previous_game_state = game_state
@@ -461,13 +461,13 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
                     if xp:
                         leveled_up = player.combatant.level.add_xp(xp)
-                        message_log.add_message(Message('You gain {0} experience points!'.format(xp)))
+                        message_log.add_message(Message('You gain {0} experience points!'.format(xp), libtcod.dark_orange))
 
                         if leveled_up:
                             message_log.add_message(Message(
                                 'Your skills grow once more! Level {0}!'.format(
                                     player.combatant.level.current_level) + '!',
-                                libtcod.yellow))
+                                libtcod.dark_orange))
                             if not GameStates.TARGETING:
                                 previous_game_state = game_state
                                 game_state = GameStates.LEVEL_UP

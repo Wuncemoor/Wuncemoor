@@ -4,7 +4,7 @@ from dialogue.deja_vu_check import deja_vu_check
 from screens.resources_HUD import player_resource_display
 from screens.encounter_menu import get_encounter_menu
 from screens.display_actors import display_actors
-
+from screens.message_box import get_message_box
 
 def menu(screen, header, gui_img, fontsize, options, width, height, camera_width, camera_height, off_x, off_y):
     if len(options) > 26: raise ValueError('Cannot have a menu with more than 26 options.')
@@ -343,20 +343,24 @@ def dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height):
     screen.blit(window, (0, 0))
 
 
-def encounter_screen(screen, images, player, encounter):
-    resources_hud_imgs = images.get('gui').get('resource_hud_objs')
+def encounter_screen(screen, images, player, encounter, message_log):
+
     screen.blit(encounter.background, (0, 0))
 
+    resources_hud_imgs = images.get('gui').get('resource_hud_objs')
     resource_hud = player_resource_display(player, resources_hud_imgs)
-
     screen.blit(resource_hud, (0, 0))
 
     options_menu = get_encounter_menu(images.get('gui').get('encounter_menu_objs'), encounter)
-
     screen.blit(options_menu, (0, 480))
+
+    message_box = get_message_box(images.get('gui').get('encounter_message_bg'), message_log, off_x=15, off_y=5)
+    screen.blit(message_box, (940, 490))
+
 
     actor_display = display_actors(player, encounter.event)
     screen.blit(actor_display, (0, 180))
+
 
 
 
