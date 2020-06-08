@@ -21,7 +21,7 @@ from map_objects.chances.mob_chances import MobChances
 from map_objects.encounter import Encounter
 from ECS.image_bundle import ImageBundle
 from loader_functions.image_objects import get_image_bundle
-
+from builders.make_item import make_item
 
 
 class Map:
@@ -180,12 +180,11 @@ class Map:
 
             if not any([entity for entity in self.map_entities if entity.x == x and entity.y == y]):
                 monster_choice = random_choice_from_dict(mcs)
-                mob_img_bundle = get_image_bundle(objs, monster_choice)
 
-                mob_builder = MobBuilder(0, monster_choice, mob_img_bundle)
+                mob_builder = MobBuilder(0, monster_choice)
                 mob_director = MobDirector()
                 mob_director.set_builder(mob_builder)
-                combatant_component = mob_director.get_combatant()
+                combatant_component = mob_director.get_combatant(objs)
                 monster = Entity(x, y, blocks=True, render_order=RenderOrder.ACTOR,
                                  combatant=combatant_component)
 
@@ -194,73 +193,24 @@ class Map:
         for i in range(number_of_items):
             x = randint(room.x1 + 1, room.x2 - 1)
             y = randint(room.y1 + 1, room.y2 - 1)
-            equippables = items.get('equippables')
-            weapons = equippables.get('weapons')
-            useables = items.get('useables')
 
             if not any([entity for entity in self.map_entities if entity.x == x and entity.y == y]) and not \
                     any([transition for transition in self.transitions if transition.x == x and transition.y == y]):
                 item_choice = random_choice_from_dict(item_chances)
 
-                if item_choice == 'healing_potion':
-                    image = ImageBundle(useables.get('potion'))
-                    item_component = Item(
-                        useable_component=Useable('Healing Potion', image, use_function=heal, amount=400))
-                    item = Entity(x, y, render_order=RenderOrder.ITEM, item=item_component)
-                elif item_choice == 'sword':
-                    image = ImageBundle(weapons.get('longsword'))
-                    equippable_core = EquippableCore('longsword', image)
-                    equippable_material = EquippableMaterial('wood')
-                    equippable_quality = EquippableQuality('average')
-
-                    equippable_component = Equippable('Sword', image, EquipmentSlots.MAIN_HAND, equippable_core,
-                                                      equippable_material, equippable_quality)
-                    item_component = Item(equippable_component)
-                    item = Entity(x, y, item=item_component)
-                elif item_choice == 'shield':
-                    image = ImageBundle(weapons.get('shield'))
-                    equippable_core = EquippableCore('shield', image)
-                    equippable_material = EquippableMaterial('iron')
-                    equippable_quality = EquippableQuality('average')
-
-                    equippable_component = Equippable('Shield', image, EquipmentSlots.OFF_HAND, equippable_core,
-                                                      equippable_material, equippable_quality)
-                    item_component = Item(equippable_component)
-                    item = Entity(x, y, item=item_component)
-                elif item_choice == 'fireball_scroll':
-                    image = ImageBundle(items.get('useables').get('scroll'))
-                    item_component = Item(
-                        useable_component=Useable('Fireball Scroll', image, use_function=cast_fireball, targeting=True,
-                                                  targeting_message=Message(
-                                                      'Left-click a target tile for the fireball, or right-click to rethink your life decisions.',
-                                                      libtcod.light_cyan), damage=250, radius=3))
-                    item = Entity(x, y, render_order=RenderOrder.ITEM, item=item_component)
-                elif item_choice == 'confusion_scroll':
-                    image = ImageBundle(items.get('useables').get('scroll'))
-                    item_component = Item(
-                        useable_component=Useable('Confusion Scroll', image, use_function=cast_confuse, targeting=True,
-                                                  targeting_message=Message(
-                                                      'Left-click an enemy to confuse it, or right-click to cancel.',
-                                                      libtcod.light_cyan)))
-                    item = Entity(x, y, render_order=RenderOrder.ITEM, item=item_component)
-                elif item_choice == 'lightning_scroll':
-                    image = ImageBundle(items.get('useables').get('scroll'))
-                    item_component = Item(
-                        useable_component=Useable('Lightning Scroll', image, use_function=cast_lightning, damage=400,
-                                                  maximum_range=5))
-                    item = Entity(x, y, render_order=RenderOrder.ITEM, item=item_component)
+                item = make_item(items, item_choice)
 
                 self.map_entities.append(item)
 
-    def add_boss(self, d_type, subtype, node_power, obj):
+    def add_boss(self, d_type, subtype, node_power, images):
 
         mob_chances = MobChances(d_type, subtype, node_power * 100)
 
         monster_choice = random_choice_from_dict(mob_chances.get_mob_chances())
-        mob_builder = MobBuilder(0, monster_choice, obj)
+        mob_builder = MobBuilder(0, monster_choice)
         mob_director = MobDirector()
         mob_director.set_builder(mob_builder)
-        combatant_component = mob_director.get_combatant()
+        combatant_component = mob_director.get_combatant(images)
         monster = Entity(self.exit[0], self.exit[1], blocks=True,
                          render_order=RenderOrder.ACTOR, combatant=combatant_component)
 
@@ -290,12 +240,12 @@ class Map:
         mob_chances = MobChances(tile.type, tile.subtype, tile.np)
         mcs = mob_chances.get_mob_chances()
         monster_choice = random_choice_from_dict(mcs)
-        mob_img_bundle = get_image_bundle(images, monster_choice)
 
-        mob_builder = MobBuilder(0, monster_choice, mob_img_bundle)
+
+        mob_builder = MobBuilder(0, monster_choice)
         mob_director = MobDirector()
         mob_director.set_builder(mob_builder)
-        combatant_component = mob_director.get_combatant()
+        combatant_component = mob_director.get_combatant(images)
         event = Entity(0, 0, blocks=True, render_order=RenderOrder.ACTOR,
                          combatant=combatant_component)
 

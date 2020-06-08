@@ -161,6 +161,7 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
 def draw_entity(camera_surface, cx, cy, entity, fov_map, game_map, tilesize):
 
     surfimg = entity.images.sprite
+
     if libtcod.map_is_in_fov(fov_map, entity.x, entity.y) or (
             entity.transition and game_map.tiles[entity.x][entity.y].explored):
         camera_surface.blit(surfimg, ((entity.x - cx) * tilesize, (entity.y - cy) * tilesize))

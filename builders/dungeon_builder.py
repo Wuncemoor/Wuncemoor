@@ -127,6 +127,5 @@ class DungeonBuilder:
                 maps[current_floor].transitions.append(entrance_stairs)
                 current_floor += 1
 
-        boss_obj = ImageBundle(images.get('entities').get('combatants').get('goblin'))
-        maps[-1].add_boss(self.basename, self.subtype, self.np, boss_obj)
+        maps[-1].add_boss(self.basename, self.subtype, self.np, images)
         return maps

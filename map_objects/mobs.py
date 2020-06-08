@@ -7,7 +7,6 @@ from ECS.__entity.__combatant.competence import Competence, Strength, Instinct, 
 from ECS.__entity.__combatant.equipment import Equipment
 from ECS.__entity.__combatant.inventory import Inventory
 from ECS.__entity.__combatant.ai import BasicMonster
-from loader_functions.image_objects import get_image_bundle
 
 
 def orc(bundle):
