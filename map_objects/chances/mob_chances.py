@@ -20,7 +20,6 @@ class MobChances:
             'deep': self.get_biome_chances('deep'),
             'desert': self.get_biome_chances('desert'),
             'forest': self.get_biome_chances('forest'),
-            'jungle': self.get_biome_chances('jungle'),
             'plains': self.get_biome_chances('plains'),
             'savannah': self.get_biome_chances('savannah'),
             'shallow': self.get_biome_chances('shallow'),
@@ -122,13 +121,6 @@ class MobChances:
                                            self.np),
                 'mega_raccoon': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
             })
-        elif biome == 'jungle':
-            b = Counter({
-                'mini_spider': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
-                'spider': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
-                                          self.np),
-                'mega_spider': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
-            })
         elif biome == 'plains':
             b = Counter({
                 'mini_rat': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
@@ -173,10 +165,10 @@ class MobChances:
             })
         elif biome == 'tropicrain':
             b = Counter({
-                'mini_bat': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
-                'bat': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
-                                       self.np),
-                'mega_bat': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
+                'mini_spider': from_node_power([[100, 0], [75, 25], [50, 50], [25, 75], [0, 100]], self.np),
+                'spider': from_node_power([[0, 0], [50, 75], [75, 150], [100, 225], [75, 300], [50, 375], [0, 450]],
+                                          self.np),
+                'mega_spider': from_node_power([[0, 0], [25, 500], [50, 1000], [100, 2500]], self.np),
             })
         elif biome == 'tundra':
             b = Counter({

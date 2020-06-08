@@ -69,7 +69,7 @@ def moisture(table, moist_level):
 
 def get_moistlist(temp):
     dict = {
-        'very_hot': [('tropicrain', .6), ('jungle', .2), ('savannah', 0), ('desert', -10)],
+        'very_hot': [('tropicrain', .4), ('savannah', 0), ('desert', -10)],
         'hot': [('temprain', .5), ('forest', .3), ('savannah', 0), ('desert', -10)],
         'warm': [('temprain', .65), ('forest', .3), ('savannah', 0), ('plains', -.25), ('desert', -10)],
         'cool': [('temprain', .7), ('forest', .2), ('savannah', -.2), ('plains', -.5), ('desert', -10)],

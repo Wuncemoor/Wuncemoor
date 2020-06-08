@@ -70,7 +70,6 @@ def get_image_objects():
         'deep': 9,
         'desert': 9,
         'forest': 9,
-        'jungle': 9,
         'plains': 9,
         'savannah': 9,
         'shallow': 9,
@@ -191,7 +190,6 @@ def get_backgrounds_objs():
         'deep_bg': py.image.load('images\\background\\deep.png'),
         'desert_bg': py.image.load('images\\background\\desert.png'),
         'forest_bg': py.image.load('images\\background\\forest.png'),
-        'jungle_bg': py.image.load('images\\background\\jungle.png'),
         'plains_bg': py.image.load('images\\background\\plains.png'),
         'savannah_bg': py.image.load('images\\background\\savannah.png'),
         'shallow_bg': py.image.load('images\\background\\shallow.png'),
@@ -312,8 +310,6 @@ def get_world_map_objs():
         'dark_desert': biome_dict('desert', False),
         'light_forest': biome_dict('forest', True),
         'dark_forest': biome_dict('forest', False),
-        'light_jungle': biome_dict('jungle', True),
-        'dark_jungle': biome_dict('jungle', False),
         'light_plains': biome_dict('plains', True),
         'dark_plains': biome_dict('plains', False),
         'light_savannah': biome_dict('savannah', True),
@@ -340,7 +336,6 @@ def get_mini_map_objs():
         'deep': py.image.load('images\\tiles\\world_map\\mini_map\\deep.png'),
         'desert': py.image.load('images\\tiles\\world_map\\mini_map\\desert.png'),
         'forest': py.image.load('images\\tiles\\world_map\\mini_map\\forest.png'),
-        'jungle': py.image.load('images\\tiles\\world_map\\mini_map\\jungle.png'),
         'plains': py.image.load('images\\tiles\\world_map\\mini_map\\plains.png'),
         'savannah': py.image.load('images\\tiles\\world_map\\mini_map\\savannah.png'),
         'shallow': py.image.load('images\\tiles\\world_map\\mini_map\\shallow.png'),
@@ -390,17 +385,7 @@ def biome_dict(biome, visible):
             'light_forest7': py.image.load('images\\tiles\\world_map\\forest\\light_forest7.png'),
             'light_forest8': py.image.load('images\\tiles\\world_map\\forest\\light_forest8.png'),
         }
-        jungle_dict = {
-            'light_jungle0': py.image.load('images\\tiles\\world_map\\jungle\\light_jungle0.png'),
-            'light_jungle1': py.image.load('images\\tiles\\world_map\\jungle\\light_jungle1.png'),
-            'light_jungle2': py.image.load('images\\tiles\\world_map\\jungle\\light_jungle2.png'),
-            'light_jungle3': py.image.load('images\\tiles\\world_map\\jungle\\light_jungle3.png'),
-            'light_jungle4': py.image.load('images\\tiles\\world_map\\jungle\\light_jungle4.png'),
-            'light_jungle5': py.image.load('images\\tiles\\world_map\\jungle\\light_jungle5.png'),
-            'light_jungle6': py.image.load('images\\tiles\\world_map\\jungle\\light_jungle6.png'),
-            'light_jungle7': py.image.load('images\\tiles\\world_map\\jungle\\light_jungle7.png'),
-            'light_jungle8': py.image.load('images\\tiles\\world_map\\jungle\\light_jungle8.png'),
-        }
+
         plains_dict = {
             'light_plains0': py.image.load('images\\tiles\\world_map\\plains\\light_plains0.png'),
             'light_plains1': py.image.load('images\\tiles\\world_map\\plains\\light_plains1.png'),
@@ -524,17 +509,7 @@ def biome_dict(biome, visible):
             'dark_forest7': py.image.load('images\\tiles\\world_map\\forest\\dark_forest7.png'),
             'dark_forest8': py.image.load('images\\tiles\\world_map\\forest\\dark_forest8.png'),
         }
-        jungle_dict = {
-            'dark_jungle0': py.image.load('images\\tiles\\world_map\\jungle\\dark_jungle0.png'),
-            'dark_jungle1': py.image.load('images\\tiles\\world_map\\jungle\\dark_jungle1.png'),
-            'dark_jungle2': py.image.load('images\\tiles\\world_map\\jungle\\dark_jungle2.png'),
-            'dark_jungle3': py.image.load('images\\tiles\\world_map\\jungle\\dark_jungle3.png'),
-            'dark_jungle4': py.image.load('images\\tiles\\world_map\\jungle\\dark_jungle4.png'),
-            'dark_jungle5': py.image.load('images\\tiles\\world_map\\jungle\\dark_jungle5.png'),
-            'dark_jungle6': py.image.load('images\\tiles\\world_map\\jungle\\dark_jungle6.png'),
-            'dark_jungle7': py.image.load('images\\tiles\\world_map\\jungle\\dark_jungle7.png'),
-            'dark_jungle8': py.image.load('images\\tiles\\world_map\\jungle\\dark_jungle8.png'),
-        }
+
         plains_dict = {
             'dark_plains0': py.image.load('images\\tiles\\world_map\\plains\\dark_plains0.png'),
             'dark_plains1': py.image.load('images\\tiles\\world_map\\plains\\dark_plains1.png'),
@@ -627,7 +602,6 @@ def biome_dict(biome, visible):
         'deep': deep_dict,
         'desert': desert_dict,
         'forest': forest_dict,
-        'jungle': jungle_dict,
         'plains': plains_dict,
         'savannah': savannah_dict,
         'shallow': shallow_dict,
