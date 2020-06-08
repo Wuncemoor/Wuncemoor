@@ -18,6 +18,13 @@ class BasicMonster:
                 
         return results
 
+    def take_turn_e(self, player):
+        results = []
+        mob = self.owner
+        attack_results = mob.combatant.attack(player)
+        results.extend(attack_results)
+        return results
+
 
 class ConfusedMonster:
     def __init__(self, previous_ai, number_of_turns=10):

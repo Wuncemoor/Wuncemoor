@@ -26,7 +26,7 @@ class MobChances:
             'shallow': self.get_biome_chances('shallow'),
             'snow': self.get_biome_chances('snow'),
             'taiga': self.get_biome_chances('taiga'),
-            'temptrain': self.get_biome_chances('temprain'),
+            'temprain': self.get_biome_chances('temprain'),
             'tropicrain': self.get_biome_chances('tropicrain'),
             'tundra': self.get_biome_chances('tundra'),
             'cave': self.get_cave_type_chances(),

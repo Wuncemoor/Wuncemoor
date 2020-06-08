@@ -27,4 +27,4 @@ def kill_monster(monster, corpse):
 
 def make_corpse(entity, corpse):
 
-    entity.image = corpse
+    entity.images.sprite = corpse

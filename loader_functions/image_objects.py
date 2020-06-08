@@ -106,6 +106,7 @@ def get_gui_objs():
         'encounter': get_encounter_menu_objs(),
         'encounter_message_bg': py.image.load('images\\GUI\\encounter\\message_bg.png'),
         'message_bg': py.image.load('images\\GUI\\message_bg.png'),
+        'loot_bg': py.image.load('images\\GUI\\loot_bg.png'),
 
     }
 

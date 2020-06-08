@@ -8,6 +8,7 @@ from menus import inventory_menu, level_up_menu, competence_menu, character_menu
 from random_utils import pseudorandom_seed
 from screens.gui_tools import print_message
 from screens.resources_HUD import player_resource_display
+from screens.loot_screen import loot_screen
 
 
 from enum import Enum
@@ -36,7 +37,6 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
 
     tiles = images.get('tiles')
     options = images.get('options')
-    ents = images.get('entities')
     tilesize = 16
     # Draw tiles near player
     if fov_recompute:
@@ -111,6 +111,8 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height)
     elif game_state == GameStates.ENCOUNTER:
         encounter_screen(screen, images, player, encounter, message_log)
+    elif game_state == GameStates.LOOTING:
+        loot_screen(screen, images, player, encounter, message_log)
     elif game_state == GameStates.COMPETENCE_MENU:
         cm_width = 400
         competence_menu(screen, 'What would you like to be more competent at?', cm_width, camera_width, camera_height)

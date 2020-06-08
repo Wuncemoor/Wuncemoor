@@ -27,9 +27,13 @@ class GameStates(Enum):
     ENCOUNTER = 23
     DIALOGUE = 24
     SHOW_MAP = 25
+    LOOTING = 26
 
 
 class EncounterStates(Enum):
 
     THINKING = 1
-    FIGHTING = 2
+    FIGHT_TARGETING = 2
+    ENEMY_TURN = 3
+    VICTORY = 4
+

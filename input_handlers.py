@@ -27,6 +27,8 @@ def handle_keys(key, game_state):
         return handle_dialogue_menu(key)
     elif game_state == GameStates.ENCOUNTER:
         return handle_encounter_screen(key)
+    elif game_state == GameStates.LOOTING:
+        return handle_loot_screen(key)
     return {}
 
 
@@ -150,6 +152,13 @@ def handle_encounter_screen(key):
     elif key == pygame.K_ESCAPE:
         return {'exit': True}
 
+    return {}
+
+
+def handle_loot_screen(key):
+
+    if key == pygame.K_RETURN:
+        return {'choose_menu_option': True}
     return {}
 
 

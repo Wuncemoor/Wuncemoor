@@ -347,8 +347,8 @@ def encounter_screen(screen, images, player, encounter, message_log):
 
     screen.blit(encounter.background, (0, 0))
 
-    resources_hud_imgs = images.get('gui').get('resource_hud_objs')
-    resource_hud = player_resource_display(player, resources_hud_imgs)
+
+    resource_hud = player_resource_display(player, images.get('gui').get('resource_hud_objs'))
     screen.blit(resource_hud, (0, 0))
 
     options_menu = get_encounter_menus(images.get('gui').get('encounter'), encounter)

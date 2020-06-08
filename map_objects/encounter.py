@@ -7,5 +7,7 @@ class Encounter:
         self.options = options
         self.current_option = 0
         self.state = EncounterStates.THINKING
+        self.xp = 0
+
 
 

@@ -19,6 +19,7 @@ class Combatant:
         self.ai = ai
         self.xp = xp
         self.competence_points = 0
+        self.living = True
 
     
 #True resource maximums
@@ -338,9 +339,11 @@ class Combatant:
         
         results = []
         self.attributes.current_hp -= amount
+
         
         if self.attributes.current_hp <= 0:
-            results.append({'dead': self.owner, 'xp':self.xp})
+            results.append({'dead': self.owner})
+            results.append({'xp': self.xp})
             
         return results
         
@@ -420,14 +423,17 @@ class Combatant:
             if damage > 0:
                 results.append({'message': Message('{0} attacks {1} for {2} {3} damage.'.format(self.owner.name.capitalize(), target.name, str(damage), attack), libtcod.black)})
                 results.extend(target.combatant.lose_hp(damage))
+
             else:
                 results.append({'message': Message('{0} attacks {1} but does no damage!.'.format(self.owner.name.capitalize(), target.name), libtcod.black)})
-            return results
+
             
         else:
         
             results.append({'message': Message('{0} attacks, but {1} dodges!'.format(self.owner.name.capitalize(), target.name), libtcod.black)})
-            return results
+
+        results.append({'end_turn': True})
+        return results
             
 
     def set_name(self, name):

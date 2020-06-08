@@ -114,7 +114,8 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
     while True:
         for event in pygame.event.get():
             player_turn_results = []
-            encounter_result = None
+            encounter_results = []
+            loot_results = []
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -361,17 +362,27 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
                 if choose_menu_option:
                     if game_state == GameStates.ENCOUNTER:
-
-                        encounter_result = encounter.options[encounter.current_option]
-
+                        if encounter.state == EncounterStates.THINKING:
+                            encounter_results.append({encounter.options[encounter.current_option]: True})
+                        elif encounter.state == EncounterStates.FIGHT_TARGETING:
+                            attack_results = player.combatant.attack(encounter.event)
+                            encounter_results.extend(attack_results)
+                        elif encounter.state == EncounterStates.VICTORY:
+                            message_log.add_message(
+                                Message('You gain {0} experience points!'.format(encounter.xp), libtcod.dark_orange))
+                            game_state = GameStates.LOOTING
+                    elif game_state == GameStates.LOOTING:
+                        take_loot = {'xp': encounter.xp}
+                        loot_results.append(take_loot)
+                        encounter = None
 
 
                 if wait:
                     game_state = GameStates.ENEMY_TURN
                 if exit_game:
                     if game_state == GameStates.ENCOUNTER:
-                        if encounter.state == EncounterStates.FIGHTING:
-                            encounter_result = 'UNFIGHT'
+                        if encounter.state == EncounterStates.FIGHT_TARGETING:
+                            encounter_results.append({'UNFIGHT': True})
 
                     elif game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU,
                                       GameStates.SHOW_MAP):
@@ -478,19 +489,58 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             else:
                                 previous_game_state = GameStates.PLAYERS_TURN
                                 game_state = GameStates.LEVEL_UP
-                if encounter_result is not None:
+                for encounter_result in encounter_results:
 
-                    fight = encounter_result == 'FIGHT'
-                    unfight = encounter_result == 'UNFIGHT'
-                    item = encounter_result == 'ITEM'
-                    run = encounter_result == 'RUN'
+                    fight = encounter_result.get('FIGHT')
+                    unfight = encounter_result.get('UNFIGHT')
+                    item = encounter_result.get('ITEM')
+                    run = encounter_result.get('RUN')
+                    end_turn = encounter_result.get('end_turn')
+
+                    xp = encounter_result.get('xp')
+                    message = encounter_result.get('message')
+                    dead_entity = encounter_result.get('dead')
                     if fight:
-                        encounter.state = EncounterStates.FIGHTING
+                        encounter.state = EncounterStates.FIGHT_TARGETING
                     elif unfight:
                         encounter.state = EncounterStates.THINKING
-                    if run:
+                    elif run:
                         game_state = previous_game_state
+                        player.combatant.level.add_xp(encounter.xp)
+                        if xp is None:
+                            xp_text = Message("You didn't learn much there...", libtcod.dark_orange)
+                        else:
+                            xp_text = Message('You gain {0} experience points!'.format(xp), libtcod.dark_orange)
+                        message_log.add_message(xp_text)
                         encounter = None
+                    elif message:
+                        message_log.add_message(message)
+                    elif xp:
+                        encounter.xp += xp
+                    elif dead_entity:
+                        corpse = images.get('entities').get('combatants').get('corpse')
+                        if dead_entity == player:
+                            message, game_state = kill_player(dead_entity, corpse)
+                        else:
+                            message = kill_monster(dead_entity, corpse)
+                            message_log.add_message(message)
+                    elif end_turn:
+                        if encounter.event.combatant:
+                            encounter.state = EncounterStates.ENEMY_TURN
+                        else:
+                            message_log.add_message(Message('YOU WIN THE FIGHT!', libtcod.black))
+                            message_log.add_message(Message('Press [Enter] to loot.', libtcod.black))
+                            encounter.state = EncounterStates.VICTORY
+
+                for loot_result in loot_results:
+
+                    xp = loot_result.get('xp')
+
+                    if xp:
+                        player.combatant.level.add_xp(xp)
+
+                    game_state = GameStates.PLAYERS_TURN
+
 
             if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -523,6 +573,30 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
         fov_recompute = False
 
         pygame.display.flip()
+
+        if encounter:
+            if encounter.state == EncounterStates.ENEMY_TURN:
+                if encounter.event.combatant:
+                    enemy_turn_results = encounter.event.combatant.ai.take_turn_e(player)
+                    for enemy_turn_result in enemy_turn_results:
+                        message = enemy_turn_result.get('message')
+                        dead_entity = enemy_turn_result.get('dead')
+
+                        if message:
+                            message_log.add_message(message)
+
+                        if dead_entity:
+                            corpse = images.get('entities').get('combatants').get('corpse')
+                            if dead_entity == player:
+                                message, game_state = kill_player(dead_entity, corpse)
+                            else:
+                                message = kill_monster(dead_entity, corpse)
+
+                            message_log.add_message(message)
+
+                        if game_state == GameStates.PLAYER_DEAD:
+                            break
+                    encounter.state = EncounterStates.THINKING
 
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:
