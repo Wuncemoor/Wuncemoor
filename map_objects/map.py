@@ -161,7 +161,7 @@ class Map:
                 self.exit = (center_of_last_room_x, center_of_last_room_y)
                 num_rooms += 1
 
-    def place_entities(self, room, dungeon_type, subtype, node_power, objs):
+    def place_entities(self, room, dungeon_type, subtype, node_power, images):
         # Get random number of monsters
         number_of_monsters = from_dungeon_level([[2, 1], [3, 4], [5, 6]], self.dungeon_level)
 
@@ -170,7 +170,7 @@ class Map:
         mob_chances = MobChances(dungeon_type, subtype, node_power)
         mcs = mob_chances.get_mob_chances()
         item_chances = get_item_chances(self.dungeon_level)
-        items = objs.get('entities').get('items')
+        items = images.get('entities').get('items')
 
 
         for i in range(number_of_monsters):
@@ -184,7 +184,7 @@ class Map:
                 mob_builder = MobBuilder(0, monster_choice)
                 mob_director = MobDirector()
                 mob_director.set_builder(mob_builder)
-                combatant_component = mob_director.get_combatant(objs)
+                combatant_component = mob_director.get_combatant(images)
                 monster = Entity(x, y, blocks=True, render_order=RenderOrder.ACTOR,
                                  combatant=combatant_component)
 
@@ -198,7 +198,7 @@ class Map:
                     any([transition for transition in self.transitions if transition.x == x and transition.y == y]):
                 item_choice = random_choice_from_dict(item_chances)
 
-                item = make_item(items, item_choice)
+                item = make_item(images, item_choice)
 
                 self.map_entities.append(item)
 

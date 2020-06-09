@@ -37,3 +37,10 @@ class EncounterStates(Enum):
     ENEMY_TURN = 3
     VICTORY = 4
 
+
+class LootStates(Enum):
+
+    THINKING = 1
+    SIFTING = 2
+    DEPOSITING = 3
+

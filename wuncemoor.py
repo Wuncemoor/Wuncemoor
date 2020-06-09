@@ -2,7 +2,7 @@ import tcod as libtcod
 from fov_function import initialize_fov, recompute_fov
 from ECS.entity import get_blocking_entities_at_location
 from death_functions import kill_monster, kill_player
-from enums.game_states import GameStates, EncounterStates
+from enums.game_states import GameStates, EncounterStates, LootStates
 from game_messages import Message
 from input_handlers import handle_keys, handle_mouse, handle_main_menu
 from render_functions import render_all
@@ -71,9 +71,9 @@ def main():
 
             new_game = action.get('new_game')
             load_saved_game = action.get('load_game')
-            exit_game = action.get('exit')
+            exit = action.get('exit')
 
-            if show_load_error_message and (new_game or load_saved_game or exit_game):
+            if show_load_error_message and (new_game or load_saved_game or exit):
                 show_load_error_message = False
             elif new_game:
 
@@ -90,7 +90,7 @@ def main():
                     show_main_menu = False
                 except FileNotFoundError:
                     show_load_error_message = True
-            elif exit_game:
+            elif exit:
                 pygame.quit()
                 sys.exit()
 
@@ -110,6 +110,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
     targeting_item = None
     dialogue_partner = None
     encounter = None
+    loot = None
 
     while True:
         for event in pygame.event.get():
@@ -146,12 +147,13 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 show_charisma_feats = action.get('show_charisma_feats')
                 show_devotion_feats = action.get('show_devotion_feats')
                 gain_competence = action.get('gain_competence')
-                exit_game = action.get('exit')
+                exit = action.get('exit')
                 level_up = action.get('level_up')
                 wait = action.get('wait')
                 converse = action.get('converse')
                 traverse_menu = action.get('traverse_menu')
                 choose_menu_option = action.get('choose_menu_option')
+                toggle = action.get('toggle')
 
                 if move and game_state == GameStates.PLAYERS_TURN:
                     dx, dy = move
@@ -352,6 +354,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             game_state = previous_game_state
                     except KeyError:
                         pass
+
                 if traverse_menu:
                     if game_state == GameStates.ENCOUNTER:
                         if (traverse_menu < 0 and encounter.current_option == 0) or \
@@ -359,6 +362,34 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             pass
                         else:
                             encounter.current_option += traverse_menu
+                    elif game_state == GameStates.LOOTING:
+                        if loot.state == LootStates.THINKING:
+                            if (traverse_menu < 0 and loot.current_option == 0) or (traverse_menu > 0 and loot.current_option == (len(loot.options) - 1)):
+                                pass
+                            else:
+                                loot.current_option += traverse_menu
+                        elif loot.state == LootStates.SIFTING:
+                            if (traverse_menu < 0 and loot.current_option == 0) or (traverse_menu > 0 and loot.current_option == (len(loot.items) - 1)):
+                                pass
+                            else:
+                                loot.current_option += traverse_menu
+                        elif loot.state == LootStates.DEPOSITING:
+                            if (traverse_menu < 0 and loot.current_option == 0) or (traverse_menu > 0 and loot.current_option == (len(loot.claimed) - 1)):
+                                pass
+                            else:
+                                loot.current_option += traverse_menu
+
+                if toggle:
+                    if game_state == GameStates.LOOTING:
+                        if loot.state == LootStates.SIFTING and toggle == 'right' and len(loot.claimed) > 0:
+                            loot_results.append({'toggle': 'right'})
+                        elif loot.state == LootStates.DEPOSITING and toggle == 'left' and len(loot.items) > 0:
+                            loot_results.append({'toggle': 'left'})
+
+
+
+
+
 
                 if choose_menu_option:
                     if game_state == GameStates.ENCOUNTER:
@@ -368,21 +399,44 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             attack_results = player.combatant.attack(encounter.event)
                             encounter_results.extend(attack_results)
                         elif encounter.state == EncounterStates.VICTORY:
-                            message_log.add_message(
-                                Message('You gain {0} experience points!'.format(encounter.xp), libtcod.dark_orange))
+                            loot = encounter.loot
+                            encounter = None
                             game_state = GameStates.LOOTING
                     elif game_state == GameStates.LOOTING:
-                        take_loot = {'xp': encounter.xp}
-                        loot_results.append(take_loot)
-                        encounter = None
+                        if loot.state == LootStates.THINKING:
+                            loot_results.append({loot.options[loot.current_option]: True})
+                        elif loot.state == LootStates.SIFTING:
+                            loot.claimed.append(loot.items[loot.current_option])
+                            del loot.items[loot.current_option]
+                            if len(loot.items) == 0:
+                                loot.current_option = 2
+                                loot.state = LootStates.THINKING
+                            elif loot.current_option > len(loot.items) - 1:
+                                loot.current_option -= 1
+                        elif loot.state == LootStates.DEPOSITING:
+                            loot.items.append(loot.claimed[loot.current_option])
+                            del loot.claimed[loot.current_option]
+                            if len(loot.claimed) == 0:
+                                loot.current_option = 0
+                                loot.state = LootStates.SIFTING
+                            elif loot.current_option > len(loot.claimed) - 1:
+                                loot.current_option -= 1
+
 
 
                 if wait:
                     game_state = GameStates.ENEMY_TURN
-                if exit_game:
+                if exit:
                     if game_state == GameStates.ENCOUNTER:
                         if encounter.state == EncounterStates.FIGHT_TARGETING:
                             encounter_results.append({'UNFIGHT': True})
+                    elif game_state == GameStates.LOOTING:
+                        if loot.state in (LootStates.SIFTING, LootStates.DEPOSITING):
+                            loot.state = LootStates.THINKING
+                        elif loot.state == LootStates.THINKING and loot.current_option == 2:
+                            loot_results.append({'LEAVE': True})
+                        elif loot.state == LootStates.THINKING:
+                            loot.current_option = 2
 
                     elif game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU,
                                       GameStates.SHOW_MAP):
@@ -493,7 +547,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
                     fight = encounter_result.get('FIGHT')
                     unfight = encounter_result.get('UNFIGHT')
-                    item = encounter_result.get('ITEM')
+
                     run = encounter_result.get('RUN')
                     end_turn = encounter_result.get('end_turn')
 
@@ -506,7 +560,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         encounter.state = EncounterStates.THINKING
                     elif run:
                         game_state = previous_game_state
-                        player.combatant.level.add_xp(encounter.xp)
+                        player.combatant.level.add_xp(encounter.loot.xp)
                         if xp is None:
                             xp_text = Message("You didn't learn much there...", libtcod.dark_orange)
                         else:
@@ -516,12 +570,13 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     elif message:
                         message_log.add_message(message)
                     elif xp:
-                        encounter.xp += xp
+                        encounter.loot.xp += xp
                     elif dead_entity:
                         corpse = images.get('entities').get('combatants').get('corpse')
                         if dead_entity == player:
                             message, game_state = kill_player(dead_entity, corpse)
                         else:
+                            encounter.add_loot(dead_entity)
                             message = kill_monster(dead_entity, corpse)
                             message_log.add_message(message)
                     elif end_turn:
@@ -534,12 +589,38 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
                 for loot_result in loot_results:
 
-                    xp = loot_result.get('xp')
+                    take_all = loot_result.get('AUTO')
+                    take_some = loot_result.get('MANUAL')
+                    leave = loot_result.get('LEAVE')
+                    toggle = loot_result.get('toggle')
 
-                    if xp:
-                        player.combatant.level.add_xp(xp)
 
-                    game_state = GameStates.PLAYERS_TURN
+                    if take_all:
+                        loot.claimed.extend(loot.items)
+                        loot.items = []
+                        loot.current_option = 2
+                    if take_some and (len(loot.items) + len(loot.claimed)) > 0:
+                        loot.current_option = 0
+
+                        if len(loot.items) > 0:
+                            loot.state = LootStates.SIFTING
+                        else:
+                            loot.state = LootStates.DEPOSITING
+                    if leave:
+                        player.combatant.level.add_xp(loot.xp)
+                        player.combatant.inventory.items.extend(loot.claimed)
+                        loot = None
+                        game_state = GameStates.PLAYERS_TURN
+                    if toggle == 'right':
+                        loot.state = LootStates.DEPOSITING
+                    elif toggle == 'left':
+                        loot.state = LootStates.SIFTING
+
+
+
+
+
+
 
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -568,7 +649,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
         render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
                    noncombatants, game_map, world_map, images, camera, fov_map, fov_recompute, message_log,
                    constants['cscreen_width'], constants['cscreen_height'], constants['map_width'],
-                   constants['map_height'], game_state, encounter)
+                   constants['map_height'], game_state, encounter, loot)
 
         fov_recompute = False
 

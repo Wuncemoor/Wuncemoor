@@ -33,7 +33,7 @@ def get_names_under_mouse(entities, fov_map):
 
 def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
                noncombatants, game_map, world_map, images, camera, fov_map, fov_recompute, message_log, camera_width,
-               camera_height, map_width, map_height, game_state, encounter=None):
+               camera_height, map_width, map_height, game_state, encounter, loot):
 
     tiles = images.get('tiles')
     options = images.get('options')
@@ -112,7 +112,8 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
     elif game_state == GameStates.ENCOUNTER:
         encounter_screen(screen, images, player, encounter, message_log)
     elif game_state == GameStates.LOOTING:
-        loot_screen(screen, images, player, encounter, message_log)
+
+        loot_screen(screen, images, player, loot, message_log)
     elif game_state == GameStates.COMPETENCE_MENU:
         cm_width = 400
         competence_menu(screen, 'What would you like to be more competent at?', cm_width, camera_width, camera_height)

@@ -9,6 +9,7 @@ def get_image_bundle(images, type):
     sprite = images.get('entities').get('combatants').get('sprites')
     actor = images.get('entities').get('combatants').get('actors')
 
+
     bundle_dict = {
         'hero': ImageBundle(sprite.get('hero'), port.get('hero'), port.get('hero' + '_mini'), actor.get(type)),
         'mini_rat': ImageBundle(sprite.get('goblin'), actor=actor.get('rat')),
@@ -59,6 +60,7 @@ def get_image_bundle(images, type):
         'mini_goblin_shaman': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
         'goblin_shaman': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
         'mega_goblin_shaman': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
+        'potion': get_useables_objs().get('potion'),
     }
 
     return bundle_dict.get(type)
@@ -105,7 +107,8 @@ def get_gui_objs():
         'encounter': get_encounter_menu_objs(),
         'encounter_message_bg': py.image.load('images\\GUI\\encounter\\message_bg.png'),
         'message_bg': py.image.load('images\\GUI\\message_bg.png'),
-        'loot_bg': py.image.load('images\\GUI\\loot_bg.png'),
+        'loot_bg': py.image.load('images\\GUI\\looting\\loot_bg.png'),
+        'loot_banner': py.image.load('images\\GUI\\looting\\loot_banner.png'),
 
     }
 
@@ -284,7 +287,8 @@ def get_weapons_objs():
 
 def get_useables_objs():
     useables = {
-        'potion': py.image.load('images\\entities\\items\\useables\\potion.png'),
+        'potion': ImageBundle(py.image.load('images\\entities\\items\\useables\\potion.png'),
+                              portrait=py.image.load('images\\entities\\items\\useables\\potion_portrait.png')),
         'scroll': py.image.load('images\\entities\\items\\useables\\scroll.png'),
     }
 

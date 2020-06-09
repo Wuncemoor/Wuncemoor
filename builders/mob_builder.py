@@ -7,6 +7,7 @@ from map_objects.mobs import orc, troll, goblin, goblin_mage, goblin_rogue, gobl
     raccoon, mega_raccoon, mini_bear, bear, mega_bear, mini_bramblelasher, bramblelasher, mega_bramblelasher
 from builders.make_item import make_item
 from loader_functions.image_objects import get_image_bundle
+from ECS.__entity.__combatant.inventory import Inventory
 
 
 class MobDirector:
@@ -18,9 +19,9 @@ class MobDirector:
     def get_combatant(self, images):
         combatant = self.__builder.get_combatant(images)
 
-        items = images.get('entities').get('items')
-        inventory = self.__builder.get_inventory(items)
 
+        inventory = self.__builder.get_inventory(images)
+        combatant.inventory = inventory
 
         return combatant
 
@@ -30,8 +31,6 @@ class MobBuilder:
     def __init__(self, node_power, mob):
         self.node_power = node_power
         self.mob = mob
-
-
 
     def get_combatant(self, images):
         bundle = get_image_bundle(images, self.mob)
@@ -93,4 +92,11 @@ class MobBuilder:
 
     def get_inventory(self, images):
 
+        inven = Inventory(26)
+
         potion = make_item(images, 'healing_potion')
+
+        inven.add_item(potion)
+
+
+        return inven

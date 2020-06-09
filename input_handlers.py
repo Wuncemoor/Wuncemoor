@@ -157,8 +157,19 @@ def handle_encounter_screen(key):
 
 def handle_loot_screen(key):
 
-    if key == pygame.K_RETURN:
+    if key in (pygame.K_UP, pygame.K_w):
+        return {'traverse_menu': -1}
+    elif key in (pygame.K_DOWN, pygame.K_x):
+        return {'traverse_menu': 1}
+    elif key in (pygame.K_LEFT, pygame.K_a):
+        return {'toggle': 'left'}
+    elif key in (pygame.K_RIGHT, pygame.K_d):
+        return {'toggle': 'right'}
+    elif key == pygame.K_RETURN:
         return {'choose_menu_option': True}
+    elif key == pygame.K_ESCAPE:
+        return {'exit': True}
+
     return {}
 
 

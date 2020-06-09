@@ -11,15 +11,16 @@ from render_functions import RenderOrder
 from enums.equipment_slots import EquipmentSlots
 from item_functions import heal, cast_fireball, cast_confuse, cast_lightning
 import tcod as libtcod
+from loader_functions.image_objects import get_image_bundle
 
 
 def make_item(images, item_choice):
 
-    useables = images.get('useables')
-    weapons = images.get('equippables').get('weapons')
+    weapons = images.get('entities').get('items').get('equippables').get('weapons')
 
     if item_choice == 'healing_potion':
-        image = ImageBundle(useables.get('potion'))
+        image = get_image_bundle(images, 'potion')
+
         item_component = Item(
             useable_component=Useable('Healing Potion', image, use_function=heal, amount=400))
         item = Entity(0, 0, render_order=RenderOrder.ITEM, item=item_component)
@@ -44,14 +45,14 @@ def make_item(images, item_choice):
         item_component = Item(equippable_component)
         item = Entity(0, 0, item=item_component)
     elif item_choice == 'fireball_scroll':
-        image = ImageBundle(images.get('useables').get('scroll'))
+        image = ImageBundle(images.get('entities').get('items').get('useables').get('scroll'))
         msg = 'Left-click a target tile for the fireball, or right-click to rethink your life decisions.'
         item_component = Item(
             useable_component=Useable('Fireball Scroll', image, use_function=cast_fireball, targeting=True,
                                       targeting_message=Message(msg, libtcod.light_cyan), damage=250, radius=3))
         item = Entity(0, 0, render_order=RenderOrder.ITEM, item=item_component)
     elif item_choice == 'confusion_scroll':
-        image = ImageBundle(images.get('useables').get('scroll'))
+        image = ImageBundle(images.get('entities').get('items').get('useables').get('scroll'))
         item_component = Item(
             useable_component=Useable('Confusion Scroll', image, use_function=cast_confuse, targeting=True,
                                       targeting_message=Message(
@@ -59,7 +60,7 @@ def make_item(images, item_choice):
                                           libtcod.light_cyan)))
         item = Entity(0, 0, render_order=RenderOrder.ITEM, item=item_component)
     elif item_choice == 'lightning_scroll':
-        image = ImageBundle(images.get('useables').get('scroll'))
+        image = ImageBundle(images.get('entities').get('items').get('useables').get('scroll'))
         item_component = Item(
             useable_component=Useable('Lightning Scroll', image, use_function=cast_lightning, damage=400,
                                       maximum_range=5))
