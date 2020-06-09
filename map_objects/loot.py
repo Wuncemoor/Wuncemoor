@@ -10,3 +10,6 @@ class Loot:
         self.current_option = 0
         self.claimed = []
         self.state = LootStates.THINKING
+
+    def add_loot(self, dead_entity):
+        self.items.extend(dead_entity.combatant.inventory.items)

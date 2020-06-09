@@ -1,27 +1,15 @@
-import tcod as libtcod
-
 from ECS.entity import Entity
-from enums.equipment_slots import EquipmentSlots
-from game_messages import Message
-from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
 from random import randint
 from random_utils import random_choice_from_dict, from_dungeon_level
 from render_functions import RenderOrder
 from builders.mob_builder import MobDirector, MobBuilder
-from ECS.__entity.__item.equippable import Equippable
-from ECS.__entity.__item.__equippable.equippable_core import EquippableCore
-from ECS.__entity.__item.__equippable.equippable_material import EquippableMaterial
-from ECS.__entity.__item.__equippable.equippable_quality import EquippableQuality
-from ECS.__entity.item import Item
-from ECS.__entity.__item.useable import Useable
 from map_objects.rectangle import Rect
 from map_objects.tile import Tile
 from map_objects.chances.item_chances import get_item_chances
 from map_objects.chances.mob_chances import MobChances
 from map_objects.encounter import Encounter
-from ECS.image_bundle import ImageBundle
-from loader_functions.image_objects import get_image_bundle
 from builders.make_item import make_item
+from map_objects.loot import Loot
 
 
 class Map:
@@ -232,7 +220,10 @@ class Map:
 
         event = self.get_encounter_event(images, tile)
 
-        return Encounter(bg, event, options)
+
+        x = Encounter(bg, event, options)
+        x.loot.items = []
+        return x
 
 
     def get_encounter_event(self, images, tile):

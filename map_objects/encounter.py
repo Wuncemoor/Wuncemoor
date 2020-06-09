@@ -11,8 +11,7 @@ class Encounter:
         self.state = EncounterStates.THINKING
         self.loot = Loot()
 
-    def add_loot(self, dead_entity):
-        self.loot.items.extend(dead_entity.combatant.inventory.items)
+
 
 
 

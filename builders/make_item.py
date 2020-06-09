@@ -25,7 +25,7 @@ def make_item(images, item_choice):
             useable_component=Useable('Healing Potion', image, use_function=heal, amount=400))
         item = Entity(0, 0, render_order=RenderOrder.ITEM, item=item_component)
     elif item_choice == 'sword':
-        image = ImageBundle(weapons.get('longsword'))
+        image = get_image_bundle(images, 'longsword')
         equippable_core = EquippableCore('longsword', image)
         equippable_material = EquippableMaterial('wood')
         equippable_quality = EquippableQuality('average')

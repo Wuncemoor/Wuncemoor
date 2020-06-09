@@ -183,6 +183,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
                                     options = ['FIGHT', 'ITEM', 'RUN']
                                     encounter = game_map.current_map.get_encounter(images, tile, options)
+
                                     previous_game_state = game_state
                                     game_state = GameStates.ENCOUNTER
 
@@ -400,6 +401,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             encounter_results.extend(attack_results)
                         elif encounter.state == EncounterStates.VICTORY:
                             loot = encounter.loot
+
                             encounter = None
                             game_state = GameStates.LOOTING
                     elif game_state == GameStates.LOOTING:
@@ -576,7 +578,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         if dead_entity == player:
                             message, game_state = kill_player(dead_entity, corpse)
                         else:
-                            encounter.add_loot(dead_entity)
+                            encounter.loot.add_loot(dead_entity)
                             message = kill_monster(dead_entity, corpse)
                             message_log.add_message(message)
                     elif end_turn:
@@ -609,6 +611,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     if leave:
                         player.combatant.level.add_xp(loot.xp)
                         player.combatant.inventory.items.extend(loot.claimed)
+
                         loot = None
                         game_state = GameStates.PLAYERS_TURN
                     if toggle == 'right':

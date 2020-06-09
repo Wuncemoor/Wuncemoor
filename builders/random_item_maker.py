@@ -86,7 +86,7 @@ class EquippableBuilder:
 
     def get_core(self):
 
-        options = ['staff', 'dagger', 'longsword', 'shield']
+        options = ['staff', 'dagger', 'shield']
         c = random.choice(options)
         obj = self.img_objs.get(c)
         objs = ImageBundle(obj)

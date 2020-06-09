@@ -1,4 +1,3 @@
-import tcod as libtcod
 
 #Primary stats and their base derivations
 class Attributes:

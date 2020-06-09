@@ -61,6 +61,7 @@ def get_image_bundle(images, type):
         'goblin_shaman': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
         'mega_goblin_shaman': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
         'potion': get_useables_objs().get('potion'),
+        'longsword': get_weapons_objs().get('longsword'),
     }
 
     return bundle_dict.get(type)
@@ -278,7 +279,7 @@ def get_weapons_objs():
         'staff': py.image.load('images\\entities\\items\\equippables\\weapons\\staff.png'),
         'dagger': py.image.load('images\\entities\\items\\equippables\\weapons\\dagger.png'),
         'shield': py.image.load('images\\entities\\items\\equippables\\weapons\\shield.png'),
-        'longsword': py.image.load('images\\entities\\items\\equippables\\weapons\\longsword.png'),
+        'longsword': ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\longsword.png'), portrait=py.image.load('images\\entities\\items\\equippables\\weapons\\longsword_portrait.png')),
         'stick': py.image.load('images\\entities\\items\\equippables\\weapons\\stick.png'),
     }
 
