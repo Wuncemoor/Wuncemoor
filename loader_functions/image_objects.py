@@ -110,6 +110,7 @@ def get_gui_objs():
         'message_bg': py.image.load('images\\GUI\\message_bg.png'),
         'loot_bg': py.image.load('images\\GUI\\looting\\loot_bg.png'),
         'loot_banner': py.image.load('images\\GUI\\looting\\loot_banner.png'),
+        'character_screen': py.image.load('images\\GUI\\dqsheet0.png'),
 
     }
 

@@ -136,6 +136,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 show_primary_stats = action.get('show_primary_stats')
                 show_combat_stats = action.get('show_combat_stats')
                 show_noncombat_stats = action.get('show_noncombat_stats')
+                show_journal = action.get('show_journal')
                 show_strength_feats = action.get('show_strength_feats')
                 show_instinct_feats = action.get('show_instinct_feats')
                 show_coordination_feats = action.get('show_coordination_feats')
@@ -149,7 +150,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 gain_competence = action.get('gain_competence')
                 exit = action.get('exit')
                 level_up = action.get('level_up')
-                wait = action.get('wait')
+                show_character_sheet = action.get('show_character_sheet')
                 converse = action.get('converse')
                 traverse_menu = action.get('traverse_menu')
                 choose_menu_option = action.get('choose_menu_option')
@@ -234,6 +235,10 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     previous_game_state = game_state
                     game_state = GameStates.DROP_INVENTORY
 
+                if show_character_sheet:
+                    previous_game_state = game_state
+                    game_state = GameStates.CHARACTER_SHEET
+
                 if show_competence:
                     previous_game_state = game_state
                     game_state = GameStates.COMPETENCE_MENU
@@ -241,6 +246,10 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 if show_map:
                     previous_game_state = game_state
                     game_state = GameStates.SHOW_MAP
+
+                if show_journal:
+                    previous_game_state = game_state
+                    game_state = GameStates.SHOW_JOURNAL
 
                 if inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and inventory_index < \
                         len(player.combatant.inventory.items):
@@ -424,10 +433,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             elif loot.current_option > len(loot.claimed) - 1:
                                 loot.current_option -= 1
 
-
-
-                if wait:
-                    game_state = GameStates.ENEMY_TURN
                 if exit:
                     if game_state == GameStates.ENCOUNTER:
                         if encounter.state == EncounterStates.FIGHT_TARGETING:

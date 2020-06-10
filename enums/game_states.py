@@ -28,6 +28,8 @@ class GameStates(Enum):
     DIALOGUE = 24
     SHOW_MAP = 25
     LOOTING = 26
+    SHOW_JOURNAL = 27
+    CHARACTER_SHEET = 28
 
 
 class EncounterStates(Enum):

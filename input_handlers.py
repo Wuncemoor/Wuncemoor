@@ -47,28 +47,22 @@ def handle_player_turn_keys(key):
     # Movement keys
     if key in (pygame.K_UP, pygame.K_w):
         return {'move': (0, -1)}
-    elif key in (pygame.K_DOWN, pygame.K_x):
+    elif key in (pygame.K_DOWN, pygame.K_s):
         return {'move': (0, 1)}
     elif key in (pygame.K_LEFT, pygame.K_a):
         return {'move': (-1, 0)}
     elif key in (pygame.K_RIGHT, pygame.K_d):
         return {'move': (1, 0)}
-    elif key == pygame.K_q:
-        return {'move': (-1, -1)}
-    elif key == pygame.K_e:
-        return {'move': (1, -1)}
-    elif key == pygame.K_z:
-        return {'move': (-1, 1)}
     elif key == pygame.K_c:
-        return {'move': (1, 1)}
+        return {'show_character_sheet': True}
     elif key == pygame.K_p:
         return {'show_stats_menu': True}
-    elif key == pygame.K_s:
-        return {'wait': True}
     elif key == pygame.K_i:
         return {'show_inventory': True}
     elif key == pygame.K_m:
         return {'show_map': True}
+    elif key == pygame.K_j:
+        return {'show_journal': True}
     # Disabled until finished
     # elif key == pygame.K_f:
     # return {'show_competence': True}
