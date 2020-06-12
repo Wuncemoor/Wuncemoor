@@ -2,7 +2,7 @@
 
 Roguelike RPG - Dungeons & Dragons meets Dragon Quest meets Groundhog Day
 
-You live in a small village, grow up with your friends, marry your childhood sweetheart, and grow old. It seemed like a good life... until the fire nation attacked. They burn your village and kill everyone you've ever known. As you die, you wake up. You're 10 years old again, back at the orphanage. Was it all a dream? No, a premonition of things to come, and now you have a lifetime to prepare.
+You live in a small village, grow up with your friends, marry your childhood sweetheart, and grow old. It seemed like a good life... until the fire nation attacked. As everything burns, you wake up. You're 10 years old again, back at the orphanage. Was it all a dream? No, a premonition of things to come, and now you have a lifetime to prepare.
 
 
 Permadeath - When your allies die they are gone; when you die you wake back up and start over
@@ -20,3 +20,5 @@ Nonlinear gameplay - The decisions you make matter.
 ...and much more!
 
 Currently in pre-alpha so only posting source code. Will release an executable once it's in alpha.
+
+Written in Python using the PyGame, tcod, and OpenSimplex libraries

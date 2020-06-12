@@ -115,10 +115,61 @@ def get_gui_objs():
         'age_icon': py.image.load('images\\GUI\\age_icon.png'),
         'species_sex_icons': get_species_sex_icons(),
         'xp_bar_objs': get_xp_bar_objs(),
+        'combat_stats_objs': get_combat_stats_objs(),
+        'saving_throws_objs': get_saving_throws_objs(),
+        'secondary_stats_objs': get_secondary_stats_objs(),
 
     }
 
     return gui_objs
+
+def get_secondary_stats_objs():
+    objs = {
+        'accuracy': py.image.load('images\\GUI\\character_sheet\\accuracy.png'),
+        'dodge': py.image.load('images\\GUI\\character_sheet\\dodge.png'),
+        'initiative': py.image.load('images\\GUI\\character_sheet\\initiative.png'),
+        'speed': py.image.load('images\\GUI\\character_sheet\\speed.png'),
+        'teamwork': py.image.load('images\\GUI\\character_sheet\\teamwork.png'),
+        'leadership': py.image.load('images\\GUI\\character_sheet\\leadership.png'),
+        'presence': py.image.load('images\\GUI\\character_sheet\\presence.png'),
+    }
+    return objs
+def get_saving_throws_objs():
+    objs = {
+        'reflex': py.image.load('images\\GUI\\character_sheet\\reflex.png'),
+        'balance': py.image.load('images\\GUI\\character_sheet\\balance.png'),
+        'breath': py.image.load('images\\GUI\\character_sheet\\breath.png'),
+        'grapple': py.image.load('images\\GUI\\character_sheet\\grapple.png'),
+        'stun': py.image.load('images\\GUI\\character_sheet\\stun.png'),
+        'panic': py.image.load('images\\GUI\\character_sheet\\panic.png'),
+        'apathy': py.image.load('images\\GUI\\character_sheet\\apathy.png'),
+        'pain': py.image.load('images\\GUI\\character_sheet\\pain.png'),
+        'bewitch': py.image.load('images\\GUI\\character_sheet\\bewitch.png'),
+        'enrage': py.image.load('images\\GUI\\character_sheet\\enrage.png'),
+        'illness': py.image.load('images\\GUI\\character_sheet\\illness.png'),
+        'tenacity': py.image.load('images\\GUI\\character_sheet\\tenacity.png'),
+        'pressure': py.image.load('images\\GUI\\character_sheet\\pressure.png'),
+        'bleed': py.image.load('images\\GUI\\character_sheet\\bleed.png'),
+        'injury': py.image.load('images\\GUI\\character_sheet\\injury.png'),
+    }
+    return objs
+
+def get_combat_stats_objs():
+
+    objs = {
+        'power': py.image.load('images\\GUI\\character_sheet\\power.png'),
+        'resistance': py.image.load('images\\GUI\\character_sheet\\resistance.png'),
+        'slash': py.image.load('images\\GUI\\character_sheet\\slash.png'),
+        'pierce': py.image.load('images\\GUI\\character_sheet\\pierce.png'),
+        'blunt': py.image.load('images\\GUI\\character_sheet\\blunt.png'),
+        'heat': py.image.load('images\\GUI\\character_sheet\\heat.png'),
+        'cold': py.image.load('images\\GUI\\character_sheet\\cold.png'),
+        'acid': py.image.load('images\\GUI\\character_sheet\\acid.png'),
+        'current': py.image.load('images\\GUI\\character_sheet\\current.png'),
+        'aether': py.image.load('images\\GUI\\character_sheet\\aether.png'),
+    }
+    return objs
+
 
 def get_xp_bar_objs():
     xpbar_dict = {
