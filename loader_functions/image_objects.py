@@ -110,17 +110,27 @@ def get_gui_objs():
         'message_bg': py.image.load('images\\GUI\\message_bg.png'),
         'loot_bg': py.image.load('images\\GUI\\looting\\loot_bg.png'),
         'loot_banner': py.image.load('images\\GUI\\looting\\loot_banner.png'),
-        'character_screen': py.image.load('images\\GUI\\dqsheet0.png'),
+        'character_screen': py.image.load('images\\GUI\\character_sheet\\char_sheet.png'),
         'level_icon': py.image.load('images\\GUI\\level_icon.png'),
         'age_icon': py.image.load('images\\GUI\\age_icon.png'),
         'species_sex_icons': get_species_sex_icons(),
-        'xp_bar_icon': py.image.load('images\\GUI\\xp_bar.png')
+        'xp_bar_objs': get_xp_bar_objs(),
 
     }
 
     return gui_objs
 
+def get_xp_bar_objs():
+    xpbar_dict = {
+        'xp_bar': py.image.load('images\\GUI\\character_sheet\\xp_bar.png'),
+        'xp0': py.image.load('images\\GUI\\character_sheet\\xp0.png'),
+        'xp1': py.image.load('images\\GUI\\character_sheet\\xp1.png'),
+        'xp2': py.image.load('images\\GUI\\character_sheet\\xp2.png'),
+        'xp3': py.image.load('images\\GUI\\character_sheet\\xp3.png'),
+        'xp4': py.image.load('images\\GUI\\character_sheet\\xp4.png'),
+    }
 
+    return xpbar_dict
 def get_species_sex_icons():
 
     icon_dict = {

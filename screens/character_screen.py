@@ -1,5 +1,6 @@
 from screens.gui_tools import get_alpha_surface, get_offset, get_text_surface, get_and_blit
 import tcod as libtcod
+import math
 
 
 def character_screen(screen, images, player):
@@ -8,7 +9,7 @@ def character_screen(screen, images, player):
     age = get_age_icon(images.get('gui').get('age_icon'), player)
     species = species_sex_icon(images.get('gui').get('species_sex_icons').get(player.combatant.phylo.species))
     sex = species_sex_icon(images.get('gui').get('species_sex_icons').get(player.combatant.sex))
-    xp_bar = get_xp_icon(images.get('gui').get('xp_bar_icon'))
+    xp = get_xp_icon(images.get('gui').get('xp_bar_objs'), player)
     surf = get_alpha_surface(img.get_width() * 2, img.get_height())
 
     surf.blit(img, (0, 0))
@@ -20,14 +21,32 @@ def character_screen(screen, images, player):
     surf.blit(age, (35, 110 + level.get_height()))
     surf.blit(species, (39, 110 + level.get_height() + age.get_height() + 10))
     surf.blit(sex, (39, 110 + level.get_height() + age.get_height() + species.get_height() + 20))
-    surf.blit(xp_bar, ((surf.get_width() / 4) - (xp_bar.get_width() / 2), 420))
+    surf.blit(xp, ((surf.get_width() / 4) - (xp.get_width() / 2), 420))
     screen.blit(surf, (215, 136))
 
-def get_xp_icon(xp_bar):
+
+def get_xp_icon(xp_objs, player):
     surf = get_alpha_surface(300, 20)
-    surf.blit(xp_bar, (0, 0))
+    surf.blit(xp_objs.get('xp_bar'), (0, 0))
+
+    off_x = 35
+    off_y = 8
+    step = 5
+    current_chunk = 0
+    chunks = math.floor(player.combatant.level.percentage_leveled / 2)
+    if chunks > 50:
+        chunks = 50
+    for i in range(chunks):
+        surf.blit(xp_objs.get('xp' + str(current_chunk)), (off_x, off_y))
+        off_x += step
+        if current_chunk == 4:
+            current_chunk = 0
+        else:
+            current_chunk += 1
 
     return surf
+
+
 def get_level_icon(bg, player):
 
     icon = get_alpha_surface(64, 46)
