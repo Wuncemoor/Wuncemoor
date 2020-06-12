@@ -444,6 +444,8 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             loot_results.append({'LEAVE': True})
                         elif loot.state == LootStates.THINKING:
                             loot.current_option = 2
+                    elif game_state == GameStates.CHARACTER_SHEET:
+                        game_state = GameStates.PLAYERS_TURN
 
                     elif game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU,
                                       GameStates.SHOW_MAP):

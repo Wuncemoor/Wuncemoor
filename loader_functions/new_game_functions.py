@@ -22,7 +22,7 @@ from ECS.image_bundle import ImageBundle
 
 
 def get_player(img_bundle):
-    phylo_component = Phylo('sapient', 'human', 'hero', 'regular', 'tabula_rasa')
+    phylo_component = Phylo('sapient', 'sunborn', 'human', 'regular', 'tabula_rasa')
     attribute_component = Attributes(10, 10, 10, 10, 10, 10, 10, 10, 10, 10)
     inventory_component = Inventory(26)
     level_component = Level()
@@ -32,7 +32,7 @@ def get_player(img_bundle):
 
     combatant_component = Combatant('Player', img_bundle, phylo=phylo_component, attributes=attribute_component,
                                     level=level_component, competence=competence_component,
-                                    equipment=equipment_component, inventory=inventory_component)
+                                    equipment=equipment_component, inventory=inventory_component, age=10, sex='male')
 
     player = Entity(5, 20, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component)
 

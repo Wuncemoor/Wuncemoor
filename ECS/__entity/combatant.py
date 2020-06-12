@@ -6,7 +6,7 @@ import math
 
 
 class Combatant:
-    def __init__(self, name, images, phylo, attributes, level, competence, equipment, inventory, ai=None, xp=0):
+    def __init__(self, name, images, phylo, attributes, level, competence, equipment, inventory, ai=None, xp=0, age=None, sex=None):
         
         self.name = name
         self.images = images
@@ -19,7 +19,8 @@ class Combatant:
         self.ai = ai
         self.xp = xp
         self.competence_points = 0
-        self.living = True
+        self.age = age
+        self.sex = sex
 
     
 #True resource maximums

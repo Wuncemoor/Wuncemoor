@@ -30,6 +30,7 @@ class MobDirector:
         inventory = self.__builder.get_inventory(images)
         xp = self.__builder.get_xp()
         ai = self.__builder.get_ai()
+
         combatant = Combatant(name, bundle, phylo, attributes, level, competence, equipment, inventory, ai, xp)
         return combatant
 

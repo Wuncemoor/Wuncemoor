@@ -111,10 +111,24 @@ def get_gui_objs():
         'loot_bg': py.image.load('images\\GUI\\looting\\loot_bg.png'),
         'loot_banner': py.image.load('images\\GUI\\looting\\loot_banner.png'),
         'character_screen': py.image.load('images\\GUI\\dqsheet0.png'),
+        'level_icon': py.image.load('images\\GUI\\level_icon.png'),
+        'age_icon': py.image.load('images\\GUI\\age_icon.png'),
+        'species_sex_icons': get_species_sex_icons(),
+        'xp_bar_icon': py.image.load('images\\GUI\\xp_bar.png')
 
     }
 
     return gui_objs
+
+
+def get_species_sex_icons():
+
+    icon_dict = {
+        'human': py.image.load('images\\GUI\\human_icon.png'),
+        'male': py.image.load('images\\GUI\\male_icon.png'),
+        'female': py.image.load('images\\GUI\\female_icon.png'),
+    }
+    return icon_dict
 
 
 def get_encounter_menu_objs():

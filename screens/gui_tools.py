@@ -42,3 +42,18 @@ def blit_options(menu, image, off_x, off_y, dy, options, fontsize):
     for i in range(len(options)):
         button = get_button_surface(image, options[i], fontsize, color=(255, 255, 255))
         menu.blit(button, (off_x, off_y + (i * dy)))
+
+
+def get_offset(screen, text, var):
+    if var == 'x':
+        return (screen.get_width() / 2) - (text.get_width() / 2)
+    elif var == 'y':
+        return (screen.get_height() / 2) - (text.get_height() / 2)
+
+
+def get_and_blit(screen, text, var, given):
+    off = get_offset(screen, text, var)
+    if var == 'x':
+        screen.blit(text, (off, given))
+    elif var == 'y':
+        screen.blit(text, (given, off))

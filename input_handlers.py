@@ -13,6 +13,8 @@ def handle_keys(key, game_state):
         return handle_inventory_keys(key)
     elif game_state == GameStates.LEVEL_UP:
         return handle_level_up_menu(key)
+    elif game_state == GameStates.CHARACTER_SHEET:
+        return handle_character_sheet(key)
     elif game_state == GameStates.CHARACTER_MENU:
         return handle_character_menu(key)
     elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN, GameStates.NONCOMBAT_STATS_SCREEN, GameStates.INSTINCT_FEATS, GameStates.COORDINATION_FEATS, GameStates.VITALITY_FEATS, GameStates.ARCANA_FEATS, GameStates.IMPROVISATION_FEATS, GameStates.WISDOM_FEATS, GameStates.FINESSE_FEATS, GameStates.CHARISMA_FEATS, GameStates.DEVOTION_FEATS):
@@ -109,7 +111,12 @@ def handle_map_screen(key):
         return {'exit': True}
         
     return {}
-    
+
+def handle_character_sheet(key):
+    if key == pygame.K_ESCAPE:
+        return {'exit': True}
+    return {}
+
 def handle_character_menu(key):
 
     
