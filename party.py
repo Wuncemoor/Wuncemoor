@@ -1,0 +1,11 @@
+from enums.game_states import MenuStates
+
+
+class Party:
+    def __init__(self, hero):
+        self.p1 = hero
+        self.p2 = None
+        self.p3 = None
+        self.p4 = None
+        self.superstate = MenuStates.PARTY
+        self.options = []

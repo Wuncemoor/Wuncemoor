@@ -118,10 +118,29 @@ def get_gui_objs():
         'combat_stats_objs': get_combat_stats_objs(),
         'saving_throws_objs': get_saving_throws_objs(),
         'secondary_stats_objs': get_secondary_stats_objs(),
+        'journal_objs': get_journal_objs(),
+
 
     }
 
     return gui_objs
+
+
+def get_journal_objs():
+
+    objs = {
+        'bg': py.image.load('images\\GUI\\journal\\journal_bg.png'),
+        'icon0': py.image.load('images\\GUI\\journal\\current.png'),
+        'text0': py.image.load('images\\GUI\\journal\\current_text.png'),
+        'icon1': py.image.load('images\\GUI\\journal\\completed.png'),
+        'text1': py.image.load('images\\GUI\\journal\\completed_text.png'),
+        'icon2': py.image.load('images\\GUI\\journal\\codex.png'),
+        'text2': py.image.load('images\\GUI\\journal\\codex_text.png'),
+        'icon3': py.image.load('images\\GUI\\journal\\history.png'),
+        'text3': py.image.load('images\\GUI\\journal\\history_text.png'),
+        'quest_holder': py.image.load('images\\GUI\\journal\\quest_holder.png'),
+    }
+    return objs
 
 def get_secondary_stats_objs():
     objs = {

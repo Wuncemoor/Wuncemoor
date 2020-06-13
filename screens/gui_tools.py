@@ -50,6 +50,10 @@ def get_offset(screen, text, var):
     elif var == 'y':
         return (screen.get_height() / 2) - (text.get_height() / 2)
 
+def center_and_blit(surface, image):
+    surface.blit(image, (surface.get_width() / 2 - image.get_width() / 2,
+                         surface.get_height() / 2 - image.get_height() / 2))
+
 
 def get_and_blit(screen, text, var, given):
     off = get_offset(screen, text, var)

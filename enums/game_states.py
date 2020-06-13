@@ -28,8 +28,7 @@ class GameStates(Enum):
     DIALOGUE = 24
     SHOW_MAP = 25
     LOOTING = 26
-    SHOW_JOURNAL = 27
-    CHARACTER_SHEET = 28
+    MENUS = 27
 
 
 class EncounterStates(Enum):
@@ -45,4 +44,9 @@ class LootStates(Enum):
     THINKING = 1
     SIFTING = 2
     DEPOSITING = 3
+
+class MenuStates(Enum):
+
+    PARTY = 1
+    JOURNAL = 2
 

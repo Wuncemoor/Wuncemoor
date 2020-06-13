@@ -2,7 +2,7 @@ import tcod as libtcod
 from fov_function import initialize_fov, recompute_fov
 from ECS.entity import get_blocking_entities_at_location
 from death_functions import kill_monster, kill_player
-from enums.game_states import GameStates, EncounterStates, LootStates
+from enums.game_states import GameStates, EncounterStates, LootStates, MenuStates
 from game_messages import Message
 from input_handlers import handle_keys, handle_mouse, handle_main_menu
 from render_functions import render_all
@@ -10,7 +10,7 @@ from loader_functions.initialize_new_game import get_game_variables
 from loader_functions.data_loaders import load_game, save_game
 from loader_functions.constants import get_constants
 from loader_functions.image_objects import get_image_objects
-from menus import main_menu, message_box
+from menus import main_menu, message_box, MenuHandler
 from random_utils import encounter_check
 import sys
 import pygame
@@ -78,7 +78,7 @@ def main():
             elif new_game:
 
                 player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, \
-                message_log, game_state = get_game_variables(constants, images)
+                message_log, game_state, party, journal = get_game_variables(constants, images)
                 camera.refocus(player.x, player.y, game_map, constants)
                 game_state = GameStates.PLAYERS_TURN
 
@@ -86,7 +86,7 @@ def main():
             elif load_saved_game:
                 try:
                     player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, \
-                    message_log, game_state = load_game()
+                    message_log, game_state, party, journal = load_game()
                     show_main_menu = False
                 except FileNotFoundError:
                     show_load_error_message = True
@@ -98,10 +98,10 @@ def main():
             screen.fill((0, 0, 0))
             show_main_menu = False
             play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, message_log,
-                      game_state, screen, camera_surface, resource_surface, message_surface, constants, images)
+                      game_state, party, journal, screen, camera_surface, resource_surface, message_surface, constants, images)
 
 
-def play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, message_log, game_state,
+def play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, message_log, game_state, party, journal,
               screen, camera_surface, resource_surface, message_surface, constants, images):
     fov_recompute = True
     fov_map = initialize_fov(game_map)
@@ -111,6 +111,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
     dialogue_partner = None
     encounter = None
     loot = None
+    menu_handler = MenuHandler()
 
     while True:
         for event in pygame.event.get():
@@ -136,7 +137,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 show_primary_stats = action.get('show_primary_stats')
                 show_combat_stats = action.get('show_combat_stats')
                 show_noncombat_stats = action.get('show_noncombat_stats')
-                show_journal = action.get('show_journal')
+                show_menus = action.get('show_menus')
                 show_strength_feats = action.get('show_strength_feats')
                 show_instinct_feats = action.get('show_instinct_feats')
                 show_coordination_feats = action.get('show_coordination_feats')
@@ -150,7 +151,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 gain_competence = action.get('gain_competence')
                 exit = action.get('exit')
                 level_up = action.get('level_up')
-                show_character_sheet = action.get('show_character_sheet')
+
                 converse = action.get('converse')
                 traverse_menu = action.get('traverse_menu')
                 choose_menu_option = action.get('choose_menu_option')
@@ -235,9 +236,14 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     previous_game_state = game_state
                     game_state = GameStates.DROP_INVENTORY
 
-                if show_character_sheet:
-                    previous_game_state = game_state
-                    game_state = GameStates.CHARACTER_SHEET
+                if show_menus:
+                    game_state = GameStates.MENUS
+                    menus = {
+                        'journal': journal,
+                        'party': party,
+                    }
+                    menu_handler.handle_menu(menus.get(show_menus))
+
 
                 if show_competence:
                     previous_game_state = game_state
@@ -246,10 +252,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 if show_map:
                     previous_game_state = game_state
                     game_state = GameStates.SHOW_MAP
-
-                if show_journal:
-                    previous_game_state = game_state
-                    game_state = GameStates.SHOW_JOURNAL
 
                 if inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and inventory_index < \
                         len(player.combatant.inventory.items):
@@ -388,6 +390,17 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                 pass
                             else:
                                 loot.current_option += traverse_menu
+                    elif game_state is GameStates.MENUS:
+                        if menu_handler.state == MenuStates.JOURNAL and menu_handler.display == None:
+                            if (traverse_menu[0] < 0 and menu_handler.current_option == 0) or (traverse_menu[0] > 0 and menu_handler.current_option == (len(menu_handler.options) - 1)):
+                                pass
+                            else:
+                                menu_handler.current_option += traverse_menu[0]
+                        elif menu_handler.state == MenuStates.JOURNAL:
+                            if (traverse_menu[1] < 0 and menu_handler.current_option == 0) or (traverse_menu[1] > 0 and menu_handler.current_option == (len(menu_handler.options) - 1)):
+                                pass
+                            else:
+                                menu_handler.current_option += traverse_menu[1]
 
                 if toggle:
                     if game_state == GameStates.LOOTING:
@@ -432,11 +445,15 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                 loot.state = LootStates.SIFTING
                             elif loot.current_option > len(loot.claimed) - 1:
                                 loot.current_option -= 1
+                    elif game_state == GameStates.MENUS:
+                        if menu_handler.state is MenuStates.JOURNAL:
+                            menu_handler.display = menu_handler.options[menu_handler.current_option]
+
 
                 if exit:
                     if game_state == GameStates.ENCOUNTER:
                         if encounter.state == EncounterStates.FIGHT_TARGETING:
-                            encounter_results.append({'UNFIGHT': True})
+                            encounter.state = EncounterStates.THINKING
                     elif game_state == GameStates.LOOTING:
                         if loot.state in (LootStates.SIFTING, LootStates.DEPOSITING):
                             loot.state = LootStates.THINKING
@@ -444,8 +461,13 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             loot_results.append({'LEAVE': True})
                         elif loot.state == LootStates.THINKING:
                             loot.current_option = 2
-                    elif game_state == GameStates.CHARACTER_SHEET:
-                        game_state = GameStates.PLAYERS_TURN
+                    elif game_state == GameStates.MENUS:
+                        if menu_handler.state is MenuStates.PARTY:
+                            game_state = GameStates.PLAYERS_TURN
+                        elif menu_handler.state is MenuStates.JOURNAL and menu_handler.display is None:
+                            game_state = GameStates.PLAYERS_TURN
+                        elif menu_handler.state is MenuStates.JOURNAL:
+                            menu_handler.display = None
 
                     elif game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU,
                                       GameStates.SHOW_MAP):
@@ -555,7 +577,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 for encounter_result in encounter_results:
 
                     fight = encounter_result.get('FIGHT')
-                    unfight = encounter_result.get('UNFIGHT')
 
                     run = encounter_result.get('RUN')
                     end_turn = encounter_result.get('end_turn')
@@ -565,8 +586,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     dead_entity = encounter_result.get('dead')
                     if fight:
                         encounter.state = EncounterStates.FIGHT_TARGETING
-                    elif unfight:
-                        encounter.state = EncounterStates.THINKING
                     elif run:
                         game_state = previous_game_state
                         player.combatant.level.add_xp(encounter.loot.xp)
@@ -633,6 +652,8 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
 
 
+
+
             if event.type == pygame.MOUSEBUTTONDOWN:
 
                 mouse_action = handle_mouse((event.pos, event.button))
@@ -659,7 +680,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
         render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
                    noncombatants, game_map, world_map, images, camera, fov_map, fov_recompute, message_log,
                    constants['cscreen_width'], constants['cscreen_height'], constants['map_width'],
-                   constants['map_height'], game_state, encounter, loot)
+                   constants['map_height'], game_state, menu_handler, encounter, loot)
 
         fov_recompute = False
 

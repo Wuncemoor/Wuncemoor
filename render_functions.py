@@ -1,6 +1,6 @@
 import tcod as libtcod
 import pygame
-from enums.game_states import GameStates
+from enums.game_states import GameStates, MenuStates
 from menus import inventory_menu, level_up_menu, competence_menu, character_menu, primary_stats_screen, \
     combat_stats_screen, noncombat_stats_screen, strength_feats_menu, instinct_feats_menu, coordinaton_feats_menu, \
     vitality_feats_menu, arcana_feats_menu, improvisation_feats_menu, wisdom_feats_menu, finesse_feats_menu, \
@@ -10,6 +10,7 @@ from screens.gui_tools import print_message
 from screens.resources_HUD import player_resource_display
 from screens.loot_screen import loot_screen
 from screens.character_screen import character_screen
+from screens.journal_screen import journal_screen
 
 
 from enum import Enum
@@ -34,7 +35,8 @@ def get_names_under_mouse(entities, fov_map):
 
 def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
                noncombatants, game_map, world_map, images, camera, fov_map, fov_recompute, message_log, camera_width,
-               camera_height, map_width, map_height, game_state, encounter, loot):
+               camera_height, map_width, map_height, game_state, menu_handler, encounter, loot):
+
 
     tiles = images.get('tiles')
     options = images.get('options')
@@ -72,7 +74,6 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
 
     resource_hud = player_resource_display(player, images.get('gui').get('resource_hud_objs'))
     screen.blit(resource_hud, (0 - 10, 540 + 40))
-
 
     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
         gui_img = images.get('gui').get('inventory_menu')
@@ -115,8 +116,11 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
     elif game_state == GameStates.LOOTING:
 
         loot_screen(screen, images, player, loot, message_log)
-    elif game_state == GameStates.CHARACTER_SHEET:
-        character_screen(screen, images, player)
+    elif game_state == GameStates.MENUS:
+        if menu_handler.state == MenuStates.PARTY:
+            character_screen(screen, images, player)
+        elif menu_handler.state == MenuStates.JOURNAL:
+            journal_screen(screen, menu_handler, images.get('gui').get('journal_objs'))
     elif game_state == GameStates.COMPETENCE_MENU:
         cm_width = 400
         competence_menu(screen, 'What would you like to be more competent at?', cm_width, camera_width, camera_height)

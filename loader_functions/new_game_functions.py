@@ -19,6 +19,7 @@ from ECS.entity import Entity
 from enums.equipment_slots import EquipmentSlots
 from render_functions import RenderOrder
 from ECS.image_bundle import ImageBundle
+from journal import Quest, QuestNode
 
 
 def get_player(img_bundle):
@@ -115,3 +116,10 @@ def get_dungeons(constants, images):
     cave.maps[0].transitions.append(cave_stairs_up)
 
     return dungeons, wm_tiles
+
+def get_intro_quest():
+    title = 'An Ominous Dream'
+    node1 = QuestNode('Find Samwise', "That was by FAR the most intense dream you've ever had. You've got to talk to Samwise about it!")
+    q = Quest(title, [node1])
+    q.plot = [node1]
+    return q

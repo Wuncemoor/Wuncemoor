@@ -1,5 +1,5 @@
 import pygame
-from enums.game_states import GameStates
+from enums.game_states import GameStates, MenuStates
 
 
 def handle_keys(key, game_state):
@@ -13,8 +13,8 @@ def handle_keys(key, game_state):
         return handle_inventory_keys(key)
     elif game_state == GameStates.LEVEL_UP:
         return handle_level_up_menu(key)
-    elif game_state == GameStates.CHARACTER_SHEET:
-        return handle_character_sheet(key)
+    elif game_state == GameStates.MENUS:
+        return handle_menus(key)
     elif game_state == GameStates.CHARACTER_MENU:
         return handle_character_menu(key)
     elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN, GameStates.NONCOMBAT_STATS_SCREEN, GameStates.INSTINCT_FEATS, GameStates.COORDINATION_FEATS, GameStates.VITALITY_FEATS, GameStates.ARCANA_FEATS, GameStates.IMPROVISATION_FEATS, GameStates.WISDOM_FEATS, GameStates.FINESSE_FEATS, GameStates.CHARISMA_FEATS, GameStates.DEVOTION_FEATS):
@@ -56,7 +56,7 @@ def handle_player_turn_keys(key):
     elif key in (pygame.K_RIGHT, pygame.K_d):
         return {'move': (1, 0)}
     elif key == pygame.K_c:
-        return {'show_character_sheet': True}
+        return {'show_menus': 'party'}
     elif key == pygame.K_p:
         return {'show_stats_menu': True}
     elif key == pygame.K_i:
@@ -64,7 +64,7 @@ def handle_player_turn_keys(key):
     elif key == pygame.K_m:
         return {'show_map': True}
     elif key == pygame.K_j:
-        return {'show_journal': True}
+        return {'show_menus': 'journal'}
     # Disabled until finished
     # elif key == pygame.K_f:
     # return {'show_competence': True}
@@ -112,9 +112,19 @@ def handle_map_screen(key):
         
     return {}
 
-def handle_character_sheet(key):
+def handle_menus(key):
     if key == pygame.K_ESCAPE:
         return {'exit': True}
+    elif key in (pygame.K_a, pygame.K_LEFT):
+        return {'traverse_menu': (-1, 0)}
+    elif key in (pygame.K_d, pygame.K_RIGHT):
+        return {'traverse_menu': (1, 0)}
+    elif key in (pygame.K_w, pygame.K_UP):
+        return {'traverse_menu': (0, -1)}
+    elif key in (pygame.K_s, pygame.K_DOWN):
+        return {'traverse_menu': (0, 1)}
+    elif key == pygame.K_RETURN:
+        return {'choose_menu_option': True}
     return {}
 
 def handle_character_menu(key):

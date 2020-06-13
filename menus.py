@@ -6,6 +6,7 @@ from screens.encounter_menu import get_encounter_menus
 from screens.display_actors import display_actors
 from screens.message_box import get_message_box
 
+
 def menu(screen, header, gui_img, fontsize, options, width, height, camera_width, camera_height, off_x, off_y):
     if len(options) > 26: raise ValueError('Cannot have a menu with more than 26 options.')
 
@@ -435,4 +436,21 @@ def devotion_feats_menu(screen, header, menu_width, camera_width, camera_height)
     options = ['Mighty Devotion']
     fontsize = 12
     menu(screen, 'Devotion Feats', fontsize, options, menu_width, camera_width, camera_height)
+
+class MenuHandler:
+    def __init__(self):
+        self.state = None
+        self.display = None
+        self.options = None
+        self.current_option = 0
+        self.menu = None
+
+    def handle_menu(self, menu_obj):
+        self.menu = menu_obj
+        self.state = menu_obj.superstate
+        self.options = menu_obj.options
+        self.current_option = 0
+
+
+
 
