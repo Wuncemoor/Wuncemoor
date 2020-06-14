@@ -35,7 +35,7 @@ def get_names_under_mouse(entities, fov_map):
 
 def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
                noncombatants, game_map, world_map, images, camera, fov_map, fov_recompute, message_log, camera_width,
-               camera_height, map_width, map_height, game_state, menu_handler, encounter, loot):
+               camera_height, map_width, map_height, game_state, menu_handler, encounter, loot, dialogue):
 
 
     tiles = images.get('tiles')
@@ -110,7 +110,7 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         noncombat_stats_screen(screen, player, nss_width, nss_height, camera_width, camera_height)
     elif game_state == GameStates.DIALOGUE:
         gui_img = images.get('gui').get('dialogue_menu')
-        dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height)
+        dialogue_menu(screen, gui_img, player, dialogue, camera_width, camera_height)
     elif game_state == GameStates.ENCOUNTER:
         encounter_screen(screen, images, player, encounter, message_log)
     elif game_state == GameStates.LOOTING:

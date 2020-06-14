@@ -286,7 +286,7 @@ def map_menu(screen, world_map, images, mm_width, mm_height, camera_width, camer
     screen.blit(window, (x, y))
 
 
-def dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height):
+def dialogue_menu(screen, gui_img, player, dialogue_handler, camera_width, camera_height):
 
     gap = 5
     portrait_off_x = 20
@@ -310,13 +310,13 @@ def dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height):
     window.blit(player_name, (pn_off_x, name_off_y))
 
 
-    noncom_name = actor_font.render(noncom.name.capitalize(), True, (255, 255, 255))
+    noncom_name = actor_font.render(dialogue_handler.partner.name.capitalize(), True, (255, 255, 255))
     nnw, nnh = noncom_name.get_width(), noncom_name.get_height()
     nn_off_x = (interactor_width / 2) - (nnw / 2)
-    window.blit(noncom.images.portrait, (noncom_off_x + portrait_off_x, name_off_y + nnh + gap))
+    window.blit(dialogue_handler.partner.images.portrait, (noncom_off_x + portrait_off_x, name_off_y + nnh + gap))
     window.blit(noncom_name, (noncom_off_x + nn_off_x, name_off_y))
 
-    dialogue = noncom.noncombatant.dialogue
+    dialogue = dialogue_handler.partner.noncombatant.dialogue
     current_node = dialogue.graph_dict.get(dialogue.current_convo)
 
     words_off_x = 285
@@ -330,13 +330,13 @@ def dialogue_menu(screen, gui_img, player, noncom, camera_width, camera_height):
     text_gap = math.ceil(fontsize * 0.2)
     letter_index = ord('a')
     q = 0
-    for option in current_node.options:
+    for option in dialogue_handler.real_talk:
 
         deja_vu = deja_vu_check(dialogue, current_node, chr(letter_index))
         if deja_vu:
-            text = font.render('(' + chr(letter_index) + ') ' + option, True, (190, 190, 190))
+            text = font.render('(' + chr(letter_index) + ') ' + option.text, True, (190, 190, 190))
         else:
-            text = font.render('(' + chr(letter_index) + ') ' + option, True, (255, 255, 255))
+            text = font.render('(' + chr(letter_index) + ') ' + option.text, True, (255, 255, 255))
         window.blit(text, (words_off_x, words_off_y + options_off_y + ((q * fontsize) + (q + 1) * text_gap)))
         q += 1
         letter_index += 1

@@ -54,7 +54,7 @@ def get_town(width, height, node, img_objs):
 
         dialogue = get_samwise_dialogue()
         noncom = Noncombatant('samwise', samwise_obj, dialogue)
-        samwise = Entity(38, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom)
+        samwise = Entity(18, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom)
 
         map.noncombatants.append(samwise)
 

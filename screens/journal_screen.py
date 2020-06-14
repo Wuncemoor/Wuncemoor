@@ -8,7 +8,8 @@ def journal_screen(screen, menu_handler, objs):
 
     if menu_handler.display is not None:
         ind = menu_handler.options.index(menu_handler.display)
-        sj = get_subjournal(menu_handler.menu, menu_handler.display)
+        sj = menu_handler.menu.get_subjournal(menu_handler.display)
+
         j_display = journal_options_display(objs.get('quest_holder'), sj, menu_handler.current_option)
         details = get_entry_details(sj[menu_handler.current_option])
         surf.blit(j_display, (30, 112))
@@ -24,17 +25,6 @@ def journal_screen(screen, menu_handler, objs):
 
 
     center_and_blit(screen, surf)
-
-
-def get_subjournal(journal, choice):
-    sj_dict = {
-        'current': journal.current_quests,
-        'completed': journal.completed_quests,
-        'codex': journal.codex,
-        'convo': journal.convo_history,
-    }
-
-    return sj_dict.get(choice)
 
 
 def journal_options_display(obj, subjournal, option):
@@ -60,7 +50,7 @@ def get_entry_details(entry):
     return surf
 
 def get_story_chunk(chunk):
-    surf = get_alpha_surface(300, 300)
+    surf = get_alpha_surface(300, 100)
     surf.blit(get_text_surface(chunk.title, 12, libtcod.dark_red), (0, 0))
     surf.blit(get_text_surface(chunk.info, 10, libtcod.red), (0, 15))
     return surf

@@ -11,6 +11,7 @@ from loader_functions.data_loaders import load_game, save_game
 from loader_functions.constants import get_constants
 from loader_functions.image_objects import get_image_objects
 from menus import main_menu, message_box, MenuHandler
+from dialogue.dialogue_handler import DialogueHandler
 from random_utils import encounter_check
 import sys
 import pygame
@@ -108,7 +109,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
     game_state = game_state
     previous_game_state = game_state
     targeting_item = None
-    dialogue_partner = None
+    dialogue_handler = DialogueHandler([journal])
     encounter = None
     loot = None
     menu_handler = MenuHandler()
@@ -221,8 +222,8 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             break
                     for noncom in noncombatants:
                         if noncom.x == player.x and noncom.y == player.y:
-                            dialogue_partner = noncom
-                            previous_game_state = game_state
+                            dialogue_handler.partner = noncom
+                            dialogue_handler.set_real_talk()
                             game_state = GameStates.DIALOGUE
                             nothing = False
                     if nothing:
@@ -353,19 +354,19 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     game_state = previous_game_state
                 if converse:
                     key = chr(converse)
-                    dialogue = dialogue_partner.noncombatant.dialogue
-                    try:
-                        current_node = dialogue.graph_dict.get(dialogue.current_convo)
-
+                    dialogue = dialogue_handler.partner.noncombatant.dialogue
+                    current_node = dialogue.graph_dict.get(dialogue.current_convo)
+                    if key in current_node.results.keys():
                         dialogue.current_convo = current_node.results.get(key)
                         current_node = dialogue.graph_dict.get(dialogue.current_convo)
                         current_node.visited = True
+                        dialogue_handler.set_real_talk()
+                        dialogue_handler.broadcast_choice(current_node.signal)
 
                         if dialogue.current_convo == 'exit':
                             dialogue.current_convo = 'root'
                             game_state = previous_game_state
-                    except KeyError:
-                        pass
+
 
                 if traverse_menu:
                     if game_state == GameStates.ENCOUNTER:
@@ -397,7 +398,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             else:
                                 menu_handler.current_option += traverse_menu[0]
                         elif menu_handler.state == MenuStates.JOURNAL:
-                            if (traverse_menu[1] < 0 and menu_handler.current_option == 0) or (traverse_menu[1] > 0 and menu_handler.current_option == (len(menu_handler.options) - 1)):
+                            if (traverse_menu[1] < 0 and menu_handler.current_option == 0) or (traverse_menu[1] > 0 and menu_handler.current_option == (len(journal.get_subjournal(menu_handler.display)) - 1)):
                                 pass
                             else:
                                 menu_handler.current_option += traverse_menu[1]
@@ -447,7 +448,9 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                 loot.current_option -= 1
                     elif game_state == GameStates.MENUS:
                         if menu_handler.state is MenuStates.JOURNAL:
-                            menu_handler.display = menu_handler.options[menu_handler.current_option]
+                            if len(journal.get_subjournal(menu_handler.options[menu_handler.current_option])) > 0:
+                                menu_handler.display = menu_handler.options[menu_handler.current_option]
+                                menu_handler.current_option = 0
 
 
                 if exit:
@@ -680,7 +683,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
         render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
                    noncombatants, game_map, world_map, images, camera, fov_map, fov_recompute, message_log,
                    constants['cscreen_width'], constants['cscreen_height'], constants['map_width'],
-                   constants['map_height'], game_state, menu_handler, encounter, loot)
+                   constants['map_height'], game_state, menu_handler, encounter, loot, dialogue_handler)
 
         fov_recompute = False
 

@@ -119,7 +119,10 @@ def get_dungeons(constants, images):
 
 def get_intro_quest():
     title = 'An Ominous Dream'
-    node1 = QuestNode('Find Samwise', "That was by FAR the most intense dream you've ever had. You've got to talk to Samwise about it!")
-    q = Quest(title, [node1])
-    q.plot = [node1]
+    node2 = QuestNode("Talked to Samwise",
+                      "I told Samwise all about my dream. He thought it was cool, but that I shouldn't worry so much.")
+    node1 = QuestNode('Find Samwise', "That was by FAR the most intense dream you've ever had. You've got to talk to Samwise about it!", condition='samwise', plot_paths={'COMPLETE': node2})
+    q = Quest(title, node1)
+    q.plot.append(node1)
+
     return q
