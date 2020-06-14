@@ -7,18 +7,17 @@ class DialogueGraph:
 
 class DialogueNode:
 
-    def __init__(self, words, options, signal=None):
+    def __init__(self, words, options_text, signal=None):
         self.words = words
-        self.options = options
+        self.options_text = options_text
         self.visited = False
-        self.results = {}
         self.signal = signal
 
-    def add_result(self, key, val):
-        self.results[key] = val
 
 class DialogueNodeOption:
 
-    def __init__(self, text, condition=None):
+    def __init__(self, text, path, condition=None):
         self.text = text
+        self.path = path
         self.condition = condition
+

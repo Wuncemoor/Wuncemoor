@@ -332,11 +332,11 @@ def dialogue_menu(screen, gui_img, player, dialogue_handler, camera_width, camer
     q = 0
     for option in dialogue_handler.real_talk:
 
-        deja_vu = deja_vu_check(dialogue, current_node, chr(letter_index))
+        deja_vu = deja_vu_check(dialogue_handler, q + 1)
         if deja_vu:
-            text = font.render('(' + chr(letter_index) + ') ' + option.text, True, (190, 190, 190))
+            text = font.render(str(q + 1) + ' .) ' + option.text, True, (190, 190, 190))
         else:
-            text = font.render('(' + chr(letter_index) + ') ' + option.text, True, (255, 255, 255))
+            text = font.render(str(q + 1) + ' .) ' + option.text, True, (255, 255, 255))
         window.blit(text, (words_off_x, words_off_y + options_off_y + ((q * fontsize) + (q + 1) * text_gap)))
         q += 1
         letter_index += 1

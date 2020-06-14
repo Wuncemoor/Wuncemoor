@@ -355,9 +355,9 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 if converse:
                     key = chr(converse)
                     dialogue = dialogue_handler.partner.noncombatant.dialogue
-                    current_node = dialogue.graph_dict.get(dialogue.current_convo)
-                    if key in current_node.results.keys():
-                        dialogue.current_convo = current_node.results.get(key)
+
+                    if key in dialogue_handler.real_io.keys():
+                        dialogue.current_convo = dialogue_handler.real_io.get(key)
                         current_node = dialogue.graph_dict.get(dialogue.current_convo)
                         current_node.visited = True
                         dialogue_handler.set_real_talk()
