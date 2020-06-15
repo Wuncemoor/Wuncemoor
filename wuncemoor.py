@@ -132,27 +132,10 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 show_inventory = action.get('show_inventory')
                 drop_inventory = action.get('drop_inventory')
                 show_map = action.get('show_map')
-                show_competence = action.get('show_competence')
                 inventory_index = action.get('inventory_index')
-                show_stats_menu = action.get('show_stats_menu')
-                show_primary_stats = action.get('show_primary_stats')
-                show_combat_stats = action.get('show_combat_stats')
-                show_noncombat_stats = action.get('show_noncombat_stats')
                 show_menus = action.get('show_menus')
-                show_strength_feats = action.get('show_strength_feats')
-                show_instinct_feats = action.get('show_instinct_feats')
-                show_coordination_feats = action.get('show_coordination_feats')
-                show_vitality_feats = action.get('show_vitality_feats')
-                show_arcana_feats = action.get('show_arcana_feats')
-                show_improvisation_feats = action.get('show_improvisation_feats')
-                show_wisdom_feats = action.get('show_wisdom_feats')
-                show_finesse_feats = action.get('show_finesse_feats')
-                show_charisma_feats = action.get('show_charisma_feats')
-                show_devotion_feats = action.get('show_devotion_feats')
-                gain_competence = action.get('gain_competence')
                 exit = action.get('exit')
                 level_up = action.get('level_up')
-
                 converse = action.get('converse')
                 traverse_menu = action.get('traverse_menu')
                 choose_menu_option = action.get('choose_menu_option')
@@ -246,10 +229,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     menu_handler.handle_menu(menus.get(show_menus))
 
 
-                if show_competence:
-                    previous_game_state = game_state
-                    game_state = GameStates.COMPETENCE_MENU
-
                 if show_map:
                     previous_game_state = game_state
                     game_state = GameStates.SHOW_MAP
@@ -264,69 +243,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     elif game_state == GameStates.DROP_INVENTORY:
                         player_turn_results.extend(player.combatant.inventory.drop_item(item))
 
-                if gain_competence:
-                    attribute, competence = gain_competence
-
-                    player_turn_results.extend(player.competencies.comp_setter(attribute, competence))
-
-                if show_stats_menu:
-                    previous_game_state = game_state
-                    game_state = GameStates.CHARACTER_MENU
-                if show_primary_stats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.PRIMARY_STATS_SCREEN
-                if show_combat_stats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.COMBAT_STATS_SCREEN
-                if show_noncombat_stats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.NONCOMBAT_STATS_SCREEN
-                if show_competence:
-                    previous_game_state = game_state
-                    game_state = GameStates.COMPETENCE_MENU
-                if show_strength_feats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.STRENGTH_FEATS
-                if show_instinct_feats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.INSTINCT_FEATS
-                if show_coordination_feats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.COORDINATION_FEATS
-                if show_vitality_feats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.VITALITY_FEATS
-                if show_arcana_feats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.ARCANA_FEATS
-                if show_improvisation_feats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.IMPROVISATION_FEATS
-                if show_wisdom_feats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.WISDOM_FEATS
-                if show_finesse_feats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.FINESSE_FEATS
-                if show_charisma_feats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.CHARISMA_FEATS
-                if show_devotion_feats:
-                    older_game_state = previous_game_state
-                    previous_game_state = game_state
-                    game_state = GameStates.DEVOTION_FEATS
 
                 if level_up:
 
@@ -472,23 +388,9 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         elif menu_handler.state is MenuStates.JOURNAL:
                             menu_handler.display = None
 
-                    elif game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_MENU,
-                                      GameStates.SHOW_MAP):
+                    elif game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.SHOW_MAP):
                         game_state = previous_game_state
-                    elif game_state in (
-                            GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN,
-                            GameStates.NONCOMBAT_STATS_SCREEN):
-                        game_state = previous_game_state
-                        previous_game_state = older_game_state
-                    elif game_state in (
-                            GameStates.STRENGTH_FEATS, GameStates.INSTINCT_FEATS, GameStates.COORDINATION_FEATS,
-                            GameStates.VITALITY_FEATS, GameStates.ARCANA_FEATS, GameStates.IMPROVISATION_FEATS,
-                            GameStates.WISDOM_FEATS, GameStates.FINESSE_FEATS, GameStates.CHARISMA_FEATS,
-                            GameStates.DEVOTION_FEATS):
-                        game_state = previous_game_state
-                        previous_game_state = older_game_state
-                    elif game_state == GameStates.COMPETENCE_MENU:
-                        game_state = GameStates.PLAYERS_TURN
+
                     elif game_state == GameStates.TARGETING:
                         player_turn_results.append({'targeting_cancelled': True})
                     else:
@@ -647,14 +549,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         loot.state = LootStates.DEPOSITING
                     elif toggle == 'left':
                         loot.state = LootStates.SIFTING
-
-
-
-
-
-
-
-
 
 
             if event.type == pygame.MOUSEBUTTONDOWN:

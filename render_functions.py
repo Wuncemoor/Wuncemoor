@@ -94,76 +94,19 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
     elif game_state == GameStates.LEVEL_UP:
         gui_img = images.get('gui').get('levelup_menu')
         level_up_menu(screen, 'Level up! Choose a stat boost:', gui_img, player, camera_width, camera_height)
-    elif game_state == GameStates.CHARACTER_MENU:
-        gui_img = images.get('gui').get('character_menu')
-        character_menu(screen, 'What would you like to look at?', gui_img, camera_width, camera_height)
-    elif game_state == GameStates.PRIMARY_STATS_SCREEN:
-        gui_img = images.get('gui').get('primary_stats_screen')
-        primary_stats_screen(screen, player, gui_img, camera_width, camera_height)
-    elif game_state == GameStates.COMBAT_STATS_SCREEN:
-        css_width = 400
-        css_height = 400
-        combat_stats_screen(screen, player, css_width, css_height, camera_width, camera_height)
-    elif game_state == GameStates.NONCOMBAT_STATS_SCREEN:
-        nss_width = 400
-        nss_height = 400
-        noncombat_stats_screen(screen, player, nss_width, nss_height, camera_width, camera_height)
+
     elif game_state == GameStates.DIALOGUE:
         gui_img = images.get('gui').get('dialogue_menu')
         dialogue_menu(screen, gui_img, player, dialogue, camera_width, camera_height)
     elif game_state == GameStates.ENCOUNTER:
         encounter_screen(screen, images, player, encounter, message_log)
     elif game_state == GameStates.LOOTING:
-
         loot_screen(screen, images, player, loot, message_log)
     elif game_state == GameStates.MENUS:
         if menu_handler.state == MenuStates.PARTY:
             character_screen(screen, images, player)
         elif menu_handler.state == MenuStates.JOURNAL:
             journal_screen(screen, menu_handler, images.get('gui').get('journal_objs'))
-    elif game_state == GameStates.COMPETENCE_MENU:
-        cm_width = 400
-        competence_menu(screen, 'What would you like to be more competent at?', cm_width, camera_width, camera_height)
-    elif game_state == GameStates.STRENGTH_FEATS:
-        sf_width = 400
-        sf_height = 300
-        strength_feats_menu(player, sf_width, sf_height, camera_width, camera_height)
-    elif game_state == GameStates.INSTINCT_FEATS:
-        if_width = 400
-        if_height = 300
-        instinct_feats_menu(player, if_width, if_height, camera_width, camera_height)
-    elif game_state == GameStates.COORDINATION_FEATS:
-        cf_width = 400
-        cf_height = 300
-        coordinaton_feats_menu(player, cf_width, cf_height, camera_width, camera_height)
-    elif game_state == GameStates.VITALITY_FEATS:
-        vf_width = 400
-        vf_height = 300
-        vitality_feats_menu(player, vf_width, vf_height, camera_width, camera_height)
-    elif game_state == GameStates.ARCANA_FEATS:
-        af_width = 400
-        af_height = 300
-        arcana_feats_menu(player, af_width, af_height, camera_width, camera_height)
-    elif game_state == GameStates.IMPROVISATION_FEATS:
-        if_width = 400
-        if_height = 300
-        improvisation_feats_menu(player, if_width, if_height, camera_width, camera_height)
-    elif game_state == GameStates.WISDOM_FEATS:
-        wf_width = 400
-        wf_height = 300
-        wisdom_feats_menu(player, wf_width, wf_height, camera_width, camera_height)
-    elif game_state == GameStates.FINESSE_FEATS:
-        ff_width = 400
-        ff_height = 300
-        finesse_feats_menu(player, ff_width, ff_height, camera_width, camera_height)
-    elif game_state == GameStates.CHARISMA_FEATS:
-        cf_width = 400
-        cf_height = 300
-        charisma_feats_menu(player, cf_width, cf_height, camera_width, camera_height)
-    elif game_state == GameStates.DEVOTION_FEATS:
-        df_width = 400
-        df_height = 300
-        devotion_feats_menu(player, df_width, df_height, camera_width, camera_height)
 
 
 def draw_entity(camera_surface, cx, cy, entity, fov_map, game_map, tilesize):

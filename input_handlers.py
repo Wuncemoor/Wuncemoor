@@ -15,14 +15,6 @@ def handle_keys(key, game_state):
         return handle_level_up_menu(key)
     elif game_state == GameStates.MENUS:
         return handle_menus(key)
-    elif game_state == GameStates.CHARACTER_MENU:
-        return handle_character_menu(key)
-    elif game_state in (GameStates.PRIMARY_STATS_SCREEN, GameStates.COMBAT_STATS_SCREEN, GameStates.NONCOMBAT_STATS_SCREEN, GameStates.INSTINCT_FEATS, GameStates.COORDINATION_FEATS, GameStates.VITALITY_FEATS, GameStates.ARCANA_FEATS, GameStates.IMPROVISATION_FEATS, GameStates.WISDOM_FEATS, GameStates.FINESSE_FEATS, GameStates.CHARISMA_FEATS, GameStates.DEVOTION_FEATS):
-        return handle_stat_info(key)
-    elif game_state == GameStates.STRENGTH_FEATS:
-        return handle_strength(key)
-    elif game_state == GameStates.COMPETENCE_MENU:
-        return handle_competence_menu(key)
     elif game_state == GameStates.SHOW_MAP:
         return handle_map_screen(key)
     elif game_state == GameStates.DIALOGUE:
@@ -57,17 +49,12 @@ def handle_player_turn_keys(key):
         return {'move': (1, 0)}
     elif key == pygame.K_c:
         return {'show_menus': 'party'}
-    elif key == pygame.K_p:
-        return {'show_stats_menu': True}
     elif key == pygame.K_i:
         return {'show_inventory': True}
     elif key == pygame.K_m:
         return {'show_map': True}
     elif key == pygame.K_j:
         return {'show_menus': 'journal'}
-    # Disabled until finished
-    # elif key == pygame.K_f:
-    # return {'show_competence': True}
     elif key == pygame.K_o:
         return {'drop_inventory': True}
     elif key == pygame.K_SPACE:
@@ -127,24 +114,6 @@ def handle_menus(key):
         return {'choose_menu_option': True}
     return {}
 
-def handle_character_menu(key):
-
-    
-    if key == pygame.K_ESCAPE:
-        return {'exit': True}
-    elif key == pygame.K_a:
-        return {'show_primary_stats': True}
-    elif key == pygame.K_b:
-        return {'show_combat_stats': True}
-    elif key == pygame.K_c:
-        return {'show_noncombat_stats': True}
-    return {}
-
-def handle_stat_info(key):
-    if key == pygame.K_ESCAPE:
-        return {'exit': True}
-        
-    return {}
 
 
 def handle_dialogue_menu(key):
@@ -184,46 +153,6 @@ def handle_loot_screen(key):
     return {}
 
 
-def handle_competence_menu(key):
-    
-    if key == pygame.K_ESCAPE:
-        return {'exit':True}
-    elif key == pygame.K_a:
-        return {'show_strength_feats': True}
-    elif key == pygame.K_b:
-        return {'show_instinct_feats': True}
-    elif key == pygame.K_c:
-        return {'show_coordination_feats': True}
-    elif key == pygame.K_d:
-        return {'show_vitality_feats': True}
-    elif key == pygame.K_e:
-        return {'show_arcana_feats': True}
-    elif key == pygame.K_f:
-        return {'show_improvisation_feats': True}
-    elif key == pygame.K_g:
-        return {'show_wisdom_feats': True}
-    elif key == pygame.K_h:
-        return {'show_finesse_feats': True}
-    elif key == pygame.K_i:
-        return {'show_charisma_feats': True}
-    elif key == pygame.K_j:
-        return {'show_devotion_feats': True}
-    return {}
-
-    
-def handle_strength(key):
-
-    
-    if key == pygame.K_a:
-        return {'gain_competence': ('strength','mighty_strength_flag')}
-    elif key == pygame.K_b:
-        return {'gain_competence': ('strength','better_slash_flag')}
-    elif key == pygame.K_c:
-        return {'gain_competence': ('strength','better stab_flag')}
-    elif key == pygame.K_d:
-        return {'gain_competence': ('strength','better_blunt_flag')}
-
-    
 def handle_targeting_keys(key):
     if key == pygame.K_ESCAPE:
         return {'exit': True}
