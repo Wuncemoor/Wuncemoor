@@ -118,154 +118,6 @@ def level_up_menu(screen, header, gui_img, player, camera_width, camera_height):
     menu(screen, header, gui_img, fontsize, options, menu_width, menu_height, camera_width, camera_height, off_x, off_y)
 
 
-def character_menu(screen, header, gui_img, camera_width, camera_height):
-    options = ['Primary', 'Combat', 'Non-Combat']
-    fontsize = 40
-    menu_width = 400
-    menu_height = 170
-    x_off = 25
-    y_off = -3
-    menu(screen, header, gui_img, fontsize, options, menu_width, menu_height, camera_width, camera_height, x_off, y_off)
-
-
-def primary_stats_screen(screen, player, gui_img, camera_width, camera_height):
-    pss_width = 200
-    pss_height = 350
-    x_off = 20
-    y_off = -2
-    window = py.Surface((pss_width, pss_height))
-    window.blit(gui_img, (0, 0))
-
-    fontsize = 18
-    font = py.font.SysFont("comicsansms", fontsize)
-
-    lines = [
-        'Character',
-        'Information',
-        '',
-        'Level: {0}'.format(player.combatant.level.current_level),
-        'Experience: {0}'.format(player.combatant.level.current_xp),
-        'Exp till level: {0}'.format(player.combatant.level.experience_to_next_level),
-        '',
-        'Strength: {0}'.format(player.combatant.attributes.strength),
-        'Instinct: {0}'.format(player.combatant.attributes.instinct),
-        'Coordination: {0}'.format(player.combatant.attributes.coordination),
-        'Vitality: {0}'.format(player.combatant.attributes.vitality),
-        'Arcana: {0}'.format(player.combatant.attributes.arcana),
-        'Improvisation: {0}'.format(player.combatant.attributes.improvisation),
-        'Wisdom: {0}'.format(player.combatant.attributes.wisdom),
-        'Finesse: {0}'.format(player.combatant.attributes.finesse),
-        'Charisma: {0}'.format(player.combatant.attributes.charisma),
-        'Devotion: {0}'.format(player.combatant.attributes.devotion),
-    ]
-
-    for count, elem in enumerate(lines):
-        text = font.render(elem, True, (255, 255, 255))
-        window.blit(text, (x_off, y_off + (fontsize * (count + 1))))
-
-    x = camera_width // 2 - pss_width // 2
-    y = camera_height // 2 - pss_height // 2
-    screen.blit(window, (x, y))
-
-
-def combat_stats_screen(screen, player, css_width, css_height, camera_width, camera_height):
-    window = py.Surface((css_width, css_height))
-    fontsize = 12
-    font = py.font.SysFont("comicsansms", fontsize)
-
-    power = font.render('Power', True, (255, 255, 255))
-    window.blit(power, (css_width / 3, 0))
-    resist = font.render('Resistance', True, (255, 255, 255))
-    window.blit(resist, ((2 * css_width) / 3, 0))
-
-    # x, y, data
-    lines = [
-        (0, 0, 'Power'),
-        (css_width / 2, 0, 'Resistance'),
-        (0, fontsize * 2,
-         'Slash: {0} ({1})'.format(player.combatant.power_slash, player.combatant.attributes.base_power_slash)),
-        (0, fontsize * 3,
-         'Pierce: {0} ({1})'.format(player.combatant.power_pierce, player.combatant.attributes.base_power_pierce)),
-        (0, fontsize * 4,
-         'Blunt: {0} ({1})'.format(player.combatant.power_blunt, player.combatant.attributes.base_power_blunt)),
-        (0, fontsize * 5,
-         'Heat: {0} ({1})'.format(player.combatant.spirit_heat, player.combatant.attributes.base_spirit_heat)),
-        (0, fontsize * 6,
-         'Cold: {0} ({1})'.format(player.combatant.spirit_cold, player.combatant.attributes.base_spirit_cold)),
-        (0, fontsize * 7,
-         'Acid: {0} ({1})'.format(player.combatant.spirit_acid, player.combatant.attributes.base_spirit_acid)),
-        (0, fontsize * 8,
-         'Current: {0} ({1})'.format(player.combatant.spirit_current, player.combatant.attributes.base_spirit_current)),
-        (0, fontsize * 9,
-         'Aether: {0} ({1})'.format(player.combatant.spirit_aether, player.combatant.attributes.base_spirit_aether)),
-        (0, fontsize * 10, 'Competence: {0}'.format(player.combatant.competence_points)),
-        (0, fontsize * 11,
-         'Accuracy: {0} ({1})'.format(player.combatant.accuracy, player.combatant.attributes.base_accuracy)),
-        (css_width / 2, fontsize * 2,
-         'Slash: {0} ({1})'.format(player.combatant.resist_slash, player.combatant.attributes.base_resist_slash)),
-        (css_width / 2, fontsize * 3,
-         'Pierce: {0} ({1})'.format(player.combatant.resist_pierce, player.combatant.attributes.base_resist_pierce)),
-        (css_width / 2, fontsize * 4,
-         'Blunt: {0} ({1})'.format(player.combatant.resist_blunt, player.combatant.attributes.base_resist_blunt)),
-        (css_width / 2, fontsize * 5,
-         'Heat: {0} ({1})'.format(player.combatant.resist_heat, player.combatant.attributes.base_resist_heat)),
-        (css_width / 2, fontsize * 6,
-         'Cold: {0} ({1})'.format(player.combatant.resist_cold, player.combatant.attributes.base_resist_cold)),
-        (css_width / 2, fontsize * 7,
-         'Acid: {0} ({1})'.format(player.combatant.resist_acid, player.combatant.attributes.base_resist_acid)),
-        (css_width / 2, fontsize * 8,
-         'Current: {0} ({1})'.format(player.combatant.resist_current, player.combatant.attributes.base_resist_current)),
-        (css_width / 2, fontsize * 9,
-         'Aether: {0} ({1})'.format(player.combatant.resist_aether, player.combatant.attributes.base_resist_aether)),
-        (css_width / 2, fontsize * 11,
-         'Dodge: {0} ({1})'.format(player.combatant.dodge, player.combatant.attributes.base_dodge)),
-        (css_width / 3, fontsize * 14, 'Saving Throws'),
-        (0, fontsize * 16, 'Athletics'),
-        (css_width / 3, fontsize * 16, 'Fortitude'),
-        (2 * css_width / 3, fontsize * 16, 'Resilience'),
-        (0, fontsize * 18, 'Reflex: {0}'.format(player.combatant.savethrow_reflex)),
-        (0, fontsize * 19, 'Balance: {0}'.format(player.combatant.savethrow_balance)),
-        (0, fontsize * 20, 'Breath: {0}'.format(player.combatant.savethrow_breath)),
-        (0, fontsize * 21, 'Grapple: {0}'.format(player.combatant.savethrow_grapple)),
-        (0, fontsize * 22, 'Stun: {0}'.format(player.combatant.savethrow_stun)),
-        (css_width / 3, fontsize * 18, 'Panic: {0}'.format(player.combatant.savethrow_panic)),
-        (css_width / 3, fontsize * 19, 'Apathy: {0}'.format(player.combatant.savethrow_apathy)),
-        (css_width / 3, fontsize * 20, 'Pain: {0}'.format(player.combatant.savethrow_pain)),
-        (css_width / 3, fontsize * 21, 'Bewitch: {0}'.format(player.combatant.savethrow_bewitch)),
-        (css_width / 3, fontsize * 22, 'Enrage: {0}'.format(player.combatant.savethrow_enrage)),
-        (2 * css_width / 3, fontsize * 18, 'Illness: {0}'.format(player.combatant.savethrow_illness)),
-        (2 * css_width / 3, fontsize * 19, 'Tenacity: {0}'.format(player.combatant.savethrow_tenacity)),
-        (2 * css_width / 3, fontsize * 20, 'Pressure: {0}'.format(player.combatant.savethrow_pressure)),
-        (2 * css_width / 3, fontsize * 21, 'Bleed: {0}'.format(player.combatant.savethrow_bleed)),
-        (2 * css_width / 3, fontsize * 22, 'Injury: {0}'.format(player.combatant.savethrow_injury)),
-        (0, fontsize * 24, 'Presence: {0}'.format(player.combatant.presence)),
-        (css_width / 3, fontsize * 24, 'Initiative: {0}'.format(player.combatant.initiative)),
-        (2 * css_width / 3, fontsize * 24, 'Speed: {0}'.format(player.combatant.speed)),
-        (0, fontsize * 25, 'Teamwork: {0}'.format(player.combatant.teamwork)),
-        (css_width / 3, fontsize * 25, 'Leadership: {0}'.format(player.combatant.leadership))
-    ]
-
-    for i in lines:
-        info = font.render(i[2], True, (255, 255, 255))
-        window.blit(info, (i[0], i[1]))
-
-    x = camera_width // 2 - css_width // 2
-    y = camera_height // 2 - css_height // 2
-    screen.blit(window, (x, y))
-
-
-def noncombat_stats_screen(screen, player, css_width, css_height, camera_width, camera_height):
-    window = py.Surface((css_width, css_height))
-    fontsize = 12
-    font = py.font.SysFont("comicsansms", fontsize)
-    info = font.render('Leadership: {0}'.format(player.combatant.leadership), True, (255, 255, 255))
-    window.blit(info, (css_width / 3, fontsize * 25))
-
-    x = camera_width // 2 - css_width // 2
-    y = camera_height // 2 - css_height // 2
-    screen.blit(window, (x, y))
-
-
 def map_menu(screen, world_map, images, mm_width, mm_height, camera_width, camera_height):
     window = py.Surface((mm_width, mm_height))
     offset_x = 50
@@ -334,9 +186,9 @@ def dialogue_menu(screen, gui_img, player, dialogue_handler, camera_width, camer
 
         deja_vu = deja_vu_check(dialogue_handler, q + 1)
         if deja_vu:
-            text = font.render(str(q + 1) + ' .) ' + option.text, True, (190, 190, 190))
+            text = font.render(str(q + 1) + ' ) ' + option.text, True, (190, 190, 190))
         else:
-            text = font.render(str(q + 1) + ' .) ' + option.text, True, (255, 255, 255))
+            text = font.render(str(q + 1) + ' ) ' + option.text, True, (255, 255, 255))
         window.blit(text, (words_off_x, words_off_y + options_off_y + ((q * fontsize) + (q + 1) * text_gap)))
         q += 1
         letter_index += 1
@@ -371,71 +223,6 @@ def message_box(screen, width, screen_width, screen_height):
     menu(screen, '', fontsize, ['No save game to load :('], width, screen_width, screen_height)
 
 
-def competence_menu(screen, header, cm_width, camera_width, camera_height):
-    options = ['Strength', 'Instinct', 'Coordination', 'Vitality', 'Arcana', 'Improvisation', 'Wisdom', 'Finesse',
-               'Charisma', 'Devotion']
-    fontsize = 12
-    menu(screen, header, fontsize, options, cm_width, camera_width, camera_height)
-
-
-def strength_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Strength, Better Slash, Better Stab, Better Blunt']
-    fontsize = 12
-    menu(screen, 'Strength Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def instinct_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Instinct']
-    fontsize = 12
-    menu(screen, 'Instinct Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def coordinaton_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Coordination']
-    fontsize = 12
-    menu(screen, 'Coordination Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def vitality_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Vitality']
-    fontsize = 12
-    menu(screen, 'Vitality Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def arcana_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Arcana']
-    fontsize = 12
-    menu(screen, 'Arcana Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def improvisation_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Improvisation']
-    fontsize = 12
-    menu(screen, 'Improvisation Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def wisdom_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Wisdom']
-    fontsize = 12
-    menu(screen, 'Wisdom Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def finesse_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Finesse']
-    fontsize = 12
-    menu(screen, 'Finesse Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def charisma_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Charisma']
-    fontsize = 12
-    menu(screen, 'Charisma Feats', fontsize, options, menu_width, camera_width, camera_height)
-
-
-def devotion_feats_menu(screen, header, menu_width, camera_width, camera_height):
-    options = ['Mighty Devotion']
-    fontsize = 12
-    menu(screen, 'Devotion Feats', fontsize, options, menu_width, camera_width, camera_height)
 
 class MenuHandler:
     def __init__(self):

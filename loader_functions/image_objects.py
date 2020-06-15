@@ -99,10 +99,8 @@ def get_image_objects():
 def get_gui_objs():
     gui_objs = {
         'main_menu': py.image.load('images\\GUI\\main_menu.png'),
-        'character_menu': py.image.load('images\\GUI\\character_menu.png'),
         'inventory_menu': py.image.load('images\\GUI\\inventory_menu.png'),
         'levelup_menu': py.image.load('images\\GUI\\levelup_menu.png'),
-        'primary_stats_screen': py.image.load('images\\GUI\\primary_stats_screen.png'),
         'dialogue_menu': py.image.load('images\\GUI\\dialogue_menu.png'),
         'resource_hud_objs': get_resource_hud_objs(),
         'encounter': get_encounter_menu_objs(),
@@ -111,8 +109,8 @@ def get_gui_objs():
         'loot_bg': py.image.load('images\\GUI\\looting\\loot_bg.png'),
         'loot_banner': py.image.load('images\\GUI\\looting\\loot_banner.png'),
         'character_screen': py.image.load('images\\GUI\\character_sheet\\char_sheet.png'),
-        'level_icon': py.image.load('images\\GUI\\level_icon.png'),
-        'age_icon': py.image.load('images\\GUI\\age_icon.png'),
+        'level_icon': py.image.load('images\\GUI\\character_sheet\\level_icon.png'),
+        'age_icon': py.image.load('images\\GUI\\character_sheet\\age_icon.png'),
         'species_sex_icons': get_species_sex_icons(),
         'xp_bar_objs': get_xp_bar_objs(),
         'combat_stats_objs': get_combat_stats_objs(),
@@ -204,9 +202,9 @@ def get_xp_bar_objs():
 def get_species_sex_icons():
 
     icon_dict = {
-        'human': py.image.load('images\\GUI\\human_icon.png'),
-        'male': py.image.load('images\\GUI\\male_icon.png'),
-        'female': py.image.load('images\\GUI\\female_icon.png'),
+        'human': py.image.load('images\\GUI\\character_sheet\\human_icon.png'),
+        'male': py.image.load('images\\GUI\\character_sheet\\male_icon.png'),
+        'female': py.image.load('images\\GUI\\character_sheet\\female_icon.png'),
     }
     return icon_dict
 

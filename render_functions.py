@@ -1,10 +1,7 @@
 import tcod as libtcod
 import pygame
 from enums.game_states import GameStates, MenuStates
-from menus import inventory_menu, level_up_menu, competence_menu, character_menu, primary_stats_screen, \
-    combat_stats_screen, noncombat_stats_screen, strength_feats_menu, instinct_feats_menu, coordinaton_feats_menu, \
-    vitality_feats_menu, arcana_feats_menu, improvisation_feats_menu, wisdom_feats_menu, finesse_feats_menu, \
-    charisma_feats_menu, devotion_feats_menu, map_menu, dialogue_menu, encounter_screen
+from menus import inventory_menu, level_up_menu, map_menu, dialogue_menu, encounter_screen
 from random_utils import pseudorandom_seed
 from screens.gui_tools import print_message
 from screens.resources_HUD import player_resource_display
