@@ -2,6 +2,14 @@ import pygame as py
 import math
 
 
+def get_surface(image):
+
+    surf = get_alpha_surface(image.get_width(), image.get_height())
+
+    surf.blit(image, (0, 0))
+    return surf
+
+
 def get_alpha_surface(width, height):
     res_display = py.Surface((width, height))
     ALPHA = py.Color(128, 175, 120)
@@ -50,14 +58,11 @@ def get_offset(screen, text, var):
     elif var == 'y':
         return (screen.get_height() / 2) - (text.get_height() / 2)
 
-def center_and_blit(surface, image):
-    surface.blit(image, (surface.get_width() / 2 - image.get_width() / 2,
-                         surface.get_height() / 2 - image.get_height() / 2))
 
+def align_and_blit(surface, image, x_ratio=0.5, y_ratio=0.5, x_adjust=0, y_adjust=0):
 
-def get_and_blit(screen, text, var, given):
-    off = get_offset(screen, text, var)
-    if var == 'x':
-        screen.blit(text, (off, given))
-    elif var == 'y':
-        screen.blit(text, (given, off))
+    off_x = int(surface.get_width() * x_ratio - image.get_width() / 2) + x_adjust
+    off_y = int(surface.get_height() * y_ratio - image.get_height() / 2) + y_adjust
+
+    surface.blit(image, (off_x, off_y))
+

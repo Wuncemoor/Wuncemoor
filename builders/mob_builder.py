@@ -6,10 +6,10 @@ from ECS.__entity.__combatant.level import Level
 from ECS.__entity.combatant import Combatant
 
 from builders.make_item import make_item
-from loader_functions.image_objects import get_image_bundle
 from ECS.__entity.__combatant.attributes import Attributes
 from ECS.__entity.__combatant.phylo import Phylo
 from ECS.__entity.__combatant.inventory import Inventory
+import config.image_objects as imgs
 
 
 class MobDirector:
@@ -18,16 +18,16 @@ class MobDirector:
     def set_builder(self, builder):
         self.__builder = builder
 
-    def get_combatant(self, images):
+    def get_combatant(self):
 
         name = self.__builder.get_name()
-        bundle = self.__builder.get_images(images)
+        bundle = self.__builder.get_images()
         phylo = self.__builder.get_phylo()
         attributes = self.__builder.get_attributes()
         level = self.__builder.get_level()
         competence = self.__builder.get_competence()
         equipment = self.__builder.get_equipment()
-        inventory = self.__builder.get_inventory(images)
+        inventory = self.__builder.get_inventory()
         xp = self.__builder.get_xp()
         ai = self.__builder.get_ai()
 
@@ -52,8 +52,8 @@ class MobBuilder:
         else:
             return self.mob.capitalize()
 
-    def get_images(self, images):
-        return get_image_bundle(images, self.mob)
+    def get_images(self):
+        return imgs.get_image_bundle(self.mob)
 
     def get_phylo(self):
 
@@ -243,11 +243,11 @@ class MobBuilder:
     def get_ai(self):
         return BasicMonster()
 
-    def get_inventory(self, images):
+    def get_inventory(self):
 
         inven = Inventory(26)
 
-        potion = make_item(images, 'healing_potion')
+        potion = make_item('healing_potion')
         inven.add_item(potion)
 
         return inven

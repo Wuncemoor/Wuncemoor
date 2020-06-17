@@ -11,21 +11,23 @@ from render_functions import RenderOrder
 from enums.equipment_slots import EquipmentSlots
 from item_functions import heal, cast_fireball, cast_confuse, cast_lightning
 import tcod as libtcod
-from loader_functions.image_objects import get_image_bundle
+import config.image_objects as imgs
 
 
-def make_item(images, item_choice):
+
+def make_item(item_choice):
+    images = imgs.get_image_objects()
 
     weapons = images.get('entities').get('items').get('equippables').get('weapons')
 
     if item_choice == 'healing_potion':
-        image = get_image_bundle(images, 'potion')
+        image = imgs.get_image_bundle('potion')
 
         item_component = Item(
             useable_component=Useable('Healing Potion', image, use_function=heal, amount=400))
         item = Entity(0, 0, render_order=RenderOrder.ITEM, item=item_component)
     elif item_choice == 'sword':
-        image = get_image_bundle(images, 'longsword')
+        image = imgs.get_image_bundle('longsword')
         equippable_core = EquippableCore('longsword', image)
         equippable_material = EquippableMaterial('wood')
         equippable_quality = EquippableQuality('average')
@@ -35,7 +37,7 @@ def make_item(images, item_choice):
         item_component = Item(equippable_component)
         item = Entity(0, 0, item=item_component)
     elif item_choice == 'shield':
-        image = ImageBundle(weapons.get('shield'))
+        image = imgs.get_image_bundle('shield')
         equippable_core = EquippableCore('shield', image)
         equippable_material = EquippableMaterial('iron')
         equippable_quality = EquippableQuality('average')
@@ -45,14 +47,14 @@ def make_item(images, item_choice):
         item_component = Item(equippable_component)
         item = Entity(0, 0, item=item_component)
     elif item_choice == 'fireball_scroll':
-        image = ImageBundle(images.get('entities').get('items').get('useables').get('scroll'))
+        image = imgs.get_image_bundle('scroll')
         msg = 'Left-click a target tile for the fireball, or right-click to rethink your life decisions.'
         item_component = Item(
             useable_component=Useable('Fireball Scroll', image, use_function=cast_fireball, targeting=True,
                                       targeting_message=Message(msg, libtcod.light_cyan), damage=250, radius=3))
         item = Entity(0, 0, render_order=RenderOrder.ITEM, item=item_component)
     elif item_choice == 'confusion_scroll':
-        image = ImageBundle(images.get('entities').get('items').get('useables').get('scroll'))
+        image = imgs.get_image_bundle('scroll')
         item_component = Item(
             useable_component=Useable('Confusion Scroll', image, use_function=cast_confuse, targeting=True,
                                       targeting_message=Message(
@@ -60,7 +62,7 @@ def make_item(images, item_choice):
                                           libtcod.light_cyan)))
         item = Entity(0, 0, render_order=RenderOrder.ITEM, item=item_component)
     elif item_choice == 'lightning_scroll':
-        image = ImageBundle(images.get('entities').get('items').get('useables').get('scroll'))
+        image = imgs.get_image_bundle('scroll')
         item_component = Item(
             useable_component=Useable('Lightning Scroll', image, use_function=cast_lightning, damage=400,
                                       maximum_range=5))

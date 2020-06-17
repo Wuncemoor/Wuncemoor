@@ -9,7 +9,7 @@ from map_objects.chances.item_chances import get_item_chances
 from map_objects.chances.mob_chances import MobChances
 from map_objects.encounter import Encounter
 from builders.make_item import make_item
-from map_objects.loot import Loot
+import config.image_objects as imgs
 
 
 class Map:
@@ -144,12 +144,13 @@ class Map:
                         self.create_v_tunnel(prev_y, new_y, prev_x, dungeon_type, subtype)
                         self.create_h_tunnel(prev_x, new_x, new_y, dungeon_type, subtype)
                 # append room to list
-                self.place_entities(new_room, dungeon_type, subtype, node_power, objs)
+                self.place_entities(new_room, dungeon_type, subtype, node_power)
                 rooms.append(new_room)
                 self.exit = (center_of_last_room_x, center_of_last_room_y)
                 num_rooms += 1
 
-    def place_entities(self, room, dungeon_type, subtype, node_power, images):
+    def place_entities(self, room, dungeon_type, subtype, node_power):
+        images = imgs.get_image_objects()
         # Get random number of monsters
         number_of_monsters = from_dungeon_level([[2, 1], [3, 4], [5, 6]], self.dungeon_level)
 
@@ -172,7 +173,7 @@ class Map:
                 mob_builder = MobBuilder(0, monster_choice)
                 mob_director = MobDirector()
                 mob_director.set_builder(mob_builder)
-                combatant_component = mob_director.get_combatant(images)
+                combatant_component = mob_director.get_combatant()
                 monster = Entity(x, y, blocks=True, render_order=RenderOrder.ACTOR,
                                  combatant=combatant_component)
 
@@ -186,7 +187,7 @@ class Map:
                     any([transition for transition in self.transitions if transition.x == x and transition.y == y]):
                 item_choice = random_choice_from_dict(item_chances)
 
-                item = make_item(images, item_choice)
+                item = make_item(item_choice)
 
                 self.map_entities.append(item)
 
@@ -198,7 +199,7 @@ class Map:
         mob_builder = MobBuilder(0, monster_choice)
         mob_director = MobDirector()
         mob_director.set_builder(mob_builder)
-        combatant_component = mob_director.get_combatant(images)
+        combatant_component = mob_director.get_combatant()
         monster = Entity(self.exit[0], self.exit[1], blocks=True,
                          render_order=RenderOrder.ACTOR, combatant=combatant_component)
 
@@ -214,7 +215,7 @@ class Map:
         self.floor_image = dict.get(string)
 
 
-    def get_encounter(self, images, tile, options):
+    def get_encounter(self, tile, options):
 
         bg = images.get('backgrounds').get(tile.type + '_bg')
 

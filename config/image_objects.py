@@ -2,7 +2,9 @@ import pygame as py
 from ECS.image_bundle import ImageBundle
 
 
-def get_image_bundle(images, type):
+def get_image_bundle(type):
+
+    images = get_image_objects()
 
 
     port = images.get('portraits')

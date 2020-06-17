@@ -1,4 +1,4 @@
-from screens.gui_tools import get_alpha_surface, get_offset, get_text_surface, get_and_blit
+from screens.gui_tools import get_alpha_surface, get_surface, get_offset, get_text_surface, align_and_blit
 import tcod as libtcod
 import math
 
@@ -145,24 +145,22 @@ def get_xp_icon(xp_objs, player):
 
 def get_level_icon(bg, player):
 
-    icon = get_alpha_surface(64, 46)
-    icon.blit(bg, (0, 0))
+    icon = get_surface()
     level = get_text_surface(str(player.combatant.level.current_level), fontsize=10, color=libtcod.white)
-    get_and_blit(icon, level, 'x', 23)
+    align_and_blit(icon, level, x_ratio=0.5, y_ratio=0.68)
 
     return icon
 
 def get_age_icon(bg, player):
-    icon = get_alpha_surface(64, 46)
-    icon.blit(bg, (0, 0))
+    icon = get_surface(bg)
+
     age = get_text_surface(str(player.combatant.age), fontsize=10, color=libtcod.white)
-    get_and_blit(icon, age, 'x', 23)
+    align_and_blit(icon, age, x_ratio=0.5, y_ratio=0.68)
 
     return icon
 
 def species_sex_icon(img):
-    icon = get_alpha_surface(56, 56)
-    icon.blit(img, (0, 0))
+    icon = get_surface(img)
     return icon
 
 

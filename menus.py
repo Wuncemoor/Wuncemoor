@@ -5,12 +5,12 @@ from screens.resources_HUD import player_resource_display
 from screens.encounter_menu import get_encounter_menus
 from screens.display_actors import display_actors
 from screens.message_box import get_message_box
-
+from screens.gui_tools import align_and_blit
+import config.image_objects as images
+import config.constants as constants
 
 def menu(screen, header, gui_img, fontsize, options, width, height, camera_width, camera_height, off_x, off_y):
     if len(options) > 26: raise ValueError('Cannot have a menu with more than 26 options.')
-
-
 
 
     # create an off-screen console that represents the menu's window
@@ -38,7 +38,7 @@ def menu(screen, header, gui_img, fontsize, options, width, height, camera_width
     screen.blit(menu, (x, y))
 
 
-def inventory_menu(screen, header, gui_img, player, camera_width, camera_height):
+def inventory_menu(screen, header, player, camera_width, camera_height):
     fontsize = 12
     # show a menu with each item of the inventory as an option
     if len(player.combatant.inventory.items) == 0:
@@ -76,15 +76,18 @@ def inventory_menu(screen, header, gui_img, player, camera_width, camera_height)
     inventory_height = 400
     off_x = 16
     off_y = 21
-
+    gui_img = images.get('gui').get('inventory_menu')
     menu(screen, header, gui_img, fontsize, options, inventory_width, inventory_height, camera_width, camera_height,
          off_x, off_y)
 
 
 def main_menu(screen, screen_width, screen_height, bg_img, gui_img, fontsize):
     screen.blit(bg_img, (0, 0))
-    font = py.font.SysFont("comicsansms", fontsize)
-    titletext = font.render('WUNCEMOOR: THE ETERNAL DREAM', True, (255, 255, 255))
+
+    tfont = py.font.Font('screens\\fonts\\lunchds.ttf', 150)
+    stfont = py.font.Font('screens\\fonts\\lunchds.ttf', 60)
+    titletext = tfont.render('WUNCEMOOR', True, (0, 0, 0))
+    tsubt = stfont.render('THE ETERNAL DREAM', True, (0, 0, 0))
 
 
     menu_width = 650
@@ -92,7 +95,8 @@ def main_menu(screen, screen_width, screen_height, bg_img, gui_img, fontsize):
     off_x = 35
     off_y = -3
 
-    screen.blit(titletext, (int(screen_width / 4), int(screen_height / 10)))
+    align_and_blit(screen, titletext, x_ratio=0.5, y_ratio=0.25)
+    align_and_blit(screen, tsubt, x_ratio=0.5, y_ratio=0.38)
 
     menu(screen, '', gui_img, fontsize, ['Start A New Game', 'Continue Previous Game', 'Quit'], menu_width, menu_height,
          screen_width, screen_height, off_x, off_y)
@@ -118,8 +122,9 @@ def level_up_menu(screen, header, gui_img, player, camera_width, camera_height):
     menu(screen, header, gui_img, fontsize, options, menu_width, menu_height, camera_width, camera_height, off_x, off_y)
 
 
-def map_menu(screen, world_map, images, mm_width, mm_height, camera_width, camera_height):
-    window = py.Surface((mm_width, mm_height))
+def map_menu(screen, world_map, camera_width, camera_height):
+    width, height = constants.get('mm_width'), constants.get('mm_height')
+    window = py.Surface((width, height))
     offset_x = 50
     offset_y = 50
     i, j = 0, 0
@@ -133,8 +138,8 @@ def map_menu(screen, world_map, images, mm_width, mm_height, camera_width, camer
         j = 0
 
 
-    x = camera_width // 2 - mm_width // 2
-    y = camera_height // 2 - mm_height // 2
+    x = camera_width // 2 - width // 2
+    y = camera_height // 2 - height // 2
     screen.blit(window, (x, y))
 
 

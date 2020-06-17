@@ -15,15 +15,18 @@ from ECS.__entity.noncombatant import Noncombatant
 from random import randint
 from dialogue.get_dialogue import get_samwise_dialogue
 from ECS.image_bundle import ImageBundle
+import config.constants as const
+import config.image_objects as imgs
 
 
 
-def get_town(width, height, node, img_objs):
+def get_town(width, height, node):
+    images = imgs.get_image_objects()
     name, node_x, node_y = node.name, node.x, node.y
 
     map = get_map(width, height, variant=name)
 
-    ents = img_objs.get('entities')
+    ents = images.get('entities')
 
     alpha = ImageBundle(ents.get('transitions').get('alpha'))
     road = Road(Rect(0, int(height / 2) - 2, width, 4), 'world', 0, (node_x, node_y), alpha)
@@ -50,7 +53,7 @@ def get_town(width, height, node, img_objs):
     if name == 'town':
 
         samwise_obj = ImageBundle(ents.get('noncombatants').get('samwise'),
-                                  portrait=img_objs.get('portraits').get('samwise'))
+                                  portrait=images.get('portraits').get('samwise'))
 
         dialogue = get_samwise_dialogue()
         noncom = Noncombatant('samwise', samwise_obj, dialogue)
@@ -63,11 +66,12 @@ def get_town(width, height, node, img_objs):
     return town
 
 
-def get_cave(constants, images, subtype):
+def get_cave(subtype):
+    constants = const.get_constants()
     dungeon_builder = DungeonBuilder('cave', subtype, 5, constants['map_width'], constants['map_height'], 75)
     dungeon_director = DungeonDirector()
     dungeon_director.set_builder(dungeon_builder)
-    cave = dungeon_director.get_dungeon(constants, images)
+    cave = dungeon_director.get_dungeon()
 
     return cave
 

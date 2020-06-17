@@ -36,6 +36,9 @@ def get_constants():
     max_monsters_per_room = 3
     max_items_per_room = 2
 
+    mm_width = 400
+    mm_height = 400
+
     world_map_constants = {
         'width': 50,
         'height': 50,
@@ -78,6 +81,8 @@ def get_constants():
         'map_width': map_width,
         'map_height': map_height,
         'world_map_constants': world_map_constants,
+        'mm_width': mm_width,
+        'mm_height': mm_height,
 
 
     }

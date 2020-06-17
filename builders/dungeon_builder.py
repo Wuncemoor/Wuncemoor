@@ -5,6 +5,8 @@ from ECS.__entity.transition import Transition
 from map_objects.dungeon import Dungeon
 from map_objects.map import Map
 from ECS.image_bundle import ImageBundle
+import config.image_objects as imgs
+import config.constants as const
 
 
 class DungeonDirector:
@@ -13,7 +15,7 @@ class DungeonDirector:
     def set_builder(self, builder):
         self.__builder = builder
 
-    def get_dungeon(self, constants, images):
+    def get_dungeon(self):
         dungeon = Dungeon('NAME_UNDEFINED', 'FLOORS_UNDEFINED', 'MAPS_UNDEFINED', 'NODEPOWER_UNDEFINED')
 
         name = self.__builder.get_name()
@@ -22,7 +24,7 @@ class DungeonDirector:
         floors = self.__builder.get_floors()
         dungeon.set_floors(floors)
 
-        maps = self.__builder.get_maps(constants, images)
+        maps = self.__builder.get_maps()
         dungeon.set_maps(maps)
 
         np = self.__builder.get_np()
@@ -65,7 +67,9 @@ class DungeonBuilder:
     def get_np(self):
         return self.np
 
-    def get_maps(self, constants, images):
+    def get_maps(self):
+        constants = const.get_constants()
+        images = imgs.get_image_objects()
 
         maps = []
 

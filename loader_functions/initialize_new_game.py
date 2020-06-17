@@ -2,27 +2,33 @@ from loader_functions.new_game_functions import get_player, get_camera, equip_pl
 from game_messages import MessageLog
 from enums.game_states import GameStates
 from map_objects.game_map import GameMap
-from loader_functions.image_objects import get_image_bundle
-from journal import Journal, Quest
+from journal import Journal
 from party import Party
+import config.image_objects as imgs
+import config.constants as const
 
 
-def get_game_variables(constants, images):
+def get_game_variables():
 
-    hero_bundle = get_image_bundle(images, 'hero')
+    constants = const.get_constants()
 
-    ent = images.get('entities')
+    hero_bundle = imgs.get_image_bundle('hero')
+
+
 
     player = get_player(hero_bundle)
-    camera = get_camera(player, constants)
-    equip_player(player, ent.get('items').get('equippables').get('weapons').get('stick'))
+
+    camera = get_camera(player)
+
+    equip_player(player)
     
     entities = [player]
     structures = []
     transitions = []
     noncombatants = []
     
-    dungeons, world_map = get_dungeons(constants, images)
+    dungeons, world_map = get_dungeons()
+
     game_map = GameMap(dungeons['town'].maps[0])
     
     entities.extend(game_map.current_map.map_entities)
@@ -39,6 +45,6 @@ def get_game_variables(constants, images):
 
     journal = Journal()
     journal.current_quests.append(get_intro_quest())
-    
+
     return player, dungeons, entities, structures, transitions, noncombatants, game_map,  world_map, camera, message_log, game_state, party, journal
     

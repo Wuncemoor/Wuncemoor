@@ -8,6 +8,7 @@ from screens.resources_HUD import player_resource_display
 from screens.loot_screen import loot_screen
 from screens.character_screen import character_screen
 from screens.journal_screen import journal_screen
+import config.image_objects as images
 
 
 from enum import Enum
@@ -31,7 +32,7 @@ def get_names_under_mouse(entities, fov_map):
 
 
 def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
-               noncombatants, game_map, world_map, images, camera, fov_map, fov_recompute, message_log, camera_width,
+               noncombatants, game_map, world_map, camera, fov_map, fov_recompute, message_log, camera_width,
                camera_height, map_width, map_height, game_state, menu_handler, encounter, loot, dialogue):
 
 
@@ -73,8 +74,6 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
     screen.blit(resource_hud, (0 - 10, 540 + 40))
 
     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
-        gui_img = images.get('gui').get('inventory_menu')
-
 
         if game_state == GameStates.SHOW_INVENTORY:
             inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
@@ -82,12 +81,10 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         else:
             inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
 
-        inventory_menu(screen, inventory_title, gui_img, player, camera_width, camera_height)
+        inventory_menu(screen, inventory_title, player, camera_width, camera_height)
     elif game_state == GameStates.SHOW_MAP:
-        mm_width = 400
-        mm_height = 400
-        mm_images = tiles.get('world_map').get('mini_map')
-        map_menu(screen, world_map, mm_images, mm_width, mm_height, camera_width, camera_height)
+
+        map_menu(screen, world_map, camera_width, camera_height)
     elif game_state == GameStates.LEVEL_UP:
         gui_img = images.get('gui').get('levelup_menu')
         level_up_menu(screen, 'Level up! Choose a stat boost:', gui_img, player, camera_width, camera_height)

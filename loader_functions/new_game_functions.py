@@ -20,6 +20,8 @@ from enums.equipment_slots import EquipmentSlots
 from render_functions import RenderOrder
 from ECS.image_bundle import ImageBundle
 from journal import Quest, QuestNode
+import config.constants as const
+import config.image_objects as imgs
 
 
 def get_player(img_bundle):
@@ -40,49 +42,59 @@ def get_player(img_bundle):
     return player
 
 
-def get_camera(player, constants):
+def get_camera(player):
+    constants = const.get_constants()
     camera = Camera(player.x - int(constants['map_width'] / 2), player.y - int(constants['map_height'] / 2))
     return camera
 
 
-def equip_player(player, stick_img_obj):
+def equip_player(player):
 
+    stickimg = imgs.get_weapons_objs().get('stick')
+    print(stickimg)
     item_component = Item(
-        Equippable('Stick', stick_img_obj, EquipmentSlots.MAIN_HAND, EquippableCore('staff', stick_img_obj),
+        Equippable('Stick', stickimg, EquipmentSlots.MAIN_HAND, EquippableCore('staff', stickimg),
                    EquippableMaterial('wood'), EquippableQuality('average')))
     stick = Entity(0, 0, item=item_component)
     player.combatant.inventory.add_item(stick)
     player.combatant.equipment.toggle_equip(stick)
 
 
-def get_dungeons(constants, images):
+
+def get_dungeons():
     dungeons = {}
+    images = imgs.get_image_objects()
+    constants = const.get_constants()
 
     objs = images.get('entities')
 
+
     world, nodes = get_world_map(constants['world_map_constants'], objs.get('transitions').get('alpha'))
+
     wm_tiles = world.maps[0].tiles
+    print(wm_tiles)
     dungeons[world.name] = world
 
-    town = get_town(constants['start_town_width'], constants['start_town_height'], nodes[0], images)
+    town = get_town(constants['start_town_width'], constants['start_town_height'], nodes[0])
     dungeons[town.name] = town
 
-    town2 = get_town(constants['start_town_width'], constants['start_town_height'], nodes[1], images)
+    town2 = get_town(constants['start_town_width'], constants['start_town_height'], nodes[1])
     dungeons[town2.name] = town2
 
-    town3 = get_town(constants['start_town_width'], constants['start_town_height'], nodes[2], images)
+    town3 = get_town(constants['start_town_width'], constants['start_town_height'], nodes[2])
     dungeons[town3.name] = town3
 
-    town4 = get_town(constants['start_town_width'], constants['start_town_height'], nodes[3], images)
+    town4 = get_town(constants['start_town_width'], constants['start_town_height'], nodes[3])
     dungeons[town4.name] = town4
 
-    goblin_cave = get_cave(constants, images, 'goblin')
+    goblin_cave = get_cave('goblin')
     dungeons[goblin_cave.name] = goblin_cave
 
-    kobold_cave = get_cave(constants, images, 'kobold')
+
+    kobold_cave = get_cave( 'kobold')
     dungeons[kobold_cave.name] = kobold_cave
 
-    cave = get_cave(constants, images, None)
+    cave = get_cave(None)
     dungeons[cave.name] = cave
 
     downstairsimg = ImageBundle(objs.get('transitions').get('down'))

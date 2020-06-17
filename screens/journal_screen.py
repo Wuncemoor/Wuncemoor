@@ -1,4 +1,4 @@
-from screens.gui_tools import get_alpha_surface, center_and_blit, get_button_surface, get_text_surface
+from screens.gui_tools import get_alpha_surface, align_and_blit, get_button_surface, get_text_surface
 import tcod as libtcod
 
 def journal_screen(screen, menu_handler, objs):
@@ -22,9 +22,7 @@ def journal_screen(screen, menu_handler, objs):
     surf.blit(text, (78, 43))
     surf.blit(icon, (92 + 25 * ind, 72))
 
-
-
-    center_and_blit(screen, surf)
+    align_and_blit(screen, surf)
 
 
 def journal_options_display(obj, subjournal, option):
