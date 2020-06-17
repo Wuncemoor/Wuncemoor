@@ -15,7 +15,7 @@ Turn Based Gameplay - Take all the time you need to make the best move
 
 Customization - Level and equip your hero and allies to fit the world you're living in.
 
-Nonlinear gameplay - The decisions you make matter.
+Nonlinear plot - The decisions you make matter.
 
 ...and much more!
 
