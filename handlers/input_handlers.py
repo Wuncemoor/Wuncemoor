@@ -1,5 +1,5 @@
 import pygame
-from enums.game_states import GameStates, MenuStates
+from enums.game_states import GameStates
 
 
 def handle_keys(key, game_state):
@@ -27,12 +27,12 @@ def handle_keys(key, game_state):
 
 
 def handle_main_menu(key):
-    if key == pygame.K_a:
-        return {'new_game': True}
-    elif key == pygame.K_b:
-        return {'load_game': True}
-    elif key in (pygame.K_c, pygame.K_ESCAPE):
-        return {'exit': True}
+    if key in (pygame.K_UP, pygame.K_w):
+        return {'traverse_menu': -1}
+    elif key in (pygame.K_DOWN, pygame.K_x):
+        return {'traverse_menu': 1}
+    elif key == pygame.K_RETURN:
+        return {'choose_menu_option': True}
 
     return {}
 

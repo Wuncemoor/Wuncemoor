@@ -1,12 +1,12 @@
 import tcod as libtcod
 from ECS.entity import Entity
-from render_functions import RenderOrder
+from enums.render_order import RenderOrder
 from ECS.__entity.transition import Transition
 from map_objects.dungeon import Dungeon
 from map_objects.map import Map
 from ECS.image_bundle import ImageBundle
-import config.image_objects as imgs
-import config.constants as const
+from config.image_objects import STAIRS_DOWN, STAIRS_UP
+
 
 
 class DungeonDirector:
@@ -21,11 +21,13 @@ class DungeonDirector:
         name = self.__builder.get_name()
         dungeon.set_name(name)
 
+
         floors = self.__builder.get_floors()
         dungeon.set_floors(floors)
 
         maps = self.__builder.get_maps()
         dungeon.set_maps(maps)
+
 
         np = self.__builder.get_np()
         dungeon.set_node_power(np)
@@ -68,8 +70,7 @@ class DungeonBuilder:
         return self.np
 
     def get_maps(self):
-        constants = const.get_constants()
-        images = imgs.get_image_objects()
+
 
         maps = []
 
@@ -77,14 +78,11 @@ class DungeonBuilder:
         for i in range(self.floors):
             map = self.initialize_maps()
             map.dungeon_level = i + 1
-            map.set_floor_image(self.basename)
             maps.append(map)
 
         # Fill in the maps except for stairs
         for map in maps:
-            map.fill_map(self.basename, self.subtype, self.np, constants['max_rooms'], constants['room_min_size'],
-                         constants['room_max_size'], constants['map_width'], constants['map_height'],
-                         images)
+            map.fill_map(self.basename, self.subtype, self.np)
 
 
         current_floor = 0
@@ -92,8 +90,8 @@ class DungeonBuilder:
         # Fill in stairs connecting floors except for dungeon connection to world
         while current_floor < self.floors:
 
-            downstairsimg = ImageBundle(images.get('entities').get('transitions').get('down'))
-            upstairsimg = ImageBundle(images.get('entities').get('transitions').get('up'))
+            downstairsimg = STAIRS_DOWN
+            upstairsimg = STAIRS_UP
 
             if current_floor == 0:
 
@@ -131,5 +129,5 @@ class DungeonBuilder:
                 maps[current_floor].transitions.append(entrance_stairs)
                 current_floor += 1
 
-        maps[-1].add_boss(self.basename, self.subtype, self.np, images)
+        maps[-1].add_boss(self.basename, self.subtype, self.np)
         return maps

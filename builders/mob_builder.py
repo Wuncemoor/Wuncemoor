@@ -4,12 +4,11 @@ from ECS.__entity.__combatant.competence import Competence, Strength, Instinct, 
 from ECS.__entity.__combatant.equipment import Equipment
 from ECS.__entity.__combatant.level import Level
 from ECS.__entity.combatant import Combatant
-
 from builders.make_item import make_item
 from ECS.__entity.__combatant.attributes import Attributes
 from ECS.__entity.__combatant.phylo import Phylo
 from ECS.__entity.__combatant.inventory import Inventory
-import config.image_objects as imgs
+from config.image_objects import BUNDLE_MOBS
 
 
 class MobDirector:
@@ -19,7 +18,6 @@ class MobDirector:
         self.__builder = builder
 
     def get_combatant(self):
-
         name = self.__builder.get_name()
         bundle = self.__builder.get_images()
         phylo = self.__builder.get_phylo()
@@ -42,18 +40,28 @@ class MobBuilder:
         self.mob = mob
 
     def get_name(self):
-        if 'mini_' or 'mega_' in self.mob:
-            cut = self.mob[5:].capitalize()
-            if '_' in cut:
-                x = cut.index('_')
-                cut.replace('_', ' ')
-                cut[x + 1:].capitalize()
-            return cut
+        if ('mini_' or 'mega_') in self.mob:
+            cut = self.mob[5:]
         else:
-            return self.mob.capitalize()
+            cut = self.mob
+        if '_' in cut:
+            parts = cut.split('_')
+            name = ''
+            for part in parts:
+                name += part.capitalize() + ' '
+            return name
+        else:
+            return cut.capitalize()
 
     def get_images(self):
-        return imgs.get_image_bundle(self.mob)
+        if 'mini_' or 'mega_' in self.mob:
+            key = self.mob[5:]
+            if '_' in key:
+                x = key.index('_')
+                key = key[:x]
+        else:
+            key = self.mob
+        return BUNDLE_MOBS.get(key)
 
     def get_phylo(self):
 

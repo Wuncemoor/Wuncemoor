@@ -1,8 +1,8 @@
 
-import tcod as libtcod
 from game_messages import Message
 import random
 import math
+from config.constants import BLACK
 
 
 class Combatant:
@@ -422,16 +422,16 @@ class Combatant:
             damage = math.floor(((attack_type ** 2) - (resist_type))*((random.randrange(10)+95)/100))
             
             if damage > 0:
-                results.append({'message': Message('{0} attacks {1} for {2} {3} damage.'.format(self.owner.name.capitalize(), target.name, str(damage), attack), libtcod.black)})
+                results.append({'message': Message('{0} attacks {1} for {2} {3} damage.'.format(self.owner.name, target.name, str(damage), attack), BLACK)})
                 results.extend(target.combatant.lose_hp(damage))
 
             else:
-                results.append({'message': Message('{0} attacks {1} but does no damage!.'.format(self.owner.name.capitalize(), target.name), libtcod.black)})
+                results.append({'message': Message('{0} attacks {1} but does no damage!.'.format(self.owner.name, target.name), BLACK)})
 
             
         else:
         
-            results.append({'message': Message('{0} attacks, but {1} dodges!'.format(self.owner.name.capitalize(), target.name), libtcod.black)})
+            results.append({'message': Message('{0} attacks, but {1} dodges!'.format(self.owner.name, target.name), BLACK)})
 
         results.append({'end_turn': True})
         return results

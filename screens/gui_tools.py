@@ -1,5 +1,6 @@
 import pygame as py
 import math
+from config.constants import BLACK, WHITE
 
 
 def get_surface(image):
@@ -19,9 +20,9 @@ def get_alpha_surface(width, height):
     return res_display
 
 
-def get_text_surface(text, fontsize, color):
+def get_text_surface(text, fontsize=12, color=BLACK):
 
-    font = py.font.SysFont("comicsansms", fontsize)
+    font = py.font.Font('screens\\fonts\\lunchds.ttf', fontsize)
     surf = font.render(text, True, color)
 
     return surf
@@ -31,9 +32,9 @@ def get_button_surface(image, text, fontsize, color):
     w, h = image.get_width(), image.get_height()
     surf = get_alpha_surface(w, h)
     text = get_text_surface(text, fontsize, color)
-    tw, th = text.get_width(), text.get_height()
     surf.blit(image, (0, 0))
-    surf.blit(text, ((w - tw) / 2, ((h - th) / 2) - math.floor(fontsize/5)))
+    align_and_blit(surf, text, x_ratio=0.5, y_ratio=0.5, x_adjust=0, y_adjust=math.floor(fontsize/10))
+
 
     return surf
 
@@ -48,7 +49,7 @@ def print_message(message_surface, message, off_x, off_y, y):
 def blit_options(menu, image, off_x, off_y, dy, options, fontsize):
 
     for i in range(len(options)):
-        button = get_button_surface(image, options[i], fontsize, color=(255, 255, 255))
+        button = get_button_surface(image, options[i], fontsize, color=WHITE)
         menu.blit(button, (off_x, off_y + (i * dy)))
 
 

@@ -1,31 +1,33 @@
 from screens.gui_tools import get_alpha_surface, align_and_blit, get_button_surface, get_text_surface
 import tcod as libtcod
+from config.image_objects import JOURNAL_OBJS
 
-def journal_screen(screen, menu_handler, objs):
+def journal_screen(screen, menu_handler):
     surf = get_alpha_surface(550, 530)
 
-    surf.blit(objs.get('bg'), (0, 0))
+    surf.blit(JOURNAL_OBJS.get('bg'), (0, 0))
 
     if menu_handler.display is not None:
         ind = menu_handler.options.index(menu_handler.display)
         sj = menu_handler.menu.get_subjournal(menu_handler.display)
 
-        j_display = journal_options_display(objs.get('quest_holder'), sj, menu_handler.current_option)
+        j_display = journal_options_display(sj, menu_handler.current_option)
         details = get_entry_details(sj[menu_handler.current_option])
         surf.blit(j_display, (30, 112))
         surf.blit(details, (275, 0))
     else:
         ind = menu_handler.current_option
 
-    text = objs.get('text' + str(ind))
-    icon = objs.get('icon' + str(ind))
+    text = JOURNAL_OBJS.get('text' + str(ind))
+    icon = JOURNAL_OBJS.get('icon' + str(ind))
     surf.blit(text, (78, 43))
     surf.blit(icon, (92 + 25 * ind, 72))
 
     align_and_blit(screen, surf)
 
 
-def journal_options_display(obj, subjournal, option):
+def journal_options_display(subjournal, option):
+    obj = JOURNAL_OBJS.get('quest_holder')
 
     surf = get_alpha_surface(obj.get_width(), obj.get_height() * len(subjournal))
     y = 0

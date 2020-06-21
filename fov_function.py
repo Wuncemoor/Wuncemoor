@@ -1,4 +1,5 @@
 import tcod as libtcod
+from config.constants import FOV_RADIUS
 
 def initialize_fov(game_map):
     fov_map = libtcod.map_new(game_map.width, game_map.height)
@@ -9,6 +10,7 @@ def initialize_fov(game_map):
     
     return fov_map
     
-def recompute_fov(fov_map, x, y, radius, light_walls=True, algorithm = 0):
-    libtcod.map_compute_fov(fov_map, x, y, radius, light_walls, algorithm)
+def recompute_fov(fov_map, x, y):
+    # Light wall = True, fov algorithm = 0
+    libtcod.map_compute_fov(fov_map, x, y, FOV_RADIUS, True, 0)
     

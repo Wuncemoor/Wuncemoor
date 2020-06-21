@@ -1,7 +1,7 @@
 from ECS.entity import Entity
 from random import randint
 from random_utils import random_choice_from_dict, from_dungeon_level
-from render_functions import RenderOrder
+from enums.render_order import RenderOrder
 from builders.mob_builder import MobDirector, MobBuilder
 from map_objects.rectangle import Rect
 from map_objects.tile import Tile
@@ -9,7 +9,8 @@ from map_objects.chances.item_chances import get_item_chances
 from map_objects.chances.mob_chances import MobChances
 from map_objects.encounter import Encounter
 from builders.make_item import make_item
-import config.image_objects as imgs
+from config.constants import MAX_ROOMS, ROOM_MAX_SIZE, ROOM_MIN_SIZE, IMAGE_OPTIONS, DUNGEON_FLOOR
+from config.image_objects import BACKGROUNDS, LIGHT_ROAD, DARK_ROAD, TILE_BASE, LIGHT_DIRT, DARK_DIRT, LIGHT_GRASS, DARK_GRASS
 
 
 class Map:
@@ -26,7 +27,6 @@ class Map:
         self.noncombatants = []
         self.entrance = None
         self.exit = None
-        self.floor_image = None
         self.variant = variant
         self.dangerous = dangerous
 
@@ -52,7 +52,8 @@ class Map:
                     else:
                         mode += '0'
 
-                self.tiles[x][y].mode = mode
+                self.tiles[x][y].image = LIGHT_ROAD.get(mode)
+                self.tiles[x][y].image2 = DARK_ROAD.get(mode)
         self.transitions.extend(road.transitions)
 
     def initialize_tiles(self):
@@ -60,6 +61,9 @@ class Map:
         for row in tiles:
             for tile in row:
                 tile.type = 'wall'
+                tile.image = TILE_BASE.get('light_wall')
+                tile.image2 = TILE_BASE.get('dark_wall')
+
         return tiles
 
     def initialize_entities(self):
@@ -69,8 +73,19 @@ class Map:
     def set_dungeon_level(self, level):
         self.dungeon_level = level
 
+    def get_image(self, d_type, tile):
+
+        floor = DUNGEON_FLOOR.get(d_type)
+        num = randint(0, IMAGE_OPTIONS.get(floor) - 1)
+        if d_type == 'cave':
+            tile.image = LIGHT_DIRT[num]
+            tile.image2 = DARK_DIRT[num]
+        elif d_type == 'town':
+            tile.image = LIGHT_GRASS[num]
+            tile.image2 = DARK_GRASS[num]
+
     def create_room(self, room, d_type, subtype):
-        # go through the tiles in the rectangle and make them not blocked
+
 
         for x in range(room.x1 + 1, room.x2):
             for y in range(room.y1 + 1, room.y2):
@@ -78,7 +93,7 @@ class Map:
                 self.tiles[x][y].block_sight = False
                 self.tiles[x][y].type = d_type
                 self.tiles[x][y].subtype = subtype
-
+                self.get_image(d_type, self.tiles[x][y])
 
 
     def create_h_tunnel(self, x1, x2, y, d_type, subtype=None):
@@ -87,7 +102,7 @@ class Map:
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].type = d_type
             self.tiles[x][y].subtype = subtype
-
+            self.get_image(d_type, self.tiles[x][y])
 
     def create_v_tunnel(self, y1, y2, x, d_type, subtype=None):
         for y in range(min(y1, y2), max(y1, y2) + 1):
@@ -95,23 +110,21 @@ class Map:
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].type = d_type
             self.tiles[x][y].subtype = subtype
-
+            self.get_image(d_type, self.tiles[x][y])
 
     # Create everything except stairs
-    def fill_map(self, dungeon_type, subtype, node_power, max_rooms, room_min_size, room_max_size, map_width,
-                 map_height, objs):
+    def fill_map(self, dungeon_type, subtype, node_power):
         rooms = []
         num_rooms = 0
         center_of_last_room_x = None
         center_of_last_room_y = None
 
-        for r in range(max_rooms):
-            w = randint(room_min_size, room_max_size)
-            h = randint(room_min_size, room_max_size)
-            # random posiition without going out of boundaries of the map
-            x = randint(0, map_width - w - 1)
-            y = randint(0, map_height - h - 1)
-            # Rect class makes rectangless easier to work  with
+        for r in range(MAX_ROOMS):
+            w = randint(ROOM_MIN_SIZE, ROOM_MAX_SIZE)
+            h = randint(ROOM_MIN_SIZE, ROOM_MAX_SIZE)
+            # random position without going out of boundaries of the map
+            x = randint(0, self.width - w - 1)
+            y = randint(0, self.height - h - 1)
             new_room = Rect(x, y, w, h)
             for other_room in rooms:
                 if new_room.intersect(other_room):
@@ -144,23 +157,19 @@ class Map:
                         self.create_v_tunnel(prev_y, new_y, prev_x, dungeon_type, subtype)
                         self.create_h_tunnel(prev_x, new_x, new_y, dungeon_type, subtype)
                 # append room to list
-                self.place_entities(new_room, dungeon_type, subtype, node_power)
+                #self.place_entities(new_room, dungeon_type, subtype, node_power)
+
                 rooms.append(new_room)
                 self.exit = (center_of_last_room_x, center_of_last_room_y)
                 num_rooms += 1
 
     def place_entities(self, room, dungeon_type, subtype, node_power):
-        images = imgs.get_image_objects()
-        # Get random number of monsters
         number_of_monsters = from_dungeon_level([[2, 1], [3, 4], [5, 6]], self.dungeon_level)
 
         number_of_items = from_dungeon_level([[1, 1], [2, 4]], self.dungeon_level)
-
         mob_chances = MobChances(dungeon_type, subtype, node_power)
         mcs = mob_chances.get_mob_chances()
         item_chances = get_item_chances(self.dungeon_level)
-        items = images.get('entities').get('items')
-
 
         for i in range(number_of_monsters):
             # choose location in room
@@ -182,16 +191,13 @@ class Map:
         for i in range(number_of_items):
             x = randint(room.x1 + 1, room.x2 - 1)
             y = randint(room.y1 + 1, room.y2 - 1)
-
             if not any([entity for entity in self.map_entities if entity.x == x and entity.y == y]) and not \
                     any([transition for transition in self.transitions if transition.x == x and transition.y == y]):
                 item_choice = random_choice_from_dict(item_chances)
-
                 item = make_item(item_choice)
-
                 self.map_entities.append(item)
 
-    def add_boss(self, d_type, subtype, node_power, images):
+    def add_boss(self, d_type, subtype, node_power):
 
         mob_chances = MobChances(d_type, subtype, node_power * 100)
 
@@ -205,41 +211,26 @@ class Map:
 
         self.map_entities.append(monster)
 
-    def set_floor_image(self, string):
-
-        dict = {
-            'cave': 'dirt',
-            'directed_dungeon': 'dirt',
-        }
-
-        self.floor_image = dict.get(string)
-
-
     def get_encounter(self, tile, options):
 
-        bg = images.get('backgrounds').get(tile.type + '_bg')
+        event = self.get_encounter_event(tile)
 
-        event = self.get_encounter_event(images, tile)
-
-
-        x = Encounter(bg, event, options)
+        x = Encounter(BACKGROUNDS.get(tile.type), event, options)
         x.loot.items = []
         return x
 
-
-    def get_encounter_event(self, images, tile):
+    def get_encounter_event(self, tile):
 
         mob_chances = MobChances(tile.type, tile.subtype, tile.np)
         mcs = mob_chances.get_mob_chances()
         monster_choice = random_choice_from_dict(mcs)
 
-
         mob_builder = MobBuilder(0, monster_choice)
         mob_director = MobDirector()
         mob_director.set_builder(mob_builder)
-        combatant_component = mob_director.get_combatant(images)
+        combatant_component = mob_director.get_combatant()
         event = Entity(0, 0, blocks=True, render_order=RenderOrder.ACTOR,
-                         combatant=combatant_component)
-
+                       combatant=combatant_component)
+        print(event.name)
 
         return event

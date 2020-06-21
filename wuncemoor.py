@@ -4,118 +4,97 @@ from ECS.entity import get_blocking_entities_at_location
 from death_functions import kill_monster, kill_player
 from enums.game_states import GameStates, EncounterStates, LootStates, MenuStates
 from game_messages import Message
-from input_handlers import handle_keys, handle_mouse, handle_main_menu
-from render_functions import render_all
+from handlers.input_handlers import handle_keys, handle_mouse, handle_main_menu
 from loader_functions.initialize_new_game import get_game_variables
 from loader_functions.data_loaders import load_game, save_game
-import config.constants as const
-import config.image_objects as imgs
-from menus import main_menu, message_box, MenuHandler
-from dialogue.dialogue_handler import DialogueHandler
+from config.constants import START, BLACK
+from screens.title_screen import title_screen
+from handlers.state_handlers import MenuHandler, DialogueHandler, TimeHandler
+from handlers.game_handler import GameHandler
 from random_utils import encounter_check
+from render_functions import render_all
 import sys
 import pygame
 
 
-# Main Loop
+# Main menu
 def main():
-    constants = const.get_constants()
-    images = imgs.get_image_objects()
+
+    (screen_size, cscreen_size, mscreen_size, game_title) = START
 
     pygame.init()
 
-    screen = pygame.display.set_mode((constants['screen_width'], constants['screen_height']))
-    resource_surface = pygame.Surface((constants['rscreen_width'], constants['rscreen_height']))
-    message_surface = pygame.Surface((constants['mscreen_width'], constants['mscreen_height']))
-    camera_surface = pygame.Surface((constants['cscreen_width'], constants['cscreen_height']))
+    screen = pygame.display.set_mode(screen_size)
+    message_surface = pygame.Surface(mscreen_size)
+    camera_surface = pygame.Surface(cscreen_size)
 
-    pygame.display.set_caption('Wuncemoor')
+    pygame.display.set_caption(game_title)
 
     player = None
     dungeons = {}
     entities = []
     game_map = None
     message_log = None
-    game_state = None
-    key = None
+    current_option = 0
 
     show_main_menu = True
-    show_load_error_message = False
-
-    main_menu_background_image = images.get('backgrounds').get('mm_bg')
-    mm_gui_img = images.get('gui').get('main_menu')
-
-    clock = pygame.time.Clock()
-    clock.tick(constants['fps'])
 
     running = True
 
     while running:
+        title_screen(screen, current_option)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                key = event.key
 
-        if show_main_menu:
-            main_menu(screen, constants['screen_width'], constants['screen_height'], main_menu_background_image,
-                      mm_gui_img, fontsize=40)
+                if show_main_menu:
 
-            if show_load_error_message:
-                message_box(screen, 50, constants['screen_width'],
-                            constants['screen_height'])
+                    action = handle_main_menu(event.key)
+                    traverse_menu = action.get('traverse_menu')
+                    choose_option = action.get('choose_menu_option')
 
-            pygame.display.flip()
+                    if traverse_menu:
+                        if (traverse_menu < 0 and current_option == 0) or \
+                                (traverse_menu > 0 and current_option == 2):
+                            pass
+                        else:
+                            current_option += traverse_menu
+                    elif choose_option:
+                        if current_option == 0:
+                            player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, \
+                            message_log, party, journal = get_game_variables()
+                            camera.refocus(player.x, player.y, game_map)
 
-            action = handle_main_menu(key)
-
-            new_game = action.get('new_game')
-            load_saved_game = action.get('load_game')
-            exit = action.get('exit')
-
-            if show_load_error_message and (new_game or load_saved_game or exit):
-                show_load_error_message = False
-            elif new_game:
-
-                player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,\
-                message_log, game_state, party, journal = get_game_variables()
-                camera.refocus(player.x, player.y, game_map, constants)
-                game_state = GameStates.PLAYERS_TURN
-
-                show_main_menu = False
-            elif load_saved_game:
-                try:
-                    player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,\
-                    message_log, game_state, party, journal = load_game()
+                            show_main_menu = False
+                        elif current_option == 1:
+                            player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, \
+                            message_log, party, journal = load_game()
+                            show_main_menu = False
+                        elif current_option == 2:
+                            pygame.quit()
+                            sys.exit()
+                else:
+                    screen.fill(BLACK)
                     show_main_menu = False
-                except FileNotFoundError:
-                    show_load_error_message = True
-            elif exit:
-                pygame.quit()
-                sys.exit()
-
-        else:
-            screen.fill((0, 0, 0))
-            show_main_menu = False
-            play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,
-                      message_log, game_state, party, journal, screen, camera_surface, resource_surface, message_surface)
+                    game = GameHandler(screen)
+                    play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,
+                              message_log, party, journal, game, camera_surface, message_surface)
+        pygame.display.flip()
 
 
 def play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,
-              message_log, game_state, party, journal, screen, camera_surface, resource_surface, message_surface):
+              message_log, party, journal, game, camera_surface, message_surface):
 
     fov_recompute = True
     fov_map = initialize_fov(game_map)
-    game_state = game_state
-    previous_game_state = game_state
     targeting_item = None
     dialogue_handler = DialogueHandler([journal])
     encounter = None
     loot = None
     menu_handler = MenuHandler()
-    constants = const.get_constants()
-    images = imgs.get_image_objects()
+    time_handler = TimeHandler()
 
     while True:
         for event in pygame.event.get():
@@ -127,7 +106,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 sys.exit()
             if event.type == pygame.KEYDOWN:
 
-                action = handle_keys(event.key, game_state)
+                action = handle_keys(event.key, game.state)
 
                 move = action.get('move')
                 interact = action.get('interact')
@@ -143,7 +122,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 choose_menu_option = action.get('choose_menu_option')
                 toggle = action.get('toggle')
 
-                if move and game_state == GameStates.PLAYERS_TURN:
+                if move and game.state == GameStates.PLAYERS_TURN:
                     dx, dy = move
                     destination_x = player.x + dx
                     destination_y = player.y + dy
@@ -155,14 +134,14 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             if target.combatant:
                                 attack_results = player.combatant.attack(target)
                                 player_turn_results.extend(attack_results)
-                                game_state = GameStates.ENEMY_TURN
+                                game.state = GameStates.ENEMY_TURN
                         else:
                             player.move(dx, dy)
-                            camera.refocus(player.x, player.y, game_map, constants)
+                            camera.refocus(player.x, player.y, game_map)
 
                             fov_recompute = True
 
-                            game_state = GameStates.ENEMY_TURN
+                            game.state = GameStates.ENEMY_TURN
 
                             if game_map.dangerous:
                                 encountering = encounter_check()
@@ -172,10 +151,9 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                     options = ['FIGHT', 'ITEM', 'RUN']
                                     encounter = game_map.current_map.get_encounter(tile, options)
 
-                                    previous_game_state = game_state
-                                    game_state = GameStates.ENCOUNTER
+                                    game.state = GameStates.ENCOUNTER
 
-                if interact and game_state == GameStates.PLAYERS_TURN:
+                if interact and game.state == GameStates.PLAYERS_TURN:
                     nothing = True
                     for entity in entities:
                         if entity.x == player.x and entity.y == player.y:
@@ -191,7 +169,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             new_map = new_dungeon.maps[transition.transition.go_to_floor]
                             game_map.set_current_map(new_map)
                             player.x, player.y = transition.transition.go_to_xy[0], transition.transition.go_to_xy[1]
-                            camera.refocus(player.x, player.y, game_map, constants)
+                            camera.refocus(player.x, player.y, game_map)
                             entities = [player]
                             entities.extend(game_map.current_map.map_entities)
                             transitions = []
@@ -208,21 +186,19 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         if noncom.x == player.x and noncom.y == player.y:
                             dialogue_handler.partner = noncom
                             dialogue_handler.set_real_talk()
-                            game_state = GameStates.DIALOGUE
+                            game.state = GameStates.DIALOGUE
                             nothing = False
                     if nothing:
                         message_log.add_message(Message('Nothing to see here, move along...', libtcod.dark_blue))
 
                 if show_inventory:
-                    previous_game_state = game_state
-                    game_state = GameStates.SHOW_INVENTORY
+                    game.state = GameStates.SHOW_INVENTORY
 
                 if drop_inventory:
-                    previous_game_state = game_state
-                    game_state = GameStates.DROP_INVENTORY
+                    game.state = GameStates.DROP_INVENTORY
 
                 if show_menus:
-                    game_state = GameStates.MENUS
+                    game.state = GameStates.MENUS
                     menus = {
                         'journal': journal,
                         'party': party,
@@ -230,17 +206,15 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     menu_handler.handle_menu(menus.get(show_menus))
 
                 if show_map:
-                    previous_game_state = game_state
-                    game_state = GameStates.SHOW_MAP
+                    game.state = GameStates.SHOW_MAP
 
-                if inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and inventory_index < \
-                        len(player.combatant.inventory.items):
+                if inventory_index is not None and inventory_index < len(player.combatant.inventory.items):
                     item = player.combatant.inventory.items[inventory_index]
 
-                    if game_state == GameStates.SHOW_INVENTORY:
+                    if game.state == GameStates.SHOW_INVENTORY:
                         player_turn_results.extend(
                             player.combatant.inventory.use(item, entities=entities, fov_map=fov_map))
-                    elif game_state == GameStates.DROP_INVENTORY:
+                    elif game.state == GameStates.DROP_INVENTORY:
                         player_turn_results.extend(player.combatant.inventory.drop_item(item))
 
                 if level_up:
@@ -266,7 +240,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     elif level_up == 'Devotion':
                         player.combatant.attributes.devotion += 1
 
-                    game_state = previous_game_state
                 if converse:
                     key = chr(converse)
                     dialogue = dialogue_handler.partner.noncombatant.dialogue
@@ -280,16 +253,16 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
                         if dialogue.current_convo == 'exit':
                             dialogue.current_convo = 'root'
-                            game_state = previous_game_state
+                            game.state = GameStates.PLAYERS_TURN
 
                 if traverse_menu:
-                    if game_state == GameStates.ENCOUNTER:
+                    if game.state == GameStates.ENCOUNTER:
                         if (traverse_menu < 0 and encounter.current_option == 0) or \
                                 (traverse_menu > 0 and encounter.current_option == len(encounter.options) - 1):
                             pass
                         else:
                             encounter.current_option += traverse_menu
-                    elif game_state == GameStates.LOOTING:
+                    elif game.state == GameStates.LOOTING:
                         if loot.state == LootStates.THINKING:
                             if (traverse_menu < 0 and loot.current_option == 0) or (
                                     traverse_menu > 0 and loot.current_option == (len(loot.options) - 1)):
@@ -308,7 +281,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                 pass
                             else:
                                 loot.current_option += traverse_menu
-                    elif game_state is GameStates.MENUS:
+                    elif game.state is GameStates.MENUS:
                         if menu_handler.state == MenuStates.JOURNAL and menu_handler.display is None:
                             if (traverse_menu[0] < 0 and menu_handler.current_option == 0) or (
                                     traverse_menu[0] > 0 and menu_handler.current_option == (
@@ -325,14 +298,14 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                 menu_handler.current_option += traverse_menu[1]
 
                 if toggle:
-                    if game_state == GameStates.LOOTING:
+                    if game.state == GameStates.LOOTING:
                         if loot.state == LootStates.SIFTING and toggle == 'right' and len(loot.claimed) > 0:
                             loot_results.append({'toggle': 'right'})
                         elif loot.state == LootStates.DEPOSITING and toggle == 'left' and len(loot.items) > 0:
                             loot_results.append({'toggle': 'left'})
 
                 if choose_menu_option:
-                    if game_state == GameStates.ENCOUNTER:
+                    if game.state == GameStates.ENCOUNTER:
                         if encounter.state == EncounterStates.THINKING:
                             encounter_results.append({encounter.options[encounter.current_option]: True})
                         elif encounter.state == EncounterStates.FIGHT_TARGETING:
@@ -342,8 +315,8 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             loot = encounter.loot
 
                             encounter = None
-                            game_state = GameStates.LOOTING
-                    elif game_state == GameStates.LOOTING:
+                            game.state = GameStates.LOOTING
+                    elif game.state == GameStates.LOOTING:
                         if loot.state == LootStates.THINKING:
                             loot_results.append({loot.options[loot.current_option]: True})
                         elif loot.state == LootStates.SIFTING:
@@ -362,38 +335,38 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                 loot.state = LootStates.SIFTING
                             elif loot.current_option > len(loot.claimed) - 1:
                                 loot.current_option -= 1
-                    elif game_state == GameStates.MENUS:
+                    elif game.state == GameStates.MENUS:
                         if menu_handler.state is MenuStates.JOURNAL:
                             if len(journal.get_subjournal(menu_handler.options[menu_handler.current_option])) > 0:
                                 menu_handler.display = menu_handler.options[menu_handler.current_option]
                                 menu_handler.current_option = 0
 
                 if exit:
-                    if game_state == GameStates.ENCOUNTER:
+                    if game.state == GameStates.ENCOUNTER:
                         if encounter.state == EncounterStates.FIGHT_TARGETING:
                             encounter.state = EncounterStates.THINKING
-                    elif game_state == GameStates.LOOTING:
+                    elif game.state == GameStates.LOOTING:
                         if loot.state in (LootStates.SIFTING, LootStates.DEPOSITING):
                             loot.state = LootStates.THINKING
                         elif loot.state == LootStates.THINKING and loot.current_option == 2:
                             loot_results.append({'LEAVE': True})
                         elif loot.state == LootStates.THINKING:
                             loot.current_option = 2
-                    elif game_state == GameStates.MENUS:
+                    elif game.state == GameStates.MENUS:
                         if menu_handler.state is MenuStates.PARTY:
-                            game_state = GameStates.PLAYERS_TURN
+                            game.state = GameStates.PLAYERS_TURN
                         elif menu_handler.state is MenuStates.JOURNAL and menu_handler.display is None:
-                            game_state = GameStates.PLAYERS_TURN
+                            game.state = GameStates.PLAYERS_TURN
                         elif menu_handler.state is MenuStates.JOURNAL:
                             menu_handler.display = None
 
-                    elif game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.SHOW_MAP):
-                        game_state = previous_game_state
+                    elif game.state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.SHOW_MAP):
+                        game.state = GameStates.PLAYERS_TURN
 
-                    elif game_state == GameStates.TARGETING:
+                    elif game.state == GameStates.TARGETING:
                         player_turn_results.append({'targeting_cancelled': True})
                     else:
-                        save_game(player, dungeons, entities, game_map, message_log, game_state)
+                        save_game(player, dungeons, entities, game_map, message_log, game.state)
 
                         pygame.quit()
                         sys.exit()
@@ -413,28 +386,28 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         message_log.add_message(message)
 
                     if dead_entity:
-                        corpse = images.get('entities').get('combatants').get('corpse')
                         if dead_entity == player:
-                            message, game_state = kill_player(dead_entity, corpse)
+                            message, game.state = kill_player(dead_entity)
                         else:
-                            message = kill_monster(dead_entity, corpse)
+                            message = kill_monster(dead_entity)
 
                         message_log.add_message(message)
 
                     if item_added:
                         entities.remove(item_added)
 
-                        game_state = GameStates.ENEMY_TURN
+                        game.state = GameStates.ENEMY_TURN
 
                     if item_consumed:
-                        game_state = GameStates.ENEMY_TURN
+                        game.state = GameStates.ENEMY_TURN
 
                     if item_dropped:
                         game_map.current_map.map_entities.append(item_dropped)
                         entities = [player]
                         entities.extend(game_map.current_map.map_entities)
 
-                        game_state = GameStates.ENEMY_TURN
+                        game.state = GameStates.ENEMY_TURN
+                        game.state = GameStates.ENEMY_TURN
 
                     if equip:
                         equip_results = player.combatant.equipment.toggle_equip(equip)
@@ -448,18 +421,16 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             if dequipped:
                                 message_log.add_message(Message('You dequipped the {0}!'.format(dequipped.name)))
 
-                        game_state = GameStates.ENEMY_TURN
+                        game.state = GameStates.ENEMY_TURN
 
                     if targeting:
-                        previous_game_state = GameStates.PLAYERS_TURN
-                        game_state = GameStates.TARGETING
+                        game.state = GameStates.TARGETING
 
                         targeting_item = targeting
 
                         message_log.add_message(targeting_item.item.useable.targeting_message)
 
                     if targeting_cancelled:
-                        game_state = previous_game_state
 
                         message_log.add_message(Message('Targeting cancelled.'))
 
@@ -474,11 +445,9 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                     player.combatant.level.current_level) + '!',
                                 libtcod.dark_orange))
                             if not GameStates.TARGETING:
-                                previous_game_state = game_state
-                                game_state = GameStates.LEVEL_UP
+                                game.state = GameStates.LEVEL_UP
                             else:
-                                previous_game_state = GameStates.PLAYERS_TURN
-                                game_state = GameStates.LEVEL_UP
+                                game.state = GameStates.LEVEL_UP
                 for encounter_result in encounter_results:
 
                     fight = encounter_result.get('FIGHT')
@@ -492,7 +461,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     if fight:
                         encounter.state = EncounterStates.FIGHT_TARGETING
                     elif run:
-                        game_state = previous_game_state
+                        game.state = GameStates.PLAYERS_TURN
                         player.combatant.level.add_xp(encounter.loot.xp)
                         if xp is None:
                             xp_text = Message("You didn't learn much there...", libtcod.dark_orange)
@@ -505,12 +474,11 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     elif xp:
                         encounter.loot.xp += xp
                     elif dead_entity:
-                        corpse = images.get('entities').get('combatants').get('corpse')
                         if dead_entity == player:
-                            message, game_state = kill_player(dead_entity, corpse)
+                            message, game.state = kill_player(dead_entity)
                         else:
                             encounter.loot.add_loot(dead_entity)
-                            message = kill_monster(dead_entity, corpse)
+                            message = kill_monster(dead_entity)
                             message_log.add_message(message)
                     elif end_turn:
                         if encounter.event.combatant:
@@ -543,7 +511,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         player.combatant.inventory.items.extend(loot.claimed)
 
                         loot = None
-                        game_state = GameStates.PLAYERS_TURN
+                        game.state = GameStates.PLAYERS_TURN
                     if toggle == 'right':
                         loot.state = LootStates.DEPOSITING
                     elif toggle == 'left':
@@ -556,7 +524,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 left_click = mouse_action.get('left_click')
                 right_click = mouse_action.get('right_click')
 
-                if game_state == GameStates.TARGETING:
+                if game.state == GameStates.TARGETING:
                     if left_click:
                         target_x, target_y = left_click
 
@@ -569,13 +537,11 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         player_turn_results.append({'targeting_cancelled': True})
 
         if fov_recompute:
-            recompute_fov(fov_map, player.x, player.y, constants['fov_radius'], constants['fov_light_walls'],
-                          constants['fov_algorithm'])
+            recompute_fov(fov_map, player.x, player.y)
 
-        render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
+        render_all(game.screen, camera_surface, message_surface, entities, player, structures, transitions,
                    noncombatants, game_map, world_map, camera, fov_map, fov_recompute, message_log,
-                   constants['cscreen_width'], constants['cscreen_height'], constants['map_width'],
-                   constants['map_height'], game_state, menu_handler, encounter, loot, dialogue_handler)
+                        game.state, menu_handler, encounter, loot, dialogue_handler)
 
         fov_recompute = False
 
@@ -593,19 +559,18 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             message_log.add_message(message)
 
                         if dead_entity:
-                            corpse = images.get('entities').get('combatants').get('corpse')
                             if dead_entity == player:
-                                message, game_state = kill_player(dead_entity, corpse)
+                                message, game.state = kill_player(dead_entity)
                             else:
-                                message = kill_monster(dead_entity, corpse)
+                                message = kill_monster(dead_entity)
 
                             message_log.add_message(message)
 
-                        if game_state == GameStates.PLAYER_DEAD:
+                        if game.state == GameStates.PLAYER_DEAD:
                             break
                     encounter.state = EncounterStates.THINKING
 
-        if game_state == GameStates.ENEMY_TURN:
+        if game.state == GameStates.ENEMY_TURN:
             for entity in entities:
                 if entity.combatant:
                     if entity.combatant.ai:
@@ -619,20 +584,19 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                 message_log.add_message(message)
 
                             if dead_entity:
-                                corpse = images.get('entities').get('combatants').get('corpse')
                                 if dead_entity == player:
-                                    message, game_state = kill_player(dead_entity, corpse)
+                                    message, game.state = kill_player(dead_entity)
                                 else:
-                                    message = kill_monster(dead_entity, corpse)
+                                    message = kill_monster(dead_entity)
 
                                 message_log.add_message(message)
 
-                                if game_state == GameStates.PLAYER_DEAD:
+                                if game.state == GameStates.PLAYER_DEAD:
                                     break
-                if game_state == GameStates.PLAYER_DEAD:
+                if game.state == GameStates.PLAYER_DEAD:
                     break
             else:
-                game_state = GameStates.PLAYERS_TURN
+                game.state = GameStates.PLAYERS_TURN
 
 
 if __name__ == '__main__':

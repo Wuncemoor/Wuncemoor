@@ -1,854 +1,486 @@
 import pygame as py
 from ECS.image_bundle import ImageBundle
 
-
-def get_image_bundle(type):
-
-    images = get_image_objects()
-
-
-    port = images.get('portraits')
-    sprite = images.get('entities').get('combatants').get('sprites')
-    actor = images.get('entities').get('combatants').get('actors')
-
-
-    bundle_dict = {
-        'hero': ImageBundle(sprite.get('hero'), port.get('hero'), port.get('hero' + '_mini'), actor.get(type)),
-        'mini_rat': ImageBundle(sprite.get('goblin'), actor=actor.get('rat')),
-        'rat': ImageBundle(sprite.get('goblin'), actor=actor.get('rat')),
-        'mega_rat': ImageBundle(sprite.get('goblin'), actor=actor.get('rat')),
-        'mini_bat': ImageBundle(sprite.get('goblin'), actor=actor.get('bat')),
-        'bat': ImageBundle(sprite.get('goblin'), actor=actor.get('bat')),
-        'mega_bat': ImageBundle(sprite.get('goblin'), actor=actor.get('bat')),
-        'mini_salamander': ImageBundle(sprite.get('goblin'), actor=actor.get('salamander')),
-        'salamander': ImageBundle(sprite.get('goblin'), actor=actor.get('salamander')),
-        'mega_salamander': ImageBundle(sprite.get('goblin'), actor=actor.get('salamander')),
-        'mini_spider': ImageBundle(sprite.get('goblin'), actor=actor.get('spider')),
-        'spider': ImageBundle(sprite.get('goblin'), actor=actor.get('spider')),
-        'mega_spider': ImageBundle(sprite.get('goblin'), actor=actor.get('spider')),
-        'mini_snail': ImageBundle(sprite.get('goblin'), actor=actor.get('snail')),
-        'snail': ImageBundle(sprite.get('goblin'), actor=actor.get('snail')),
-        'mega_snail': ImageBundle(sprite.get('goblin'), actor=actor.get('snail')),
-        'mini_shrimp': ImageBundle(sprite.get('goblin'), actor=actor.get('shrimp')),
-        'shrimp': ImageBundle(sprite.get('goblin'), actor=actor.get('shrimp')),
-        'mega_shrimp': ImageBundle(sprite.get('goblin'), actor=actor.get('shrimp')),
-        'mini_raccoon': ImageBundle(sprite.get('goblin'), actor=actor.get('raccoon')),
-        'raccoon': ImageBundle(sprite.get('goblin'), actor=actor.get('raccoon')),
-        'mega_raccoon': ImageBundle(sprite.get('goblin'), actor=actor.get('raccoon')),
-        'mini_bear': ImageBundle(sprite.get('goblin'), actor=actor.get('bear')),
-        'bear': ImageBundle(sprite.get('goblin'), actor=actor.get('bear')),
-        'mega_bear': ImageBundle(sprite.get('goblin'), actor=actor.get('bear')),
-        'mini_kobold': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
-        'kobold': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
-        'mega_kobold': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
-        'mini_kobold_harasser': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
-        'kobold_harasser': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
-        'mega_kobold_harasser': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
-        'mini_kobold_trickster': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
-        'kobold_trickster': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
-        'mega_kobold_trickster': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
-        'mini_kobold_zealot': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
-        'kobold_zealot': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
-        'mega_kobold_zealot': ImageBundle(sprite.get('goblin'), actor=actor.get('kobold')),
-        'mini_goblin': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
-        'goblin': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
-        'mega_goblin': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
-        'mini_goblin_rogue': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
-        'goblin_rogue': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
-        'mega_goblin_rogue': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
-        'mini_goblin_mage': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
-        'goblin_mage': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
-        'mega_goblin_mage': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
-        'mini_goblin_shaman': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
-        'goblin_shaman': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
-        'mega_goblin_shaman': ImageBundle(sprite.get('goblin'), actor=actor.get('goblin')),
-        'potion': get_useables_objs().get('potion'),
-        'longsword': get_weapons_objs().get('longsword'),
-    }
-
-    return bundle_dict.get(type)
-
-def get_image_objects():
-    options = {
-        'grass': 13,
-        'dirt': 9,
-        'deep': 9,
-        'desert': 9,
-        'forest': 9,
-        'plains': 9,
-        'savannah': 9,
-        'shallow': 9,
-        'snow': 9,
-        'taiga': 9,
-        'temprain': 9,
-        'tropicrain': 9,
-        'tundra': 9,
-    }
-
-    img_objs = {
-        'options': options,
-        'backgrounds': get_backgrounds_objs(),
-        'entities': get_entities_objs(),
-        'tiles': get_tiles_objs(),
-        'gui': get_gui_objs(),
-        'portraits': get_portrait_objs(),
-
-    }
-
-    return img_objs
-
-
-def get_gui_objs():
-    gui_objs = {
-        'main_menu': py.image.load('images\\GUI\\main_menu.png'),
-        'inventory_menu': py.image.load('images\\GUI\\inventory_menu.png'),
-        'levelup_menu': py.image.load('images\\GUI\\levelup_menu.png'),
-        'dialogue_menu': py.image.load('images\\GUI\\dialogue_menu.png'),
-        'resource_hud_objs': get_resource_hud_objs(),
-        'encounter': get_encounter_menu_objs(),
-        'encounter_message_bg': py.image.load('images\\GUI\\encounter\\message_bg.png'),
-        'message_bg': py.image.load('images\\GUI\\message_bg.png'),
-        'loot_bg': py.image.load('images\\GUI\\looting\\loot_bg.png'),
-        'loot_banner': py.image.load('images\\GUI\\looting\\loot_banner.png'),
-        'character_screen': py.image.load('images\\GUI\\character_sheet\\char_sheet.png'),
-        'level_icon': py.image.load('images\\GUI\\character_sheet\\level_icon.png'),
-        'age_icon': py.image.load('images\\GUI\\character_sheet\\age_icon.png'),
-        'species_sex_icons': get_species_sex_icons(),
-        'xp_bar_objs': get_xp_bar_objs(),
-        'combat_stats_objs': get_combat_stats_objs(),
-        'saving_throws_objs': get_saving_throws_objs(),
-        'secondary_stats_objs': get_secondary_stats_objs(),
-        'journal_objs': get_journal_objs(),
-
-
-    }
-
-    return gui_objs
-
-
-def get_journal_objs():
-
-    objs = {
-        'bg': py.image.load('images\\GUI\\journal\\journal_bg.png'),
-        'icon0': py.image.load('images\\GUI\\journal\\current.png'),
-        'text0': py.image.load('images\\GUI\\journal\\current_text.png'),
-        'icon1': py.image.load('images\\GUI\\journal\\completed.png'),
-        'text1': py.image.load('images\\GUI\\journal\\completed_text.png'),
-        'icon2': py.image.load('images\\GUI\\journal\\codex.png'),
-        'text2': py.image.load('images\\GUI\\journal\\codex_text.png'),
-        'icon3': py.image.load('images\\GUI\\journal\\history.png'),
-        'text3': py.image.load('images\\GUI\\journal\\history_text.png'),
-        'quest_holder': py.image.load('images\\GUI\\journal\\quest_holder.png'),
-    }
-    return objs
-
-def get_secondary_stats_objs():
-    objs = {
-        'accuracy': py.image.load('images\\GUI\\character_sheet\\accuracy.png'),
-        'dodge': py.image.load('images\\GUI\\character_sheet\\dodge.png'),
-        'initiative': py.image.load('images\\GUI\\character_sheet\\initiative.png'),
-        'speed': py.image.load('images\\GUI\\character_sheet\\speed.png'),
-        'teamwork': py.image.load('images\\GUI\\character_sheet\\teamwork.png'),
-        'leadership': py.image.load('images\\GUI\\character_sheet\\leadership.png'),
-        'presence': py.image.load('images\\GUI\\character_sheet\\presence.png'),
-    }
-    return objs
-def get_saving_throws_objs():
-    objs = {
-        'reflex': py.image.load('images\\GUI\\character_sheet\\reflex.png'),
-        'balance': py.image.load('images\\GUI\\character_sheet\\balance.png'),
-        'breath': py.image.load('images\\GUI\\character_sheet\\breath.png'),
-        'grapple': py.image.load('images\\GUI\\character_sheet\\grapple.png'),
-        'stun': py.image.load('images\\GUI\\character_sheet\\stun.png'),
-        'panic': py.image.load('images\\GUI\\character_sheet\\panic.png'),
-        'apathy': py.image.load('images\\GUI\\character_sheet\\apathy.png'),
-        'pain': py.image.load('images\\GUI\\character_sheet\\pain.png'),
-        'bewitch': py.image.load('images\\GUI\\character_sheet\\bewitch.png'),
-        'enrage': py.image.load('images\\GUI\\character_sheet\\enrage.png'),
-        'illness': py.image.load('images\\GUI\\character_sheet\\illness.png'),
-        'tenacity': py.image.load('images\\GUI\\character_sheet\\tenacity.png'),
-        'pressure': py.image.load('images\\GUI\\character_sheet\\pressure.png'),
-        'bleed': py.image.load('images\\GUI\\character_sheet\\bleed.png'),
-        'injury': py.image.load('images\\GUI\\character_sheet\\injury.png'),
-    }
-    return objs
-
-def get_combat_stats_objs():
-
-    objs = {
-        'power': py.image.load('images\\GUI\\character_sheet\\power.png'),
-        'resistance': py.image.load('images\\GUI\\character_sheet\\resistance.png'),
-        'slash': py.image.load('images\\GUI\\character_sheet\\slash.png'),
-        'pierce': py.image.load('images\\GUI\\character_sheet\\pierce.png'),
-        'blunt': py.image.load('images\\GUI\\character_sheet\\blunt.png'),
-        'heat': py.image.load('images\\GUI\\character_sheet\\heat.png'),
-        'cold': py.image.load('images\\GUI\\character_sheet\\cold.png'),
-        'acid': py.image.load('images\\GUI\\character_sheet\\acid.png'),
-        'current': py.image.load('images\\GUI\\character_sheet\\current.png'),
-        'aether': py.image.load('images\\GUI\\character_sheet\\aether.png'),
-    }
-    return objs
-
-
-def get_xp_bar_objs():
-    xpbar_dict = {
-        'xp_bar': py.image.load('images\\GUI\\character_sheet\\xp_bar.png'),
-        'xp0': py.image.load('images\\GUI\\character_sheet\\xp0.png'),
-        'xp1': py.image.load('images\\GUI\\character_sheet\\xp1.png'),
-        'xp2': py.image.load('images\\GUI\\character_sheet\\xp2.png'),
-        'xp3': py.image.load('images\\GUI\\character_sheet\\xp3.png'),
-        'xp4': py.image.load('images\\GUI\\character_sheet\\xp4.png'),
-    }
-
-    return xpbar_dict
-def get_species_sex_icons():
-
-    icon_dict = {
-        'human': py.image.load('images\\GUI\\character_sheet\\human_icon.png'),
-        'male': py.image.load('images\\GUI\\character_sheet\\male_icon.png'),
-        'female': py.image.load('images\\GUI\\character_sheet\\female_icon.png'),
-    }
-    return icon_dict
-
-
-def get_encounter_menu_objs():
-
-    menu_dict = {
-        'encounter_menu': py.image.load('images\\GUI\\encounter\\options_menu.png'),
-        'button': py.image.load('images\\GUI\\encounter\\option_button.png'),
-        'indicator_h': py.image.load('images\\GUI\\encounter\\indicator_h.png'),
-        'indicator_v': py.image.load('images\\GUI\\encounter\\indicator_v.png'),
-    }
-
-    return menu_dict
-
-
-def get_real_objs(stat):
-    if stat == 'HP':
-        real_dict = {
-            'left0': py.image.load('images\\GUI\\resources_hud\\real_hp\\left0.png'),
-            'left1': py.image.load('images\\GUI\\resources_hud\\real_hp\\left1.png'),
-            'mid': py.image.load('images\\GUI\\resources_hud\\real_hp\\mid.png'),
-            'right0': py.image.load('images\\GUI\\resources_hud\\real_hp\\right0.png'),
-            'right1': py.image.load('images\\GUI\\resources_hud\\real_hp\\right1.png'),
-        }
-    elif stat == 'MP':
-
-        real_dict = {
-            'left0': py.image.load('images\\GUI\\resources_hud\\real_mp\\left0.png'),
-            'left1': py.image.load('images\\GUI\\resources_hud\\real_mp\\left1.png'),
-            'mid': py.image.load('images\\GUI\\resources_hud\\real_mp\\mid.png'),
-            'right0': py.image.load('images\\GUI\\resources_hud\\real_mp\\right0.png'),
-            'right1': py.image.load('images\\GUI\\resources_hud\\real_mp\\right1.png'),
-        }
-
-    elif stat == 'TP':
-
-        real_dict = {
-            'left0': py.image.load('images\\GUI\\resources_hud\\real_tp\\left0.png'),
-            'left1': py.image.load('images\\GUI\\resources_hud\\real_tp\\left1.png'),
-            'mid': py.image.load('images\\GUI\\resources_hud\\real_tp\\mid.png'),
-            'right0': py.image.load('images\\GUI\\resources_hud\\real_tp\\right0.png'),
-            'right1': py.image.load('images\\GUI\\resources_hud\\real_tp\\right1.png'),
-        }
-
-    elif stat == 'VP':
-
-        real_dict = {
-            'left0': py.image.load('images\\GUI\\resources_hud\\real_vp\\left0.png'),
-            'left1': py.image.load('images\\GUI\\resources_hud\\real_vp\\left1.png'),
-            'mid': py.image.load('images\\GUI\\resources_hud\\real_vp\\mid.png'),
-            'right0': py.image.load('images\\GUI\\resources_hud\\real_vp\\right0.png'),
-            'right1': py.image.load('images\\GUI\\resources_hud\\real_vp\\right1.png'),
-        }
-
-    return real_dict
-
-
-def get_resource_hud_objs():
-    objs = {
-        'portrait_mini_frame': py.image.load('images\\GUI\\resources_hud\\portrait_mini_frame.png'),
-        'resource_bar': py.image.load('images\\GUI\\resources_hud\\resource_bar.png'),
-        'real_HP': get_real_objs('HP'),
-        'real_MP': get_real_objs('MP'),
-        'real_TP': get_real_objs('TP'),
-        'real_VP': get_real_objs('VP'),
-        'HP': py.image.load('images\\GUI\\resources_hud\\HP.png'),
-        'MP': py.image.load('images\\GUI\\resources_hud\\MP.png'),
-        'TP': py.image.load('images\\GUI\\resources_hud\\TP.png'),
-        'VP': py.image.load('images\\GUI\\resources_hud\\VP.png'),
-
-    }
-
-    return objs
-
-
-def get_backgrounds_objs():
-    backgrounds = {
-        'mm_bg': py.image.load('images\\background\\main_menu.jpg'),
-        'deep_bg': py.image.load('images\\background\\deep.png'),
-        'desert_bg': py.image.load('images\\background\\desert.png'),
-        'forest_bg': py.image.load('images\\background\\forest.png'),
-        'plains_bg': py.image.load('images\\background\\plains.png'),
-        'savannah_bg': py.image.load('images\\background\\savannah.png'),
-        'shallow_bg': py.image.load('images\\background\\shallow.png'),
-        'snow_bg': py.image.load('images\\background\\snow.png'),
-        'taiga_bg': py.image.load('images\\background\\taiga.png'),
-        'temprain_bg': py.image.load('images\\background\\temprain.png'),
-        'tropicrain_bg': py.image.load('images\\background\\tropicrain.png'),
-        'tundra_bg': py.image.load('images\\background\\tundra.png'),
-        'cave_bg': py.image.load('images\\background\\cave.png'),
-    }
-
-    return backgrounds
-
-
-def get_entities_objs():
-    entities = {
-        'combatants': get_combatants_objs(),
-        'items': get_items_objs(),
-        'transitions': get_transitions_objs(),
-        'noncombatants': get_noncombatants_objs(),
-
-    }
-
-    return entities
-
-
-def get_combatants_objs():
-
-    img_dict = {
-        'actors': get_actor_objs(),
-        'sprites': get_sprite_objs(),
-    }
-
-    return img_dict
-
-def get_actor_objs():
-
-    actors = {
-        'hero': py.image.load('images\\entities\\combatants\\actors\\hero.png'),
-        'goblin': py.image.load('images\\entities\\combatants\\actors\\goblin.png'),
-        'bat': py.image.load('images\\entities\\combatants\\actors\\bat.png'),
-        'bear': py.image.load('images\\entities\\combatants\\actors\\bear.png'),
-        'kobold': py.image.load('images\\entities\\combatants\\actors\\kobold.png'),
-        'raccoon': py.image.load('images\\entities\\combatants\\actors\\raccoon.png'),
-        'rat': py.image.load('images\\entities\\combatants\\actors\\rat.png'),
-        'salamander': py.image.load('images\\entities\\combatants\\actors\\salamander.png'),
-        'shrimp': py.image.load('images\\entities\\combatants\\actors\\shrimp.png'),
-        'snail': py.image.load('images\\entities\\combatants\\actors\\snail.png'),
-        'spider': py.image.load('images\\entities\\combatants\\actors\\spider.png'),
-    }
-
-    return actors
-
-def get_sprite_objs():
-    sprites = {
-        'hero': py.image.load('images\\entities\\combatants\\sprites\\hero.png'),
-        'goblin': py.image.load('images\\entities\\combatants\\sprites\\goblin.png'),
-        'corpse': py.image.load('images\\entities\\combatants\\sprites\\corpse.png'),
-    }
-
-    return sprites
-
-
-def get_items_objs():
-    items = {
-        'equippables': get_equippables_objs(),
-        'useables': get_useables_objs(),
-    }
-
-    return items
-
-
-def get_equippables_objs():
-    equippables = {
-        'weapons': get_weapons_objs(),
-    }
-
-    return equippables
-
-
-def get_weapons_objs():
-    weapons = {
-        'staff': py.image.load('images\\entities\\items\\equippables\\weapons\\staff.png'),
-        'dagger': py.image.load('images\\entities\\items\\equippables\\weapons\\dagger.png'),
-        'shield': py.image.load('images\\entities\\items\\equippables\\weapons\\shield.png'),
-        'longsword': ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\longsword.png'), portrait=py.image.load('images\\entities\\items\\equippables\\weapons\\longsword_portrait.png')),
-        'stick': py.image.load('images\\entities\\items\\equippables\\weapons\\stick.png'),
-    }
-
-    return weapons
-
-
-def get_useables_objs():
-    useables = {
-        'potion': ImageBundle(py.image.load('images\\entities\\items\\useables\\potion.png'),
-                              portrait=py.image.load('images\\entities\\items\\useables\\potion_portrait.png')),
-        'scroll': py.image.load('images\\entities\\items\\useables\\scroll.png'),
-    }
-
-    return useables
-
-
-def get_transitions_objs():
-    transitions = {
-        'down': py.image.load('images\\entities\\transitions\\stairsdown.png'),
-        'up': py.image.load('images\\entities\\transitions\\stairsup.png'),
-        'alpha': py.image.load('images\\entities\\transitions\\alpha.png')
-    }
-
-    return transitions
-
-
-def get_world_map_objs():
-    world_map = {
-        'mini_map': get_mini_map_objs(),
-        'light_deep': biome_dict('deep', True),
-        'dark_deep': biome_dict('deep', False),
-        'light_desert': biome_dict('desert', True),
-        'dark_desert': biome_dict('desert', False),
-        'light_forest': biome_dict('forest', True),
-        'dark_forest': biome_dict('forest', False),
-        'light_plains': biome_dict('plains', True),
-        'dark_plains': biome_dict('plains', False),
-        'light_savannah': biome_dict('savannah', True),
-        'dark_savannah': biome_dict('savannah', False),
-        'light_shallow': biome_dict('shallow', True),
-        'dark_shallow': biome_dict('shallow', False),
-        'light_snow': biome_dict('snow', True),
-        'dark_snow': biome_dict('snow', False),
-        'light_taiga': biome_dict('taiga', True),
-        'dark_taiga': biome_dict('taiga', False),
-        'light_temprain': biome_dict('temprain', True),
-        'dark_temprain': biome_dict('temprain', False),
-        'light_tropicrain': biome_dict('tropicrain', True),
-        'dark_tropicrain': biome_dict('tropicrain', False),
-        'light_tundra': biome_dict('tundra', True),
-        'dark_tundra': biome_dict('tundra', False),
-    }
-
-    return world_map
-
-
-def get_mini_map_objs():
-    mini_map = {
-        'deep': py.image.load('images\\tiles\\world_map\\mini_map\\deep.png'),
-        'desert': py.image.load('images\\tiles\\world_map\\mini_map\\desert.png'),
-        'forest': py.image.load('images\\tiles\\world_map\\mini_map\\forest.png'),
-        'plains': py.image.load('images\\tiles\\world_map\\mini_map\\plains.png'),
-        'savannah': py.image.load('images\\tiles\\world_map\\mini_map\\savannah.png'),
-        'shallow': py.image.load('images\\tiles\\world_map\\mini_map\\shallow.png'),
-        'snow': py.image.load('images\\tiles\\world_map\\mini_map\\snow.png'),
-        'taiga': py.image.load('images\\tiles\\world_map\\mini_map\\taiga.png'),
-        'temprain': py.image.load('images\\tiles\\world_map\\mini_map\\temprain.png'),
-        'tropicrain': py.image.load('images\\tiles\\world_map\\mini_map\\tropicrain.png'),
-        'tundra': py.image.load('images\\tiles\\world_map\\mini_map\\tundra.png')
-
-    }
-
-    return mini_map
-
-
-def biome_dict(biome, visible):
-    if visible:
-        deep_dict = {
-            'light_deep0': py.image.load('images\\tiles\\world_map\\deep\\light_deep0.png'),
-            'light_deep1': py.image.load('images\\tiles\\world_map\\deep\\light_deep1.png'),
-            'light_deep2': py.image.load('images\\tiles\\world_map\\deep\\light_deep2.png'),
-            'light_deep3': py.image.load('images\\tiles\\world_map\\deep\\light_deep3.png'),
-            'light_deep4': py.image.load('images\\tiles\\world_map\\deep\\light_deep4.png'),
-            'light_deep5': py.image.load('images\\tiles\\world_map\\deep\\light_deep5.png'),
-            'light_deep6': py.image.load('images\\tiles\\world_map\\deep\\light_deep6.png'),
-            'light_deep7': py.image.load('images\\tiles\\world_map\\deep\\light_deep7.png'),
-            'light_deep8': py.image.load('images\\tiles\\world_map\\deep\\light_deep8.png'),
-        }
-        desert_dict = {
-            'light_desert0': py.image.load('images\\tiles\\world_map\\desert\\light_desert0.png'),
-            'light_desert1': py.image.load('images\\tiles\\world_map\\desert\\light_desert1.png'),
-            'light_desert2': py.image.load('images\\tiles\\world_map\\desert\\light_desert2.png'),
-            'light_desert3': py.image.load('images\\tiles\\world_map\\desert\\light_desert3.png'),
-            'light_desert4': py.image.load('images\\tiles\\world_map\\desert\\light_desert4.png'),
-            'light_desert5': py.image.load('images\\tiles\\world_map\\desert\\light_desert5.png'),
-            'light_desert6': py.image.load('images\\tiles\\world_map\\desert\\light_desert6.png'),
-            'light_desert7': py.image.load('images\\tiles\\world_map\\desert\\light_desert7.png'),
-            'light_desert8': py.image.load('images\\tiles\\world_map\\desert\\light_desert8.png'),
-        }
-        forest_dict = {
-            'light_forest0': py.image.load('images\\tiles\\world_map\\forest\\light_forest0.png'),
-            'light_forest1': py.image.load('images\\tiles\\world_map\\forest\\light_forest1.png'),
-            'light_forest2': py.image.load('images\\tiles\\world_map\\forest\\light_forest2.png'),
-            'light_forest3': py.image.load('images\\tiles\\world_map\\forest\\light_forest3.png'),
-            'light_forest4': py.image.load('images\\tiles\\world_map\\forest\\light_forest4.png'),
-            'light_forest5': py.image.load('images\\tiles\\world_map\\forest\\light_forest5.png'),
-            'light_forest6': py.image.load('images\\tiles\\world_map\\forest\\light_forest6.png'),
-            'light_forest7': py.image.load('images\\tiles\\world_map\\forest\\light_forest7.png'),
-            'light_forest8': py.image.load('images\\tiles\\world_map\\forest\\light_forest8.png'),
-        }
-
-        plains_dict = {
-            'light_plains0': py.image.load('images\\tiles\\world_map\\plains\\light_plains0.png'),
-            'light_plains1': py.image.load('images\\tiles\\world_map\\plains\\light_plains1.png'),
-            'light_plains2': py.image.load('images\\tiles\\world_map\\plains\\light_plains2.png'),
-            'light_plains3': py.image.load('images\\tiles\\world_map\\plains\\light_plains3.png'),
-            'light_plains4': py.image.load('images\\tiles\\world_map\\plains\\light_plains4.png'),
-            'light_plains5': py.image.load('images\\tiles\\world_map\\plains\\light_plains5.png'),
-            'light_plains6': py.image.load('images\\tiles\\world_map\\plains\\light_plains6.png'),
-            'light_plains7': py.image.load('images\\tiles\\world_map\\plains\\light_plains7.png'),
-            'light_plains8': py.image.load('images\\tiles\\world_map\\plains\\light_plains8.png'),
-        }
-
-        savannah_dict = {
-            'light_savannah0': py.image.load('images\\tiles\\world_map\\savannah\\light_savannah0.png'),
-            'light_savannah1': py.image.load('images\\tiles\\world_map\\savannah\\light_savannah1.png'),
-            'light_savannah2': py.image.load('images\\tiles\\world_map\\savannah\\light_savannah2.png'),
-            'light_savannah3': py.image.load('images\\tiles\\world_map\\savannah\\light_savannah3.png'),
-            'light_savannah4': py.image.load('images\\tiles\\world_map\\savannah\\light_savannah4.png'),
-            'light_savannah5': py.image.load('images\\tiles\\world_map\\savannah\\light_savannah5.png'),
-            'light_savannah6': py.image.load('images\\tiles\\world_map\\savannah\\light_savannah6.png'),
-            'light_savannah7': py.image.load('images\\tiles\\world_map\\savannah\\light_savannah7.png'),
-            'light_savannah8': py.image.load('images\\tiles\\world_map\\savannah\\light_savannah8.png'),
-        }
-        shallow_dict = {
-            'light_shallow0': py.image.load('images\\tiles\\world_map\\shallow\\light_shallow0.png'),
-            'light_shallow1': py.image.load('images\\tiles\\world_map\\shallow\\light_shallow1.png'),
-            'light_shallow2': py.image.load('images\\tiles\\world_map\\shallow\\light_shallow2.png'),
-            'light_shallow3': py.image.load('images\\tiles\\world_map\\shallow\\light_shallow3.png'),
-            'light_shallow4': py.image.load('images\\tiles\\world_map\\shallow\\light_shallow4.png'),
-            'light_shallow5': py.image.load('images\\tiles\\world_map\\shallow\\light_shallow5.png'),
-            'light_shallow6': py.image.load('images\\tiles\\world_map\\shallow\\light_shallow6.png'),
-            'light_shallow7': py.image.load('images\\tiles\\world_map\\shallow\\light_shallow7.png'),
-            'light_shallow8': py.image.load('images\\tiles\\world_map\\shallow\\light_shallow8.png'),
-        }
-        snow_dict = {
-            'light_snow0': py.image.load('images\\tiles\\world_map\\snow\\light_snow0.png'),
-            'light_snow1': py.image.load('images\\tiles\\world_map\\snow\\light_snow1.png'),
-            'light_snow2': py.image.load('images\\tiles\\world_map\\snow\\light_snow2.png'),
-            'light_snow3': py.image.load('images\\tiles\\world_map\\snow\\light_snow3.png'),
-            'light_snow4': py.image.load('images\\tiles\\world_map\\snow\\light_snow4.png'),
-            'light_snow5': py.image.load('images\\tiles\\world_map\\snow\\light_snow5.png'),
-            'light_snow6': py.image.load('images\\tiles\\world_map\\snow\\light_snow6.png'),
-            'light_snow7': py.image.load('images\\tiles\\world_map\\snow\\light_snow7.png'),
-            'light_snow8': py.image.load('images\\tiles\\world_map\\snow\\light_snow8.png'),
-        }
-        taiga_dict = {
-            'light_taiga0': py.image.load('images\\tiles\\world_map\\taiga\\light_taiga0.png'),
-            'light_taiga1': py.image.load('images\\tiles\\world_map\\taiga\\light_taiga1.png'),
-            'light_taiga2': py.image.load('images\\tiles\\world_map\\taiga\\light_taiga2.png'),
-            'light_taiga3': py.image.load('images\\tiles\\world_map\\taiga\\light_taiga3.png'),
-            'light_taiga4': py.image.load('images\\tiles\\world_map\\taiga\\light_taiga4.png'),
-            'light_taiga5': py.image.load('images\\tiles\\world_map\\taiga\\light_taiga5.png'),
-            'light_taiga6': py.image.load('images\\tiles\\world_map\\taiga\\light_taiga6.png'),
-            'light_taiga7': py.image.load('images\\tiles\\world_map\\taiga\\light_taiga7.png'),
-            'light_taiga8': py.image.load('images\\tiles\\world_map\\taiga\\light_taiga8.png'),
-        }
-        temprain_dict = {
-            'light_temprain0': py.image.load('images\\tiles\\world_map\\temprain\\light_temprain0.png'),
-            'light_temprain1': py.image.load('images\\tiles\\world_map\\temprain\\light_temprain1.png'),
-            'light_temprain2': py.image.load('images\\tiles\\world_map\\temprain\\light_temprain2.png'),
-            'light_temprain3': py.image.load('images\\tiles\\world_map\\temprain\\light_temprain3.png'),
-            'light_temprain4': py.image.load('images\\tiles\\world_map\\temprain\\light_temprain4.png'),
-            'light_temprain5': py.image.load('images\\tiles\\world_map\\temprain\\light_temprain5.png'),
-            'light_temprain6': py.image.load('images\\tiles\\world_map\\temprain\\light_temprain6.png'),
-            'light_temprain7': py.image.load('images\\tiles\\world_map\\temprain\\light_temprain7.png'),
-            'light_temprain8': py.image.load('images\\tiles\\world_map\\temprain\\light_temprain8.png'),
-        }
-        tropicrain_dict = {
-            'light_tropicrain0': py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain0.png'),
-            'light_tropicrain1': py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain1.png'),
-            'light_tropicrain2': py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain2.png'),
-            'light_tropicrain3': py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain3.png'),
-            'light_tropicrain4': py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain4.png'),
-            'light_tropicrain5': py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain5.png'),
-            'light_tropicrain6': py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain6.png'),
-            'light_tropicrain7': py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain7.png'),
-            'light_tropicrain8': py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain8.png'),
-        }
-        tundra_dict = {
-            'light_tundra0': py.image.load('images\\tiles\\world_map\\tundra\\light_tundra0.png'),
-            'light_tundra1': py.image.load('images\\tiles\\world_map\\tundra\\light_tundra1.png'),
-            'light_tundra2': py.image.load('images\\tiles\\world_map\\tundra\\light_tundra2.png'),
-            'light_tundra3': py.image.load('images\\tiles\\world_map\\tundra\\light_tundra3.png'),
-            'light_tundra4': py.image.load('images\\tiles\\world_map\\tundra\\light_tundra4.png'),
-            'light_tundra5': py.image.load('images\\tiles\\world_map\\tundra\\light_tundra5.png'),
-            'light_tundra6': py.image.load('images\\tiles\\world_map\\tundra\\light_tundra6.png'),
-            'light_tundra7': py.image.load('images\\tiles\\world_map\\tundra\\light_tundra7.png'),
-            'light_tundra8': py.image.load('images\\tiles\\world_map\\tundra\\light_tundra8.png'),
-        }
-    else:
-        deep_dict = {
-            'dark_deep0': py.image.load('images\\tiles\\world_map\\deep\\dark_deep0.png'),
-            'dark_deep1': py.image.load('images\\tiles\\world_map\\deep\\dark_deep1.png'),
-            'dark_deep2': py.image.load('images\\tiles\\world_map\\deep\\dark_deep2.png'),
-            'dark_deep3': py.image.load('images\\tiles\\world_map\\deep\\dark_deep3.png'),
-            'dark_deep4': py.image.load('images\\tiles\\world_map\\deep\\dark_deep4.png'),
-            'dark_deep5': py.image.load('images\\tiles\\world_map\\deep\\dark_deep5.png'),
-            'dark_deep6': py.image.load('images\\tiles\\world_map\\deep\\dark_deep6.png'),
-            'dark_deep7': py.image.load('images\\tiles\\world_map\\deep\\dark_deep7.png'),
-            'dark_deep8': py.image.load('images\\tiles\\world_map\\deep\\dark_deep8.png'),
-        }
-        desert_dict = {
-            'dark_desert0': py.image.load('images\\tiles\\world_map\\desert\\dark_desert0.png'),
-            'dark_desert1': py.image.load('images\\tiles\\world_map\\desert\\dark_desert1.png'),
-            'dark_desert2': py.image.load('images\\tiles\\world_map\\desert\\dark_desert2.png'),
-            'dark_desert3': py.image.load('images\\tiles\\world_map\\desert\\dark_desert3.png'),
-            'dark_desert4': py.image.load('images\\tiles\\world_map\\desert\\dark_desert4.png'),
-            'dark_desert5': py.image.load('images\\tiles\\world_map\\desert\\dark_desert5.png'),
-            'dark_desert6': py.image.load('images\\tiles\\world_map\\desert\\dark_desert6.png'),
-            'dark_desert7': py.image.load('images\\tiles\\world_map\\desert\\dark_desert7.png'),
-            'dark_desert8': py.image.load('images\\tiles\\world_map\\desert\\dark_desert8.png'),
-        }
-        forest_dict = {
-            'dark_forest0': py.image.load('images\\tiles\\world_map\\forest\\dark_forest0.png'),
-            'dark_forest1': py.image.load('images\\tiles\\world_map\\forest\\dark_forest1.png'),
-            'dark_forest2': py.image.load('images\\tiles\\world_map\\forest\\dark_forest2.png'),
-            'dark_forest3': py.image.load('images\\tiles\\world_map\\forest\\dark_forest3.png'),
-            'dark_forest4': py.image.load('images\\tiles\\world_map\\forest\\dark_forest4.png'),
-            'dark_forest5': py.image.load('images\\tiles\\world_map\\forest\\dark_forest5.png'),
-            'dark_forest6': py.image.load('images\\tiles\\world_map\\forest\\dark_forest6.png'),
-            'dark_forest7': py.image.load('images\\tiles\\world_map\\forest\\dark_forest7.png'),
-            'dark_forest8': py.image.load('images\\tiles\\world_map\\forest\\dark_forest8.png'),
-        }
-
-        plains_dict = {
-            'dark_plains0': py.image.load('images\\tiles\\world_map\\plains\\dark_plains0.png'),
-            'dark_plains1': py.image.load('images\\tiles\\world_map\\plains\\dark_plains1.png'),
-            'dark_plains2': py.image.load('images\\tiles\\world_map\\plains\\dark_plains2.png'),
-            'dark_plains3': py.image.load('images\\tiles\\world_map\\plains\\dark_plains3.png'),
-            'dark_plains4': py.image.load('images\\tiles\\world_map\\plains\\dark_plains4.png'),
-            'dark_plains5': py.image.load('images\\tiles\\world_map\\plains\\dark_plains5.png'),
-            'dark_plains6': py.image.load('images\\tiles\\world_map\\plains\\dark_plains6.png'),
-            'dark_plains7': py.image.load('images\\tiles\\world_map\\plains\\dark_plains7.png'),
-            'dark_plains8': py.image.load('images\\tiles\\world_map\\plains\\dark_plains8.png'),
-        }
-        savannah_dict = {
-            'dark_savannah0': py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah0.png'),
-            'dark_savannah1': py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah1.png'),
-            'dark_savannah2': py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah2.png'),
-            'dark_savannah3': py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah3.png'),
-            'dark_savannah4': py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah4.png'),
-            'dark_savannah5': py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah5.png'),
-            'dark_savannah6': py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah6.png'),
-            'dark_savannah7': py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah7.png'),
-            'dark_savannah8': py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah8.png'),
-        }
-        shallow_dict = {
-            'dark_shallow0': py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow0.png'),
-            'dark_shallow1': py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow1.png'),
-            'dark_shallow2': py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow2.png'),
-            'dark_shallow3': py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow3.png'),
-            'dark_shallow4': py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow4.png'),
-            'dark_shallow5': py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow5.png'),
-            'dark_shallow6': py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow6.png'),
-            'dark_shallow7': py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow7.png'),
-            'dark_shallow8': py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow8.png'),
-        }
-        snow_dict = {
-            'dark_snow0': py.image.load('images\\tiles\\world_map\\snow\\dark_snow0.png'),
-            'dark_snow1': py.image.load('images\\tiles\\world_map\\snow\\dark_snow1.png'),
-            'dark_snow2': py.image.load('images\\tiles\\world_map\\snow\\dark_snow2.png'),
-            'dark_snow3': py.image.load('images\\tiles\\world_map\\snow\\dark_snow3.png'),
-            'dark_snow4': py.image.load('images\\tiles\\world_map\\snow\\dark_snow4.png'),
-            'dark_snow5': py.image.load('images\\tiles\\world_map\\snow\\dark_snow5.png'),
-            'dark_snow6': py.image.load('images\\tiles\\world_map\\snow\\dark_snow6.png'),
-            'dark_snow7': py.image.load('images\\tiles\\world_map\\snow\\dark_snow7.png'),
-            'dark_snow8': py.image.load('images\\tiles\\world_map\\snow\\dark_snow8.png'),
-        }
-        taiga_dict = {
-            'dark_taiga0': py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga0.png'),
-            'dark_taiga1': py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga1.png'),
-            'dark_taiga2': py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga2.png'),
-            'dark_taiga3': py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga3.png'),
-            'dark_taiga4': py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga4.png'),
-            'dark_taiga5': py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga5.png'),
-            'dark_taiga6': py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga6.png'),
-            'dark_taiga7': py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga7.png'),
-            'dark_taiga8': py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga8.png'),
-        }
-        temprain_dict = {
-            'dark_temprain0': py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain0.png'),
-            'dark_temprain1': py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain1.png'),
-            'dark_temprain2': py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain2.png'),
-            'dark_temprain3': py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain3.png'),
-            'dark_temprain4': py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain4.png'),
-            'dark_temprain5': py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain5.png'),
-            'dark_temprain6': py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain6.png'),
-            'dark_temprain7': py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain7.png'),
-            'dark_temprain8': py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain8.png'),
-        }
-        tropicrain_dict = {
-            'dark_tropicrain0': py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain0.png'),
-            'dark_tropicrain1': py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain1.png'),
-            'dark_tropicrain2': py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain2.png'),
-            'dark_tropicrain3': py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain3.png'),
-            'dark_tropicrain4': py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain4.png'),
-            'dark_tropicrain5': py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain5.png'),
-            'dark_tropicrain6': py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain6.png'),
-            'dark_tropicrain7': py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain7.png'),
-            'dark_tropicrain8': py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain8.png'),
-        }
-        tundra_dict = {
-            'dark_tundra0': py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra0.png'),
-            'dark_tundra1': py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra1.png'),
-            'dark_tundra2': py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra2.png'),
-            'dark_tundra3': py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra3.png'),
-            'dark_tundra4': py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra4.png'),
-            'dark_tundra5': py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra5.png'),
-            'dark_tundra6': py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra6.png'),
-            'dark_tundra7': py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra7.png'),
-            'dark_tundra8': py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra8.png'),
-        }
-    biomes_dict = {
-        'deep': deep_dict,
-        'desert': desert_dict,
-        'forest': forest_dict,
-        'plains': plains_dict,
-        'savannah': savannah_dict,
-        'shallow': shallow_dict,
-        'snow': snow_dict,
-        'taiga': taiga_dict,
-        'temprain': temprain_dict,
-        'tropicrain': tropicrain_dict,
-        'tundra': tundra_dict,
-    }
-
-    return biomes_dict.get(biome)
-
-
-def get_tiles_objs():
-    tiles = {
-        'black': py.image.load('images\\tiles\\black.png'),
-        'dark_wall': py.image.load('images\\tiles\\dark_wall.png'),
-        'light_wall': py.image.load('images\\tiles\\light_wall.png'),
-        'light_grass': get_grass_objs(True),
-        'dark_grass': get_grass_objs(False),
-        'light_road': get_road_objs(True),
-        'dark_road': get_road_objs(False),
-        'light_dirt': get_dirt_objs(True),
-        'dark_dirt': get_dirt_objs(False),
-        'world_map': get_world_map_objs(),
-
-    }
-
-    return tiles
-
-
-def get_grass_objs(vis):
-    if vis:
-        grass_dict = {
-            'light_grass0': py.image.load('images\\tiles\\grass\\light_grass00.png'),
-            'light_grass1': py.image.load('images\\tiles\\grass\\light_grass01.png'),
-            'light_grass2': py.image.load('images\\tiles\\grass\\light_grass02.png'),
-            'light_grass3': py.image.load('images\\tiles\\grass\\light_grass03.png'),
-            'light_grass4': py.image.load('images\\tiles\\grass\\light_grass04.png'),
-            'light_grass5': py.image.load('images\\tiles\\grass\\light_grass05.png'),
-            'light_grass6': py.image.load('images\\tiles\\grass\\light_grass06.png'),
-            'light_grass7': py.image.load('images\\tiles\\grass\\light_grass07.png'),
-            'light_grass8': py.image.load('images\\tiles\\grass\\light_grass08.png'),
-            'light_grass9': py.image.load('images\\tiles\\grass\\light_grass09.png'),
-            'light_grass10': py.image.load('images\\tiles\\grass\\light_grass10.png'),
-            'light_grass11': py.image.load('images\\tiles\\grass\\light_grass11.png'),
-            'light_grass12': py.image.load('images\\tiles\\grass\\light_grass12.png'),
-        }
-    else:
-        grass_dict = {
-            'dark_grass0': py.image.load('images\\tiles\\grass\\dark_grass00.png'),
-            'dark_grass1': py.image.load('images\\tiles\\grass\\dark_grass01.png'),
-            'dark_grass2': py.image.load('images\\tiles\\grass\\dark_grass02.png'),
-            'dark_grass3': py.image.load('images\\tiles\\grass\\dark_grass03.png'),
-            'dark_grass4': py.image.load('images\\tiles\\grass\\dark_grass04.png'),
-            'dark_grass5': py.image.load('images\\tiles\\grass\\dark_grass05.png'),
-            'dark_grass6': py.image.load('images\\tiles\\grass\\dark_grass06.png'),
-            'dark_grass7': py.image.load('images\\tiles\\grass\\dark_grass07.png'),
-            'dark_grass8': py.image.load('images\\tiles\\grass\\dark_grass08.png'),
-            'dark_grass9': py.image.load('images\\tiles\\grass\\dark_grass09.png'),
-            'dark_grass10': py.image.load('images\\tiles\\grass\\dark_grass10.png'),
-            'dark_grass11': py.image.load('images\\tiles\\grass\\dark_grass11.png'),
-            'dark_grass12': py.image.load('images\\tiles\\grass\\dark_grass12.png'),
-        }
-    return grass_dict
-
-
-def get_road_objs(vis):
-    if vis:
-        road_dict = {
-            '00001011': py.image.load('images\\road\\light_road00001011.png'),
-            '00010110': py.image.load('images\\road\\light_road00010110.png'),
-            '00011111': py.image.load('images\\road\\light_road00011111.png'),
-            '01101000': py.image.load('images\\road\\light_road01101000.png'),
-            '01101011': py.image.load('images\\road\\light_road01101011.png'),
-            '01111111': py.image.load('images\\road\\light_road01111111.png'),
-            '11010000': py.image.load('images\\road\\light_road11010000.png'),
-            '11010110': py.image.load('images\\road\\light_road11010110.png'),
-            '11011011': py.image.load('images\\road\\light_road11011011.png'),
-            '11111000': py.image.load('images\\road\\light_road11111000.png'),
-            '11111110': py.image.load('images\\road\\light_road11111110.png'),
-            '11111111': py.image.load('images\\road\\light_road11111111.png'),
-
-        }
-    else:
-        road_dict = {
-            '00001011': py.image.load('images\\road\\dark_road00001011.png'),
-            '00010110': py.image.load('images\\road\\dark_road00010110.png'),
-            '00011111': py.image.load('images\\road\\dark_road00011111.png'),
-            '01101000': py.image.load('images\\road\\dark_road01101000.png'),
-            '01101011': py.image.load('images\\road\\dark_road01101011.png'),
-            '01111111': py.image.load('images\\road\\dark_road01111111.png'),
-            '11010000': py.image.load('images\\road\\dark_road11010000.png'),
-            '11010110': py.image.load('images\\road\\dark_road11010110.png'),
-            '11011011': py.image.load('images\\road\\dark_road11011011.png'),
-            '11111000': py.image.load('images\\road\\dark_road11111000.png'),
-            '11111110': py.image.load('images\\road\\dark_road11111110.png'),
-            '11111111': py.image.load('images\\road\\dark_road11111111.png'),
-
-        }
-
-    return road_dict
-
-
-def get_dirt_objs(visible):
-    if visible:
-        dirt_dict = {
-            'light_dirt0': py.image.load('images\\tiles\\dirt\\light_dirt0.png'),
-            'light_dirt1': py.image.load('images\\tiles\\dirt\\light_dirt1.png'),
-            'light_dirt2': py.image.load('images\\tiles\\dirt\\light_dirt2.png'),
-            'light_dirt3': py.image.load('images\\tiles\\dirt\\light_dirt3.png'),
-            'light_dirt4': py.image.load('images\\tiles\\dirt\\light_dirt4.png'),
-            'light_dirt5': py.image.load('images\\tiles\\dirt\\light_dirt5.png'),
-            'light_dirt6': py.image.load('images\\tiles\\dirt\\light_dirt6.png'),
-            'light_dirt7': py.image.load('images\\tiles\\dirt\\light_dirt7.png'),
-            'light_dirt8': py.image.load('images\\tiles\\dirt\\light_dirt8.png'),
-        }
-    else:
-        dirt_dict = {
-            'dark_dirt0': py.image.load('images\\tiles\\dirt\\dark_dirt0.png'),
-            'dark_dirt1': py.image.load('images\\tiles\\dirt\\dark_dirt1.png'),
-            'dark_dirt2': py.image.load('images\\tiles\\dirt\\dark_dirt2.png'),
-            'dark_dirt3': py.image.load('images\\tiles\\dirt\\dark_dirt3.png'),
-            'dark_dirt4': py.image.load('images\\tiles\\dirt\\dark_dirt4.png'),
-            'dark_dirt5': py.image.load('images\\tiles\\dirt\\dark_dirt5.png'),
-            'dark_dirt6': py.image.load('images\\tiles\\dirt\\dark_dirt6.png'),
-            'dark_dirt7': py.image.load('images\\tiles\\dirt\\dark_dirt7.png'),
-            'dark_dirt8': py.image.load('images\\tiles\\dirt\\dark_dirt8.png'),
-        }
-    return dirt_dict
-
-
-def get_noncombatants_objs():
-    noncom = {
-        'samwise': py.image.load('images\\entities\\noncombatants\\samwise.png'),
-    }
-
-    return noncom
-
-
-def get_portrait_objs():
-
-    portraits = {
-        'hero': py.image.load('images\\portraits\\hero.png'),
-        'hero_mini': py.image.load('images\\portraits\\hero_mini.png'),
-        'samwise': py.image.load('images\\portraits\\samwise.png'),
-        'samwise_mini': py.image.load('images\\portraits\\samwise_mini.png'),
-    }
-
-    return portraits
+TITLE_SCREEN_BG = py.image.load('images\\background\\main_menu.png')
+TITLE_MENU_BG = py.image.load('images\\GUI\\main_menu.png')
+TITLE_MENU_BUTTON = py.image.load('images\\GUI\\mm_button.png')
+
+MESSAGE_BG = py.image.load('images\\GUI\\message_bg.png')
+ENCOUNTER_MESSAGE_BG = py.image.load('images\\GUI\\encounter\\message_bg.png')
+ENCOUNTER_MENU = py.image.load('images\\GUI\\menus\\encounter_menu.png')
+ENCOUNTER_BUTTON = py.image.load('images\\GUI\\menus\\option_button.png')
+DIALOGUE_MENU = py.image.load('images\\GUI\\dialogue_menu.png')
+LEVELUP_MENU = py.image.load('images\\GUI\\levelup_menu.png')
+INVENTORY_MENU = py.image.load('images\\GUI\\inventory_menu.png')
+
+JOURNAL_OBJS = {
+    'bg': py.image.load('images\\GUI\\journal\\journal_bg.png'),
+    'icon0': py.image.load('images\\GUI\\journal\\current.png'),
+    'text0': py.image.load('images\\GUI\\journal\\current_text.png'),
+    'icon1': py.image.load('images\\GUI\\journal\\completed.png'),
+    'text1': py.image.load('images\\GUI\\journal\\completed_text.png'),
+    'icon2': py.image.load('images\\GUI\\journal\\codex.png'),
+    'text2': py.image.load('images\\GUI\\journal\\codex_text.png'),
+    'icon3': py.image.load('images\\GUI\\journal\\history.png'),
+    'text3': py.image.load('images\\GUI\\journal\\history_text.png'),
+    'quest_holder': py.image.load('images\\GUI\\journal\\quest_holder.png'),
+}
+
+LOOT_BG = py.image.load('images\\GUI\\looting\\loot_bg.png')
+LOOT_BANNER = py.image.load('images\\GUI\\looting\\loot_banner.png')
+
+CALENDAR_BG = py.image.load('images\\GUI\\calendar.png')
+
+INDICATOR_H = py.image.load('images\\GUI\\menus\\indicator_h.png')
+INDICATOR_V = py.image.load('images\\GUI\\menus\\indicator_v.png')
+
+STAIRS_DOWN = ImageBundle(py.image.load('images\\entities\\transitions\\stairsdown.png'))
+STAIRS_UP = ImageBundle(py.image.load('images\\entities\\transitions\\stairsup.png'))
+ALPHA = ImageBundle(py.image.load('images\\entities\\transitions\\alpha.png'))
+
+BUNDLE_HERO = ImageBundle(py.image.load('images\\entities\\combatants\\hero\\sprite.png'),
+                          py.image.load('images\\entities\\combatants\\hero\\portrait.png'),
+                          py.image.load('images\\entities\\combatants\\hero\\port_mini.png'),
+                          py.image.load('images\\entities\\combatants\\hero\\actor.png'))
+CORPSE = py.image.load('images\\entities\\combatants\\corpse.png')
+
+BUNDLE_SAMWISE = ImageBundle(py.image.load('images\\entities\\noncombatants\\samwise\\sprite.png'),
+                             py.image.load('images\\entities\\noncombatants\\samwise\\portrait.png'),
+                             py.image.load('images\\entities\\noncombatants\\samwise\\port_mini.png'))
+
+BUNDLE_STICK = ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\sprite.png'))
+
+BUNDLE_WEAPONS = {
+    'staff': ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\staff\\sprite.png')),
+    'dagger': ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\dagger\\sprite.png')),
+    'shield': ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\shield\\sprite.png')),
+    'longsword': ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\longsword\\sprite.png'),
+                             py.image.load('images\\entities\\items\\equippables\\weapons\\longsword\\portrait.png')),
+}
+
+BUNDLE_POTION = ImageBundle(py.image.load('images\\entities\\items\\useables\\potion\\sprite.png'),
+                            py.image.load('images\\entities\\items\\useables\\potion\\portrait.png'))
+SCROLL = py.image.load('images\\entities\\items\\useables\\scroll\\sprite.png')
+
+BUNDLE_MOBS = {
+    'rat': ImageBundle(py.image.load('images\\entities\\combatants\\rat\\sprite.png'),
+                       actor=py.image.load('images\\entities\\combatants\\rat\\actor.png')),
+    'bat': ImageBundle(actor=py.image.load('images\\entities\\combatants\\bat\\actor.png')),
+    'bear': ImageBundle(actor=py.image.load('images\\entities\\combatants\\bear\\actor.png')),
+    'goblin': ImageBundle(py.image.load('images\\entities\\combatants\\goblin\\sprite.png'),
+                          actor=py.image.load('images\\entities\\combatants\\goblin\\actor.png')),
+    'kobold': ImageBundle(actor=py.image.load('images\\entities\\combatants\\kobold\\actor.png')),
+    'raccoon': ImageBundle(actor=py.image.load('images\\entities\\combatants\\raccoon\\actor.png')),
+    'salamander': ImageBundle(actor=py.image.load('images\\entities\\combatants\\salamander\\actor.png')),
+    'snail': ImageBundle(actor=py.image.load('images\\entities\\combatants\\snail\\actor.png')),
+    'shrimp': ImageBundle(actor=py.image.load('images\\entities\\combatants\\shrimp\\actor.png')),
+    'spider': ImageBundle(actor=py.image.load('images\\entities\\combatants\\spider\\actor.png')),
+}
+
+CHARACTER_SCREEN = {
+    'bg': py.image.load('images\\GUI\\character_sheet\\char_sheet.png'),
+    'level': py.image.load('images\\GUI\\character_sheet\\level_icon.png'),
+    'age': py.image.load('images\\GUI\\character_sheet\\age_icon.png'),
+    'power': py.image.load('images\\GUI\\character_sheet\\power.png'),
+    'resistance': py.image.load('images\\GUI\\character_sheet\\resistance.png'),
+    'slash': py.image.load('images\\GUI\\character_sheet\\slash.png'),
+    'pierce': py.image.load('images\\GUI\\character_sheet\\pierce.png'),
+    'blunt': py.image.load('images\\GUI\\character_sheet\\blunt.png'),
+    'heat': py.image.load('images\\GUI\\character_sheet\\heat.png'),
+    'cold': py.image.load('images\\GUI\\character_sheet\\cold.png'),
+    'acid': py.image.load('images\\GUI\\character_sheet\\acid.png'),
+    'current': py.image.load('images\\GUI\\character_sheet\\current.png'),
+    'aether': py.image.load('images\\GUI\\character_sheet\\aether.png'),
+    'accuracy': py.image.load('images\\GUI\\character_sheet\\accuracy.png'),
+    'dodge': py.image.load('images\\GUI\\character_sheet\\dodge.png'),
+    'initiative': py.image.load('images\\GUI\\character_sheet\\initiative.png'),
+    'speed': py.image.load('images\\GUI\\character_sheet\\speed.png'),
+    'teamwork': py.image.load('images\\GUI\\character_sheet\\teamwork.png'),
+    'leadership': py.image.load('images\\GUI\\character_sheet\\leadership.png'),
+    'presence': py.image.load('images\\GUI\\character_sheet\\presence.png'),
+    'reflex': py.image.load('images\\GUI\\character_sheet\\reflex.png'),
+    'balance': py.image.load('images\\GUI\\character_sheet\\balance.png'),
+    'breath': py.image.load('images\\GUI\\character_sheet\\breath.png'),
+    'grapple': py.image.load('images\\GUI\\character_sheet\\grapple.png'),
+    'stun': py.image.load('images\\GUI\\character_sheet\\stun.png'),
+    'panic': py.image.load('images\\GUI\\character_sheet\\panic.png'),
+    'apathy': py.image.load('images\\GUI\\character_sheet\\apathy.png'),
+    'pain': py.image.load('images\\GUI\\character_sheet\\pain.png'),
+    'bewitch': py.image.load('images\\GUI\\character_sheet\\bewitch.png'),
+    'enrage': py.image.load('images\\GUI\\character_sheet\\enrage.png'),
+    'illness': py.image.load('images\\GUI\\character_sheet\\illness.png'),
+    'tenacity': py.image.load('images\\GUI\\character_sheet\\tenacity.png'),
+    'pressure': py.image.load('images\\GUI\\character_sheet\\pressure.png'),
+    'bleed': py.image.load('images\\GUI\\character_sheet\\bleed.png'),
+    'injury': py.image.load('images\\GUI\\character_sheet\\injury.png'),
+    'xp_bar': py.image.load('images\\GUI\\character_sheet\\xp_bar.png'),
+    'xp0': py.image.load('images\\GUI\\character_sheet\\xp0.png'),
+    'xp1': py.image.load('images\\GUI\\character_sheet\\xp1.png'),
+    'xp2': py.image.load('images\\GUI\\character_sheet\\xp2.png'),
+    'xp3': py.image.load('images\\GUI\\character_sheet\\xp3.png'),
+    'xp4': py.image.load('images\\GUI\\character_sheet\\xp4.png'),
+    'human': py.image.load('images\\GUI\\character_sheet\\human_icon.png'),
+    'male': py.image.load('images\\GUI\\character_sheet\\male_icon.png'),
+    'female': py.image.load('images\\GUI\\character_sheet\\female_icon.png'),
+}
+
+RESOURCE_HUD = {
+    'frame': py.image.load('images\\GUI\\resources_hud\\portrait_mini_frame.png'),
+    'resource_bar': py.image.load('images\\GUI\\resources_hud\\resource_bar.png'),
+    'HP': py.image.load('images\\GUI\\resources_hud\\HP.png'),
+    'MP': py.image.load('images\\GUI\\resources_hud\\MP.png'),
+    'TP': py.image.load('images\\GUI\\resources_hud\\TP.png'),
+    'VP': py.image.load('images\\GUI\\resources_hud\\VP.png'),
+    'HPleft0': py.image.load('images\\GUI\\resources_hud\\real_hp\\left0.png'),
+    'HPleft1': py.image.load('images\\GUI\\resources_hud\\real_hp\\left1.png'),
+    'HPmid': py.image.load('images\\GUI\\resources_hud\\real_hp\\mid.png'),
+    'HPright0': py.image.load('images\\GUI\\resources_hud\\real_hp\\right0.png'),
+    'HPright1': py.image.load('images\\GUI\\resources_hud\\real_hp\\right1.png'),
+    'MPleft0': py.image.load('images\\GUI\\resources_hud\\real_mp\\left0.png'),
+    'MPleft1': py.image.load('images\\GUI\\resources_hud\\real_mp\\left1.png'),
+    'MPmid': py.image.load('images\\GUI\\resources_hud\\real_mp\\mid.png'),
+    'MPright0': py.image.load('images\\GUI\\resources_hud\\real_mp\\right0.png'),
+    'MPright1': py.image.load('images\\GUI\\resources_hud\\real_mp\\right1.png'),
+    'TPleft0': py.image.load('images\\GUI\\resources_hud\\real_tp\\left0.png'),
+    'TPleft1': py.image.load('images\\GUI\\resources_hud\\real_tp\\left1.png'),
+    'TPmid': py.image.load('images\\GUI\\resources_hud\\real_tp\\mid.png'),
+    'TPright0': py.image.load('images\\GUI\\resources_hud\\real_tp\\right0.png'),
+    'TPright1': py.image.load('images\\GUI\\resources_hud\\real_tp\\right1.png'),
+    'VPleft0': py.image.load('images\\GUI\\resources_hud\\real_vp\\left0.png'),
+    'VPleft1': py.image.load('images\\GUI\\resources_hud\\real_vp\\left1.png'),
+    'VPmid': py.image.load('images\\GUI\\resources_hud\\real_vp\\mid.png'),
+    'VPright0': py.image.load('images\\GUI\\resources_hud\\real_vp\\right0.png'),
+    'VPright1': py.image.load('images\\GUI\\resources_hud\\real_vp\\right1.png'),
+}
+BACKGROUNDS = {
+    'deep': py.image.load('images\\background\\deep.png'),
+    'desert': py.image.load('images\\background\\desert.png'),
+    'forest': py.image.load('images\\background\\forest.png'),
+    'plains': py.image.load('images\\background\\plains.png'),
+    'savannah': py.image.load('images\\background\\savannah.png'),
+    'shallow': py.image.load('images\\background\\shallow.png'),
+    'snow': py.image.load('images\\background\\snow.png'),
+    'taiga': py.image.load('images\\background\\taiga.png'),
+    'temprain': py.image.load('images\\background\\temprain.png'),
+    'tropicrain': py.image.load('images\\background\\tropicrain.png'),
+    'tundra': py.image.load('images\\background\\tundra.png'),
+    'cave': py.image.load('images\\background\\cave.png'),
+}
+
+MINIMAP = {
+    'deep': py.image.load('images\\tiles\\world_map\\mini_map\\deep.png'),
+    'desert': py.image.load('images\\tiles\\world_map\\mini_map\\desert.png'),
+    'forest': py.image.load('images\\tiles\\world_map\\mini_map\\forest.png'),
+    'plains': py.image.load('images\\tiles\\world_map\\mini_map\\plains.png'),
+    'savannah': py.image.load('images\\tiles\\world_map\\mini_map\\savannah.png'),
+    'shallow': py.image.load('images\\tiles\\world_map\\mini_map\\shallow.png'),
+    'snow': py.image.load('images\\tiles\\world_map\\mini_map\\snow.png'),
+    'taiga': py.image.load('images\\tiles\\world_map\\mini_map\\taiga.png'),
+    'temprain': py.image.load('images\\tiles\\world_map\\mini_map\\temprain.png'),
+    'tropicrain': py.image.load('images\\tiles\\world_map\\mini_map\\tropicrain.png'),
+    'tundra': py.image.load('images\\tiles\\world_map\\mini_map\\tundra.png')
+
+}
+
+LIGHT_DEEP = [py.image.load('images\\tiles\\world_map\\deep\\light_deep0.png'),
+              py.image.load('images\\tiles\\world_map\\deep\\light_deep1.png'),
+              py.image.load('images\\tiles\\world_map\\deep\\light_deep2.png'),
+              py.image.load('images\\tiles\\world_map\\deep\\light_deep3.png'),
+              py.image.load('images\\tiles\\world_map\\deep\\light_deep4.png'),
+              py.image.load('images\\tiles\\world_map\\deep\\light_deep5.png'),
+              py.image.load('images\\tiles\\world_map\\deep\\light_deep6.png'),
+              py.image.load('images\\tiles\\world_map\\deep\\light_deep7.png'),
+              py.image.load('images\\tiles\\world_map\\deep\\light_deep8.png')]
+DARK_DEEP = [py.image.load('images\\tiles\\world_map\\deep\\dark_deep0.png'),
+             py.image.load('images\\tiles\\world_map\\deep\\dark_deep1.png'),
+             py.image.load('images\\tiles\\world_map\\deep\\dark_deep2.png'),
+             py.image.load('images\\tiles\\world_map\\deep\\dark_deep3.png'),
+             py.image.load('images\\tiles\\world_map\\deep\\dark_deep4.png'),
+             py.image.load('images\\tiles\\world_map\\deep\\dark_deep5.png'),
+             py.image.load('images\\tiles\\world_map\\deep\\dark_deep6.png'),
+             py.image.load('images\\tiles\\world_map\\deep\\dark_deep7.png'),
+             py.image.load('images\\tiles\\world_map\\deep\\dark_deep8.png')]
+LIGHT_DESERT = [py.image.load('images\\tiles\\world_map\\desert\\light_desert0.png'),
+                py.image.load('images\\tiles\\world_map\\desert\\light_desert1.png'),
+                py.image.load('images\\tiles\\world_map\\desert\\light_desert2.png'),
+                py.image.load('images\\tiles\\world_map\\desert\\light_desert3.png'),
+                py.image.load('images\\tiles\\world_map\\desert\\light_desert4.png'),
+                py.image.load('images\\tiles\\world_map\\desert\\light_desert5.png'),
+                py.image.load('images\\tiles\\world_map\\desert\\light_desert6.png'),
+                py.image.load('images\\tiles\\world_map\\desert\\light_desert7.png'),
+                py.image.load('images\\tiles\\world_map\\desert\\light_desert8.png')]
+DARK_DESERT = [py.image.load('images\\tiles\\world_map\\desert\\dark_desert0.png'),
+               py.image.load('images\\tiles\\world_map\\desert\\dark_desert1.png'),
+               py.image.load('images\\tiles\\world_map\\desert\\dark_desert2.png'),
+               py.image.load('images\\tiles\\world_map\\desert\\dark_desert3.png'),
+               py.image.load('images\\tiles\\world_map\\desert\\dark_desert4.png'),
+               py.image.load('images\\tiles\\world_map\\desert\\dark_desert5.png'),
+               py.image.load('images\\tiles\\world_map\\desert\\dark_desert6.png'),
+               py.image.load('images\\tiles\\world_map\\desert\\dark_desert7.png'),
+               py.image.load('images\\tiles\\world_map\\desert\\dark_desert8.png')]
+LIGHT_FOREST = [py.image.load('images\\tiles\\world_map\\forest\\light_forest0.png'),
+                py.image.load('images\\tiles\\world_map\\forest\\light_forest1.png'),
+                py.image.load('images\\tiles\\world_map\\forest\\light_forest2.png'),
+                py.image.load('images\\tiles\\world_map\\forest\\light_forest3.png'),
+                py.image.load('images\\tiles\\world_map\\forest\\light_forest4.png'),
+                py.image.load('images\\tiles\\world_map\\forest\\light_forest5.png'),
+                py.image.load('images\\tiles\\world_map\\forest\\light_forest6.png'),
+                py.image.load('images\\tiles\\world_map\\forest\\light_forest7.png'),
+                py.image.load('images\\tiles\\world_map\\forest\\light_forest8.png')]
+DARK_FOREST = [py.image.load('images\\tiles\\world_map\\forest\\dark_forest0.png'),
+               py.image.load('images\\tiles\\world_map\\forest\\dark_forest1.png'),
+               py.image.load('images\\tiles\\world_map\\forest\\dark_forest2.png'),
+               py.image.load('images\\tiles\\world_map\\forest\\dark_forest3.png'),
+               py.image.load('images\\tiles\\world_map\\forest\\dark_forest4.png'),
+               py.image.load('images\\tiles\\world_map\\forest\\dark_forest5.png'),
+               py.image.load('images\\tiles\\world_map\\forest\\dark_forest6.png'),
+               py.image.load('images\\tiles\\world_map\\forest\\dark_forest7.png'),
+               py.image.load('images\\tiles\\world_map\\forest\\dark_forest8.png')]
+LIGHT_PLAINS = [py.image.load('images\\tiles\\world_map\\plains\\light_plains0.png'),
+                py.image.load('images\\tiles\\world_map\\plains\\light_plains1.png'),
+                py.image.load('images\\tiles\\world_map\\plains\\light_plains2.png'),
+                py.image.load('images\\tiles\\world_map\\plains\\light_plains3.png'),
+                py.image.load('images\\tiles\\world_map\\plains\\light_plains4.png'),
+                py.image.load('images\\tiles\\world_map\\plains\\light_plains5.png'),
+                py.image.load('images\\tiles\\world_map\\plains\\light_plains6.png'),
+                py.image.load('images\\tiles\\world_map\\plains\\light_plains7.png'),
+                py.image.load('images\\tiles\\world_map\\plains\\light_plains8.png')]
+DARK_PLAINS = [py.image.load('images\\tiles\\world_map\\plains\\dark_plains0.png'),
+               py.image.load('images\\tiles\\world_map\\plains\\dark_plains1.png'),
+               py.image.load('images\\tiles\\world_map\\plains\\dark_plains2.png'),
+               py.image.load('images\\tiles\\world_map\\plains\\dark_plains3.png'),
+               py.image.load('images\\tiles\\world_map\\plains\\dark_plains4.png'),
+               py.image.load('images\\tiles\\world_map\\plains\\dark_plains5.png'),
+               py.image.load('images\\tiles\\world_map\\plains\\dark_plains6.png'),
+               py.image.load('images\\tiles\\world_map\\plains\\dark_plains7.png'),
+               py.image.load('images\\tiles\\world_map\\plains\\dark_plains8.png')]
+LIGHT_SAVANNAH = [py.image.load('images\\tiles\\world_map\\savannah\\light_savannah0.png'),
+                  py.image.load('images\\tiles\\world_map\\savannah\\light_savannah1.png'),
+                  py.image.load('images\\tiles\\world_map\\savannah\\light_savannah2.png'),
+                  py.image.load('images\\tiles\\world_map\\savannah\\light_savannah3.png'),
+                  py.image.load('images\\tiles\\world_map\\savannah\\light_savannah4.png'),
+                  py.image.load('images\\tiles\\world_map\\savannah\\light_savannah5.png'),
+                  py.image.load('images\\tiles\\world_map\\savannah\\light_savannah6.png'),
+                  py.image.load('images\\tiles\\world_map\\savannah\\light_savannah7.png'),
+                  py.image.load('images\\tiles\\world_map\\savannah\\light_savannah8.png'), ]
+DARK_SAVANNAH = [py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah0.png'),
+                 py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah1.png'),
+                 py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah2.png'),
+                 py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah3.png'),
+                 py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah4.png'),
+                 py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah5.png'),
+                 py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah6.png'),
+                 py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah7.png'),
+                 py.image.load('images\\tiles\\world_map\\savannah\\dark_savannah8.png'), ]
+LIGHT_SHALLOW = [py.image.load('images\\tiles\\world_map\\shallow\\light_shallow0.png'),
+                 py.image.load('images\\tiles\\world_map\\shallow\\light_shallow1.png'),
+                 py.image.load('images\\tiles\\world_map\\shallow\\light_shallow2.png'),
+                 py.image.load('images\\tiles\\world_map\\shallow\\light_shallow3.png'),
+                 py.image.load('images\\tiles\\world_map\\shallow\\light_shallow4.png'),
+                 py.image.load('images\\tiles\\world_map\\shallow\\light_shallow5.png'),
+                 py.image.load('images\\tiles\\world_map\\shallow\\light_shallow6.png'),
+                 py.image.load('images\\tiles\\world_map\\shallow\\light_shallow7.png'),
+                 py.image.load('images\\tiles\\world_map\\shallow\\light_shallow8.png')]
+DARK_SHALLOW = [py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow0.png'),
+                py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow1.png'),
+                py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow2.png'),
+                py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow3.png'),
+                py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow4.png'),
+                py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow5.png'),
+                py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow6.png'),
+                py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow7.png'),
+                py.image.load('images\\tiles\\world_map\\shallow\\dark_shallow8.png')]
+LIGHT_SNOW = [py.image.load('images\\tiles\\world_map\\snow\\light_snow0.png'),
+              py.image.load('images\\tiles\\world_map\\snow\\light_snow1.png'),
+              py.image.load('images\\tiles\\world_map\\snow\\light_snow2.png'),
+              py.image.load('images\\tiles\\world_map\\snow\\light_snow3.png'),
+              py.image.load('images\\tiles\\world_map\\snow\\light_snow4.png'),
+              py.image.load('images\\tiles\\world_map\\snow\\light_snow5.png'),
+              py.image.load('images\\tiles\\world_map\\snow\\light_snow6.png'),
+              py.image.load('images\\tiles\\world_map\\snow\\light_snow7.png'),
+              py.image.load('images\\tiles\\world_map\\snow\\light_snow8.png')]
+DARK_SNOW = [py.image.load('images\\tiles\\world_map\\snow\\dark_snow0.png'),
+             py.image.load('images\\tiles\\world_map\\snow\\dark_snow1.png'),
+             py.image.load('images\\tiles\\world_map\\snow\\dark_snow2.png'),
+             py.image.load('images\\tiles\\world_map\\snow\\dark_snow3.png'),
+             py.image.load('images\\tiles\\world_map\\snow\\dark_snow4.png'),
+             py.image.load('images\\tiles\\world_map\\snow\\dark_snow5.png'),
+             py.image.load('images\\tiles\\world_map\\snow\\dark_snow6.png'),
+             py.image.load('images\\tiles\\world_map\\snow\\dark_snow7.png'),
+             py.image.load('images\\tiles\\world_map\\snow\\dark_snow8.png')]
+LIGHT_TAIGA = [py.image.load('images\\tiles\\world_map\\taiga\\light_taiga0.png'),
+               py.image.load('images\\tiles\\world_map\\taiga\\light_taiga1.png'),
+               py.image.load('images\\tiles\\world_map\\taiga\\light_taiga2.png'),
+               py.image.load('images\\tiles\\world_map\\taiga\\light_taiga3.png'),
+               py.image.load('images\\tiles\\world_map\\taiga\\light_taiga4.png'),
+               py.image.load('images\\tiles\\world_map\\taiga\\light_taiga5.png'),
+               py.image.load('images\\tiles\\world_map\\taiga\\light_taiga6.png'),
+               py.image.load('images\\tiles\\world_map\\taiga\\light_taiga7.png'),
+               py.image.load('images\\tiles\\world_map\\taiga\\light_taiga8.png')]
+DARK_TAIGA = [py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga0.png'),
+              py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga1.png'),
+              py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga2.png'),
+              py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga3.png'),
+              py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga4.png'),
+              py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga5.png'),
+              py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga6.png'),
+              py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga7.png'),
+              py.image.load('images\\tiles\\world_map\\taiga\\dark_taiga8.png')]
+LIGHT_TEMPRAIN = [py.image.load('images\\tiles\\world_map\\temprain\\light_temprain0.png'),
+                  py.image.load('images\\tiles\\world_map\\temprain\\light_temprain1.png'),
+                  py.image.load('images\\tiles\\world_map\\temprain\\light_temprain2.png'),
+                  py.image.load('images\\tiles\\world_map\\temprain\\light_temprain3.png'),
+                  py.image.load('images\\tiles\\world_map\\temprain\\light_temprain4.png'),
+                  py.image.load('images\\tiles\\world_map\\temprain\\light_temprain5.png'),
+                  py.image.load('images\\tiles\\world_map\\temprain\\light_temprain6.png'),
+                  py.image.load('images\\tiles\\world_map\\temprain\\light_temprain7.png'),
+                  py.image.load('images\\tiles\\world_map\\temprain\\light_temprain8.png'), ]
+DARK_TEMPRAIN = [py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain0.png'),
+                 py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain1.png'),
+                 py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain2.png'),
+                 py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain3.png'),
+                 py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain4.png'),
+                 py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain5.png'),
+                 py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain6.png'),
+                 py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain7.png'),
+                 py.image.load('images\\tiles\\world_map\\temprain\\dark_temprain8.png'), ]
+LIGHT_TROPICRAIN = [py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain0.png'),
+                    py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain1.png'),
+                    py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain2.png'),
+                    py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain3.png'),
+                    py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain4.png'),
+                    py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain5.png'),
+                    py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain6.png'),
+                    py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain7.png'),
+                    py.image.load('images\\tiles\\world_map\\tropicrain\\light_tropicrain8.png'), ]
+DARK_TROPICRAIN = [py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain0.png'),
+                   py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain1.png'),
+                   py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain2.png'),
+                   py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain3.png'),
+                   py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain4.png'),
+                   py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain5.png'),
+                   py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain6.png'),
+                   py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain7.png'),
+                   py.image.load('images\\tiles\\world_map\\tropicrain\\dark_tropicrain8.png'), ]
+LIGHT_TUNDRA = [py.image.load('images\\tiles\\world_map\\tundra\\light_tundra0.png'),
+                py.image.load('images\\tiles\\world_map\\tundra\\light_tundra1.png'),
+                py.image.load('images\\tiles\\world_map\\tundra\\light_tundra2.png'),
+                py.image.load('images\\tiles\\world_map\\tundra\\light_tundra3.png'),
+                py.image.load('images\\tiles\\world_map\\tundra\\light_tundra4.png'),
+                py.image.load('images\\tiles\\world_map\\tundra\\light_tundra5.png'),
+                py.image.load('images\\tiles\\world_map\\tundra\\light_tundra6.png'),
+                py.image.load('images\\tiles\\world_map\\tundra\\light_tundra7.png'),
+                py.image.load('images\\tiles\\world_map\\tundra\\light_tundra8.png')]
+DARK_TUNDRA = [py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra0.png'),
+               py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra1.png'),
+               py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra2.png'),
+               py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra3.png'),
+               py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra4.png'),
+               py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra5.png'),
+               py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra6.png'),
+               py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra7.png'),
+               py.image.load('images\\tiles\\world_map\\tundra\\dark_tundra8.png')]
+
+BIOMES = {
+    'light_deep': LIGHT_DEEP,
+    'dark_deep': DARK_DEEP,
+    'light_desert': LIGHT_DESERT,
+    'dark_desert': DARK_DESERT,
+    'light_forest': LIGHT_FOREST,
+    'dark_forest': DARK_FOREST,
+    'light_plains': LIGHT_PLAINS,
+    'dark_plains': DARK_PLAINS,
+    'light_savannah': LIGHT_SAVANNAH,
+    'dark_savannah': DARK_SAVANNAH,
+    'light_shallow': LIGHT_SHALLOW,
+    'dark_shallow': DARK_SHALLOW,
+    'light_snow': LIGHT_SNOW,
+    'dark_snow': DARK_SNOW,
+    'light_temprain': LIGHT_TEMPRAIN,
+    'dark_temprain': DARK_TEMPRAIN,
+    'light_tropicrain': LIGHT_TROPICRAIN,
+    'dark_tropicrain': DARK_TROPICRAIN,
+    'light_taiga': LIGHT_TAIGA,
+    'dark_taiga': DARK_TAIGA,
+    'light_tundra': LIGHT_TUNDRA,
+    'dark_tundra': DARK_TUNDRA,
+}
+
+TILE_BASE = {
+    'black': py.image.load('images\\tiles\\black.png'),
+    'dark_wall': py.image.load('images\\tiles\\dark_wall.png'),
+    'light_wall': py.image.load('images\\tiles\\light_wall.png'),
+}
+
+LIGHT_GRASS = [py.image.load('images\\tiles\\grass\\light_grass00.png'),
+               py.image.load('images\\tiles\\grass\\light_grass01.png'),
+               py.image.load('images\\tiles\\grass\\light_grass02.png'),
+               py.image.load('images\\tiles\\grass\\light_grass03.png'),
+               py.image.load('images\\tiles\\grass\\light_grass04.png'),
+               py.image.load('images\\tiles\\grass\\light_grass05.png'),
+               py.image.load('images\\tiles\\grass\\light_grass06.png'),
+               py.image.load('images\\tiles\\grass\\light_grass07.png'),
+               py.image.load('images\\tiles\\grass\\light_grass08.png'),
+               py.image.load('images\\tiles\\grass\\light_grass09.png'),
+               py.image.load('images\\tiles\\grass\\light_grass10.png'),
+               py.image.load('images\\tiles\\grass\\light_grass11.png'),
+               py.image.load('images\\tiles\\grass\\light_grass12.png')]
+DARK_GRASS = [py.image.load('images\\tiles\\grass\\dark_grass00.png'),
+              py.image.load('images\\tiles\\grass\\dark_grass01.png'),
+              py.image.load('images\\tiles\\grass\\dark_grass02.png'),
+              py.image.load('images\\tiles\\grass\\dark_grass03.png'),
+              py.image.load('images\\tiles\\grass\\dark_grass04.png'),
+              py.image.load('images\\tiles\\grass\\dark_grass05.png'),
+              py.image.load('images\\tiles\\grass\\dark_grass06.png'),
+              py.image.load('images\\tiles\\grass\\dark_grass07.png'),
+              py.image.load('images\\tiles\\grass\\dark_grass08.png'),
+              py.image.load('images\\tiles\\grass\\dark_grass09.png'),
+              py.image.load('images\\tiles\\grass\\dark_grass10.png'),
+              py.image.load('images\\tiles\\grass\\dark_grass11.png'),
+              py.image.load('images\\tiles\\grass\\dark_grass12.png')]
+LIGHT_ROAD = {
+    '00001011': py.image.load('images\\road\\light_road00001011.png'),
+    '00010110': py.image.load('images\\road\\light_road00010110.png'),
+    '00011111': py.image.load('images\\road\\light_road00011111.png'),
+    '01101000': py.image.load('images\\road\\light_road01101000.png'),
+    '01101011': py.image.load('images\\road\\light_road01101011.png'),
+    '01111111': py.image.load('images\\road\\light_road01111111.png'),
+    '11010000': py.image.load('images\\road\\light_road11010000.png'),
+    '11010110': py.image.load('images\\road\\light_road11010110.png'),
+    '11011011': py.image.load('images\\road\\light_road11011011.png'),
+    '11111000': py.image.load('images\\road\\light_road11111000.png'),
+    '11111110': py.image.load('images\\road\\light_road11111110.png'),
+    '11111111': py.image.load('images\\road\\light_road11111111.png'),
+}
+DARK_ROAD = {
+    '00001011': py.image.load('images\\road\\dark_road00001011.png'),
+    '00010110': py.image.load('images\\road\\dark_road00010110.png'),
+    '00011111': py.image.load('images\\road\\dark_road00011111.png'),
+    '01101000': py.image.load('images\\road\\dark_road01101000.png'),
+    '01101011': py.image.load('images\\road\\dark_road01101011.png'),
+    '01111111': py.image.load('images\\road\\dark_road01111111.png'),
+    '11010000': py.image.load('images\\road\\dark_road11010000.png'),
+    '11010110': py.image.load('images\\road\\dark_road11010110.png'),
+    '11011011': py.image.load('images\\road\\dark_road11011011.png'),
+    '11111000': py.image.load('images\\road\\dark_road11111000.png'),
+    '11111110': py.image.load('images\\road\\dark_road11111110.png'),
+    '11111111': py.image.load('images\\road\\dark_road11111111.png'),
+}
+LIGHT_DIRT = [py.image.load('images\\tiles\\dirt\\light_dirt0.png'),
+              py.image.load('images\\tiles\\dirt\\light_dirt1.png'),
+              py.image.load('images\\tiles\\dirt\\light_dirt2.png'),
+              py.image.load('images\\tiles\\dirt\\light_dirt3.png'),
+              py.image.load('images\\tiles\\dirt\\light_dirt4.png'),
+              py.image.load('images\\tiles\\dirt\\light_dirt5.png'),
+              py.image.load('images\\tiles\\dirt\\light_dirt6.png'),
+              py.image.load('images\\tiles\\dirt\\light_dirt7.png'),
+              py.image.load('images\\tiles\\dirt\\light_dirt8.png')]
+DARK_DIRT = [py.image.load('images\\tiles\\dirt\\dark_dirt0.png'),
+             py.image.load('images\\tiles\\dirt\\dark_dirt1.png'),
+             py.image.load('images\\tiles\\dirt\\dark_dirt2.png'),
+             py.image.load('images\\tiles\\dirt\\dark_dirt3.png'),
+             py.image.load('images\\tiles\\dirt\\dark_dirt4.png'),
+             py.image.load('images\\tiles\\dirt\\dark_dirt5.png'),
+             py.image.load('images\\tiles\\dirt\\dark_dirt6.png'),
+             py.image.load('images\\tiles\\dirt\\dark_dirt7.png'),
+             py.image.load('images\\tiles\\dirt\\dark_dirt8.png')]

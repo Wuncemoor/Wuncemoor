@@ -9,7 +9,7 @@ class Tile:
     def __init__(self, blocked, block_sight=None):
         self.blocked = blocked
         
-        #By default, if a tile is blocked, it also blocks sight.
+        # By default if a tile is blocked, it also blocks sight.
         if block_sight is None:
             block_sight = blocked
             
@@ -19,4 +19,6 @@ class Tile:
         self.subtype = None
         self.mode = None
         self.np = 0
-        
+        self.image = None
+        # Temporary dark image until fov shader implemented
+        self.image2 = None

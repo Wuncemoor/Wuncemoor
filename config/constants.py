@@ -1,90 +1,66 @@
-
-def get_constants():
-    window_title = 'Wuncemoor: The Eternal Dream'
-
-    screen_width = 1280
-    screen_height = 720
-    cscreen_width = 1280
-    cscreen_height = 592
-    rscreen_width = 320
-    rscreen_height = 180
-    mscreen_width = 980
-    mscreen_height = 128
-
-    bar_width = 300
-    panel_height = 8
-    panel_y = screen_height - panel_height
-
-    message_x = bar_width + 2
-    message_width = screen_width - bar_width - 2
-    message_height = panel_height - 1
-    map_width = 80
-    map_height = 37
-
-    fps = 60
-    start_town_width = 80
-    start_town_height = 37
-
-    room_max_size = 10
-    room_min_size = 6
-    max_rooms = 3
-
-    fov_algorithm = 0
-    fov_light_walls = True
-    fov_radius = 50
-
-    max_monsters_per_room = 3
-    max_items_per_room = 2
-
-    mm_width = 400
-    mm_height = 400
-
-    world_map_constants = {
-        'width': 50,
-        'height': 50,
-        'octaves': 5,
-        'persist': 0.5,
-        'lacuna': 2.5,
-        'scale': 0.0075,
-        'moist_mod': 0.5,
-        'temp_mod': 0.1,
-        'water_level': 0.15  # -1 to 'water_level' is water, above to 1 is land
-    }
-
-    constants = {
-        'window_title': window_title,
-        'screen_width': screen_width,
-        'screen_height': screen_height,
-        'cscreen_width': cscreen_width,
-        'cscreen_height': cscreen_height,
-        'rscreen_width': rscreen_width,
-        'rscreen_height': rscreen_height,
-        'mscreen_width': mscreen_width,
-        'mscreen_height': mscreen_height,
-        'bar_width': bar_width,
-        'panel_height': panel_height,
-        'panel_y': panel_y,
-        'message_x': message_x,
-        'message_width': message_width,
-        'message_height': message_height,
-        'start_town_width': start_town_width,
-        'start_town_height': start_town_height,
-        'room_max_size': room_max_size,
-        'room_min_size': room_min_size,
-        'max_rooms': max_rooms,
-        'fov_algorithm': fov_algorithm,
-        'fov_light_walls': fov_light_walls,
-        'fov_radius': fov_radius,
-        'max_monsters_per_room': max_monsters_per_room,
-        'max_items_per_room': max_items_per_room,
-        'fps': fps,
-        'map_width': map_width,
-        'map_height': map_height,
-        'world_map_constants': world_map_constants,
-        'mm_width': mm_width,
-        'mm_height': mm_height,
+# (screen, cscreen, mscreen, title)
+START = ((1280, 720), (1280, 592), (980, 128), 'Wuncemoor: The Eternal Dream')
+# cscreen again
+CSCREEN = (1280, 592)
+# (width, height)
+TILES_ON_SCREEN = (80, 37)
+# (width, height)
+START_TOWN = (80, 37)
+# (width, height)
+WORLD_MAP = (300, 300)
+# (width, height)
+MINI_MAP = (400, 400)
+# (width, height)
+CAVE = (80, 37)
 
 
-    }
 
-    return constants
+FPS = 60
+ROOM_MAX_SIZE = 10
+ROOM_MIN_SIZE = 6
+MAX_ROOMS = 3
+FOV_RADIUS = 50
+
+# (octaves, persist, lacuna, scale, moist_mod, temp_mod, water_level)
+SIMPLEX = (5, 0.5, 2.5, 0.0075, 0.5, 0.1, 0.15)
+
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+YELLOW = (255, 255, 0)
+ORANGE = (255, 165, 0)
+DARK_RED = (191, 0, 0)
+LIGHT_GREY = (190, 190, 190)
+GREY = (128, 128, 128)
+
+DUNGEON_FLOOR = {
+    'town': 'grass',
+    'cave': 'dirt',
+    'deep': 'deep',
+    'desert': 'desert',
+    'forest': 'forest',
+    'plains': 'plains',
+    'savannah': 'savannah',
+    'shallow': 'shallow',
+    'snow': 'snow',
+    'taiga': 'taiga',
+    'temprain': 'temprain',
+    'tropicrain': 'tropicrain',
+    'tundra': 'tundra',
+}
+IMAGE_OPTIONS = {
+    'grass': 13,
+    'dirt': 9,
+    'deep': 9,
+    'desert': 9,
+    'forest': 9,
+    'plains': 9,
+    'savannah': 9,
+    'shallow': 9,
+    'snow': 9,
+    'taiga': 9,
+    'temprain': 9,
+    'tropicrain': 9,
+    'tundra': 9,
+}

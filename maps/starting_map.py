@@ -1,5 +1,5 @@
 from ECS.entity import Entity
-from render_functions import RenderOrder
+from enums.render_order import RenderOrder
 from builders.dungeon_builder import DungeonDirector, DungeonBuilder
 from builders.random_item_maker import EquippableBuilder, Director
 from map_objects.rectangle import Rect
@@ -14,22 +14,17 @@ from ECS.__entity.transition import Transition
 from ECS.__entity.noncombatant import Noncombatant
 from random import randint
 from dialogue.get_dialogue import get_samwise_dialogue
-from ECS.image_bundle import ImageBundle
-import config.constants as const
-import config.image_objects as imgs
+from config.constants import WORLD_MAP, START_TOWN, CAVE
+from config.image_objects import ALPHA, BUNDLE_SAMWISE
 
 
-
-def get_town(width, height, node):
-    images = imgs.get_image_objects()
+def get_town(node):
+    (width, height) = START_TOWN
     name, node_x, node_y = node.name, node.x, node.y
 
     map = get_map(width, height, variant=name)
 
-    ents = images.get('entities')
-
-    alpha = ImageBundle(ents.get('transitions').get('alpha'))
-    road = Road(Rect(0, int(height / 2) - 2, width, 4), 'world', 0, (node_x, node_y), alpha)
+    road = Road(Rect(0, int(height / 2) - 2, width, 4), 'world', 0, (node_x, node_y), ALPHA)
     road.set_transitions('vertical')
     map.floor_image = 'grass'
     # add_road also adds transitions
@@ -39,7 +34,7 @@ def get_town(width, height, node):
     add_hut(map, 30, int(height / 2) - 19)
     add_town(map, 70, int(height / 2) - 6)
 
-    equippable_test = EquippableBuilder(499, ents.get('items').get('equippables').get('weapons'))
+    equippable_test = EquippableBuilder(499)
     director = Director()
 
     director.set_builder(equippable_test)
@@ -52,11 +47,8 @@ def get_town(width, height, node):
     # Get samwise but only in first town
     if name == 'town':
 
-        samwise_obj = ImageBundle(ents.get('noncombatants').get('samwise'),
-                                  portrait=images.get('portraits').get('samwise'))
-
         dialogue = get_samwise_dialogue()
-        noncom = Noncombatant('samwise', samwise_obj, dialogue)
+        noncom = Noncombatant('samwise', BUNDLE_SAMWISE, dialogue)
         samwise = Entity(18, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom)
 
         map.noncombatants.append(samwise)
@@ -67,8 +59,8 @@ def get_town(width, height, node):
 
 
 def get_cave(subtype):
-    constants = const.get_constants()
-    dungeon_builder = DungeonBuilder('cave', subtype, 5, constants['map_width'], constants['map_height'], 75)
+    (width, height) = CAVE
+    dungeon_builder = DungeonBuilder('cave', subtype, 5, width, height, 75)
     dungeon_director = DungeonDirector()
     dungeon_director.set_builder(dungeon_builder)
     cave = dungeon_director.get_dungeon()
@@ -82,7 +74,7 @@ def get_map(width, height, variant=None, subtype=None, dangerous=False):
 
     if variant in ('town', 'second_town', 'third_town', 'fourth_town'):
 
-        map.create_room(Rect(0, 0, width - 1, height - 1), variant, subtype)
+        map.create_room(Rect(0, 0, width - 1, height - 1), 'town', subtype)
     elif variant == 'world_map':
         for row in map.tiles:
             for tile in row:
@@ -92,14 +84,16 @@ def get_map(width, height, variant=None, subtype=None, dangerous=False):
     return map
 
 
-def get_world_map(constants, alpha_img):
-    map = get_map(constants['width'], constants['height'], variant='world_map', dangerous=True)
-    apply_simplex_biomes(map, constants)
+def get_world_map():
+    (width, height) = WORLD_MAP
+
+    map = get_map(width, height, variant='world_map', dangerous=True)
+    apply_simplex_biomes(map)
     apply_mode(map)
-    nodes = get_core_plot_nodes(constants['width'], constants['height'])
+    nodes = get_core_plot_nodes(width, height)
     for node in nodes:
         add_town(map, node.x, node.y)
-        stairs = Transition('Stairs', ImageBundle(alpha_img), node.name, 0, node.entrance)
+        stairs = Transition('Stairs', ALPHA, node.name, 0, node.entrance)
         ent = Entity(node.x, node.y, transition=stairs)
         map.transitions.append(ent)
 

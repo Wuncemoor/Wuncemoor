@@ -1,30 +1,28 @@
-import tcod as libtcod
-
-
 from game_messages import Message
 from enums.game_states import GameStates
-from render_functions import RenderOrder
+from enums.render_order import RenderOrder
+from config.image_objects import CORPSE
+from config.constants import RED, DARK_RED
 
 
-def kill_player(player, corpse):
-    make_corpse(player, corpse)
+def kill_player(player):
+    make_corpse(player)
 
-    return Message('You died!', libtcod.red), GameStates.PLAYER_DEAD
+    return Message('You died!', RED), GameStates.PLAYER_DEAD
 
 
-def kill_monster(monster, corpse):
-    death_message = Message('{0} is dead!'.format(monster.name.capitalize()), libtcod.dark_red)
+def kill_monster(monster):
 
-    make_corpse(monster, corpse)
+    death_message = Message('{0} is dead!'.format(monster.name), DARK_RED)
+
+    make_corpse(monster)
     monster.blocks = False
     monster.combatant = None
     monster.ai = None
-    monster.name = 'The remains of ' + monster.name
     monster.render_order = RenderOrder.CORPSE
 
     return death_message
 
 
-def make_corpse(entity, corpse):
-
-    entity.images.sprite = corpse
+def make_corpse(entity):
+    entity.images.sprite = CORPSE

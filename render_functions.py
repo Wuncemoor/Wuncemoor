@@ -1,24 +1,15 @@
 import tcod as libtcod
 import pygame
 from enums.game_states import GameStates, MenuStates
-from menus import inventory_menu, level_up_menu, map_menu, dialogue_menu, encounter_screen
-from random_utils import pseudorandom_seed
+from menus import inventory_menu, level_up_menu, minimp_menu, dialogue_menu, encounter_screen
 from screens.gui_tools import print_message
 from screens.resources_HUD import player_resource_display
 from screens.loot_screen import loot_screen
 from screens.character_screen import character_screen
 from screens.journal_screen import journal_screen
-import config.image_objects as images
-
-
-from enum import Enum
-
-
-class RenderOrder(Enum):
-    CORPSE = 1
-    STAIRS = 2
-    ITEM = 3
-    ACTOR = 4
+from screens.calendar import display_calendar
+from config.image_objects import MESSAGE_BG, TILE_BASE
+from config.constants import TILES_ON_SCREEN
 
 
 def get_names_under_mouse(entities, fov_map):
@@ -31,22 +22,21 @@ def get_names_under_mouse(entities, fov_map):
     return names.capitalize()
 
 
-def render_all(screen, camera_surface, resource_surface, message_surface, entities, player, structures, transitions,
-               noncombatants, game_map, world_map, camera, fov_map, fov_recompute, message_log, camera_width,
-               camera_height, map_width, map_height, game_state, menu_handler, encounter, loot, dialogue):
+def render_all(screen, camera_surface, message_surface, entities, player, structures, transitions,
+               noncombatants, game_map, world_map, camera, fov_map, fov_recompute, message_log,
+               game_state, menu_handler, encounter, loot, dialogue):
+    (width, height) = TILES_ON_SCREEN
 
 
-    tiles = images.get('tiles')
-    options = images.get('options')
     tilesize = 16
     # Draw tiles near player
     if fov_recompute:
-        for y in range(map_height):
-            for x in range(map_width):
-                draw_tile(camera_surface, fov_map, game_map, x, y, camera.x, camera.y, tiles, tilesize, options)
+        for y in range(height):
+            for x in range(width):
+                draw_tile(camera_surface, fov_map, game_map, x, y, camera.x, camera.y, tilesize)
 
     for structure in structures:
-        draw_structure(camera_surface, camera.x, camera.y, structure, fov_map, game_map, tiles, tilesize)
+        draw_structure(camera_surface, camera.x, camera.y, structure, fov_map, game_map, tilesize)
     for transition in transitions:
         draw_entity(camera_surface, camera.x, camera.y, transition, fov_map, game_map, tilesize)
     for noncom in noncombatants:
@@ -59,7 +49,7 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
     screen.blit(camera_surface, (0, 0))
 
     # Print game messages one line at a time
-    message_surface.blit(images.get('gui').get('message_bg'), (0, 0))
+    message_surface.blit(MESSAGE_BG, (0, 0))
     y = 0
     for message in message_log.messages:
         off_x = 30
@@ -70,8 +60,14 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
     screen.blit(message_surface, (300, 592))
     message_surface.fill((0, 0, 0))
 
-    resource_hud = player_resource_display(player, images.get('gui').get('resource_hud_objs'))
+    resource_hud = player_resource_display(player)
     screen.blit(resource_hud, (0 - 10, 540 + 40))
+
+    calendar = display_calendar()
+
+    if game_state == GameStates.PLAYERS_TURN:
+        screen.blit(calendar, (1040, 40))
+
 
     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
 
@@ -81,26 +77,24 @@ def render_all(screen, camera_surface, resource_surface, message_surface, entiti
         else:
             inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
 
-        inventory_menu(screen, inventory_title, player, camera_width, camera_height)
+        inventory_menu(screen, inventory_title, player)
     elif game_state == GameStates.SHOW_MAP:
 
-        map_menu(screen, world_map, camera_width, camera_height)
+        minimp_menu(screen, world_map)
     elif game_state == GameStates.LEVEL_UP:
-        gui_img = images.get('gui').get('levelup_menu')
-        level_up_menu(screen, 'Level up! Choose a stat boost:', gui_img, player, camera_width, camera_height)
+        level_up_menu(screen, player)
 
     elif game_state == GameStates.DIALOGUE:
-        gui_img = images.get('gui').get('dialogue_menu')
-        dialogue_menu(screen, gui_img, player, dialogue, camera_width, camera_height)
+        dialogue_menu(screen, player, dialogue)
     elif game_state == GameStates.ENCOUNTER:
-        encounter_screen(screen, images, player, encounter, message_log)
+        encounter_screen(screen, player, encounter, message_log)
     elif game_state == GameStates.LOOTING:
-        loot_screen(screen, images, player, loot, message_log)
+        loot_screen(screen, loot, message_log)
     elif game_state == GameStates.MENUS:
         if menu_handler.state == MenuStates.PARTY:
-            character_screen(screen, images, player)
+            character_screen(screen, player)
         elif menu_handler.state == MenuStates.JOURNAL:
-            journal_screen(screen, menu_handler, images.get('gui').get('journal_objs'))
+            journal_screen(screen, menu_handler)
 
 
 def draw_entity(camera_surface, cx, cy, entity, fov_map, game_map, tilesize):
@@ -112,7 +106,7 @@ def draw_entity(camera_surface, cx, cy, entity, fov_map, game_map, tilesize):
         camera_surface.blit(surfimg, ((entity.x - cx) * tilesize, (entity.y - cy) * tilesize))
 
 
-def draw_structure(camera_surface, cx, cy, structure, fov_map, game_map, tiles, tilesize):
+def draw_structure(camera_surface, cx, cy, structure, fov_map, game_map, tilesize):
 
     count = 0
     for j in range(structure.rect.y1, structure.rect.y2):
@@ -125,49 +119,21 @@ def draw_structure(camera_surface, cx, cy, structure, fov_map, game_map, tiles, 
                 camera_surface.blit(structure.file_objs[1][count], ((i - cx) * tilesize, (j - cy) * tilesize))
                 count += 1
             else:
-                camera_surface.blit(tiles.get('black'), ((i - cx) * tilesize, (j - cy) * tilesize))
+                camera_surface.blit(TILE_BASE.get('black'), ((i - cx) * tilesize, (j - cy) * tilesize))
                 count += 1
 
 
+def draw_tile(camera_surface, fov_map, game_map, x, y, cx, cy, tilesize):
 
-def draw_tile(camera_surface, fov_map, game_map, x, y, cx, cy, tiles, tilesize, options):
     visible = libtcod.map_is_in_fov(fov_map, cx + x, cy + y)
 
     tile = game_map.tiles[cx + x][cy + y]
-    gmv = tiles.get(game_map.variant)
-    tt = tile.type
+
     if visible:
-        prefix = 'light_'
-        if tt == 'road':
-            obj = tiles.get(prefix + tt).get(tile.mode)
-            camera_surface.blit(obj, (x * tilesize, y * tilesize))
-        elif tt == 'wall':
-            camera_surface.blit(tiles.get(prefix + tt), (x * tilesize, y * tilesize))
-        else:
-            try:
-                camera_surface.blit(gmv.get(prefix + tt).get(prefix + tt + tile.mode), (x * tilesize, y * tilesize))
-            except:
-                img = game_map.current_map.floor_image
-                choice = str(pseudorandom_seed(x, y, options.get(img)))
-                obj = tiles.get(prefix + img).get(prefix + img + choice)
-                camera_surface.blit(obj, (x * tilesize, y * tilesize))
+        camera_surface.blit(tile.image, (x * tilesize, y * tilesize))
         tile.explored = True
     elif tile.explored:
-        prefix = 'dark_'
-        if tt == 'road':
-            obj = tiles.get(prefix + tt).get(game_map.tiles[cx + x][cy + y].mode)
-            camera_surface.blit(obj, (x * tilesize, y * tilesize))
-        elif tt == 'wall':
-            camera_surface.blit(tiles.get(prefix + tt), (x * tilesize, y * tilesize))
-        else:
-            try:
-                camera_surface.blit(gmv.get(prefix + tt).get(prefix + tt + tile.mode), (x * tilesize, y * tilesize))
-            except:
-                img = game_map.current_map.floor_image
-                choice = str(pseudorandom_seed(x, y, options.get(img)))
-                obj = tiles.get(prefix + img).get(prefix + img + choice)
-                camera_surface.blit(obj, (x * tilesize, y * tilesize))
-
+       camera_surface.blit(tile.image2, (x * tilesize, y * tilesize))
     else:
-        camera_surface.blit(tiles.get('black'), (x * tilesize, y * tilesize))
+        camera_surface.blit(TILE_BASE.get('black'), (x * tilesize, y * tilesize))
 

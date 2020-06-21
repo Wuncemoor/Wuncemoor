@@ -1,6 +1,6 @@
 import math
 import tcod as libtcod
-from render_functions import RenderOrder
+from enums.render_order import RenderOrder
 
 
 # Generic object representing PC and NPC, items, etc
