@@ -1,6 +1,6 @@
-from screens.gui_tools import get_alpha_surface, align_and_blit, get_button_surface, get_text_surface
-import tcod as libtcod
+from screens.gui_tools import get_alpha_surface, align_and_blit, get_button_surface, get_text_surface, get_wrapped_text
 from config.image_objects import JOURNAL_OBJS
+from config.constants import RED, DARK_RED, BLACK
 
 def journal_screen(screen, menu_handler):
     surf = get_alpha_surface(550, 530)
@@ -33,15 +33,15 @@ def journal_options_display(subjournal, option):
     y = 0
     for i in subjournal:
         if y is option:
-            color = libtcod.red
+            color = RED
         else:
-            color = libtcod.black
+            color = BLACK
         surf.blit(get_button_surface(obj, i.title, 16, color), (0, 0 + (y * obj.get_height())))
     return surf
 
 def get_entry_details(entry):
     surf = get_alpha_surface(275, 530)
-    surf.blit(get_text_surface(entry.title, 14, libtcod.dark_red), (25, 55))
+    surf.blit(get_text_surface(entry.title, 14, DARK_RED), (25, 55))
     y_off = 90
     for i in entry.plot:
         sc = get_story_chunk(i)
@@ -50,7 +50,16 @@ def get_entry_details(entry):
     return surf
 
 def get_story_chunk(chunk):
-    surf = get_alpha_surface(300, 100)
-    surf.blit(get_text_surface(chunk.title, 12, libtcod.dark_red), (0, 0))
-    surf.blit(get_text_surface(chunk.info, 10, libtcod.red), (0, 15))
+    width = 200
+    titlesize = 12
+    fontsize = 10
+    lines = get_wrapped_text(chunk.info, width, fontsize, color=RED)
+
+    surf = get_alpha_surface(width, titlesize + (fontsize * 1.2) * len(lines))
+    surf.blit(get_text_surface(chunk.title, titlesize, DARK_RED), (0, 0))
+
+    y = 15
+    for line in lines:
+        surf.blit(line, (0, y))
+        y += fontsize
     return surf

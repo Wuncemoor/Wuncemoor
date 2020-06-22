@@ -67,3 +67,37 @@ def align_and_blit(surface, image, x_ratio=0.5, y_ratio=0.5, x_adjust=0, y_adjus
 
     surface.blit(image, (off_x, off_y))
 
+def get_wrapped_text(info, width, fontsize, color):
+    prewords = info.split()
+    words = []
+    for word in prewords[:len(prewords)]:
+        word += ' '
+        words.append(word)
+    words.reverse()
+    lines = []
+    lines = slice_text(words, lines, width, fontsize)
+    surfaces = [get_text_surface(line, fontsize, color) for line in lines]
+
+    return surfaces
+
+
+def slice_text(words, lines, width, fontsize):
+
+    current_word = 0
+    w = 0
+    while w < width:
+        try:
+            maybe = get_text_surface(words[current_word], fontsize)
+            w += maybe.get_width()
+            current_word += 1
+        except IndexError:
+            current_word = len(words) + 1
+            break
+    line = ''
+    for i in range(current_word - 1):
+        line += words.pop()
+    lines.append(line)
+    if len(words) > 0:
+        lines = slice_text(words, lines, width, fontsize)
+    return lines
+
