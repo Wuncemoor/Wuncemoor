@@ -45,5 +45,5 @@ def display_day(surf, day):
     }
 
     (x, y) = dict.get(day)
-    align_and_blit(surf, CALENDAR_CIRCLE, x_ratio=0, y_ratio=0, x_adjust=(25 + CALENDAR_CIRCLE.get_width() * x),
-                   y_adjust=(75 + CALENDAR_CIRCLE.get_height() * y))
+    align_and_blit(surf, CALENDAR_CIRCLE, x_ratio=0, y_ratio=0, x_adjust=(25 + 30 * x),
+                   y_adjust=(75 + 18 * y))

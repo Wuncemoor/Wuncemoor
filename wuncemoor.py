@@ -135,6 +135,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         fov_recompute = True
 
                         if game_map.dangerous:
+                            time_handler.time_goes_on()
                             encountering = encounter_check()
                             if encountering:
                                 tile = game_map.tiles[destination_x][destination_y]
