@@ -24,7 +24,7 @@ def get_names_under_mouse(entities, fov_map):
 
 def render_all(screen, camera_surface, message_surface, entities, player, structures, transitions,
                noncombatants, game_map, world_map, camera, fov_map, fov_recompute, message_log,
-               game_state, menu_handler, encounter, loot, dialogue):
+               game_state, menu_handler, time_handler, encounter, loot, dialogue):
     (width, height) = TILES_ON_SCREEN
 
 
@@ -63,10 +63,10 @@ def render_all(screen, camera_surface, message_surface, entities, player, struct
     resource_hud = player_resource_display(player)
     screen.blit(resource_hud, (0 - 10, 540 + 40))
 
-    calendar = display_calendar()
+    calendar = display_calendar(time_handler.month, time_handler.day)
 
     if game_state == GameStates.PLAYERS_TURN:
-        screen.blit(calendar, (1040, 40))
+        screen.blit(calendar, (screen.get_width() - calendar.get_width(), screen.get_height() - calendar.get_height()))
 
 
     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):

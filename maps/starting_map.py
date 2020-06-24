@@ -16,6 +16,7 @@ from random import randint
 from dialogue.get_dialogue import get_samwise_dialogue
 from config.constants import WORLD_MAP, START_TOWN, CAVE
 from config.image_objects import ALPHA, BUNDLE_SAMWISE
+import time
 
 
 def get_town(node):
@@ -88,7 +89,9 @@ def get_world_map():
     (width, height) = WORLD_MAP
 
     map = get_map(width, height, variant='world_map', dangerous=True)
+    start_time = time.time()
     apply_simplex_biomes(map)
+    print(time.time() - start_time)
     apply_mode(map)
     nodes = get_core_plot_nodes(width, height)
     for node in nodes:

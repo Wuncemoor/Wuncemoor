@@ -10,11 +10,11 @@ def apply_simplex_biomes(map):
     equator = height / 2
 
     heightmesh = OpenSimplex(seed=randint(1, 1000000))
-    heightmesh2 = OpenSimplex(seed=randint(1, 1000000))
-    heightmesh3 = OpenSimplex(seed=randint(1, 1000000))
+    # heightmesh2 = OpenSimplex(seed=randint(1, 1000000))
+    # heightmesh3 = OpenSimplex(seed=randint(1, 1000000))
     moistmesh = OpenSimplex(seed=randint(1, 1000000))
-    moistmesh2 = OpenSimplex(seed=randint(1, 1000000))
-    moistmesh3 = OpenSimplex(seed=randint(1, 1000000))
+    # moistmesh2 = OpenSimplex(seed=randint(1, 1000000))
+    # moistmesh3 = OpenSimplex(seed=randint(1, 1000000))
 
     for j in range(height):
 
@@ -33,13 +33,15 @@ def apply_simplex_biomes(map):
                 octavey = i * scale * freq
 
                 hvalue = heightmesh.noise2d(x=octavex, y=octavey)
-                hvalue2 = heightmesh2.noise2d(x=octavex, y=octavey)
-                hvalue3 = heightmesh3.noise2d(x=octavex, y=octavey)
+                # hvalue2 = heightmesh2.noise2d(x=octavex, y=octavey)
+                # hvalue3 = heightmesh3.noise2d(x=octavex, y=octavey)
                 mvalue = moistmesh.noise2d(x=octavex, y=octavey)
-                mvalue2 = moistmesh2.noise2d(x=octavex, y=octavey)
-                mvalue3 = moistmesh3.noise2d(x=octavex, y=octavey)
-                altitude += avg([hvalue, hvalue2, hvalue3]) * amp
-                moist += avg([mvalue, mvalue2, mvalue3]) * amp
+                # mvalue2 = moistmesh2.noise2d(x=octavex, y=octavey)
+                # mvalue3 = moistmesh3.noise2d(x=octavex, y=octavey)
+                # altitude += avg([hvalue, hvalue2, hvalue3]) * amp
+                # moist += avg([mvalue, mvalue2, mvalue3]) * amp
+                altitude += hvalue * amp
+                moist += mvalue * amp
 
                 amp *= persist
                 freq *= lacuna

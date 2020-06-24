@@ -1,6 +1,5 @@
 import tcod as libtcod
 from fov_function import initialize_fov, recompute_fov
-from ECS.entity import get_blocking_entities_at_location
 from death_functions import kill_monster, kill_player
 from enums.game_states import GameStates, EncounterStates, LootStates, MenuStates
 from game_messages import Message
@@ -14,7 +13,7 @@ from handlers.game_handler import GameHandler
 from random_utils import encounter_check
 from render_functions import render_all
 import sys
-import pygame
+import pygame as py
 
 
 # Main menu
@@ -22,13 +21,13 @@ def main():
 
     (screen_size, cscreen_size, mscreen_size, game_title) = START
 
-    pygame.init()
+    py.init()
 
-    screen = pygame.display.set_mode(screen_size)
-    message_surface = pygame.Surface(mscreen_size)
-    camera_surface = pygame.Surface(cscreen_size)
+    screen = py.display.set_mode(screen_size)
+    message_surface = py.Surface(mscreen_size)
+    camera_surface = py.Surface(cscreen_size)
 
-    pygame.display.set_caption(game_title)
+    py.display.set_caption(game_title)
 
     player = None
     dungeons = {}
@@ -43,11 +42,11 @@ def main():
 
     while running:
         title_screen(screen, current_option)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
+        for event in py.event.get():
+            if event.type == py.QUIT:
+                py.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
+            if event.type == py.KEYDOWN:
 
                 if show_main_menu:
 
@@ -73,7 +72,7 @@ def main():
                             message_log, party, journal = load_game()
                             show_main_menu = False
                         elif current_option == 2:
-                            pygame.quit()
+                            py.quit()
                             sys.exit()
                 else:
                     screen.fill(BLACK)
@@ -81,7 +80,7 @@ def main():
                     game = GameHandler(screen)
                     play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,
                               message_log, party, journal, game, camera_surface, message_surface)
-        pygame.display.flip()
+        py.display.flip()
 
 
 def play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,
@@ -96,15 +95,16 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
     menu_handler = MenuHandler()
     time_handler = TimeHandler()
 
+
     while True:
-        for event in pygame.event.get():
+        for event in py.event.get():
             player_turn_results = []
             encounter_results = []
             loot_results = []
-            if event.type == pygame.QUIT:
-                pygame.quit()
+            if event.type == py.QUIT:
+                py.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
+            if event.type == py.KEYDOWN:
 
                 action = handle_keys(event.key, game.state)
 
@@ -128,30 +128,21 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     destination_y = player.y + dy
 
                     if not game_map.is_blocked(destination_x, destination_y):
-                        target = get_blocking_entities_at_location(entities, destination_x, destination_y)
 
-                        if target:
-                            if target.combatant:
-                                attack_results = player.combatant.attack(target)
-                                player_turn_results.extend(attack_results)
-                                game.state = GameStates.ENEMY_TURN
-                        else:
-                            player.move(dx, dy)
-                            camera.refocus(player.x, player.y, game_map)
+                        player.move(dx, dy)
+                        camera.refocus(player.x, player.y, game_map)
 
-                            fov_recompute = True
+                        fov_recompute = True
 
-                            game.state = GameStates.ENEMY_TURN
+                        if game_map.dangerous:
+                            encountering = encounter_check()
+                            if encountering:
+                                tile = game_map.tiles[destination_x][destination_y]
 
-                            if game_map.dangerous:
-                                encountering = encounter_check()
-                                if encountering:
-                                    tile = game_map.tiles[destination_x][destination_y]
+                                options = ['FIGHT', 'ITEM', 'RUN']
+                                encounter = game_map.current_map.get_encounter(tile, options)
 
-                                    options = ['FIGHT', 'ITEM', 'RUN']
-                                    encounter = game_map.current_map.get_encounter(tile, options)
-
-                                    game.state = GameStates.ENCOUNTER
+                                game.state = GameStates.ENCOUNTER
 
                 if interact and game.state == GameStates.PLAYERS_TURN:
                     nothing = True
@@ -368,7 +359,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     else:
                         save_game(player, dungeons, entities, game_map, message_log, game.state)
 
-                        pygame.quit()
+                        py.quit()
                         sys.exit()
 
                 for player_turn_result in player_turn_results:
@@ -396,18 +387,13 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     if item_added:
                         entities.remove(item_added)
 
-                        game.state = GameStates.ENEMY_TURN
 
-                    if item_consumed:
-                        game.state = GameStates.ENEMY_TURN
 
                     if item_dropped:
                         game_map.current_map.map_entities.append(item_dropped)
                         entities = [player]
                         entities.extend(game_map.current_map.map_entities)
 
-                        game.state = GameStates.ENEMY_TURN
-                        game.state = GameStates.ENEMY_TURN
 
                     if equip:
                         equip_results = player.combatant.equipment.toggle_equip(equip)
@@ -421,7 +407,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             if dequipped:
                                 message_log.add_message(Message('You dequipped the {0}!'.format(dequipped.name)))
 
-                        game.state = GameStates.ENEMY_TURN
 
                     if targeting:
                         game.state = GameStates.TARGETING
@@ -517,7 +502,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     elif toggle == 'left':
                         loot.state = LootStates.SIFTING
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == py.MOUSEBUTTONDOWN:
 
                 mouse_action = handle_mouse((event.pos, event.button))
 
@@ -541,11 +526,11 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
         render_all(game.screen, camera_surface, message_surface, entities, player, structures, transitions,
                    noncombatants, game_map, world_map, camera, fov_map, fov_recompute, message_log,
-                        game.state, menu_handler, encounter, loot, dialogue_handler)
+                        game.state, menu_handler, time_handler, encounter, loot, dialogue_handler)
 
         fov_recompute = False
 
-        pygame.display.flip()
+        py.display.flip()
 
         if encounter:
             if encounter.state == EncounterStates.ENEMY_TURN:
@@ -569,34 +554,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         if game.state == GameStates.PLAYER_DEAD:
                             break
                     encounter.state = EncounterStates.THINKING
-
-        if game.state == GameStates.ENEMY_TURN:
-            for entity in entities:
-                if entity.combatant:
-                    if entity.combatant.ai:
-                        enemy_turn_results = entity.combatant.ai.take_turn(player, fov_map, game_map, entities)
-
-                        for enemy_turn_result in enemy_turn_results:
-                            message = enemy_turn_result.get('message')
-                            dead_entity = enemy_turn_result.get('dead')
-
-                            if message:
-                                message_log.add_message(message)
-
-                            if dead_entity:
-                                if dead_entity == player:
-                                    message, game.state = kill_player(dead_entity)
-                                else:
-                                    message = kill_monster(dead_entity)
-
-                                message_log.add_message(message)
-
-                                if game.state == GameStates.PLAYER_DEAD:
-                                    break
-                if game.state == GameStates.PLAYER_DEAD:
-                    break
-            else:
-                game.state = GameStates.PLAYERS_TURN
 
 
 if __name__ == '__main__':
