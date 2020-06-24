@@ -30,6 +30,7 @@ LOOT_BG = py.image.load('images\\GUI\\looting\\loot_bg.png')
 LOOT_BANNER = py.image.load('images\\GUI\\looting\\loot_banner.png')
 
 CALENDAR_BG = py.image.load('images\\GUI\\calendar.png')
+CALENDAR_CIRCLE = py.image.load('images\\GUI\\calendar_circle.png')
 
 INDICATOR_H = py.image.load('images\\GUI\\menus\\indicator_h.png')
 INDICATOR_V = py.image.load('images\\GUI\\menus\\indicator_v.png')
