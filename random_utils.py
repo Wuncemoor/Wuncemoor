@@ -34,7 +34,3 @@ def from_node_power(table, np):
             return value
     return 0
 
-
-def encounter_check():
-    x = randint(1, 20)
-    return x == 1

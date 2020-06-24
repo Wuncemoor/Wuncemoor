@@ -8,9 +8,8 @@ from loader_functions.initialize_new_game import get_game_variables
 from loader_functions.data_loaders import load_game, save_game
 from config.constants import START, BLACK
 from screens.title_screen import title_screen
-from handlers.state_handlers import MenuHandler, DialogueHandler, TimeHandler
+from handlers.state_handlers import MenuHandler, DialogueHandler, TimeHandler, EncounterHandler
 from handlers.game_handler import GameHandler
-from random_utils import encounter_check
 from render_functions import render_all
 import sys
 import pygame as py
@@ -90,6 +89,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
     fov_map = initialize_fov(game_map)
     targeting_item = None
     dialogue_handler = DialogueHandler([journal])
+    encounter_handler = EncounterHandler()
     encounter = None
     loot = None
     menu_handler = MenuHandler()
@@ -136,14 +136,18 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
                         if game_map.dangerous:
                             time_handler.time_goes_on()
-                            encountering = encounter_check()
+                            encountering = encounter_handler.encounter_check()
                             if encountering:
                                 tile = game_map.tiles[destination_x][destination_y]
 
                                 options = ['FIGHT', 'ITEM', 'RUN']
                                 encounter = game_map.current_map.get_encounter(tile, options)
+                                print(encounter_handler.steps_since)
+                                encounter_handler.steps_since = 0
 
                                 game.state = GameStates.ENCOUNTER
+                            else:
+                                encounter_handler.steps_since += 1
 
                 if interact and game.state == GameStates.PLAYERS_TURN:
                     nothing = True

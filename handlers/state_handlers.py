@@ -1,3 +1,5 @@
+from random import randint
+
 class MenuHandler:
     def __init__(self):
         self.state = None
@@ -84,5 +86,14 @@ class TimeHandler:
         self.new_month()
         self.hour += time[3]
         self.new_day()
+
+class EncounterHandler:
+
+    def __init__(self):
+        self.steps_since = 0
+
+
+    def encounter_check(self):
+        return (self.steps_since / (100 + self.steps_since)) * 50 > randint(1, 100)
 
 

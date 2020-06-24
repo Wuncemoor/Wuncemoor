@@ -231,6 +231,5 @@ class Map:
         combatant_component = mob_director.get_combatant()
         event = Entity(0, 0, blocks=True, render_order=RenderOrder.ACTOR,
                        combatant=combatant_component)
-        print(event.name)
 
         return event
