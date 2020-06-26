@@ -4,7 +4,6 @@ from enums.render_order import RenderOrder
 from ECS.__entity.transition import Transition
 from map_objects.dungeon import Dungeon
 from map_objects.map import Map
-from ECS.image_bundle import ImageBundle
 from config.image_objects import STAIRS_DOWN, STAIRS_UP
 
 
@@ -19,18 +18,18 @@ class DungeonDirector:
         dungeon = Dungeon('NAME_UNDEFINED', 'FLOORS_UNDEFINED', 'MAPS_UNDEFINED', 'NODEPOWER_UNDEFINED')
 
         name = self.__builder.get_name()
-        dungeon.set_name(name)
+        dungeon.name = name
 
 
         floors = self.__builder.get_floors()
-        dungeon.set_floors(floors)
+        dungeon.floors = floors
 
         maps = self.__builder.get_maps()
-        dungeon.set_maps(maps)
+        dungeon.maps = maps
 
 
         np = self.__builder.get_np()
-        dungeon.set_node_power(np)
+        dungeon.np = np
 
         return dungeon
 
