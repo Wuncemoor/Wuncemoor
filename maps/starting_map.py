@@ -12,6 +12,7 @@ from maps.town.add_structure import add_house, add_hut, add_town
 from ECS.__entity.item import Item
 from ECS.__entity.transition import Transition
 from ECS.__entity.noncombatant import Noncombatant
+from ECS.__entity.age import Age
 from random import randint
 from dialogue.get_dialogue import get_samwise_dialogue
 from config.constants import WORLD_MAP, START_TOWN, CAVE
@@ -50,7 +51,8 @@ def get_town(node):
 
         dialogue = get_samwise_dialogue()
         noncom = Noncombatant('samwise', BUNDLE_SAMWISE, dialogue)
-        samwise = Entity(18, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom)
+        age = Age(13, 11, 28, 0, (1, 4))
+        samwise = Entity(18, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom, age=age)
 
         map.noncombatants.append(samwise)
 

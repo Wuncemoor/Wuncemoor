@@ -155,7 +155,7 @@ def get_level_icon(player):
 def get_age_icon(player):
     icon = get_surface(CHARACTER_SCREEN.get('age'))
 
-    age = get_text_surface(str(player.combatant.age), fontsize=10, color=libtcod.white)
+    age = get_text_surface(str(player.age.year), fontsize=10, color=libtcod.white)
     align_and_blit(icon, age, x_ratio=0.5, y_ratio=0.68)
 
     return icon

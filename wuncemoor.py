@@ -93,7 +93,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
     encounter = None
     loot = None
     menu_handler = MenuHandler()
-    time_handler = TimeHandler()
+    time_handler = TimeHandler([party])
 
 
     while True:
@@ -142,7 +142,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
                                 options = ['FIGHT', 'ITEM', 'RUN']
                                 encounter = game_map.current_map.get_encounter(tile, options)
-                                print(encounter_handler.steps_since)
                                 encounter_handler.steps_since = 0
 
                                 game.state = GameStates.ENCOUNTER
@@ -371,7 +370,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     message = player_turn_result.get('message')
                     dead_entity = player_turn_result.get('dead')
                     item_added = player_turn_result.get('item_added')
-                    item_consumed = player_turn_result.get('consumed')
                     item_dropped = player_turn_result.get('item_dropped')
                     equip = player_turn_result.get('equip')
                     targeting = player_turn_result.get('targeting')

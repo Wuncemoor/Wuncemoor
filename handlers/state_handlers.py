@@ -50,7 +50,8 @@ class DialogueHandler:
 
 class TimeHandler:
 
-    def __init__(self):
+    def __init__(self, observers):
+        self.observers = observers
         self.year = -65
         self.month = 1
         self.day = 1
@@ -86,6 +87,7 @@ class TimeHandler:
         self.new_month()
         self.hour += time[3]
         self.new_day()
+
 
 class EncounterHandler:
 

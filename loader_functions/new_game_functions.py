@@ -12,6 +12,7 @@ from ECS.__entity.item import Item
 from ECS.__entity.transition import Transition
 from ECS.__entity.__combatant.equipment import Equipment
 from ECS.__entity.combatant import Combatant
+from ECS.__entity.age import Age
 from maps.starting_map import get_cave, get_town, get_world_map
 
 from ECS.entity import Entity
@@ -33,9 +34,10 @@ def get_player():
 
     combatant_component = Combatant('Player', BUNDLE_HERO, phylo=phylo_component, attributes=attribute_component,
                                     level=level_component, competence=competence_component,
-                                    equipment=equipment_component, inventory=inventory_component, age=10, sex='male')
+                                    equipment=equipment_component, inventory=inventory_component, sex='male')
+    age = Age(10, 0, 0, 0, (1, 1))
 
-    player = Entity(5, 20, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component)
+    player = Entity(5, 20, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component, age=age)
 
     return player
 

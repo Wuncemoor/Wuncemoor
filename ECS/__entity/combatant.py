@@ -6,7 +6,7 @@ from config.constants import BLACK
 
 
 class Combatant:
-    def __init__(self, name, images, phylo, attributes, level, competence, equipment, inventory, ai=None, xp=0, age=None, sex=None):
+    def __init__(self, name, images, phylo, attributes, level, competence, equipment, inventory, ai=None, xp=0, sex=None):
         
         self.name = name
         self.images = images
@@ -19,7 +19,6 @@ class Combatant:
         self.ai = ai
         self.xp = xp
         self.competence_points = 0
-        self.age = age
         self.sex = sex
 
     

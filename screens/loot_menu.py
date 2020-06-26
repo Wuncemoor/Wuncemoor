@@ -7,13 +7,13 @@ from config.constants import BLACK
 def get_loot_menu(loot):
 
     menu = get_alpha_surface(400, 240)
-    button = ENCOUNTER_BUTTON
+
     off_x = 110
     off_y = 110
     dy = 40
     fontsize = 24
 
-    blit_options(menu, button, off_x, off_y, dy, loot.options, fontsize)
+    blit_options(menu, ENCOUNTER_BUTTON, off_x, off_y, dy, loot.options, fontsize)
     if loot.state == LootStates.THINKING:
         menu.blit(INDICATOR_H, (off_x - 50, off_y - 11 + (dy * loot.current_option)))
 

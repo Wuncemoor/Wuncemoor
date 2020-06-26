@@ -1,6 +1,7 @@
 from config.constants import WHITE
 
 
+
 class Message:
     def __init__(self, text, color=WHITE):
         self.text = text

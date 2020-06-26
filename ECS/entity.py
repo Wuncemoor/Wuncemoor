@@ -8,7 +8,7 @@ class Entity:
 
     # Creation
     def __init__(self, x, y, blocks=False, render_order=RenderOrder.CORPSE, combatant=None, item=None, transition=None,
-                 noncombatant=None):
+                 noncombatant=None, age=None):
         self.x = x
         self.y = y
         self.blocks = blocks
@@ -17,6 +17,7 @@ class Entity:
         self.item = item
         self.transition = transition
         self.noncombatant = noncombatant
+        self.age = age
         self.name = None
         self.images = None
 
@@ -49,6 +50,9 @@ class Entity:
             self.noncombatant.owner = self
             self.name = self.noncombatant.name
             self.images = self.noncombatant.images
+
+        if self.age:
+            self.age.owner = self
 
     # Move the entity
     def move(self, dx, dy):
