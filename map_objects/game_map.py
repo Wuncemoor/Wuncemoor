@@ -1,7 +1,8 @@
 
 class GameMap:
 
-    def __init__(self, current_map):
+    def __init__(self, current_dungeon, current_map):
+        self.current_dungeon = current_dungeon
         self.current_map = current_map
 
     @property
@@ -34,5 +35,3 @@ class GameMap:
 
         return False
 
-    def set_current_map(self, new_map):
-        self.current_map = new_map

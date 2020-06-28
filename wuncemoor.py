@@ -161,8 +161,13 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     for transition in transitions:
                         if transition.x == player.x and transition.y == player.y:
                             new_dungeon = dungeons[transition.transition.go_to_dungeon]
+                            if game_map.current_dungeon.name != transition.transition.go_to_dungeon:
+                                game_map.current_dungeon.time_dilation = time_handler.time_stamp()
+                                time_handler.apply_time_dilation(new_dungeon)
+                                game_map.current_dungeon = new_dungeon
+
                             new_map = new_dungeon.maps[transition.transition.go_to_floor]
-                            game_map.set_current_map(new_map)
+                            game_map.current_map = new_map
                             player.x, player.y = transition.transition.go_to_xy[0], transition.transition.go_to_xy[1]
                             camera.refocus(player.x, player.y, game_map)
                             entities = [player]

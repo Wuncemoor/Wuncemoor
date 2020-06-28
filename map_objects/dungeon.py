@@ -6,4 +6,7 @@ class Dungeon:
         self.maps = maps
         self.np = np
         self.edges = edges
-        self.time_dilation = 0
+        self.time_dilation = [-65, 1, 1, 6]
+
+
+

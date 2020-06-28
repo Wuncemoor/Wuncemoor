@@ -1,3 +1,4 @@
+
 class Transition:
     def __init__(self, name, images, go_to_dungeon, go_to_floor, go_to_xy):
         self.name = name

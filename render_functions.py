@@ -46,6 +46,7 @@ def render_all(screen, camera_surface, message_surface, entities, player, struct
     for entity in entities_in_render_order:
         draw_entity(camera_surface, camera.x, camera.y, entity, fov_map, game_map, tilesize)
 
+
     screen.blit(camera_surface, (0, 0))
 
     # Print game messages one line at a time

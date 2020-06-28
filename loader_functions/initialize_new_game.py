@@ -21,7 +21,7 @@ def get_game_variables():
 
     dungeons, world_map = get_dungeons()
 
-    game_map = GameMap(dungeons['town'].maps[0])
+    game_map = GameMap(dungeons['town'], dungeons['town'].maps[0])
 
     entities.extend(game_map.current_map.map_entities)
     structures.extend(game_map.current_map.structures)

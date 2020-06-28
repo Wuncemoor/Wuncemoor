@@ -51,7 +51,7 @@ def get_town(node):
 
         dialogue = get_samwise_dialogue()
         noncom = Noncombatant('samwise', BUNDLE_SAMWISE, dialogue)
-        age = Age(13, 11, 28, 0, (1, 4))
+        age = Age(13, 12, 28, 0, (1, 4))
         samwise = Entity(18, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom, age=age)
 
         map.noncombatants.append(samwise)
