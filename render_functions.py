@@ -1,7 +1,10 @@
 import tcod as libtcod
 import pygame
 from enums.game_states import GameStates, MenuStates
-from menus import inventory_menu, level_up_menu, minimp_menu, dialogue_menu, encounter_screen
+from menus import inventory_menu, level_up_menu
+from screens.mini_map import minimap_screen
+from screens.dialogue_screen import dialogue_screen
+from screens.encounter_screen import encounter_screen
 from screens.gui_tools import print_message
 from screens.resources_HUD import player_resource_display
 from screens.loot_screen import loot_screen
@@ -81,12 +84,12 @@ def render_all(screen, camera_surface, message_surface, entities, player, struct
         inventory_menu(screen, inventory_title, player)
     elif game_state == GameStates.SHOW_MAP:
 
-        minimp_menu(screen, world_map)
+        minimap_screen(screen, world_map)
     elif game_state == GameStates.LEVEL_UP:
         level_up_menu(screen, player)
 
     elif game_state == GameStates.DIALOGUE:
-        dialogue_menu(screen, player, dialogue)
+        dialogue_screen(screen, player, dialogue)
     elif game_state == GameStates.ENCOUNTER:
         encounter_screen(screen, player, encounter, message_log)
     elif game_state == GameStates.LOOTING:

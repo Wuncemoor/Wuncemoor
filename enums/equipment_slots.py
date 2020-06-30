@@ -12,4 +12,4 @@ class EquipmentSlots(Enum):
     FINGER = 8
     NECK = 9
     BACK = 10
-    ACCESSORY = 11
+
