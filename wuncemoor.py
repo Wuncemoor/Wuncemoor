@@ -111,7 +111,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 move = action.get('move')
                 interact = action.get('interact')
                 show_inventory = action.get('show_inventory')
-                drop_inventory = action.get('drop_inventory')
                 show_map = action.get('show_map')
                 inventory_index = action.get('inventory_index')
                 show_menus = action.get('show_menus')
@@ -194,12 +193,10 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 if show_inventory:
                     game.state = GameStates.SHOW_INVENTORY
 
-                if drop_inventory:
-                    game.state = GameStates.DROP_INVENTORY
-
                 if show_menus:
                     game.state = GameStates.MENUS
                     menus = {
+                        'inventory': party.inventory,
                         'journal': journal,
                         'party': party,
                     }
@@ -214,8 +211,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     if game.state == GameStates.SHOW_INVENTORY:
                         player_turn_results.extend(
                             player.combatant.inventory.use(item, entities=entities, fov_map=fov_map))
-                    elif game.state == GameStates.DROP_INVENTORY:
-                        player_turn_results.extend(player.combatant.inventory.drop_item(item))
+
 
                 if level_up:
 
@@ -282,7 +278,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             else:
                                 loot.current_option += traverse_menu
                     elif game.state is GameStates.MENUS:
-                        if menu_handler.state == MenuStates.JOURNAL and menu_handler.display is None:
+                        if menu_handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and menu_handler.display is None:
                             if (traverse_menu[0] < 0 and menu_handler.current_option == 0) or (
                                     traverse_menu[0] > 0 and menu_handler.current_option == (
                                     len(menu_handler.options) - 1)):
@@ -293,6 +289,13 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             if (traverse_menu[1] < 0 and menu_handler.current_option == 0) or (
                                     traverse_menu[1] > 0 and menu_handler.current_option == (
                                     len(journal.get_subjournal(menu_handler.display)) - 1)):
+                                pass
+                            else:
+                                menu_handler.current_option += traverse_menu[1]
+                        elif menu_handler.state == MenuStates.INVENTORY:
+                            if (traverse_menu[1] < 0 and menu_handler.current_option == 0) or (
+                                    traverse_menu[1] > 0 and menu_handler.current_option == (
+                                    len(party.inventory.options) - 1)):
                                 pass
                             else:
                                 menu_handler.current_option += traverse_menu[1]
@@ -355,12 +358,12 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     elif game.state == GameStates.MENUS:
                         if menu_handler.state is MenuStates.PARTY:
                             game.state = GameStates.PLAYERS_TURN
-                        elif menu_handler.state is MenuStates.JOURNAL and menu_handler.display is None:
+                        elif menu_handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and menu_handler.display is None:
                             game.state = GameStates.PLAYERS_TURN
-                        elif menu_handler.state is MenuStates.JOURNAL:
+                        elif menu_handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY):
                             menu_handler.display = None
 
-                    elif game.state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.SHOW_MAP):
+                    elif game.state in (GameStates.SHOW_INVENTORY, GameStates.SHOW_MAP):
                         game.state = GameStates.PLAYERS_TURN
 
                     elif game.state == GameStates.TARGETING:
@@ -501,7 +504,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             loot.state = LootStates.DEPOSITING
                     if leave:
                         player.combatant.level.add_xp(loot.xp)
-                        player.combatant.inventory.items.extend(loot.claimed)
+                        party.inventory.items.extend(loot.claimed)
 
                         loot = None
                         game.state = GameStates.PLAYERS_TURN

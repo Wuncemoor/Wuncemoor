@@ -1,18 +1,20 @@
 from loader_functions.new_game_functions import get_player, equip_player, get_dungeons, get_intro_quest
 from game_messages import MessageLog
 from map_objects.game_map import GameMap
-from journal import Journal
-from party import Party
+from handlers.menus.journal import Journal
+from handlers.menus.party import Party
+from handlers.menus.inventory import Inventory
 from camera import Camera
 
 
 def get_game_variables():
 
     player = get_player()
+    party = Party(player)
+    party.inventory = Inventory()
+    equip_player(party)
 
     camera = Camera()
-
-    equip_player(player)
 
     entities = [player]
     structures = []
@@ -29,8 +31,6 @@ def get_game_variables():
     noncombatants.extend(game_map.current_map.noncombatants)
 
     message_log = MessageLog(10)
-
-    party = Party(player)
 
     journal = Journal()
     journal.current_quests.append(get_intro_quest())

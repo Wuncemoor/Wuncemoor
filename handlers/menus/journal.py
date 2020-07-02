@@ -1,4 +1,5 @@
 from enums.game_states import MenuStates
+
 class Journal:
     def __init__(self):
         self.current_quests = []

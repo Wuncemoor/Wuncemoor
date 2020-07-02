@@ -1,5 +1,6 @@
 from random import randint
 
+
 class MenuHandler:
     def __init__(self):
         self.state = None
@@ -57,10 +58,9 @@ class TimeHandler:
         self.day = 1
         self.hour = 6
 
-
     def time_goes_on(self):
         for party in self.observers:
-            for member in party.get_party():
+            for member in party.party_members():
                 member.age.get_older([0, 0, 0, 1])
         self.hour += 1
         self.new_day()
@@ -102,7 +102,6 @@ class TimeHandler:
                     diff = map(lambda x, y: x - y, self.time_stamp(), dungeon.time_dilation)
                     noncom.age.get_older(list(diff))
 
-
     def time_stamp(self):
         return [self.year, self.month, self.day, self.hour]
 
@@ -112,8 +111,5 @@ class EncounterHandler:
     def __init__(self):
         self.steps_since = 0
 
-
     def encounter_check(self):
         return (self.steps_since / (100 + self.steps_since)) * 50 > randint(1, 100)
-
-

@@ -29,8 +29,8 @@ class Entity:
                 self.combatant.ai.owner = self
             if self.combatant.level:
                 self.combatant.level.owner = self
-            if self.combatant.inventory:
-                self.combatant.inventory.owner = self
+            if self.combatant.satchel:
+                self.combatant.satchel.owner = self
 
         if self.item:
             self.item.owner = self

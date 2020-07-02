@@ -30,8 +30,9 @@ class LootStates(Enum):
     SIFTING = 2
     DEPOSITING = 3
 
+
 class MenuStates(Enum):
 
     PARTY = 1
     JOURNAL = 2
-
+    INVENTORY = 3

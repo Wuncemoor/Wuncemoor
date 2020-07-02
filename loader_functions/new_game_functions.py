@@ -1,9 +1,9 @@
 from ECS.__entity.__combatant.attributes import Attributes
-from ECS.__entity.__combatant.competence import Competence, Strength, Instinct, Coordination, Vitality, Arcana, Improvisation, \
-    Wisdom, Finesse, Charisma, Devotion
-from ECS.__entity.__combatant.inventory import Inventory
+from ECS.__entity.__combatant.competence import Competence, Strength, Instinct, Coordination, Vitality, Arcana, \
+    Improvisation, Wisdom, Finesse, Charisma, Devotion
 from ECS.__entity.__combatant.level import Level
 from ECS.__entity.__combatant.phylo import Phylo
+from ECS.__entity.__combatant.satchel import Satchel
 from ECS.__entity.__item.equippable import Equippable
 from ECS.__entity.__item.__equippable.equippable_core import EquippableCore
 from ECS.__entity.__item.__equippable.equippable_material import EquippableMaterial
@@ -18,41 +18,37 @@ from maps.starting_map import get_cave, get_town, get_world_map
 from ECS.entity import Entity
 from enums.equipment_slots import EquipmentSlots
 from enums.render_order import RenderOrder
-from journal import Quest, QuestNode
+from handlers.menus.journal import Quest, QuestNode
 from config.image_objects import BUNDLE_HERO, BUNDLE_STICK, STAIRS_DOWN, STAIRS_UP
 from config.constants import WHITE
 
 
 def get_player():
-    phylo_component = Phylo('sapient', 'sunborn', 'human', 'regular', 'tabula_rasa')
-    attribute_component = Attributes(10, 10, 10, 10, 10, 10, 10, 10, 10, 10)
-    inventory_component = Inventory(26)
-    level_component = Level()
-    competence_component = Competence(Strength(), Instinct(), Coordination(), Vitality(), Arcana(), Improvisation(),
-                                      Wisdom(), Finesse(), Charisma(), Devotion())
-    equipment_component = Equipment()
+    phylo = Phylo('sapient', 'sunborn', 'human', 'regular', 'tabula_rasa')
+    attributes = Attributes(10, 10, 10, 10, 10, 10, 10, 10, 10, 10)
+    satchel = Satchel(3)
+    level = Level()
+    competence = Competence(Strength(), Instinct(), Coordination(), Vitality(), Arcana(), Improvisation(),
+                            Wisdom(), Finesse(), Charisma(), Devotion())
+    equipment = Equipment()
 
-    combatant_component = Combatant('Player', BUNDLE_HERO, phylo=phylo_component, attributes=attribute_component,
-                                    level=level_component, competence=competence_component,
-                                    equipment=equipment_component, inventory=inventory_component, sex='male')
+    combatant = Combatant('Player', BUNDLE_HERO, phylo=phylo, attributes=attributes,
+                          level=level, competence=competence,
+                          equipment=equipment, satchel=satchel, sex='male')
     age = Age(10, 0, 0, 0, (1, 1))
 
-    player = Entity(5, 20, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant_component, age=age)
+    player = Entity(5, 20, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant, age=age)
 
     return player
 
 
-
-def equip_player(player):
-
-
+def equip_player(party):
     item_component = Item(
         Equippable('Stick', BUNDLE_STICK, EquipmentSlots.MAIN_HAND, EquippableCore('staff', BUNDLE_STICK),
                    EquippableMaterial('wood'), EquippableQuality('average')))
     stick = Entity(0, 0, item=item_component)
-    player.combatant.inventory.add_item(stick)
-    player.combatant.equipment.toggle_equip(stick)
-
+    party.inventory.add_item(stick)
+    party.p1.combatant.equipment.toggle_equip(stick)
 
 
 def get_dungeons():
@@ -64,10 +60,8 @@ def get_dungeons():
 
     dungeons[world.name] = world
 
-
     town = get_town(nodes[0])
     dungeons[town.name] = town
-
 
     town2 = get_town(nodes[1])
     dungeons[town2.name] = town2
@@ -120,11 +114,14 @@ def get_dungeons():
 
     return dungeons, wm_tiles
 
+
 def get_intro_quest():
     title = 'An Ominous Dream'
     node2 = QuestNode("Talked to Samwise",
                       "I told Samwise all about my dream. He thought it was cool, but that I shouldn't worry so much.")
-    node1 = QuestNode('Find Samwise', "That was by FAR the most intense dream you've ever had. You've got to talk to Samwise about it!", condition='samwise', plot_paths={'COMPLETE': node2})
+    node1 = QuestNode('Find Samwise',
+                      "That was by FAR the most intense dream you've ever had. You've got to talk to Samwise about it!",
+                      condition='samwise', plot_paths={'COMPLETE': node2})
     q = Quest(title, node1)
     q.plot.append(node1)
 

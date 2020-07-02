@@ -50,13 +50,11 @@ def handle_player_turn_keys(key):
     elif key == pygame.K_c:
         return {'show_menus': 'party'}
     elif key == pygame.K_i:
-        return {'show_inventory': True}
+        return {'show_menus': 'inventory'}
     elif key == pygame.K_m:
         return {'show_map': True}
     elif key == pygame.K_j:
         return {'show_menus': 'journal'}
-    elif key == pygame.K_o:
-        return {'drop_inventory': True}
     elif key == pygame.K_SPACE:
         return {'interact': True}
 
@@ -102,6 +100,12 @@ def handle_map_screen(key):
 def handle_menus(key):
     if key == pygame.K_ESCAPE:
         return {'exit': True}
+    elif key == pygame.K_j:
+        return {'show_menus': 'journal'}
+    elif key == pygame.K_c:
+        return {'show_menus': 'party'}
+    elif key == pygame.K_i:
+        return {'show_menus': 'inventory'}
     elif key in (pygame.K_a, pygame.K_LEFT):
         return {'traverse_menu': (-1, 0)}
     elif key in (pygame.K_d, pygame.K_RIGHT):

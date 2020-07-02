@@ -33,6 +33,7 @@ ORANGE = (255, 165, 0)
 DARK_RED = (191, 0, 0)
 LIGHT_GREY = (190, 190, 190)
 GREY = (128, 128, 128)
+DARK_PURPLE = (143, 0, 191)
 
 DUNGEON_FLOOR = {
     'town': 'grass',

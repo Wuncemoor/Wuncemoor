@@ -1,7 +1,9 @@
 from enums.equipment_slots import EquipmentSlots
 
+
 class Equipment:
-    def __init__(self, main_hand=None, off_hand=None, head=None, body=None, feet=None, belt=None, hands=None, finger=None, neck=None, back=None, accessory=None):
+    def __init__(self, main_hand=None, off_hand=None, head=None, body=None, feet=None, belt=None, hands=None,
+                 finger=None, neck=None, back=None):
         self.main_hand = main_hand
         self.off_hand = off_hand
         self.head = head
@@ -12,8 +14,7 @@ class Equipment:
         self.finger = finger
         self.neck = neck
         self.back = back
-        self.accessory = accessory
-        
+
     @property
     def max_hp_bonus(self):
         bonus = 0
@@ -47,9 +48,6 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.max_hp_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.max_hp_bonus
             
         return bonus
         
@@ -86,10 +84,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.max_mp_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.max_mp_bonus
-            
+
         return bonus
 
     @property
@@ -125,10 +120,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.max_tp_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.max_tp_bonus
-            
+
         return bonus
 
     @property
@@ -164,12 +156,8 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.max_vp_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.max_vp_bonus
-            
-        return bonus
 
+        return bonus
         
     @property
     def power_slash_bonus(self):
@@ -204,10 +192,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.power_slash_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.power_slash_bonus
-            
+
         return bonus
 
     @property
@@ -243,11 +228,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.power_pierce_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.power_pierce_bonus
 
-            
         return bonus
         
     @property
@@ -283,10 +264,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.power_blunt_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.power_blunt_bonus
-            
+
         return bonus
         
     @property
@@ -322,10 +300,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.spirit_heat_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.spirit_heat_bonus
-            
+
         return bonus
        
     @property
@@ -361,10 +336,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.spirit_cold_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.spirit_cold_bonus
-            
+
         return bonus
         
     @property
@@ -400,10 +372,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.spirit_acid_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.spirit_acid_bonus
-            
+
         return bonus
         
     @property
@@ -439,10 +408,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.spirit_current_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.spirit_current_bonus
-            
+
         return bonus
         
     @property
@@ -478,14 +444,8 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.spirit_aether_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.spirit_aether_bonus
-            
+
         return bonus
-        
-       
-                
         
     @property
     def resist_slash_bonus(self):
@@ -521,10 +481,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.resist_slash_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.resist_slash_bonus
-            
+
         return bonus
 
     @property
@@ -561,10 +518,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.resist_pierce_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.resist_pierce_bonus
-            
+
         return bonus
         
     @property
@@ -601,10 +555,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.resist_blunt_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.resist_blunt_bonus
-            
+
         return bonus
 
     @property
@@ -641,10 +592,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.resist_heat_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.resist_heat_bonus
-            
+
         return bonus
 
     @property
@@ -681,10 +629,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.resist_cold_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.resist_cold_bonus
-            
+
         return bonus
 
     @property
@@ -721,10 +666,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.resist_acid_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.resist_acid_bonus
-            
+
         return bonus
 
     @property
@@ -761,9 +703,6 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.resist_current_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.resist_current_bonus
 
         return bonus
 
@@ -801,11 +740,9 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.resist_aether_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.resist_aether_bonus
-            
+
         return bonus
+
     @property
     def accuracy_bonus(self):
     
@@ -840,10 +777,7 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.accuracy_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.accuracy_bonus
-            
+
         return bonus
 
     @property
@@ -880,13 +814,9 @@ class Equipment:
             
         if self.back and self.back.item.equippable:
             bonus += self.back.item.equippable.dodge_bonus
-            
-        if self.accessory and self.accessory.item.equippable:
-            bonus += self.accessory.item.equippable.dodge_bonus
-            
+
         return bonus
 
-       
     def toggle_equip(self, equippable_entity):
         results = []
         
@@ -949,7 +879,7 @@ class Equipment:
                 
         elif slot == EquipmentSlots.BELT:
             if self.belt == equippable_entity:
-                self.belt == None
+                self.belt = None
                 results.append({'dequipped': equippable_entity})
             else:
                 if self.belt:
@@ -957,8 +887,7 @@ class Equipment:
                     
                 self.feet = equippable_entity
                 results.append({'equipped': equippable_entity})
-            
-        
+
         elif slot == EquipmentSlots.HANDS:
             if self.hands == equippable_entity:
                 self.hands = None
@@ -1002,16 +931,10 @@ class Equipment:
                     
                 self.back = equippable_entity
                 results.append({'equipped': equippable_entity})
-                
-        elif slot == EquipmentSlots.ACCESSORY:
-            if self.accessory == equippable_entity:
-                self.accessory = None
-                results.append({'dequipped': equippable_entity})
-            else:
-                if self.accessory:
-                    results.append({'dequipped': equippable_entity})
-                    
-                self.accessory = equippable_entity
-                results.append({'equipped': equippable_entity})
-                
+
         return results
+
+    def drop_dead(self):
+        drop = [item for item in (self.main_hand, self.off_hand, self.head, self.body, self.feet, self.belt, self.hands,
+                                  self.finger, self.neck, self.back) if item is not None]
+        return drop

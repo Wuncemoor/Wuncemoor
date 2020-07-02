@@ -7,6 +7,3 @@ class Dungeon:
         self.np = np
         self.edges = edges
         self.time_dilation = [-65, 1, 1, 6]
-
-
-

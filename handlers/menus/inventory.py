@@ -1,23 +1,24 @@
-import tcod as libtcod
+from config.constants import DARK_PURPLE, YELLOW
 from game_messages import Message
-
+from enums.game_states import MenuStates
 
 
 class Inventory:
-    def __init__(self, capacity):
-        self.capacity = capacity
+    def __init__(self):
         self.items = []
-        
+        self.superstate = MenuStates.INVENTORY
+        self.options = ['nonplot', 'weapons', 'armor', 'accessories', 'other', 'crafting', 'plot']
+
     def add_item(self, item):
         results = []
         
-        if len(self.items) >= self.capacity:
-            results.append({'item_added': None, 'message': Message('You cannot carry any more, your inventory is full', libtcod.dark_purple)})
-        else:
-            results.append({
-                'item_added': item,
-                'message': Message('You pick up the {0}!'.format(item.name), libtcod.dark_purple)})
-            self.items.append(item)
+        # if len(self.items) >= self.wt_limit:
+        #     results.append({'item_added': None, 'message': Message("You're already overburdened! Get rid of some things or get stronger!", libtcod.dark_purple)})
+        # else:
+        results.append({
+            'item_added': item,
+            'message': Message('You pick up the {0}!'.format(item.name), DARK_PURPLE)})
+        self.items.append(item)
 
         return results
         
@@ -32,7 +33,7 @@ class Inventory:
             if equippable_component:
                 results.append({'equip': item_entity})
             else:    
-                results.append({'message': Message('The {0} cannot be used'.format(item_entity.name), libtcod.yellow)})
+                results.append({'message': Message('The {0} cannot be used'.format(item_entity.name), YELLOW)})
                         
         else:
             if item_component.useable.targeting and not (kwargs.get('target_x') or kwargs.get('target_y')):
@@ -61,6 +62,6 @@ class Inventory:
         item.x = self.owner.x
         item.y = self.owner.y
         self.remove_item(item)
-        results.append({'item_dropped': item, 'message': Message('You dropped the {0}!'.format(item.name), libtcod.yellow)})
+        results.append({'item_dropped': item, 'message': Message('You dropped the {0}!'.format(item.name), YELLOW)})
         
         return results

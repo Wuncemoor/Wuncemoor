@@ -7,7 +7,7 @@ from ECS.__entity.combatant import Combatant
 from builders.make_item import make_item
 from ECS.__entity.__combatant.attributes import Attributes
 from ECS.__entity.__combatant.phylo import Phylo
-from ECS.__entity.__combatant.inventory import Inventory
+from ECS.__entity.__combatant.satchel import Satchel
 from config.image_objects import BUNDLE_MOBS
 
 
@@ -25,11 +25,11 @@ class MobDirector:
         level = self.__builder.get_level()
         competence = self.__builder.get_competence()
         equipment = self.__builder.get_equipment()
-        inventory = self.__builder.get_inventory()
+        satchel = self.__builder.get_satchel()
         xp = self.__builder.get_xp()
         ai = self.__builder.get_ai()
 
-        combatant = Combatant(name, bundle, phylo, attributes, level, competence, equipment, inventory, ai, xp)
+        combatant = Combatant(name, bundle, phylo, attributes, level, competence, equipment, satchel, ai, xp)
         return combatant
 
 
@@ -251,11 +251,11 @@ class MobBuilder:
     def get_ai(self):
         return BasicMonster()
 
-    def get_inventory(self):
+    def get_satchel(self):
 
-        inven = Inventory(26)
+        satchel = Satchel(1)
 
         potion = make_item('healing_potion')
-        inven.add_item(potion)
+        satchel.items.append(potion)
 
-        return inven
+        return satchel

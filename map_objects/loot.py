@@ -12,4 +12,5 @@ class Loot:
         self.state = LootStates.THINKING
 
     def add_loot(self, dead_entity):
-        self.items.extend(dead_entity.combatant.inventory.items)
+        self.items.extend(dead_entity.combatant.satchel.items)
+        self.items.extend(dead_entity.combatant.equipment.drop_dead())

@@ -11,7 +11,8 @@ ENCOUNTER_MENU = py.image.load('images\\GUI\\menus\\encounter_menu.png')
 ENCOUNTER_BUTTON = py.image.load('images\\GUI\\menus\\option_button.png')
 DIALOGUE_MENU = py.image.load('images\\GUI\\dialogue_menu.png')
 LEVELUP_MENU = py.image.load('images\\GUI\\levelup_menu.png')
-INVENTORY_MENU = py.image.load('images\\GUI\\inventory_menu.png')
+
+INVENTORY_SCREEN = py.image.load('images\\GUI\\inventory\\inven_bg.png')
 
 JOURNAL_OBJS = {
     'bg': py.image.load('images\\GUI\\journal\\journal_bg.png'),

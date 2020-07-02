@@ -1,7 +1,8 @@
 import tcod as libtcod
 import pygame
 from enums.game_states import GameStates, MenuStates
-from menus import inventory_menu, level_up_menu
+from menus import level_up_menu
+from screens.inventory_screen import inventory_screen
 from screens.mini_map import minimap_screen
 from screens.dialogue_screen import dialogue_screen
 from screens.encounter_screen import encounter_screen
@@ -72,22 +73,10 @@ def render_all(screen, camera_surface, message_surface, entities, player, struct
     if game_state == GameStates.PLAYERS_TURN:
         screen.blit(calendar, (screen.get_width() - calendar.get_width(), screen.get_height() - calendar.get_height()))
 
-
-    if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
-
-        if game_state == GameStates.SHOW_INVENTORY:
-            inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
-
-        else:
-            inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
-
-        inventory_menu(screen, inventory_title, player)
-    elif game_state == GameStates.SHOW_MAP:
-
+    if game_state == GameStates.SHOW_MAP:
         minimap_screen(screen, world_map)
     elif game_state == GameStates.LEVEL_UP:
         level_up_menu(screen, player)
-
     elif game_state == GameStates.DIALOGUE:
         dialogue_screen(screen, player, dialogue)
     elif game_state == GameStates.ENCOUNTER:
@@ -99,6 +88,8 @@ def render_all(screen, camera_surface, message_surface, entities, player, struct
             character_screen(screen, player)
         elif menu_handler.state == MenuStates.JOURNAL:
             journal_screen(screen, menu_handler)
+        elif menu_handler.state == MenuStates.INVENTORY:
+            inventory_screen(screen, menu_handler)
 
 
 def draw_entity(camera_surface, cx, cy, entity, fov_map, game_map, tilesize):
