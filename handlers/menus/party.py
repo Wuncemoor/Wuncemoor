@@ -10,8 +10,8 @@ class Party:
         self.superstate = MenuStates.PARTY
         self.options = []
         self.inventory = None
+        self.focus = None
 
-    def party_members(self):
+    def members(self):
         party = [member for member in (self.p1, self.p2, self.p3, self.p4) if member is not None]
-
         return party

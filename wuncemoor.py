@@ -293,9 +293,11 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             else:
                                 menu_handler.current_option += traverse_menu[1]
                         elif menu_handler.state == MenuStates.INVENTORY:
+                            ind = menu_handler.menu.options.index(menu_handler.display)
+                            sg = menu_handler.menu.subgroups[ind]
                             if (traverse_menu[1] < 0 and menu_handler.current_option == 0) or (
                                     traverse_menu[1] > 0 and menu_handler.current_option == (
-                                    len(party.inventory.options) - 1)):
+                                    len(sg) - 1)):
                                 pass
                             else:
                                 menu_handler.current_option += traverse_menu[1]
@@ -343,7 +345,13 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             if len(journal.get_subjournal(menu_handler.options[menu_handler.current_option])) > 0:
                                 menu_handler.display = menu_handler.options[menu_handler.current_option]
                                 menu_handler.current_option = 0
-                        # elif menu_handler.state is MenuStates.INVENTORY:
+                        elif menu_handler.state is MenuStates.INVENTORY and menu_handler.display is None:
+                            subgroup = menu_handler.menu.subgroups[menu_handler.current_option]
+                            if len(subgroup) > 0:
+                                menu_handler.display = menu_handler.options[menu_handler.current_option]
+                                menu_handler.current_option = 0
+                        elif menu_handler.state is MenuStates.INVENTORY:
+                            ind = menu_handler.menu.options.index(menu_handler.display)
 
 
                 if exit:
@@ -363,6 +371,8 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         elif menu_handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and menu_handler.display is None:
                             game.state = GameStates.PLAYERS_TURN
                         elif menu_handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY):
+                            if menu_handler.state == MenuStates.INVENTORY:
+                                menu_handler.current_option = menu_handler.menu.options.index(menu_handler.display)
                             menu_handler.display = None
 
                     elif game.state in (GameStates.SHOW_INVENTORY, GameStates.SHOW_MAP):

@@ -11,7 +11,9 @@ def get_game_variables():
 
     player = get_player()
     party = Party(player)
+    party.focus = party.p1
     party.inventory = Inventory()
+
     equip_player(party)
 
     camera = Camera()

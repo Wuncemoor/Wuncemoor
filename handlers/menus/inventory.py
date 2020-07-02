@@ -14,7 +14,8 @@ class Inventory:
         self.materials = []
         self.plot = []
         self.superstate = MenuStates.INVENTORY
-        self.options = ['miscellaneous', 'weapons', 'armor', 'accessories', 'satchel', 'materials', 'plot']
+        self.options = ['misc', 'weapons', 'armor', 'accessories', 'satchel', 'materials', 'plot']
+
 
     @property
     def subgroups(self):

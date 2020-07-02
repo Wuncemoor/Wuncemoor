@@ -60,7 +60,7 @@ class TimeHandler:
 
     def time_goes_on(self):
         for party in self.observers:
-            for member in party.party_members():
+            for member in party.members():
                 member.age.get_older([0, 0, 0, 1])
         self.hour += 1
         self.new_day()

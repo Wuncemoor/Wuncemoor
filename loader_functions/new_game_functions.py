@@ -48,7 +48,6 @@ def equip_player(party):
                    EquippableMaterial('wood'), EquippableQuality('average')))
     stick = Entity(0, 0, item=item_component)
     party.inventory.add_item(stick)
-    party.p1.combatant.equipment.toggle_equip(stick)
 
 
 def get_dungeons():

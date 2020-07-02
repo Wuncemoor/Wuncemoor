@@ -1,15 +1,21 @@
 import math
 import pygame as py
 from config.constants import CSCREEN
-from config.image_objects import INVENTORY_BG, INVENTORY_OPTIONS, EQUIPMENT_BG
+from config.image_objects import INVENTORY_BG, INVENTORY_OPTIONS, EQUIPMENT_BG, INDICATOR_H
 from screens.gui_tools import get_surface, align_and_blit, get_alpha_surface, get_text_surface
 
 
 def inventory_screen(screen, menu_handler):
 
     surf = get_surface(INVENTORY_BG)
-    options = INVENTORY_OPTIONS[menu_handler.current_option]
-    subgroup = menu_handler.menu.subgroups[menu_handler.current_option]
+    if menu_handler.display is None:
+        options = INVENTORY_OPTIONS[menu_handler.current_option]
+        subgroup = menu_handler.menu.subgroups[menu_handler.current_option]
+    else:
+        ind = menu_handler.options.index(menu_handler.display)
+        options = INVENTORY_OPTIONS[ind]
+        surf.blit(INDICATOR_H, (410, 130 + (32 * menu_handler.current_option)))
+        subgroup = menu_handler.menu.subgroups[ind]
     sg = display_subgroup(subgroup)
 
     align_and_blit(surf, options, x_ratio=0.75, y_ratio=0.19)
