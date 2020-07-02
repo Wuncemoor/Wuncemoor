@@ -1,11 +1,10 @@
-from screens.gui_tools import get_alpha_surface, align_and_blit, get_button_surface, get_text_surface, get_wrapped_text
+from screens.gui_tools import get_surface, get_alpha_surface, align_and_blit, get_button_surface, get_text_surface, get_wrapped_text
 from config.image_objects import JOURNAL_OBJS
 from config.constants import RED, DARK_RED, BLACK
 
-def journal_screen(screen, menu_handler):
-    surf = get_alpha_surface(550, 530)
 
-    surf.blit(JOURNAL_OBJS.get('bg'), (0, 0))
+def journal_screen(screen, menu_handler):
+    surf = get_surface(JOURNAL_OBJS.get('bg'))
 
     if menu_handler.display is not None:
         ind = menu_handler.options.index(menu_handler.display)

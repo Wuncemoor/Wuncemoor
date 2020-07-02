@@ -40,8 +40,8 @@ def get_town(node):
     director = Director()
 
     director.set_builder(equippable_test)
-    equippable_component = director.get_equippable()
-    item_component = Item(equippable_component=equippable_component)
+    equippable = director.get_equippable()
+    item_component = Item(equippable=equippable)
     test_gear = Entity(20, 20, blocks=False, render_order=RenderOrder.ITEM, item=item_component)
 
     map.map_entities.append(test_gear)

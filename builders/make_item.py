@@ -15,12 +15,10 @@ from config.image_objects import BUNDLE_WEAPONS, BUNDLE_POTION, SCROLL
 
 def make_item(item_choice):
 
-
-
     if item_choice == 'healing_potion':
 
         item_component = Item(
-            useable_component=Useable('Healing Potion', BUNDLE_POTION, use_function=heal, amount=400))
+            useable=Useable('Healing Potion', BUNDLE_POTION, use_function=heal, amount=400))
         item = Entity(0, 0, render_order=RenderOrder.ITEM, item=item_component)
     elif item_choice == 'sword':
         image = BUNDLE_WEAPONS.get('longsword')
@@ -46,13 +44,13 @@ def make_item(item_choice):
         image = SCROLL
         msg = 'Left-click a target tile for the fireball, or right-click to rethink your life decisions.'
         item_component = Item(
-            useable_component=Useable('Fireball Scroll', image, use_function=cast_fireball, targeting=True,
+            useable=Useable('Fireball Scroll', image, use_function=cast_fireball, targeting=True,
                                       targeting_message=Message(msg, libtcod.light_cyan), damage=250, radius=3))
         item = Entity(0, 0, render_order=RenderOrder.ITEM, item=item_component)
     elif item_choice == 'confusion_scroll':
         image = SCROLL
         item_component = Item(
-            useable_component=Useable('Confusion Scroll', image, use_function=cast_confuse, targeting=True,
+            useable=Useable('Confusion Scroll', image, use_function=cast_confuse, targeting=True,
                                       targeting_message=Message(
                                           'Left-click an enemy to confuse it, or right-click to cancel.',
                                           libtcod.light_cyan)))
@@ -60,7 +58,7 @@ def make_item(item_choice):
     elif item_choice == 'lightning_scroll':
         image = SCROLL
         item_component = Item(
-            useable_component=Useable('Lightning Scroll', image, use_function=cast_lightning, damage=400,
+            useable=Useable('Lightning Scroll', image, use_function=cast_lightning, damage=400,
                                       maximum_range=5))
         item = Entity(0, 0, render_order=RenderOrder.ITEM, item=item_component)
 

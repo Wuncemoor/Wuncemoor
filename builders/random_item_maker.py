@@ -5,7 +5,6 @@ from ECS.__entity.__item.__equippable.equippable_quality import EquippableQualit
 from enums.equipment_slots import EquipmentSlots
 import random
 from config.image_objects import BUNDLE_WEAPONS
-from ECS.image_bundle import ImageBundle
 
 
 class Director:
@@ -18,22 +17,19 @@ class Director:
         equippable = Equippable()
 
         core = self.__builder.get_core()
-        equippable.set_core(core)
+        equippable.core = core
 
-        material = self.__builder.get_material()
-        equippable.set_material(material)
+        equippable.material = self.__builder.get_material()
 
-        quality = self.__builder.get_quality()
-        equippable.set_quality(quality)
+        equippable.quality = self.__builder.get_quality()
 
-        slot = self.__builder.get_slot()
-        equippable.set_slot(slot)
+        equippable.slot = self.__builder.get_slot()
 
         name = self.__builder.get_name()
         equippable.set_name(name)
 
         image = self.__builder.get_image(core)
-        equippable.set_image(image)
+        equippable.images = image
 
         return equippable
 

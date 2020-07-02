@@ -153,7 +153,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         if entity.x == player.x and entity.y == player.y:
                             if entity.item:
                                 game_map.current_map.map_entities.remove(entity)
-                                pickup_results = player.combatant.inventory.add_item(entity)
+                                pickup_results = party.inventory.add_item(entity)
                                 player_turn_results.extend(pickup_results)
                                 nothing = False
                                 break
@@ -343,6 +343,8 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             if len(journal.get_subjournal(menu_handler.options[menu_handler.current_option])) > 0:
                                 menu_handler.display = menu_handler.options[menu_handler.current_option]
                                 menu_handler.current_option = 0
+                        # elif menu_handler.state is MenuStates.INVENTORY:
+
 
                 if exit:
                     if game.state == GameStates.ENCOUNTER:
@@ -398,13 +400,10 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     if item_added:
                         entities.remove(item_added)
 
-
-
                     if item_dropped:
                         game_map.current_map.map_entities.append(item_dropped)
                         entities = [player]
                         entities.extend(game_map.current_map.map_entities)
-
 
                     if equip:
                         equip_results = player.combatant.equipment.toggle_equip(equip)
@@ -504,7 +503,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             loot.state = LootStates.DEPOSITING
                     if leave:
                         player.combatant.level.add_xp(loot.xp)
-                        party.inventory.items.extend(loot.claimed)
+                        party.inventory.take_loot(loot.claimed)
 
                         loot = None
                         game.state = GameStates.PLAYERS_TURN

@@ -25,18 +25,17 @@ def display_loot(loot):
 
     y1 = 0
     for item in loot.items:
-        window.blit(item.images.portrait, (120, 40 + (100 * y1)))
+        window.blit(item.images.port_mini, (120, 40 + (100 * y1)))
         text = get_text_surface(item.name, fontsize=20, color=BLACK)
         window.blit(text, (210, 70 + (100 * y1)))
         y1 += 1
     y2 = 0
     bonus_y = 640
     for item in loot.claimed:
-        window.blit(item.images.portrait, (120 + bonus_y, 40 + (100 * y2)))
+        window.blit(item.images.port_mini, (120 + bonus_y, 40 + (100 * y2)))
         text = get_text_surface(item.name, fontsize=20, color=BLACK)
         window.blit(text, (210 + bonus_y, 40 + (100 * y2)))
         y2 += 1
-
 
     if loot.state == LootStates.SIFTING:
         window.blit(INDICATOR_H, (80, 60 + (loot.current_option * 100)))

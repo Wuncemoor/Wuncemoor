@@ -12,7 +12,15 @@ ENCOUNTER_BUTTON = py.image.load('images\\GUI\\menus\\option_button.png')
 DIALOGUE_MENU = py.image.load('images\\GUI\\dialogue_menu.png')
 LEVELUP_MENU = py.image.load('images\\GUI\\levelup_menu.png')
 
-INVENTORY_SCREEN = py.image.load('images\\GUI\\inventory\\inven_bg.png')
+INVENTORY_BG = py.image.load('images\\GUI\\inventory\\inven_bg.png')
+EQUIPMENT_BG = py.image.load('images\\GUI\\inventory\\equipment_bg.png')
+INVENTORY_OPTIONS = [py.image.load('images\\GUI\\inventory\\miscellaneous.png'),
+                     py.image.load('images\\GUI\\inventory\\weapons.png'),
+                     py.image.load('images\\GUI\\inventory\\armor.png'),
+                     py.image.load('images\\GUI\\inventory\\accessories.png'),
+                     py.image.load('images\\GUI\\inventory\\satchel.png'),
+                     py.image.load('images\\GUI\\inventory\\materials.png'),
+                     py.image.load('images\\GUI\\inventory\\plot.png')]
 
 JOURNAL_OBJS = {
     'bg': py.image.load('images\\GUI\\journal\\journal_bg.png'),
@@ -50,7 +58,9 @@ BUNDLE_SAMWISE = ImageBundle(py.image.load('images\\entities\\noncombatants\\sam
                              py.image.load('images\\entities\\noncombatants\\samwise\\portrait.png'),
                              py.image.load('images\\entities\\noncombatants\\samwise\\port_mini.png'))
 
-BUNDLE_STICK = ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\sprite.png'))
+BUNDLE_STICK = ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\sprite.png'),
+                           py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\portrait.png'),
+                           py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\port_mini.png'))
 
 BUNDLE_WEAPONS = {
     'staff': ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\staff\\sprite.png')),
@@ -61,7 +71,8 @@ BUNDLE_WEAPONS = {
 }
 
 BUNDLE_POTION = ImageBundle(py.image.load('images\\entities\\items\\useables\\potion\\sprite.png'),
-                            py.image.load('images\\entities\\items\\useables\\potion\\portrait.png'))
+                            py.image.load('images\\entities\\items\\useables\\potion\\portrait.png'),
+                            py.image.load('images\\entities\\items\\useables\\potion\\port_mini.png'))
 SCROLL = py.image.load('images\\entities\\items\\useables\\scroll\\sprite.png')
 
 BUNDLE_MOBS = {

@@ -1,13 +1,24 @@
 from config.constants import DARK_PURPLE, YELLOW
 from game_messages import Message
 from enums.game_states import MenuStates
+from enums.equipment_slots import EquipmentSlots
 
 
 class Inventory:
     def __init__(self):
-        self.items = []
+        self.misc = []
+        self.weapons = []
+        self.armor = []
+        self.accessories = []
+        self.satchel = []
+        self.materials = []
+        self.plot = []
         self.superstate = MenuStates.INVENTORY
-        self.options = ['nonplot', 'weapons', 'armor', 'accessories', 'other', 'crafting', 'plot']
+        self.options = ['miscellaneous', 'weapons', 'armor', 'accessories', 'satchel', 'materials', 'plot']
+
+    @property
+    def subgroups(self):
+        return [self.misc, self.weapons, self.armor, self.accessories, self.satchel, self.materials, self.plot]
 
     def add_item(self, item):
         results = []
@@ -18,9 +29,35 @@ class Inventory:
         results.append({
             'item_added': item,
             'message': Message('You pick up the {0}!'.format(item.name), DARK_PURPLE)})
-        self.items.append(item)
+        subgroup = self.get_subgroup(item.item)
+        subgroup.append(item)
 
         return results
+
+    def take_loot(self, loot):
+        for item in loot:
+            self.add_item(item)
+
+
+    def get_subgroup(self, item):
+
+        if item.equippable:
+            if item.equippable.slot == EquipmentSlots.MAIN_HAND:
+                subgroup = self.weapons
+            elif item.equippable.slot in (EquipmentSlots.OFF_HAND, EquipmentSlots.HEAD, EquipmentSlots.BODY,
+                                          EquipmentSlots.HANDS, EquipmentSlots.FEET):
+                subgroup = self.armor
+            else:
+                subgroup = self.accessories
+        elif item.useable:
+            subgroup = self.satchel
+        elif item.craftable:
+            subgroup = self.materials
+        elif item.important:
+            subgroup = self.plot
+        else:
+            subgroup = self.misc
+        return subgroup
         
     def use(self, item_entity, **kwargs):
         results = []
