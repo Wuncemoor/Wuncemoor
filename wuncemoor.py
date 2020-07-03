@@ -3,14 +3,13 @@ from fov_function import initialize_fov, recompute_fov
 from death_functions import kill_monster, kill_player
 from enums.game_states import GameStates, EncounterStates, LootStates, MenuStates
 from game_messages import Message
-from handlers.input_handlers import handle_keys, handle_mouse, handle_main_menu
+from handlers.input_handler import InputHandler, handle_mouse
 from loader_functions.initialize_new_game import get_game_variables
 from loader_functions.data_loaders import load_game, save_game
 from config.constants import START, BLACK
 from handlers.state_handlers import MenuHandler, DialogueHandler, TimeHandler, EncounterHandler
 from handlers.game_handler import GameHandler
 from handlers.view_handler import ViewHandler
-from render_functions import render_all
 import sys
 import pygame as py
 
@@ -24,6 +23,9 @@ def main():
 
     screen = py.display.set_mode(screen_size)
     view = ViewHandler(screen)
+    input = InputHandler()
+    game = GameHandler(view, input)
+
     message_surface = py.Surface(mscreen_size)
     camera_surface = py.Surface(cscreen_size)
 
@@ -48,8 +50,7 @@ def main():
             if event.type == py.KEYDOWN:
 
                 if show_main_menu:
-
-                    action = handle_main_menu(event.key)
+                    action = game.input.output(event.key)
                     traverse_menu = action.get('traverse_menu')
                     choose_option = action.get('choose_menu_option')
 
@@ -74,16 +75,16 @@ def main():
                             py.quit()
                             sys.exit()
                 else:
-                    view.screen.fill(BLACK)
+                    game.state = GameStates.PLAYERS_TURN
+                    game.view.screen.fill(BLACK)
                     show_main_menu = False
-                    game = GameHandler()
                     play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,
-                              message_log, party, journal, game, view, camera_surface, message_surface)
+                              message_log, party, journal, game, camera_surface, message_surface)
         py.display.flip()
 
 
 def play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,
-              message_log, party, journal, game, view, camera_surface, message_surface):
+              message_log, party, journal, game, camera_surface, message_surface):
 
     fov_recompute = True
     fov_map = initialize_fov(game_map)
@@ -105,7 +106,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 sys.exit()
             if event.type == py.KEYDOWN:
 
-                action = handle_keys(event.key, game.state)
+                action = game.input.output(event.key)
 
                 move = action.get('move')
                 interact = action.get('interact')
@@ -317,7 +318,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                             encounter_results.extend(attack_results)
                         elif encounter.state == EncounterStates.VICTORY:
                             loot = encounter.loot
-
                             encounter = None
                             game.state = GameStates.LOOTING
                     elif game.state == GameStates.LOOTING:
@@ -543,9 +543,9 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
         if fov_recompute:
             recompute_fov(fov_map, player.x, player.y)
 
-        render_all(view.screen, camera_surface, message_surface, entities, player, structures, transitions,
-                   noncombatants, game_map, world_map, camera, fov_map, fov_recompute, message_log,
-                        game.state, menu_handler, time_handler, encounter, loot, dialogue_handler)
+        game.view.render_all(camera_surface, message_surface, entities, player, structures, transitions,
+                                         noncombatants, game_map, world_map, camera, fov_map, fov_recompute, message_log,
+                                         game.state, menu_handler, time_handler, encounter, loot, dialogue_handler)
 
         fov_recompute = False
 
