@@ -7,9 +7,9 @@ from handlers.input_handlers import handle_keys, handle_mouse, handle_main_menu
 from loader_functions.initialize_new_game import get_game_variables
 from loader_functions.data_loaders import load_game, save_game
 from config.constants import START, BLACK
-from screens.title_screen import title_screen
 from handlers.state_handlers import MenuHandler, DialogueHandler, TimeHandler, EncounterHandler
 from handlers.game_handler import GameHandler
+from handlers.view_handler import ViewHandler
 from render_functions import render_all
 import sys
 import pygame as py
@@ -23,6 +23,7 @@ def main():
     py.init()
 
     screen = py.display.set_mode(screen_size)
+    view = ViewHandler(screen)
     message_surface = py.Surface(mscreen_size)
     camera_surface = py.Surface(cscreen_size)
 
@@ -33,14 +34,13 @@ def main():
     entities = []
     game_map = None
     message_log = None
-    current_option = 0
 
     show_main_menu = True
 
     running = True
 
     while running:
-        title_screen(screen, current_option)
+        view.title_screen()
         for event in py.event.get():
             if event.type == py.QUIT:
                 py.quit()
@@ -54,36 +54,36 @@ def main():
                     choose_option = action.get('choose_menu_option')
 
                     if traverse_menu:
-                        if (traverse_menu < 0 and current_option == 0) or \
-                                (traverse_menu > 0 and current_option == 2):
+                        if (traverse_menu < 0 and view.option == 0) or \
+                                (traverse_menu > 0 and view.option == 2):
                             pass
                         else:
-                            current_option += traverse_menu
+                            view.option += traverse_menu
                     elif choose_option:
-                        if current_option == 0:
+                        if view.option == 0:
                             player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, \
                             message_log, party, journal = get_game_variables()
                             camera.refocus(player.x, player.y, game_map)
 
                             show_main_menu = False
-                        elif current_option == 1:
+                        elif view.option == 1:
                             player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, \
                             message_log, party, journal = load_game()
                             show_main_menu = False
-                        elif current_option == 2:
+                        elif view.option == 2:
                             py.quit()
                             sys.exit()
                 else:
-                    screen.fill(BLACK)
+                    view.screen.fill(BLACK)
                     show_main_menu = False
-                    game = GameHandler(screen)
+                    game = GameHandler()
                     play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,
-                              message_log, party, journal, game, camera_surface, message_surface)
+                              message_log, party, journal, game, view, camera_surface, message_surface)
         py.display.flip()
 
 
 def play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,
-              message_log, party, journal, game, camera_surface, message_surface):
+              message_log, party, journal, game, view, camera_surface, message_surface):
 
     fov_recompute = True
     fov_map = initialize_fov(game_map)
@@ -94,7 +94,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
     loot = None
     menu_handler = MenuHandler()
     time_handler = TimeHandler([party])
-
 
     while True:
         for event in py.event.get():
@@ -544,7 +543,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
         if fov_recompute:
             recompute_fov(fov_map, player.x, player.y)
 
-        render_all(game.screen, camera_surface, message_surface, entities, player, structures, transitions,
+        render_all(view.screen, camera_surface, message_surface, entities, player, structures, transitions,
                    noncombatants, game_map, world_map, camera, fov_map, fov_recompute, message_log,
                         game.state, menu_handler, time_handler, encounter, loot, dialogue_handler)
 

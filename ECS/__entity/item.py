@@ -1,9 +1,10 @@
 class Item:
-    def __init__(self, equippable=None, useable=None, craftable=None, important=False):
+    def __init__(self, equippable=None, useable=None, craftable=None, important=False, stackable=False):
         self.equippable = equippable
         self.useable = useable
         self.craftable = craftable
         self.important = important
+        self.stackable = stackable
         self.name = None
         self.images = None
         
@@ -19,3 +20,4 @@ class Item:
         else:
             self.name = self.important.name
             self.images = self.important.images
+
