@@ -1,5 +1,4 @@
 import pygame as py
-
 from config.constants import TILES_ON_SCREEN
 from config.image_objects import TITLE_SCREEN_BG, TITLE_MENU_BG, TITLE_MENU_BUTTON, INDICATOR_H, MESSAGE_BG
 from enums.game_states import GameStates, MenuStates
@@ -21,6 +20,13 @@ class ViewHandler:
     def __init__(self, screen):
         self.screen = screen
         self.option = 0
+        self.world_map = None
+        self.camera = None
+        self.fov = None
+
+    def take_ownership(self):
+        self.camera.owner = self
+        self.fov.owner = self
 
     def title_screen(self):
         self.screen.blit(TITLE_SCREEN_BG, (0, 0))
@@ -44,28 +50,28 @@ class ViewHandler:
         return surf
 
     def render_all(self, camera_surface, message_surface, entities, player, structures, transitions,
-                   noncombatants, game_map, world_map, camera, fov_map, fov_recompute, message_log,
-                   game_state, menu_handler, time_handler, encounter, loot, dialogue):
+                   noncombatants, message_log,
+                   menu_handler, time_handler, encounter, loot, dialogue):
         (width, height) = TILES_ON_SCREEN
 
 
         tilesize = 16
         # Draw tiles near player
-        if fov_recompute:
+        if self.fov.recompute:
             for y in range(height):
                 for x in range(width):
-                    draw_tile(camera_surface, fov_map, game_map, x, y, camera.x, camera.y, tilesize)
+                    draw_tile(camera_surface, self.fov.map, self.owner.map, x, y, self.camera.x, self.camera.y, tilesize)
 
         for structure in structures:
-            draw_structure(camera_surface, camera.x, camera.y, structure, fov_map, game_map, tilesize)
+            draw_structure(camera_surface, self.camera.x, self.camera.y, structure, self.fov.map, self.owner.map, tilesize)
         for transition in transitions:
-            draw_entity(camera_surface, camera.x, camera.y, transition, fov_map, game_map, tilesize)
+            draw_entity(camera_surface, self.camera.x, self.camera.y, transition, self.fov.map, self.owner.map, tilesize)
         for noncom in noncombatants:
-            draw_entity(camera_surface, camera.x, camera.y, noncom, fov_map, game_map, tilesize)
+            draw_entity(camera_surface, self.camera.x, self.camera.y, noncom, self.fov.map, self.owner.map, tilesize)
         # draw all entities in list
         entities_in_render_order = sorted(entities, key=lambda x: x.render_order.value)
         for entity in entities_in_render_order:
-            draw_entity(camera_surface, camera.x, camera.y, entity, fov_map, game_map, tilesize)
+            draw_entity(camera_surface, self.camera.x, self.camera.y, entity, self.fov.map, self.owner.map, tilesize)
 
         self.screen.blit(camera_surface, (0, 0))
 
@@ -86,20 +92,20 @@ class ViewHandler:
 
         calendar = display_calendar(time_handler.month, time_handler.day)
 
-        if game_state == GameStates.PLAYERS_TURN:
+        if self.owner.state == GameStates.PLAYERS_TURN:
             self.screen.blit(calendar, (self.screen.get_width() - calendar.get_width(), self.screen.get_height() - calendar.get_height()))
 
-        if game_state == GameStates.SHOW_MAP:
-            minimap_screen(self.screen, world_map)
-        elif game_state == GameStates.LEVEL_UP:
+        if self.owner.state == GameStates.SHOW_MAP:
+            minimap_screen(self.screen, self.world_map)
+        elif self.owner.state == GameStates.LEVEL_UP:
             level_up_menu(self.screen, player)
-        elif game_state == GameStates.DIALOGUE:
+        elif self.owner.state == GameStates.DIALOGUE:
             dialogue_screen(self.screen, player, dialogue)
-        elif game_state == GameStates.ENCOUNTER:
+        elif self.owner.state == GameStates.ENCOUNTER:
             encounter_screen(self.screen, player, encounter, message_log)
-        elif game_state == GameStates.LOOTING:
+        elif self.owner.state == GameStates.LOOTING:
             loot_screen(self.screen, loot, message_log)
-        elif game_state == GameStates.MENUS:
+        elif self.owner.state == GameStates.MENUS:
             if menu_handler.state == MenuStates.PARTY:
                 character_screen(self.screen, player)
             elif menu_handler.state == MenuStates.JOURNAL:

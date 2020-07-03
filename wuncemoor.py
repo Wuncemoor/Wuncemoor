@@ -1,5 +1,4 @@
 import tcod as libtcod
-from fov_function import initialize_fov, recompute_fov
 from death_functions import kill_monster, kill_player
 from enums.game_states import GameStates, EncounterStates, LootStates, MenuStates
 from game_messages import Message
@@ -10,6 +9,7 @@ from config.constants import START, BLACK
 from handlers.state_handlers import MenuHandler, DialogueHandler, TimeHandler, EncounterHandler
 from handlers.game_handler import GameHandler
 from handlers.view_handler import ViewHandler
+from handlers.views.fov_handler import FovHandler
 import sys
 import pygame as py
 
@@ -18,11 +18,11 @@ import pygame as py
 def main():
 
     (screen_size, cscreen_size, mscreen_size, game_title) = START
-
     py.init()
 
     screen = py.display.set_mode(screen_size)
     view = ViewHandler(screen)
+    view.fov = FovHandler()
     input = InputHandler()
     game = GameHandler(view, input)
 
@@ -31,14 +31,7 @@ def main():
 
     py.display.set_caption(game_title)
 
-    player = None
-    dungeons = {}
-    entities = []
-    game_map = None
-    message_log = None
-
     show_main_menu = True
-
     running = True
 
     while running:
@@ -64,7 +57,6 @@ def main():
                         if view.option == 0:
                             player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera, \
                             message_log, party, journal = get_game_variables()
-                            camera.refocus(player.x, player.y, game_map)
 
                             show_main_menu = False
                         elif view.option == 1:
@@ -78,16 +70,22 @@ def main():
                     game.state = GameStates.PLAYERS_TURN
                     game.view.screen.fill(BLACK)
                     show_main_menu = False
-                    play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,
+                    game.view.world_map = world_map
+                    game.map = game_map
+                    game.dungeons = dungeons
+                    game.take_ownership()
+                    game.view.camera = camera
+                    game.view.take_ownership()
+                    camera.refocus(player.x, player.y)
+                    game.view.fov.map = game.view.fov.initialize_fov(game.map)
+                    play_game(player, entities, structures, transitions, noncombatants,
                               message_log, party, journal, game, camera_surface, message_surface)
         py.display.flip()
 
 
-def play_game(player, dungeons, entities, structures, transitions, noncombatants, game_map, world_map, camera,
+def play_game(player, entities, structures, transitions, noncombatants,
               message_log, party, journal, game, camera_surface, message_surface):
 
-    fov_recompute = True
-    fov_map = initialize_fov(game_map)
     targeting_item = None
     dialogue_handler = DialogueHandler([journal])
     encounter_handler = EncounterHandler()
@@ -112,7 +110,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                 interact = action.get('interact')
                 show_inventory = action.get('show_inventory')
                 show_map = action.get('show_map')
-                inventory_index = action.get('inventory_index')
                 show_menus = action.get('show_menus')
                 exit = action.get('exit')
                 level_up = action.get('level_up')
@@ -126,21 +123,21 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     destination_x = player.x + dx
                     destination_y = player.y + dy
 
-                    if not game_map.is_blocked(destination_x, destination_y):
+                    if not game.map.is_blocked(destination_x, destination_y):
 
                         player.move(dx, dy)
-                        camera.refocus(player.x, player.y, game_map)
+                        game.view.camera.refocus(player.x, player.y)
 
-                        fov_recompute = True
+                        game.view.fov.recompute = True
 
-                        if game_map.dangerous:
+                        if game.map.dangerous:
                             time_handler.time_goes_on()
                             encountering = encounter_handler.encounter_check()
                             if encountering:
-                                tile = game_map.tiles[destination_x][destination_y]
+                                tile = game.map.tiles[destination_x][destination_y]
 
                                 options = ['FIGHT', 'ITEM', 'RUN']
-                                encounter = game_map.current_map.get_encounter(tile, options)
+                                encounter = game.map.current_map.get_encounter(tile, options)
                                 encounter_handler.steps_since = 0
 
                                 game.state = GameStates.ENCOUNTER
@@ -152,33 +149,33 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     for entity in entities:
                         if entity.x == player.x and entity.y == player.y:
                             if entity.item:
-                                game_map.current_map.map_entities.remove(entity)
+                                game.map.current_map.map_entities.remove(entity)
                                 pickup_results = party.inventory.add_item(entity)
                                 player_turn_results.extend(pickup_results)
                                 nothing = False
                                 break
                     for transition in transitions:
                         if transition.x == player.x and transition.y == player.y:
-                            new_dungeon = dungeons[transition.transition.go_to_dungeon]
-                            if game_map.current_dungeon.name != transition.transition.go_to_dungeon:
-                                game_map.current_dungeon.time_dilation = time_handler.time_stamp()
+                            new_dungeon = game.dungeons[transition.transition.go_to_dungeon]
+                            if game.map.current_dungeon.name != transition.transition.go_to_dungeon:
+                                game.map.current_dungeon.time_dilation = time_handler.time_stamp()
                                 time_handler.apply_time_dilation(new_dungeon)
-                                game_map.current_dungeon = new_dungeon
+                                game.map.current_dungeon = new_dungeon
 
                             new_map = new_dungeon.maps[transition.transition.go_to_floor]
-                            game_map.current_map = new_map
+                            game.map.current_map = new_map
                             player.x, player.y = transition.transition.go_to_xy[0], transition.transition.go_to_xy[1]
-                            camera.refocus(player.x, player.y, game_map)
+                            game.view.camera.refocus(player.x, player.y)
                             entities = [player]
-                            entities.extend(game_map.current_map.map_entities)
+                            entities.extend(game.map.current_map.map_entities)
                             transitions = []
-                            transitions.extend(game_map.current_map.transitions)
+                            transitions.extend(game.map.current_map.transitions)
                             structures = []
-                            structures.extend(game_map.current_map.structures)
+                            structures.extend(game.map.current_map.structures)
                             noncombatants = []
-                            noncombatants.extend(game_map.current_map.noncombatants)
-                            fov_map = initialize_fov(game_map)
-                            fov_recompute = True
+                            noncombatants.extend(game.map.current_map.noncombatants)
+                            game.view.fov.map = game.view.fov.initialize_fov(game.map)
+                            game.view.fov.recompute = True
                             nothing = False
                             break
                     for noncom in noncombatants:
@@ -204,14 +201,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
 
                 if show_map:
                     game.state = GameStates.SHOW_MAP
-
-                if inventory_index is not None and inventory_index < len(player.combatant.inventory.items):
-                    item = player.combatant.inventory.items[inventory_index]
-
-                    if game.state == GameStates.SHOW_INVENTORY:
-                        player_turn_results.extend(
-                            player.combatant.inventory.use(item, entities=entities, fov_map=fov_map))
-
 
                 if level_up:
 
@@ -352,7 +341,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         elif menu_handler.state is MenuStates.INVENTORY:
                             ind = menu_handler.menu.options.index(menu_handler.display)
 
-
                 if exit:
                     if game.state == GameStates.ENCOUNTER:
                         if encounter.state == EncounterStates.FIGHT_TARGETING:
@@ -380,7 +368,7 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     elif game.state == GameStates.TARGETING:
                         player_turn_results.append({'targeting_cancelled': True})
                     else:
-                        save_game(player, dungeons, entities, game_map, message_log, game.state)
+                        save_game(player, game.dungeons, entities, game.map, message_log, game.state)
 
                         py.quit()
                         sys.exit()
@@ -410,9 +398,9 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                         entities.remove(item_added)
 
                     if item_dropped:
-                        game_map.current_map.map_entities.append(item_dropped)
+                        game.map.current_map.map_entities.append(item_dropped)
                         entities = [player]
-                        entities.extend(game_map.current_map.map_entities)
+                        entities.extend(game.map.current_map.map_entities)
 
                     if equip:
                         equip_results = player.combatant.equipment.toggle_equip(equip)
@@ -425,7 +413,6 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                                 message_log.add_message(Message('You equip the {0}!'.format(equipped.name)))
                             if dequipped:
                                 message_log.add_message(Message('You dequipped the {0}!'.format(dequipped.name)))
-
 
                     if targeting:
                         game.state = GameStates.TARGETING
@@ -540,14 +527,13 @@ def play_game(player, dungeons, entities, structures, transitions, noncombatants
                     elif right_click:
                         player_turn_results.append({'targeting_cancelled': True})
 
-        if fov_recompute:
-            recompute_fov(fov_map, player.x, player.y)
+        if game.view.fov.recompute:
+            game.view.fov.recompute_fov(game.view.fov.map, player.x, player.y)
 
-        game.view.render_all(camera_surface, message_surface, entities, player, structures, transitions,
-                                         noncombatants, game_map, world_map, camera, fov_map, fov_recompute, message_log,
-                                         game.state, menu_handler, time_handler, encounter, loot, dialogue_handler)
+        game.view.render_all(camera_surface, message_surface, entities, player, structures, transitions, noncombatants,
+                             message_log, menu_handler, time_handler, encounter, loot, dialogue_handler)
 
-        fov_recompute = False
+        game.view.fov.recompute = False
 
         py.display.flip()
 

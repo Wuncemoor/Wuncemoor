@@ -4,7 +4,7 @@ from map_objects.game_map import GameMap
 from handlers.menus.journal import Journal
 from handlers.menus.party import Party
 from handlers.menus.inventory import Inventory
-from camera import Camera
+from handlers.views.camera import Camera
 
 
 def get_game_variables():
