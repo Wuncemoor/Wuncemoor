@@ -1,4 +1,3 @@
-from config.constants import CSCREEN
 from config.image_objects import LEVELUP_MENU
 from screens.inventory_screen import menu
 
@@ -20,8 +19,7 @@ def level_up_menu(screen, player):
     menu_height = 200
     off_x = 16
     off_y = 21
-    (width, height) = CSCREEN
     gui_img = LEVELUP_MENU
-    menu(screen, gui_img, fontsize, options, menu_width, menu_height, width, height, off_x, off_y)
+    menu(screen, gui_img, fontsize, options, menu_width, menu_height, off_x, off_y)
 
 

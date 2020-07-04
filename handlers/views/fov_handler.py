@@ -5,10 +5,10 @@ from config.constants import FOV_RADIUS
 class FovHandler:
     def __init__(self):
         self.map = None
-        self.recompute = True
+        self.needs_recompute = True
 
     @staticmethod
-    def initialize_fov(game_map):
+    def initialize(game_map):
         fov_map = tcod.map_new(game_map.width, game_map.height)
 
         for y in range(game_map.height):
@@ -18,6 +18,6 @@ class FovHandler:
         return fov_map
 
     @staticmethod
-    def recompute_fov(fov_map, x, y):
+    def recompute(fov_map, x, y):
         # Light wall = True, fov algorithm = 0
         tcod.map_compute_fov(fov_map, x, y, FOV_RADIUS, True, 0)

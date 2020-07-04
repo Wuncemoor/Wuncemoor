@@ -2,14 +2,13 @@ import tcod as libtcod
 from death_functions import kill_monster, kill_player
 from enums.game_states import GameStates, EncounterStates, LootStates, MenuStates
 from game_messages import Message
-from handlers.input_handler import InputHandler, handle_mouse
+from handlers.input_handler import handle_mouse
 from loader_functions.initialize_new_game import get_game_variables
 from loader_functions.data_loaders import load_game, save_game
-from config.constants import START, BLACK
-from handlers.state_handlers import MenuHandler, DialogueHandler, TimeHandler, EncounterHandler
+from config.constants import START, BLACK, DARK_BLUE
+from handlers.state_handlers import DialogueHandler, TimeHandler, EncounterHandler
 from handlers.game_handler import GameHandler
 from handlers.view_handler import ViewHandler
-from handlers.views.fov_handler import FovHandler
 import sys
 import pygame as py
 
@@ -17,17 +16,12 @@ import pygame as py
 # Main menu
 def main():
 
-    (screen_size, cscreen_size, mscreen_size, game_title) = START
+    (screen_size, game_title) = START
     py.init()
 
     screen = py.display.set_mode(screen_size)
     view = ViewHandler(screen)
-    view.fov = FovHandler()
-    input = InputHandler()
-    game = GameHandler(view, input)
-
-    message_surface = py.Surface(mscreen_size)
-    camera_surface = py.Surface(cscreen_size)
+    game = GameHandler(view)
 
     py.display.set_caption(game_title)
 
@@ -55,11 +49,11 @@ def main():
                             view.option += traverse_menu
                     elif choose_option:
                         if view.option == 0:
-                            player, dungeons, world, overworld_tiles, camera, message_log, party, journal = get_game_variables()
+                            player, dungeons, world, overworld_tiles, message_log, party = get_game_variables()
 
                             show_main_menu = False
                         elif view.option == 1:
-                            player, dungeons, world, overworld_tiles, camera, message_log, party, journal = load_game()
+                            player, dungeons, world, overworld_tiles, message_log, party = load_game()
                             show_main_menu = False
                         elif view.option == 2:
                             py.quit()
@@ -72,22 +66,20 @@ def main():
                     game.world = world
                     game.dungeons = dungeons
                     game.take_ownership()
-                    game.view.camera = camera
-                    game.view.take_ownership()
-                    camera.refocus(player.x, player.y)
-                    game.view.fov.map = game.view.fov.initialize_fov(game.world)
-                    play_game(player, message_log, party, journal, game, camera_surface, message_surface)
+                    game.view.camera.refocus(player.x, player.y)
+                    game.view.fov.map = game.view.fov.initialize(game.world)
+                    play_game(player, message_log, party, game)
         py.display.flip()
 
 
-def play_game(player, message_log, party, journal, game, camera_surface, message_surface):
+def play_game(player, message_log, party, game):
 
     targeting_item = None
-    dialogue_handler = DialogueHandler([journal])
+    dialogue_handler = DialogueHandler([party.journal])
     encounter_handler = EncounterHandler()
     encounter = None
     loot = None
-    menu_handler = MenuHandler()
+
     time_handler = TimeHandler([party])
 
     while True:
@@ -124,7 +116,7 @@ def play_game(player, message_log, party, journal, game, camera_surface, message
                         player.move(dx, dy)
                         game.view.camera.refocus(player.x, player.y)
 
-                        game.view.fov.recompute = True
+                        game.view.fov.needs_recompute = True
 
                         if game.world.dangerous:
                             time_handler.time_goes_on()
@@ -162,8 +154,8 @@ def play_game(player, message_log, party, journal, game, camera_surface, message
                             player.x, player.y = transition.transition.go_to_xy[0], transition.transition.go_to_xy[1]
                             game.view.camera.refocus(player.x, player.y)
 
-                            game.view.fov.map = game.view.fov.initialize_fov(game.world)
-                            game.view.fov.recompute = True
+                            game.view.fov.map = game.view.fov.initialize(game.world)
+                            game.view.fov.needs_recompute = True
                             nothing = False
                             break
                     for noncom in game.world.current_map.noncombatants:
@@ -173,19 +165,19 @@ def play_game(player, message_log, party, journal, game, camera_surface, message
                             game.state = GameStates.DIALOGUE
                             nothing = False
                     if nothing:
-                        message_log.add_message(Message('Nothing to see here, move along...', libtcod.dark_blue))
+                        message_log.add_message(Message('Nothing to see here, move along...', DARK_BLUE))
 
                 if show_inventory:
                     game.state = GameStates.SHOW_INVENTORY
 
                 if show_menus:
                     game.state = GameStates.MENUS
-                    menus = {
+                    opts = {
                         'inventory': party.inventory,
-                        'journal': journal,
+                        'journal': party.journal,
                         'party': party,
                     }
-                    menu_handler.handle_menu(menus.get(show_menus))
+                    game.menus.handle_menu(opts.get(show_menus))
 
                 if show_map:
                     game.state = GameStates.SHOW_MAP
@@ -255,29 +247,29 @@ def play_game(player, message_log, party, journal, game, camera_surface, message
                             else:
                                 loot.current_option += traverse_menu
                     elif game.state is GameStates.MENUS:
-                        if menu_handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and menu_handler.display is None:
-                            if (traverse_menu[0] < 0 and menu_handler.current_option == 0) or (
-                                    traverse_menu[0] > 0 and menu_handler.current_option == (
-                                    len(menu_handler.options) - 1)):
+                        if game.menus.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and game.menus.display is None:
+                            if (traverse_menu[0] < 0 and game.menus.current_option == 0) or (
+                                    traverse_menu[0] > 0 and game.menus.current_option == (
+                                    len(game.menus.options) - 1)):
                                 pass
                             else:
-                                menu_handler.current_option += traverse_menu[0]
-                        elif menu_handler.state == MenuStates.JOURNAL:
-                            if (traverse_menu[1] < 0 and menu_handler.current_option == 0) or (
-                                    traverse_menu[1] > 0 and menu_handler.current_option == (
-                                    len(journal.get_subjournal(menu_handler.display)) - 1)):
+                                game.menus.current_option += traverse_menu[0]
+                        elif game.menus.state == MenuStates.JOURNAL:
+                            if (traverse_menu[1] < 0 and game.menus.current_option == 0) or (
+                                    traverse_menu[1] > 0 and game.menus.current_option == (
+                                    len(party.journal.get_subjournal(game.menus.display)) - 1)):
                                 pass
                             else:
-                                menu_handler.current_option += traverse_menu[1]
-                        elif menu_handler.state == MenuStates.INVENTORY:
-                            ind = menu_handler.menu.options.index(menu_handler.display)
-                            sg = menu_handler.menu.subgroups[ind]
-                            if (traverse_menu[1] < 0 and menu_handler.current_option == 0) or (
-                                    traverse_menu[1] > 0 and menu_handler.current_option == (
+                                game.menus.current_option += traverse_menu[1]
+                        elif game.menus.state == MenuStates.INVENTORY:
+                            ind = game.menus.menu.options.index(game.menus.display)
+                            sg = game.menus.menu.subgroups[ind]
+                            if (traverse_menu[1] < 0 and game.menus.current_option == 0) or (
+                                    traverse_menu[1] > 0 and game.menus.current_option == (
                                     len(sg) - 1)):
                                 pass
                             else:
-                                menu_handler.current_option += traverse_menu[1]
+                                game.menus.current_option += traverse_menu[1]
 
                 if toggle:
                     if game.state == GameStates.LOOTING:
@@ -317,17 +309,17 @@ def play_game(player, message_log, party, journal, game, camera_surface, message
                             elif loot.current_option > len(loot.claimed) - 1:
                                 loot.current_option -= 1
                     elif game.state == GameStates.MENUS:
-                        if menu_handler.state is MenuStates.JOURNAL:
-                            if len(journal.get_subjournal(menu_handler.options[menu_handler.current_option])) > 0:
-                                menu_handler.display = menu_handler.options[menu_handler.current_option]
-                                menu_handler.current_option = 0
-                        elif menu_handler.state is MenuStates.INVENTORY and menu_handler.display is None:
-                            subgroup = menu_handler.menu.subgroups[menu_handler.current_option]
+                        if game.menus.state is MenuStates.JOURNAL:
+                            if len(party.journal.get_subjournal(game.menus.options[game.menus.current_option])) > 0:
+                                game.menus.display = game.menus.options[game.menus.current_option]
+                                game.menus.current_option = 0
+                        elif game.menus.state is MenuStates.INVENTORY and game.menus.display is None:
+                            subgroup = game.menus.menu.subgroups[game.menus.current_option]
                             if len(subgroup) > 0:
-                                menu_handler.display = menu_handler.options[menu_handler.current_option]
-                                menu_handler.current_option = 0
-                        elif menu_handler.state is MenuStates.INVENTORY:
-                            ind = menu_handler.menu.options.index(menu_handler.display)
+                                game.menus.display = game.menus.options[game.menus.current_option]
+                                game.menus.current_option = 0
+                        elif game.menus.state is MenuStates.INVENTORY:
+                            ind = game.menus.menu.options.index(game.menus.display)
 
                 if exit:
                     if game.state == GameStates.ENCOUNTER:
@@ -341,14 +333,14 @@ def play_game(player, message_log, party, journal, game, camera_surface, message
                         elif loot.state == LootStates.THINKING:
                             loot.current_option = 2
                     elif game.state == GameStates.MENUS:
-                        if menu_handler.state is MenuStates.PARTY:
+                        if game.menus.state is MenuStates.PARTY:
                             game.state = GameStates.PLAYERS_TURN
-                        elif menu_handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and menu_handler.display is None:
+                        elif game.menus.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and game.menus.display is None:
                             game.state = GameStates.PLAYERS_TURN
-                        elif menu_handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY):
-                            if menu_handler.state == MenuStates.INVENTORY:
-                                menu_handler.current_option = menu_handler.menu.options.index(menu_handler.display)
-                            menu_handler.display = None
+                        elif game.menus.state in (MenuStates.JOURNAL, MenuStates.INVENTORY):
+                            if game.menus.state == MenuStates.INVENTORY:
+                                game.menus.current_option = game.menus.menu.options.index(game.menus.display)
+                            game.menus.display = None
 
                     elif game.state in (GameStates.SHOW_INVENTORY, GameStates.SHOW_MAP):
                         game.state = GameStates.PLAYERS_TURN
@@ -513,12 +505,12 @@ def play_game(player, message_log, party, journal, game, camera_surface, message
                     elif right_click:
                         player_turn_results.append({'targeting_cancelled': True})
 
-        if game.view.fov.recompute:
-            game.view.fov.recompute_fov(game.view.fov.map, player.x, player.y)
+        if game.view.fov.needs_recompute:
+            game.view.fov.recompute(game.view.fov.map, player.x, player.y)
 
-        game.view.render_all(camera_surface, message_surface, player, message_log, menu_handler, time_handler, encounter, loot, dialogue_handler)
+        game.view.render_all(player, message_log, time_handler, encounter, loot, dialogue_handler)
 
-        game.view.fov.recompute = False
+        game.view.fov.needs_recompute = False
 
         py.display.flip()
 

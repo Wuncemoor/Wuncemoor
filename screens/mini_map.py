@@ -1,12 +1,12 @@
 import pygame as py
 
-from config.constants import MINI_MAP, CSCREEN
+from config.constants import MINI_MAP
 from config.image_objects import MINIMAP
 
 
 def minimap_screen(screen, world_map):
     (width, height) = MINI_MAP
-    (cwidth, cheight) = CSCREEN
+    (cwidth, cheight) = (1280, 592)
 
     window = py.Surface((width, height))
     offset_x = 50

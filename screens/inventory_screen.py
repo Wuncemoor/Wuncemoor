@@ -1,6 +1,5 @@
 import math
 import pygame as py
-from config.constants import CSCREEN
 from config.image_objects import INVENTORY_BG, INVENTORY_OPTIONS, EQUIPMENT_BG, INDICATOR_H
 from screens.gui_tools import get_surface, align_and_blit, get_alpha_surface, get_text_surface
 
@@ -81,9 +80,7 @@ def inventory_menu(screen, header, player):
     off_x = 16
     off_y = 21
 
-    (width, height) = CSCREEN
-    menu(screen, header, INVENTORY_MENU, fontsize, options, inventory_width, inventory_height, width, height,
-         off_x, off_y)
+    menu(screen, header, fontsize, options, inventory_width, inventory_height, off_x, off_y)
 
 
 def menu(screen, gui_img, constants, options):

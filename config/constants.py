@@ -1,7 +1,5 @@
-# (screen, cscreen, mscreen, title)
-START = ((1280, 720), (1280, 592), (980, 128), 'Wuncemoor: The Eternal Dream')
-# cscreen again
-CSCREEN = (1280, 592)
+# (screen, title)
+START = ((1280, 720), 'Wuncemoor: The Eternal Dream')
 # (width, height)
 TILES_ON_SCREEN = (80, 37)
 # (width, height)
@@ -12,8 +10,6 @@ WORLD_MAP = (100, 100)
 MINI_MAP = (400, 400)
 # (width, height)
 CAVE = (80, 37)
-
-
 
 FPS = 60
 ROOM_MAX_SIZE = 10
@@ -34,6 +30,7 @@ DARK_RED = (191, 0, 0)
 LIGHT_GREY = (190, 190, 190)
 GREY = (128, 128, 128)
 DARK_PURPLE = (143, 0, 191)
+DARK_BLUE = (0, 0, 191)
 
 DUNGEON_FLOOR = {
     'town': 'grass',

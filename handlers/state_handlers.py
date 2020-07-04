@@ -1,7 +1,7 @@
 from random import randint
 
 
-class MenuHandler:
+class MenusHandler:
     def __init__(self):
         self.state = None
         self.display = None
