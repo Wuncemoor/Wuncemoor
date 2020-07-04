@@ -11,8 +11,8 @@ def display_actors(player, encounter):
     off_y = (h / 2) - (dim / 2)
 
     window.blit(player.combatant.images.actor, (off_x, off_y))
-    if encounter.event.combatant:
-        window.blit(encounter.event.combatant.images.actor, (off_x + (w / 2), off_y))
+    if encounter.mob.combatant:
+        window.blit(encounter.mob.combatant.images.actor, (off_x + (w / 2), off_y))
 
     if encounter.state == EncounterStates.FIGHT_TARGETING:
         window.blit(INDICATOR_V, ((3 * w / 4) - (INDICATOR_V.get_width() / 2), off_y - 40))

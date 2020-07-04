@@ -1,6 +1,5 @@
 import pygame as py
 import tcod as libtcod
-
 from config.constants import TILES_ON_SCREEN, BLACK
 from config.image_objects import TITLE_SCREEN_BG, TITLE_MENU_BG, TITLE_MENU_BUTTON, INDICATOR_H, MESSAGE_BG, TILE_BASE
 from enums.game_states import GameStates, MenuStates
@@ -17,7 +16,6 @@ from screens.mini_map import minimap_screen
 from screens.resources_HUD import player_resource_display
 from handlers.views.fov_handler import FovHandler
 from handlers.views.camera import Camera
-
 
 
 class ViewHandler:
@@ -51,7 +49,7 @@ class ViewHandler:
 
         return surf
 
-    def render_all(self, player, message_log, time_handler, encounter, loot, dialogue):
+    def render_all(self, player, message_log, time_handler, loot):
         (width, height) = TILES_ON_SCREEN
 
         tilesize = 16
@@ -99,9 +97,9 @@ class ViewHandler:
         elif self.owner.state == GameStates.LEVEL_UP:
             level_up_menu(self.screen, player)
         elif self.owner.state == GameStates.DIALOGUE:
-            dialogue_screen(self.screen, player, dialogue)
+            dialogue_screen(self.screen, player, self.owner.dialogue)
         elif self.owner.state == GameStates.ENCOUNTER:
-            encounter_screen(self.screen, player, encounter, message_log)
+            encounter_screen(self.screen, player, self.owner.encounter, message_log)
         elif self.owner.state == GameStates.LOOTING:
             loot_screen(self.screen, loot, message_log)
         elif self.owner.state == GameStates.MENUS:

@@ -6,7 +6,7 @@ from handlers.input_handler import handle_mouse
 from loader_functions.initialize_new_game import get_game_variables
 from loader_functions.data_loaders import load_game, save_game
 from config.constants import START, BLACK, DARK_BLUE
-from handlers.state_handlers import DialogueHandler, TimeHandler, EncounterHandler
+from handlers.state_handlers import DialogueHandler, TimeHandler
 from handlers.game_handler import GameHandler
 from handlers.view_handler import ViewHandler
 import sys
@@ -42,15 +42,13 @@ def main():
                     choose_option = action.get('choose_menu_option')
 
                     if traverse_menu:
-                        if (traverse_menu < 0 and view.option == 0) or \
-                                (traverse_menu > 0 and view.option == 2):
+                        if (traverse_menu < 0 and view.option == 0) or (traverse_menu > 0 and view.option == 2):
                             pass
                         else:
                             view.option += traverse_menu
                     elif choose_option:
                         if view.option == 0:
                             player, dungeons, world, overworld_tiles, message_log, party = get_game_variables()
-
                             show_main_menu = False
                         elif view.option == 1:
                             player, dungeons, world, overworld_tiles, message_log, party = load_game()
@@ -65,6 +63,7 @@ def main():
                     game.view.world_tiles = overworld_tiles
                     game.world = world
                     game.dungeons = dungeons
+                    game.dialogue = DialogueHandler([party.journal])
                     game.take_ownership()
                     game.view.camera.refocus(player.x, player.y)
                     game.view.fov.map = game.view.fov.initialize(game.world)
@@ -75,9 +74,6 @@ def main():
 def play_game(player, message_log, party, game):
 
     targeting_item = None
-    dialogue_handler = DialogueHandler([party.journal])
-    encounter_handler = EncounterHandler()
-    encounter = None
     loot = None
 
     time_handler = TimeHandler([party])
@@ -120,17 +116,14 @@ def play_game(player, message_log, party, game):
 
                         if game.world.dangerous:
                             time_handler.time_goes_on()
-                            encountering = encounter_handler.encounter_check()
+                            encountering = game.encounter.check()
                             if encountering:
                                 tile = game.world.tiles[destination_x][destination_y]
-
                                 options = ['FIGHT', 'ITEM', 'RUN']
-                                encounter = game.world.current_map.get_encounter(tile, options)
-                                encounter_handler.steps_since = 0
-
-                                game.state = GameStates.ENCOUNTER
+                                game.encounter.new(tile, options)
+                                game.state = game.encounter.superstate
                             else:
-                                encounter_handler.steps_since += 1
+                                game.encounter.steps_since += 1
 
                 if interact and game.state == GameStates.PLAYERS_TURN:
                     nothing = True
@@ -160,8 +153,8 @@ def play_game(player, message_log, party, game):
                             break
                     for noncom in game.world.current_map.noncombatants:
                         if noncom.x == player.x and noncom.y == player.y:
-                            dialogue_handler.partner = noncom
-                            dialogue_handler.set_real_talk()
+                            game.dialogue.partner = noncom
+                            game.dialogue.set_real_talk()
                             game.state = GameStates.DIALOGUE
                             nothing = False
                     if nothing:
@@ -182,39 +175,20 @@ def play_game(player, message_log, party, game):
                 if show_map:
                     game.state = GameStates.SHOW_MAP
 
+                # still reworking
                 if level_up:
-
-                    if level_up == 'Strength':
-                        player.combatant.attributes.strength += 1
-                    elif level_up == 'Instinct':
-                        player.combatant.attributes.instinct += 1
-                    elif level_up == 'Coordination':
-                        player.combatant.attributes.coordination += 1
-                    elif level_up == 'Vitality':
-                        player.combatant.attributes.vitality += 1
-                    elif level_up == 'Arcana':
-                        player.combatant.attributes.arcana += 1
-                    elif level_up == 'Improvisation':
-                        player.combatant.attributes.improvisation += 1
-                    elif level_up == 'Wisdom':
-                        player.combatant.attributes.wisdom += 1
-                    elif level_up == 'Finesse':
-                        player.combatant.attributes.finesse += 1
-                    elif level_up == 'Charisma':
-                        player.combatant.attributes.charisma += 1
-                    elif level_up == 'Devotion':
-                        player.combatant.attributes.devotion += 1
+                    pass
 
                 if converse:
                     key = chr(converse)
-                    dialogue = dialogue_handler.partner.noncombatant.dialogue
+                    dialogue = game.dialogue.partner.noncombatant.dialogue
 
-                    if key in dialogue_handler.real_io.keys():
-                        dialogue.current_convo = dialogue_handler.real_io.get(key)
+                    if key in game.dialogue.real_io.keys():
+                        dialogue.current_convo = game.dialogue.real_io.get(key)
                         current_node = dialogue.graph_dict.get(dialogue.current_convo)
                         current_node.visited = True
-                        dialogue_handler.set_real_talk()
-                        dialogue_handler.broadcast_choice(current_node.signal)
+                        game.dialogue.set_real_talk()
+                        game.dialogue.broadcast_choice(current_node.signal)
 
                         if dialogue.current_convo == 'exit':
                             dialogue.current_convo = 'root'
@@ -222,11 +196,11 @@ def play_game(player, message_log, party, game):
 
                 if traverse_menu:
                     if game.state == GameStates.ENCOUNTER:
-                        if (traverse_menu < 0 and encounter.current_option == 0) or \
-                                (traverse_menu > 0 and encounter.current_option == len(encounter.options) - 1):
+                        if (traverse_menu < 0 and game.encounter.current_option == 0) or \
+                                (traverse_menu > 0 and game.encounter.current_option == len(game.encounter.options) - 1):
                             pass
                         else:
-                            encounter.current_option += traverse_menu
+                            game.encounter.current_option += traverse_menu
                     elif game.state == GameStates.LOOTING:
                         if loot.state == LootStates.THINKING:
                             if (traverse_menu < 0 and loot.current_option == 0) or (
@@ -280,14 +254,13 @@ def play_game(player, message_log, party, game):
 
                 if choose_menu_option:
                     if game.state == GameStates.ENCOUNTER:
-                        if encounter.state == EncounterStates.THINKING:
-                            encounter_results.append({encounter.options[encounter.current_option]: True})
-                        elif encounter.state == EncounterStates.FIGHT_TARGETING:
-                            attack_results = player.combatant.attack(encounter.event)
+                        if game.encounter.state == EncounterStates.THINKING:
+                            encounter_results.append({game.encounter.options[game.encounter.current_option]: True})
+                        elif game.encounter.state == EncounterStates.FIGHT_TARGETING:
+                            attack_results = player.combatant.attack(game.encounter.mob)
                             encounter_results.extend(attack_results)
-                        elif encounter.state == EncounterStates.VICTORY:
-                            loot = encounter.loot
-                            encounter = None
+                        elif game.encounter.state == EncounterStates.VICTORY:
+                            loot = game.encounter.loot
                             game.state = GameStates.LOOTING
                     elif game.state == GameStates.LOOTING:
                         if loot.state == LootStates.THINKING:
@@ -323,8 +296,8 @@ def play_game(player, message_log, party, game):
 
                 if exit:
                     if game.state == GameStates.ENCOUNTER:
-                        if encounter.state == EncounterStates.FIGHT_TARGETING:
-                            encounter.state = EncounterStates.THINKING
+                        if game.encounter.state == EncounterStates.FIGHT_TARGETING:
+                            game.encounter.state = EncounterStates.THINKING
                     elif game.state == GameStates.LOOTING:
                         if loot.state in (LootStates.SIFTING, LootStates.DEPOSITING):
                             loot.state = LootStates.THINKING
@@ -408,11 +381,9 @@ def play_game(player, message_log, party, game):
                         message_log.add_message(
                             Message('You gain {0} experience points!'.format(xp), libtcod.dark_orange))
 
+                        # still reworking
                         if leveled_up:
-                            message_log.add_message(Message(
-                                'Your skills grow once more! Level {0}!'.format(
-                                    player.combatant.level.current_level) + '!',
-                                libtcod.dark_orange))
+                            pass
                             if not GameStates.TARGETING:
                                 game.state = GameStates.LEVEL_UP
                             else:
@@ -428,34 +399,33 @@ def play_game(player, message_log, party, game):
                     message = encounter_result.get('message')
                     dead_entity = encounter_result.get('dead')
                     if fight:
-                        encounter.state = EncounterStates.FIGHT_TARGETING
+                        game.encounter.state = EncounterStates.FIGHT_TARGETING
                     elif run:
                         game.state = GameStates.PLAYERS_TURN
-                        player.combatant.level.add_xp(encounter.loot.xp)
+                        player.combatant.level.add_xp(game.encounter.loot.xp)
                         if xp is None:
                             xp_text = Message("You didn't learn much there...", libtcod.dark_orange)
                         else:
                             xp_text = Message('You gain {0} experience points!'.format(xp), libtcod.dark_orange)
                         message_log.add_message(xp_text)
-                        encounter = None
                     elif message:
                         message_log.add_message(message)
                     elif xp:
-                        encounter.loot.xp += xp
+                        game.encounter.loot.xp += xp
                     elif dead_entity:
                         if dead_entity == player:
                             message, game.state = kill_player(dead_entity)
                         else:
-                            encounter.loot.add_loot(dead_entity)
+                            game.encounter.loot.add_loot(dead_entity)
                             message = kill_monster(dead_entity)
                             message_log.add_message(message)
                     elif end_turn:
-                        if encounter.event.combatant:
-                            encounter.state = EncounterStates.ENEMY_TURN
+                        if game.encounter.mob.combatant:
+                            game.encounter.state = EncounterStates.ENEMY_TURN
                         else:
                             message_log.add_message(Message('YOU WIN THE FIGHT!', libtcod.black))
                             message_log.add_message(Message('Press [Enter] to loot.', libtcod.black))
-                            encounter.state = EncounterStates.VICTORY
+                            game.encounter.state = EncounterStates.VICTORY
 
                 for loot_result in loot_results:
 
@@ -508,34 +478,33 @@ def play_game(player, message_log, party, game):
         if game.view.fov.needs_recompute:
             game.view.fov.recompute(game.view.fov.map, player.x, player.y)
 
-        game.view.render_all(player, message_log, time_handler, encounter, loot, dialogue_handler)
+        game.view.render_all(player, message_log, time_handler, loot)
 
         game.view.fov.needs_recompute = False
 
         py.display.flip()
 
-        if encounter:
-            if encounter.state == EncounterStates.ENEMY_TURN:
-                if encounter.event.combatant:
-                    enemy_turn_results = encounter.event.combatant.ai.take_turn_e(player)
-                    for enemy_turn_result in enemy_turn_results:
-                        message = enemy_turn_result.get('message')
-                        dead_entity = enemy_turn_result.get('dead')
+        if game.encounter.state == EncounterStates.ENEMY_TURN:
+            if game.encounter.mob.combatant:
+                enemy_turn_results = game.encounter.mob.combatant.ai.take_turn_e(player)
+                for enemy_turn_result in enemy_turn_results:
+                    message = enemy_turn_result.get('message')
+                    dead_entity = enemy_turn_result.get('dead')
 
-                        if message:
-                            message_log.add_message(message)
+                    if message:
+                        message_log.add_message(message)
 
-                        if dead_entity:
-                            if dead_entity == player:
-                                message, game.state = kill_player(dead_entity)
-                            else:
-                                message = kill_monster(dead_entity)
+                    if dead_entity:
+                        if dead_entity == player:
+                            message, game.state = kill_player(dead_entity)
+                        else:
+                            message = kill_monster(dead_entity)
 
-                            message_log.add_message(message)
+                        message_log.add_message(message)
 
-                        if game.state == GameStates.PLAYER_DEAD:
-                            break
-                    encounter.state = EncounterStates.THINKING
+                    if game.state == GameStates.PLAYER_DEAD:
+                        break
+                game.encounter.state = EncounterStates.THINKING
 
 
 if __name__ == '__main__':

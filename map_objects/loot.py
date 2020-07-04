@@ -14,3 +14,8 @@ class Loot:
     def add_loot(self, dead_entity):
         self.items.extend(dead_entity.combatant.satchel.items)
         self.items.extend(dead_entity.combatant.equipment.drop_dead())
+
+    def reset(self):
+        self.items = []
+        self.claimed = []
+        self.current_option = 0

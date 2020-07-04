@@ -7,10 +7,9 @@ from map_objects.rectangle import Rect
 from map_objects.tile import Tile
 from map_objects.chances.item_chances import get_item_chances
 from map_objects.chances.mob_chances import MobChances
-from map_objects.encounter import Encounter
 from builders.make_item import make_item
 from config.constants import MAX_ROOMS, ROOM_MAX_SIZE, ROOM_MIN_SIZE, IMAGE_OPTIONS, DUNGEON_FLOOR
-from config.image_objects import BACKGROUNDS, LIGHT_ROAD, DARK_ROAD, TILE_BASE, LIGHT_DIRT, DARK_DIRT, LIGHT_GRASS, DARK_GRASS
+from config.image_objects import LIGHT_ROAD, DARK_ROAD, TILE_BASE, LIGHT_DIRT, DARK_DIRT, LIGHT_GRASS, DARK_GRASS
 
 
 class Map:
@@ -208,25 +207,3 @@ class Map:
 
         self.entities.append(monster)
 
-    def get_encounter(self, tile, options):
-
-        event = self.get_encounter_event(tile)
-
-        x = Encounter(BACKGROUNDS.get(tile.type), event, options)
-        x.loot.items = []
-        return x
-
-    def get_encounter_event(self, tile):
-
-        mob_chances = MobChances(tile.type, tile.subtype, tile.np)
-        mcs = mob_chances.get_mob_chances()
-        monster_choice = random_choice_from_dict(mcs)
-
-        mob_builder = MobBuilder(0, monster_choice)
-        mob_director = MobDirector()
-        mob_director.set_builder(mob_builder)
-        combatant_component = mob_director.get_combatant()
-        event = Entity(0, 0, blocks=True, render_order=RenderOrder.ACTOR,
-                       combatant=combatant_component)
-
-        return event

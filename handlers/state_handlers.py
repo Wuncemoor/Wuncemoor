@@ -1,8 +1,17 @@
 from random import randint
+from ECS.entity import Entity
+from builders.mob_builder import MobBuilder, MobDirector
+from enums.game_states import EncounterStates, GameStates
+from config.image_objects import BACKGROUNDS
+from enums.render_order import RenderOrder
+from map_objects.chances.mob_chances import MobChances
+from map_objects.loot import Loot
+from random_utils import random_choice_from_dict
 
 
 class MenusHandler:
     def __init__(self):
+        self.superstate = GameStates.MENUS
         self.state = None
         self.display = None
         self.options = None
@@ -18,6 +27,7 @@ class MenusHandler:
 
 class DialogueHandler:
     def __init__(self, observers):
+        self.superstate = GameStates.DIALOGUE
         self.partner = None
         self.observers = observers
         self.real_talk = None
@@ -109,7 +119,36 @@ class TimeHandler:
 class EncounterHandler:
 
     def __init__(self):
+        self.superstate = GameStates.ENCOUNTER
+        self.state = EncounterStates.THINKING
+        self.background = None
+        self.mob = None
+        self.options = None
+        self.current_option = 0
+        self.loot = Loot()
         self.steps_since = 0
 
-    def encounter_check(self):
+    def check(self):
         return (self.steps_since / (100 + self.steps_since)) * 50 > randint(1, 100)
+
+    def new(self, tile, options):
+        self.state = EncounterStates.THINKING
+        self.background = BACKGROUNDS.get(tile.type)
+        self.mob = self.get_encounter_mob(tile)
+        self.options = options
+        self.current_option = 0
+        self.loot.reset()
+        self.steps_since = 0
+
+    @staticmethod
+    def get_encounter_mob(tile):
+        mob_chances = MobChances(tile.type, tile.subtype, tile.np)
+        mcs = mob_chances.get_mob_chances()
+        monster_choice = random_choice_from_dict(mcs)
+
+        mob_builder = MobBuilder(0, monster_choice)
+        mob_director = MobDirector()
+        mob_director.set_builder(mob_builder)
+        combatant = mob_director.get_combatant()
+        mob = Entity(0, 0, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant)
+        return mob
