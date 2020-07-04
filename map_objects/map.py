@@ -21,7 +21,7 @@ class Map:
         self.height = height
         self.tiles = self.initialize_tiles()
         self.dungeon_level = dungeon_level
-        self.map_entities = self.initialize_entities()
+        self.entities = []
         self.transitions = []
         self.structures = []
         self.noncombatants = []
@@ -66,9 +66,6 @@ class Map:
 
         return tiles
 
-    def initialize_entities(self):
-        entities = []
-        return entities
 
     def set_dungeon_level(self, level):
         self.dungeon_level = level
@@ -176,7 +173,7 @@ class Map:
             x = randint(room.x1 + 1, room.x2 - 1)
             y = randint(room.y1 + 1, room.y2 - 1)
 
-            if not any([entity for entity in self.map_entities if entity.x == x and entity.y == y]):
+            if not any([entity for entity in self.entities if entity.x == x and entity.y == y]):
                 monster_choice = random_choice_from_dict(mcs)
 
                 mob_builder = MobBuilder(0, monster_choice)
@@ -186,16 +183,16 @@ class Map:
                 monster = Entity(x, y, blocks=True, render_order=RenderOrder.ACTOR,
                                  combatant=combatant_component)
 
-                self.map_entities.append(monster)
+                self.entities.append(monster)
 
         for i in range(number_of_items):
             x = randint(room.x1 + 1, room.x2 - 1)
             y = randint(room.y1 + 1, room.y2 - 1)
-            if not any([entity for entity in self.map_entities if entity.x == x and entity.y == y]) and not \
+            if not any([entity for entity in self.entities if entity.x == x and entity.y == y]) and not \
                     any([transition for transition in self.transitions if transition.x == x and transition.y == y]):
                 item_choice = random_choice_from_dict(item_chances)
                 item = make_item(item_choice)
-                self.map_entities.append(item)
+                self.entities.append(item)
 
     def add_boss(self, d_type, subtype, node_power):
 
@@ -209,7 +206,7 @@ class Map:
         monster = Entity(self.exit[0], self.exit[1], blocks=True,
                          render_order=RenderOrder.ACTOR, combatant=combatant_component)
 
-        self.map_entities.append(monster)
+        self.entities.append(monster)
 
     def get_encounter(self, tile, options):
 

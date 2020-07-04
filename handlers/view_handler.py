@@ -20,7 +20,7 @@ class ViewHandler:
     def __init__(self, screen):
         self.screen = screen
         self.option = 0
-        self.world_map = None
+        self.world_tiles = None
         self.camera = None
         self.fov = None
 
@@ -49,9 +49,7 @@ class ViewHandler:
 
         return surf
 
-    def render_all(self, camera_surface, message_surface, entities, player, structures, transitions,
-                   noncombatants, message_log,
-                   menu_handler, time_handler, encounter, loot, dialogue):
+    def render_all(self, camera_surface, message_surface, player, message_log, menu_handler, time_handler, encounter, loot, dialogue):
         (width, height) = TILES_ON_SCREEN
 
 
@@ -60,18 +58,19 @@ class ViewHandler:
         if self.fov.recompute:
             for y in range(height):
                 for x in range(width):
-                    draw_tile(camera_surface, self.fov.map, self.owner.map, x, y, self.camera.x, self.camera.y, tilesize)
+                    draw_tile(camera_surface, self.fov.map, self.owner.world, x, y, self.camera.x, self.camera.y, tilesize)
 
-        for structure in structures:
-            draw_structure(camera_surface, self.camera.x, self.camera.y, structure, self.fov.map, self.owner.map, tilesize)
-        for transition in transitions:
-            draw_entity(camera_surface, self.camera.x, self.camera.y, transition, self.fov.map, self.owner.map, tilesize)
-        for noncom in noncombatants:
-            draw_entity(camera_surface, self.camera.x, self.camera.y, noncom, self.fov.map, self.owner.map, tilesize)
+        for structure in self.owner.world.current_map.structures:
+            draw_structure(camera_surface, self.camera.x, self.camera.y, structure, self.fov.map, self.owner.world, tilesize)
+        for transition in self.owner.world.current_map.transitions:
+            draw_entity(camera_surface, self.camera.x, self.camera.y, transition, self.fov.map, self.owner.world, tilesize)
+        for noncom in self.owner.world.current_map.noncombatants:
+            draw_entity(camera_surface, self.camera.x, self.camera.y, noncom, self.fov.map, self.owner.world, tilesize)
         # draw all entities in list
-        entities_in_render_order = sorted(entities, key=lambda x: x.render_order.value)
+        entities_in_render_order = sorted(self.owner.world.current_map.entities, key=lambda x: x.render_order.value)
         for entity in entities_in_render_order:
-            draw_entity(camera_surface, self.camera.x, self.camera.y, entity, self.fov.map, self.owner.map, tilesize)
+            draw_entity(camera_surface, self.camera.x, self.camera.y, entity, self.fov.map, self.owner.world, tilesize)
+        draw_entity(camera_surface, self.camera.x, self.camera.y, player, self.fov.map, self.owner.world, tilesize)
 
         self.screen.blit(camera_surface, (0, 0))
 

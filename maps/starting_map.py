@@ -44,7 +44,7 @@ def get_town(node):
     item_component = Item(equippable=equippable)
     test_gear = Entity(20, 20, blocks=False, render_order=RenderOrder.ITEM, item=item_component)
 
-    map.map_entities.append(test_gear)
+    map.entities.append(test_gear)
 
     # Get samwise but only in first town
     if name == 'town':

@@ -1,5 +1,4 @@
-
-class GameMap:
+class WorldHandler:
 
     def __init__(self, current_dungeon, current_map):
         self.current_dungeon = current_dungeon
@@ -34,4 +33,3 @@ class GameMap:
             return True
 
         return False
-

@@ -12,13 +12,13 @@ class Camera:
         
         if px < width/2:
             self.x = 0
-        elif px > self.owner.owner.map.width - width/2:
-            self.x = self.owner.owner.map.width - width
+        elif px > self.owner.owner.world.width - width/2:
+            self.x = self.owner.owner.world.width - width
         else:
             self.x = int(px - width/2)
         if py < height/2:
             self.y = 0
-        elif py > self.owner.owner.map.height - height/2:
-            self.y = self.owner.owner.map.height - height
+        elif py > self.owner.owner.world.height - height/2:
+            self.y = self.owner.owner.world.height - height
         else:
             self.y = int(py - height/2)

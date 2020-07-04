@@ -93,7 +93,7 @@ class TimeHandler:
 
     def apply_time_dilation(self, dungeon):
         for dmap in dungeon.maps:
-            for entity in dmap.map_entities:
+            for entity in dmap.entities:
                 if entity.age:
                     diff = map(lambda x, y: x - y, self.time_stamp(), dungeon.time_dilation)
                     entity.age.get_older(list(diff))

@@ -9,10 +9,9 @@ class GameHandler:
         self.view.owner = self
         self.input = input
         self.input.owner = self
-        self.dungeons = None
 
     def take_ownership(self):
-        self.map.owner = self
+        self.world.owner = self
 
 
 
