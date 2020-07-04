@@ -49,7 +49,7 @@ class ViewHandler:
 
         return surf
 
-    def render_all(self, player, message_log, time_handler, loot):
+    def render_all(self, player, message_log, loot):
         (width, height) = TILES_ON_SCREEN
 
         tilesize = 16
@@ -87,7 +87,7 @@ class ViewHandler:
         resource_hud = player_resource_display(player)
         self.screen.blit(resource_hud, (0 - 10, 540 + 40))
 
-        calendar = display_calendar(time_handler.month, time_handler.day)
+        calendar = display_calendar(self.owner.time.month, self.owner.time.day)
 
         if self.owner.state == GameStates.PLAYERS_TURN:
             self.screen.blit(calendar, (self.screen.get_width() - calendar.get_width(), self.screen.get_height() - calendar.get_height()))

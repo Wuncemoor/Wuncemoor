@@ -68,7 +68,7 @@ class TimeHandler:
         self.day = 1
         self.hour = 6
 
-    def time_goes_on(self):
+    def goes_on(self):
         for party in self.observers:
             for member in party.members():
                 member.age.get_older([0, 0, 0, 1])
@@ -92,7 +92,7 @@ class TimeHandler:
             self.month -= 12
             self.year += 1
 
-    def time_travel(self, time):
+    def travel(self, time):
         self.year += time[0]
         self.month += time[1]
         self.new_year()
@@ -101,18 +101,18 @@ class TimeHandler:
         self.hour += time[3]
         self.new_day()
 
-    def apply_time_dilation(self, dungeon):
+    def apply_dilation(self, dungeon):
         for dmap in dungeon.maps:
             for entity in dmap.entities:
                 if entity.age:
-                    diff = map(lambda x, y: x - y, self.time_stamp(), dungeon.time_dilation)
+                    diff = map(lambda x, y: x - y, self.stamp(), dungeon.time_dilation)
                     entity.age.get_older(list(diff))
             for noncom in dmap.noncombatants:
                 if noncom.age:
-                    diff = map(lambda x, y: x - y, self.time_stamp(), dungeon.time_dilation)
+                    diff = map(lambda x, y: x - y, self.stamp(), dungeon.time_dilation)
                     noncom.age.get_older(list(diff))
 
-    def time_stamp(self):
+    def stamp(self):
         return [self.year, self.month, self.day, self.hour]
 
 

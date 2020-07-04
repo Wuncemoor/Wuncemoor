@@ -64,6 +64,7 @@ def main():
                     game.world = world
                     game.dungeons = dungeons
                     game.dialogue = DialogueHandler([party.journal])
+                    game.time = TimeHandler([party])
                     game.take_ownership()
                     game.view.camera.refocus(player.x, player.y)
                     game.view.fov.map = game.view.fov.initialize(game.world)
@@ -75,8 +76,6 @@ def play_game(player, message_log, party, game):
 
     targeting_item = None
     loot = None
-
-    time_handler = TimeHandler([party])
 
     while True:
         for event in py.event.get():
@@ -115,7 +114,7 @@ def play_game(player, message_log, party, game):
                         game.view.fov.needs_recompute = True
 
                         if game.world.dangerous:
-                            time_handler.time_goes_on()
+                            game.time.goes_on()
                             encountering = game.encounter.check()
                             if encountering:
                                 tile = game.world.tiles[destination_x][destination_y]
@@ -138,8 +137,8 @@ def play_game(player, message_log, party, game):
                         if transition.x == player.x and transition.y == player.y:
                             new_dungeon = game.dungeons[transition.transition.go_to_dungeon]
                             if game.world.current_dungeon.name != transition.transition.go_to_dungeon:
-                                game.world.current_dungeon.time_dilation = time_handler.time_stamp()
-                                time_handler.apply_time_dilation(new_dungeon)
+                                game.world.current_dungeon.time_dilation = game.time.stamp()
+                                game.time.apply_dilation(new_dungeon)
                                 game.world.current_dungeon = new_dungeon
 
                             new_map = new_dungeon.maps[transition.transition.go_to_floor]
@@ -478,7 +477,7 @@ def play_game(player, message_log, party, game):
         if game.view.fov.needs_recompute:
             game.view.fov.recompute(game.view.fov.map, player.x, player.y)
 
-        game.view.render_all(player, message_log, time_handler, loot)
+        game.view.render_all(player, message_log, loot)
 
         game.view.fov.needs_recompute = False
 

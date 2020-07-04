@@ -19,6 +19,7 @@ class GameHandler:
     def take_ownership(self):
         self.world.owner = self
         self.dialogue.owner = self
+        self.time.owner = self
 
 
 
