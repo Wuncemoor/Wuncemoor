@@ -89,7 +89,7 @@ class ViewHandler:
 
         calendar = display_calendar(self.owner.time.month, self.owner.time.day)
 
-        if self.owner.state == GameStates.PLAYERS_TURN:
+        if self.owner.state == GameStates.LIFE:
             self.screen.blit(calendar, (self.screen.get_width() - calendar.get_width(), self.screen.get_height() - calendar.get_height()))
 
         if self.owner.state == GameStates.SHOW_MAP:

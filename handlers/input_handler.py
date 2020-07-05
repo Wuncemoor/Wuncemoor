@@ -8,8 +8,8 @@ class InputHandler:
     def mapping(self):
         state = self.owner.state
         maps = {
-            GameStates.MAIN_MENU: self.main_menu,
-            GameStates.PLAYERS_TURN: self.default,
+            GameStates.TITLE: self.main_menu,
+            GameStates.LIFE: self.default,
             GameStates.ENCOUNTER: self.encounter,
             GameStates.DIALOGUE: self.dialogue,
             GameStates.MENUS: self.menus,

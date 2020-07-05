@@ -5,8 +5,17 @@ from enums.game_states import EncounterStates, GameStates
 from config.image_objects import BACKGROUNDS
 from enums.render_order import RenderOrder
 from map_objects.chances.mob_chances import MobChances
-from map_objects.loot import Loot
 from random_utils import random_choice_from_dict
+
+
+class TitleHandler:
+    def __init__(self):
+        self.superstate = GameStates.TITLE
+
+
+class LifeHandler:
+    def __init__(self):
+        self.superstate = GameStates.LIFE
 
 
 class MenusHandler:
@@ -162,4 +171,5 @@ class RewardHandler:
         self.state = None
         self.options = ['AUTO', 'MANUAL', 'LEAVE']
         self.current_option = 0
+
 

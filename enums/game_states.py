@@ -2,8 +2,8 @@ from enum import Enum
 
 
 class GameStates(Enum):
-    MAIN_MENU = 1
-    PLAYERS_TURN = 2
+    TITLE = 1
+    LIFE = 2
     PLAYER_DEAD = 3
     SHOW_INVENTORY = 4
     DROP_INVENTORY = 5

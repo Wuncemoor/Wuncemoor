@@ -19,18 +19,15 @@ from map_objects.loot import Loot
 
 def main():
 
-    (screen_size, game_title) = START
+    (screen_size, caption) = START
     py.init()
-
+    py.display.set_caption(caption)
     screen = py.display.set_mode(screen_size)
+
     view = ViewHandler(screen)
     game = GameHandler(view)
-
-    py.display.set_caption(game_title)
-
-    show_main_menu = True
+    game.state_handler = game.title
     running = True
-
     while running:
         view.title_screen()
         for event in py.event.get():
@@ -39,7 +36,7 @@ def main():
                 sys.exit()
             if event.type == py.KEYDOWN:
 
-                if show_main_menu:
+                if game.state_handler == game.title:
                     action = game.input.output(event.key)
                     traverse_menu = action.get('traverse_menu')
                     choose_option = action.get('choose_menu_option')
@@ -52,18 +49,16 @@ def main():
                     elif choose_option:
                         if view.option == 0:
                             player, dungeons, world, overworld_tiles, message_log, party = get_game_variables()
-                            show_main_menu = False
+                            game.state_handler = game.life
                         elif view.option == 1:
                             player, dungeons, world, overworld_tiles, message_log, party = load_game()
-                            show_main_menu = False
+                            game.state_handler = game.life
                         elif view.option == 2:
                             py.quit()
                             sys.exit()
                 else:
                     loot = Loot()
-                    game.state = GameStates.PLAYERS_TURN
                     game.view.screen.fill(BLACK)
-                    show_main_menu = False
                     game.view.world_tiles = overworld_tiles
                     game.world = world
                     game.dungeons = dungeons
@@ -106,7 +101,7 @@ def play_game(player, message_log, party, game):
                 choose_menu_option = action.get('choose_menu_option')
                 toggle = action.get('toggle')
 
-                if move and game.state == GameStates.PLAYERS_TURN:
+                if move and game.state == GameStates.LIFE:
                     dx, dy = move
                     destination_x = player.x + dx
                     destination_y = player.y + dy
@@ -125,11 +120,11 @@ def play_game(player, message_log, party, game):
                                 tile = game.world.tiles[destination_x][destination_y]
                                 options = ['FIGHT', 'ITEM', 'RUN']
                                 game.encounter.new(tile, options)
-                                game.state = game.encounter.superstate
+                                game.state_handler = game.encounter
                             else:
                                 game.encounter.steps_since += 1
 
-                if interact and game.state == GameStates.PLAYERS_TURN:
+                if interact and game.state == GameStates.LIFE:
                     nothing = True
                     for entity in game.world.current_map.entities:
                         if entity.x == player.x and entity.y == player.y:
@@ -159,16 +154,13 @@ def play_game(player, message_log, party, game):
                         if noncom.x == player.x and noncom.y == player.y:
                             game.dialogue.partner = noncom
                             game.dialogue.set_real_talk()
-                            game.state = GameStates.DIALOGUE
+                            game.state_handler = game.dialogue
                             nothing = False
                     if nothing:
                         message_log.add_message(Message('Nothing to see here, move along...', DARK_BLUE))
 
-                if show_inventory:
-                    game.state = GameStates.SHOW_INVENTORY
-
                 if show_menus:
-                    game.state = GameStates.MENUS
+                    game.state_handler = game.menus
                     opts = {
                         'inventory': party.inventory,
                         'journal': party.journal,
@@ -196,7 +188,7 @@ def play_game(player, message_log, party, game):
 
                         if dialogue.current_convo == 'exit':
                             dialogue.current_convo = 'root'
-                            game.state = GameStates.PLAYERS_TURN
+                            game.state_handler = game.life
 
                 if traverse_menu:
                     if game.state == GameStates.ENCOUNTER:
@@ -264,7 +256,7 @@ def play_game(player, message_log, party, game):
                             attack_results = player.combatant.attack(game.encounter.mob)
                             encounter_results.extend(attack_results)
                         elif game.encounter.state == EncounterStates.VICTORY:
-                            game.state = GameStates.REWARD
+                            game.state_handler = game.reward
                             game.reward.state = RewardStates.THINKING
                     elif game.state == GameStates.REWARD:
                         if game.reward.state == RewardStates.THINKING:
@@ -278,7 +270,6 @@ def play_game(player, message_log, party, game):
                             elif game.reward.current_option > len(game.reward.items) - 1:
                                 game.reward.current_option -= 1
                         elif game.reward.state == RewardStates.DEPOSITING:
-                            print(game.reward.current_option)
                             game.reward.loot.items.append(game.reward.loot.claimed[game.reward.current_option])
                             del game.reward.loot.claimed[game.reward.current_option]
                             if len(game.reward.loot.claimed) == 0:
@@ -312,21 +303,21 @@ def play_game(player, message_log, party, game):
                             game.reward.current_option = 2
                     elif game.state == GameStates.MENUS:
                         if game.menus.state is MenuStates.PARTY:
-                            game.state = GameStates.PLAYERS_TURN
+                            game.state_handler = game.life
                         elif game.menus.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and game.menus.display is None:
-                            game.state = GameStates.PLAYERS_TURN
+                            game.state_handler = game.life
                         elif game.menus.state in (MenuStates.JOURNAL, MenuStates.INVENTORY):
                             if game.menus.state == MenuStates.INVENTORY:
                                 game.menus.current_option = game.menus.menu.options.index(game.menus.display)
                             game.menus.display = None
 
                     elif game.state in (GameStates.SHOW_INVENTORY, GameStates.SHOW_MAP):
-                        game.state = GameStates.PLAYERS_TURN
+                        game.state_handler = game.life
 
                     elif game.state == GameStates.TARGETING:
                         player_turn_results.append({'targeting_cancelled': True})
                     else:
-                        save_game(player, game.dungeons, entities, game.world, message_log, game.state)
+                        save_game(player, game.dungeons, entities, game.world, message_log, game.state_handler)
 
                         py.quit()
                         sys.exit()
@@ -406,7 +397,7 @@ def play_game(player, message_log, party, game):
                     if fight:
                         game.encounter.state = EncounterStates.FIGHT_TARGETING
                     elif run:
-                        game.state = GameStates.PLAYERS_TURN
+                        game.state_handler = game.life
                         player.combatant.level.add_xp(game.reward.loot.xp)
                         if xp is None:
                             xp_text = Message("You didn't learn much there...", DARK_ORANGE)
@@ -456,7 +447,7 @@ def play_game(player, message_log, party, game):
                         party.inventory.take_loot(loot.claimed)
                         game.reward.current_option = 0
 
-                        game.state = GameStates.PLAYERS_TURN
+                        game.state_handler = game.life
                     if toggle == 'right':
                         loot.state = RewardStates.DEPOSITING
                     elif toggle == 'left':
