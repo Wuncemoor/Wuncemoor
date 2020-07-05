@@ -118,14 +118,14 @@ class TimeHandler:
 
 class EncounterHandler:
 
-    def __init__(self):
+    def __init__(self, loot):
         self.superstate = GameStates.ENCOUNTER
         self.state = EncounterStates.THINKING
         self.background = None
         self.mob = None
         self.options = None
         self.current_option = 0
-        self.loot = Loot()
+        self.loot = loot
         self.steps_since = 0
 
     def check(self):
@@ -152,3 +152,14 @@ class EncounterHandler:
         combatant = mob_director.get_combatant()
         mob = Entity(0, 0, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant)
         return mob
+
+
+class RewardHandler:
+
+    def __init__(self, loot):
+        self.superstate = GameStates.REWARD
+        self.loot = loot
+        self.state = None
+        self.options = ['AUTO', 'MANUAL', 'LEAVE']
+        self.current_option = 0
+

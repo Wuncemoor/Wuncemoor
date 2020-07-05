@@ -1,12 +1,12 @@
 import tcod as libtcod
 from death_functions import kill_monster, kill_player
-from enums.game_states import GameStates, EncounterStates, LootStates, MenuStates
+from enums.game_states import GameStates, EncounterStates, RewardStates, MenuStates
 from game_messages import Message
 from handlers.input_handler import handle_mouse
 from loader_functions.initialize_new_game import get_game_variables
 from loader_functions.data_loaders import load_game, save_game
-from config.constants import START, BLACK, DARK_BLUE
-from handlers.state_handlers import DialogueHandler, TimeHandler
+from config.constants import START, BLACK, DARK_BLUE, DARK_ORANGE
+from handlers.state_handlers import DialogueHandler, TimeHandler, EncounterHandler, RewardHandler
 from handlers.game_handler import GameHandler
 from handlers.view_handler import ViewHandler
 import sys
@@ -14,6 +14,9 @@ import pygame as py
 
 
 # Main menu
+from map_objects.loot import Loot
+
+
 def main():
 
     (screen_size, game_title) = START
@@ -57,6 +60,7 @@ def main():
                             py.quit()
                             sys.exit()
                 else:
+                    loot = Loot()
                     game.state = GameStates.PLAYERS_TURN
                     game.view.screen.fill(BLACK)
                     show_main_menu = False
@@ -65,6 +69,8 @@ def main():
                     game.dungeons = dungeons
                     game.dialogue = DialogueHandler([party.journal])
                     game.time = TimeHandler([party])
+                    game.encounter = EncounterHandler(loot)
+                    game.reward = RewardHandler(loot)
                     game.take_ownership()
                     game.view.camera.refocus(player.x, player.y)
                     game.view.fov.map = game.view.fov.initialize(game.world)
@@ -75,7 +81,6 @@ def main():
 def play_game(player, message_log, party, game):
 
     targeting_item = None
-    loot = None
 
     while True:
         for event in py.event.get():
@@ -200,25 +205,25 @@ def play_game(player, message_log, party, game):
                             pass
                         else:
                             game.encounter.current_option += traverse_menu
-                    elif game.state == GameStates.LOOTING:
-                        if loot.state == LootStates.THINKING:
-                            if (traverse_menu < 0 and loot.current_option == 0) or (
-                                    traverse_menu > 0 and loot.current_option == (len(loot.options) - 1)):
+                    elif game.state == GameStates.REWARD:
+                        if game.reward.state == RewardStates.THINKING:
+                            if (traverse_menu < 0 and game.reward.current_option == 0) or (
+                                    traverse_menu > 0 and game.reward.current_option == (len(game.reward.options) - 1)):
                                 pass
                             else:
-                                loot.current_option += traverse_menu
-                        elif loot.state == LootStates.SIFTING:
-                            if (traverse_menu < 0 and loot.current_option == 0) or (
-                                    traverse_menu > 0 and loot.current_option == (len(loot.items) - 1)):
+                                game.reward.current_option += traverse_menu
+                        elif game.reward.state == RewardStates.SIFTING:
+                            if (traverse_menu < 0 and game.reward.current_option == 0) or (
+                                    traverse_menu > 0 and game.reward.current_option == (len(game.reward.items) - 1)):
                                 pass
                             else:
-                                loot.current_option += traverse_menu
-                        elif loot.state == LootStates.DEPOSITING:
-                            if (traverse_menu < 0 and loot.current_option == 0) or (
-                                    traverse_menu > 0 and loot.current_option == (len(loot.claimed) - 1)):
+                                game.reward.current_option += traverse_menu
+                        elif game.reward.state == RewardStates.DEPOSITING:
+                            if (traverse_menu < 0 and game.reward.current_option == 0) or (
+                                    traverse_menu > 0 and game.reward.current_option == (len(game.reward.loot.claimed) - 1)):
                                 pass
                             else:
-                                loot.current_option += traverse_menu
+                                game.reward.current_option += traverse_menu
                     elif game.state is GameStates.MENUS:
                         if game.menus.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and game.menus.display is None:
                             if (traverse_menu[0] < 0 and game.menus.current_option == 0) or (
@@ -245,10 +250,10 @@ def play_game(player, message_log, party, game):
                                 game.menus.current_option += traverse_menu[1]
 
                 if toggle:
-                    if game.state == GameStates.LOOTING:
-                        if loot.state == LootStates.SIFTING and toggle == 'right' and len(loot.claimed) > 0:
+                    if game.state == GameStates.REWARD:
+                        if game.reward.state == RewardStates.SIFTING and toggle == 'right' and len(game.reward.claimed) > 0:
                             loot_results.append({'toggle': 'right'})
-                        elif loot.state == LootStates.DEPOSITING and toggle == 'left' and len(loot.items) > 0:
+                        elif game.reward.state == RewardStates.DEPOSITING and toggle == 'left' and len(game.reward.items) > 0:
                             loot_results.append({'toggle': 'left'})
 
                 if choose_menu_option:
@@ -259,27 +264,28 @@ def play_game(player, message_log, party, game):
                             attack_results = player.combatant.attack(game.encounter.mob)
                             encounter_results.extend(attack_results)
                         elif game.encounter.state == EncounterStates.VICTORY:
-                            loot = game.encounter.loot
-                            game.state = GameStates.LOOTING
-                    elif game.state == GameStates.LOOTING:
-                        if loot.state == LootStates.THINKING:
-                            loot_results.append({loot.options[loot.current_option]: True})
-                        elif loot.state == LootStates.SIFTING:
-                            loot.claimed.append(loot.items[loot.current_option])
-                            del loot.items[loot.current_option]
-                            if len(loot.items) == 0:
-                                loot.current_option = 2
-                                loot.state = LootStates.THINKING
-                            elif loot.current_option > len(loot.items) - 1:
-                                loot.current_option -= 1
-                        elif loot.state == LootStates.DEPOSITING:
-                            loot.items.append(loot.claimed[loot.current_option])
-                            del loot.claimed[loot.current_option]
-                            if len(loot.claimed) == 0:
-                                loot.current_option = 0
-                                loot.state = LootStates.SIFTING
-                            elif loot.current_option > len(loot.claimed) - 1:
-                                loot.current_option -= 1
+                            game.state = GameStates.REWARD
+                            game.reward.state = RewardStates.THINKING
+                    elif game.state == GameStates.REWARD:
+                        if game.reward.state == RewardStates.THINKING:
+                            loot_results.append({game.reward.options[game.reward.current_option]: True})
+                        elif game.reward.state == RewardStates.SIFTING:
+                            game.reward.loot.claimed.append(game.reward.loot.items[game.reward.current_option])
+                            del game.reward.loot.items[game.reward.current_option]
+                            if len(game.reward.loot.items) == 0:
+                                game.reward.current_option = 2
+                                game.reward.state = RewardStates.THINKING
+                            elif game.reward.current_option > len(game.reward.items) - 1:
+                                game.reward.current_option -= 1
+                        elif game.reward.state == RewardStates.DEPOSITING:
+                            print(game.reward.current_option)
+                            game.reward.loot.items.append(game.reward.loot.claimed[game.reward.current_option])
+                            del game.reward.loot.claimed[game.reward.current_option]
+                            if len(game.reward.loot.claimed) == 0:
+                                game.reward.current_option = 0
+                                game.reward.state = RewardStates.SIFTING
+                            elif game.reward.current_option > len(game.reward.loot.claimed) - 1:
+                                game.reward.current_option -= 1
                     elif game.state == GameStates.MENUS:
                         if game.menus.state is MenuStates.JOURNAL:
                             if len(party.journal.get_subjournal(game.menus.options[game.menus.current_option])) > 0:
@@ -297,13 +303,13 @@ def play_game(player, message_log, party, game):
                     if game.state == GameStates.ENCOUNTER:
                         if game.encounter.state == EncounterStates.FIGHT_TARGETING:
                             game.encounter.state = EncounterStates.THINKING
-                    elif game.state == GameStates.LOOTING:
-                        if loot.state in (LootStates.SIFTING, LootStates.DEPOSITING):
-                            loot.state = LootStates.THINKING
-                        elif loot.state == LootStates.THINKING and loot.current_option == 2:
+                    elif game.state == GameStates.REWARD:
+                        if game.reward.state in (RewardStates.SIFTING, RewardStates.DEPOSITING):
+                            game.reward.state = RewardStates.THINKING
+                        elif game.reward.state == RewardStates.THINKING and game.reward.current_option == 2:
                             loot_results.append({'LEAVE': True})
-                        elif loot.state == LootStates.THINKING:
-                            loot.current_option = 2
+                        elif game.reward.state == RewardStates.THINKING:
+                            game.reward.current_option = 2
                     elif game.state == GameStates.MENUS:
                         if game.menus.state is MenuStates.PARTY:
                             game.state = GameStates.PLAYERS_TURN
@@ -401,11 +407,11 @@ def play_game(player, message_log, party, game):
                         game.encounter.state = EncounterStates.FIGHT_TARGETING
                     elif run:
                         game.state = GameStates.PLAYERS_TURN
-                        player.combatant.level.add_xp(game.encounter.loot.xp)
+                        player.combatant.level.add_xp(game.reward.loot.xp)
                         if xp is None:
-                            xp_text = Message("You didn't learn much there...", libtcod.dark_orange)
+                            xp_text = Message("You didn't learn much there...", DARK_ORANGE)
                         else:
-                            xp_text = Message('You gain {0} experience points!'.format(xp), libtcod.dark_orange)
+                            xp_text = Message('You gain {0} experience points!'.format(xp), DARK_ORANGE)
                         message_log.add_message(xp_text)
                     elif message:
                         message_log.add_message(message)
@@ -422,8 +428,8 @@ def play_game(player, message_log, party, game):
                         if game.encounter.mob.combatant:
                             game.encounter.state = EncounterStates.ENEMY_TURN
                         else:
-                            message_log.add_message(Message('YOU WIN THE FIGHT!', libtcod.black))
-                            message_log.add_message(Message('Press [Enter] to loot.', libtcod.black))
+                            message_log.add_message(Message('YOU WIN THE FIGHT!', BLACK))
+                            message_log.add_message(Message('Press [Enter] to loot.', BLACK))
                             game.encounter.state = EncounterStates.VICTORY
 
                 for loot_result in loot_results:
@@ -432,28 +438,29 @@ def play_game(player, message_log, party, game):
                     take_some = loot_result.get('MANUAL')
                     leave = loot_result.get('LEAVE')
                     toggle = loot_result.get('toggle')
+                    loot = game.reward.loot
 
                     if take_all:
                         loot.claimed.extend(loot.items)
                         loot.items = []
-                        loot.current_option = 2
+                        game.reward.current_option = 2
                     if take_some and (len(loot.items) + len(loot.claimed)) > 0:
-                        loot.current_option = 0
+                        game.reward.current_option = 0
 
                         if len(loot.items) > 0:
-                            loot.state = LootStates.SIFTING
+                            game.reward.state = RewardStates.SIFTING
                         else:
-                            loot.state = LootStates.DEPOSITING
+                            game.reward.state = RewardStates.DEPOSITING
                     if leave:
                         player.combatant.level.add_xp(loot.xp)
                         party.inventory.take_loot(loot.claimed)
+                        game.reward.current_option = 0
 
-                        loot = None
                         game.state = GameStates.PLAYERS_TURN
                     if toggle == 'right':
-                        loot.state = LootStates.DEPOSITING
+                        loot.state = RewardStates.DEPOSITING
                     elif toggle == 'left':
-                        loot.state = LootStates.SIFTING
+                        loot.state = RewardStates.SIFTING
 
             if event.type == py.MOUSEBUTTONDOWN:
 
@@ -477,7 +484,7 @@ def play_game(player, message_log, party, game):
         if game.view.fov.needs_recompute:
             game.view.fov.recompute(game.view.fov.map, player.x, player.y)
 
-        game.view.render_all(player, message_log, loot)
+        game.view.render_all(player, message_log)
 
         game.view.fov.needs_recompute = False
 

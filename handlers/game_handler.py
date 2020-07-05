@@ -1,6 +1,6 @@
 from enums.game_states import GameStates
 from handlers.input_handler import InputHandler
-from handlers.state_handlers import MenusHandler, EncounterHandler
+from handlers.state_handlers import MenusHandler
 
 
 class GameHandler:
@@ -13,13 +13,13 @@ class GameHandler:
         self.input.owner = self
         self.menus = MenusHandler()
         self.menus.owner = self
-        self.encounter = EncounterHandler()
-        self.encounter.owner = self
 
     def take_ownership(self):
         self.world.owner = self
         self.dialogue.owner = self
         self.time.owner = self
+        self.encounter.owner = self
+        self.reward.owner = self
 
 
 

@@ -13,7 +13,7 @@ class GameStates(Enum):
     ENCOUNTER = 9
     DIALOGUE = 10
     SHOW_MAP = 11
-    LOOTING = 12
+    REWARD = 12
     MENUS = 13
 
 
@@ -25,7 +25,7 @@ class EncounterStates(Enum):
     VICTORY = 4
 
 
-class LootStates(Enum):
+class RewardStates(Enum):
 
     THINKING = 1
     SIFTING = 2

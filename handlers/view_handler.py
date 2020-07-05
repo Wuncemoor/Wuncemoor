@@ -11,7 +11,7 @@ from screens.encounter_screen import encounter_screen
 from screens.gui_tools import align_and_blit, get_surface, blit_options, print_message
 from screens.inventory_screen import inventory_screen
 from screens.journal_screen import journal_screen
-from screens.loot_screen import loot_screen
+from screens.reward_screen import reward_screen
 from screens.mini_map import minimap_screen
 from screens.resources_HUD import player_resource_display
 from handlers.views.fov_handler import FovHandler
@@ -49,7 +49,7 @@ class ViewHandler:
 
         return surf
 
-    def render_all(self, player, message_log, loot):
+    def render_all(self, player, message_log):
         (width, height) = TILES_ON_SCREEN
 
         tilesize = 16
@@ -100,8 +100,8 @@ class ViewHandler:
             dialogue_screen(self.screen, player, self.owner.dialogue)
         elif self.owner.state == GameStates.ENCOUNTER:
             encounter_screen(self.screen, player, self.owner.encounter, message_log)
-        elif self.owner.state == GameStates.LOOTING:
-            loot_screen(self.screen, loot, message_log)
+        elif self.owner.state == GameStates.REWARD:
+            reward_screen(self.screen, self.owner.reward, message_log)
         elif self.owner.state == GameStates.MENUS:
             if self.owner.menus.state == MenuStates.PARTY:
                 character_screen(self.screen, player)

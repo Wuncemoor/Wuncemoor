@@ -13,7 +13,7 @@ class InputHandler:
             GameStates.ENCOUNTER: self.encounter,
             GameStates.DIALOGUE: self.dialogue,
             GameStates.MENUS: self.menus,
-            GameStates.LOOTING: self.loot,
+            GameStates.REWARD: self.loot,
             GameStates.SHOW_MAP: self.map,
         }
         return maps.get(state)
