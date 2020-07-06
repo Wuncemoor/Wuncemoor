@@ -1,4 +1,3 @@
-from ECS.image_bundle import ImageBundle
 from ECS.entity import Entity
 from ECS.__entity.item import Item
 from ECS.__entity.__item.useable import Useable
@@ -6,7 +5,7 @@ from ECS.__entity.__item.equippable import Equippable
 from ECS.__entity.__item.__equippable.equippable_core import EquippableCore
 from ECS.__entity.__item.__equippable.equippable_quality import EquippableQuality
 from ECS.__entity.__item.__equippable.equippable_material import EquippableMaterial
-from game_messages import Message
+from handlers.views.messages import Message
 from enums.render_order import RenderOrder
 from enums.equipment_slots import EquipmentSlots
 from item_functions import heal, cast_fireball, cast_confuse, cast_lightning

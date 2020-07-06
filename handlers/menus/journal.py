@@ -1,5 +1,6 @@
 from enums.game_states import MenuStates
 
+
 class Journal:
     def __init__(self):
         self.current_quests = []
@@ -16,11 +17,9 @@ class Journal:
                 if not quest.current_node.condition:
                     self.finish_quest(quest)
 
-
     def finish_quest(self, quest):
         self.completed_quests.append(quest)
         self.current_quests.remove(quest)
-
 
     def transduce_all(self, dialogue_partner_name):
         responses = []

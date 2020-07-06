@@ -1,5 +1,5 @@
 from config.constants import DARK_PURPLE, YELLOW
-from game_messages import Message
+from handlers.views.messages import Message
 from enums.game_states import MenuStates
 from enums.equipment_slots import EquipmentSlots
 

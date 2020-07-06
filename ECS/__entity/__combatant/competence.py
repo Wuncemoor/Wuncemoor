@@ -1,4 +1,4 @@
-from game_messages import Message
+from handlers.views.messages import Message
 
 class Competence:
     

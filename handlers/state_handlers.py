@@ -11,6 +11,7 @@ from random_utils import random_choice_from_dict
 class TitleHandler:
     def __init__(self):
         self.superstate = GameStates.TITLE
+        self.option = 0
 
 
 class LifeHandler:

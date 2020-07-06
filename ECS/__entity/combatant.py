@@ -1,5 +1,5 @@
 
-from game_messages import Message
+from handlers.views.messages import Message
 import random
 import math
 from config.constants import BLACK

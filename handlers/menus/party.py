@@ -2,7 +2,6 @@ from enums.game_states import MenuStates
 from handlers.menus.inventory import Inventory
 
 
-
 class Party:
     def __init__(self, hero):
         self.superstate = MenuStates.PARTY

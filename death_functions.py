@@ -1,4 +1,4 @@
-from game_messages import Message
+from handlers.views.messages import Message
 from enums.game_states import GameStates
 from enums.render_order import RenderOrder
 from config.image_objects import CORPSE

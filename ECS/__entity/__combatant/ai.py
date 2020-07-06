@@ -1,6 +1,6 @@
 import tcod as libtcod
 from random import randint
-from game_messages import Message
+from handlers.views.messages import Message
 
 
 class BasicMonster:

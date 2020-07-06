@@ -1,4 +1,4 @@
-import pygame
+import pygame as py
 from enums.game_states import GameStates
 
 
@@ -8,8 +8,8 @@ class InputHandler:
     def mapping(self):
         state = self.owner.state
         maps = {
-            GameStates.TITLE: self.main_menu,
-            GameStates.LIFE: self.default,
+            GameStates.TITLE: self.title,
+            GameStates.LIFE: self.life,
             GameStates.ENCOUNTER: self.encounter,
             GameStates.DIALOGUE: self.dialogue,
             GameStates.MENUS: self.menus,
@@ -18,42 +18,42 @@ class InputHandler:
         }
         return maps.get(state)
 
-    def output(self, key):
+    def transduce(self, key):
         return self.mapping(key)
 
     @staticmethod
-    def main_menu(key):
-        if key in (pygame.K_UP, pygame.K_w):
+    def title(key):
+        if key in (py.K_UP, py.K_w):
             return {'traverse_menu': -1}
-        elif key in (pygame.K_DOWN, pygame.K_x):
+        elif key in (py.K_DOWN, py.K_x):
             return {'traverse_menu': 1}
-        elif key == pygame.K_RETURN:
+        elif key == py.K_RETURN:
             return {'choose_menu_option': True}
         return {}
 
     @staticmethod
-    def default(key):
-        if key in (pygame.K_UP, pygame.K_w):
+    def life(key):
+        if key in (py.K_UP, py.K_w):
             return {'move': (0, -1)}
-        elif key in (pygame.K_DOWN, pygame.K_s):
+        elif key in (py.K_DOWN, py.K_s):
             return {'move': (0, 1)}
-        elif key in (pygame.K_LEFT, pygame.K_a):
+        elif key in (py.K_LEFT, py.K_a):
             return {'move': (-1, 0)}
-        elif key in (pygame.K_RIGHT, pygame.K_d):
+        elif key in (py.K_RIGHT, py.K_d):
             return {'move': (1, 0)}
-        elif key == pygame.K_c:
+        elif key == py.K_c:
             return {'show_menus': 'party'}
-        elif key == pygame.K_i:
+        elif key == py.K_i:
             return {'show_menus': 'inventory'}
-        elif key == pygame.K_m:
+        elif key == py.K_m:
             return {'show_map': True}
-        elif key == pygame.K_j:
+        elif key == py.K_j:
             return {'show_menus': 'journal'}
-        elif key == pygame.K_SPACE:
+        elif key == py.K_SPACE:
             return {'interact': True}
-        if key == pygame.K_RETURN and pygame.K_LALT:
+        if key == py.K_RETURN and py.K_LALT:
             return {'fullscreen': True}
-        if key == pygame.K_ESCAPE:
+        if key == py.K_ESCAPE:
             return {'exit': True}
         # No key
         return {}
@@ -61,13 +61,13 @@ class InputHandler:
     @staticmethod
     def encounter(key):
 
-        if key in (pygame.K_UP, pygame.K_w):
+        if key in (py.K_UP, py.K_w):
             return {'traverse_menu': -1}
-        elif key in (pygame.K_DOWN, pygame.K_x):
+        elif key in (py.K_DOWN, py.K_x):
             return {'traverse_menu': 1}
-        elif key == pygame.K_RETURN:
+        elif key == py.K_RETURN:
             return {'choose_menu_option': True}
-        elif key == pygame.K_ESCAPE:
+        elif key == py.K_ESCAPE:
             return {'exit': True}
         return {}
 
@@ -77,65 +77,65 @@ class InputHandler:
 
     @staticmethod
     def menus(key):
-        if key == pygame.K_ESCAPE:
+        if key == py.K_ESCAPE:
             return {'exit': True}
-        elif key == pygame.K_j:
+        elif key == py.K_j:
             return {'show_menus': 'journal'}
-        elif key == pygame.K_c:
+        elif key == py.K_c:
             return {'show_menus': 'party'}
-        elif key == pygame.K_i:
+        elif key == py.K_i:
             return {'show_menus': 'inventory'}
-        elif key in (pygame.K_a, pygame.K_LEFT):
+        elif key in (py.K_a, py.K_LEFT):
             return {'traverse_menu': (-1, 0)}
-        elif key in (pygame.K_d, pygame.K_RIGHT):
+        elif key in (py.K_d, py.K_RIGHT):
             return {'traverse_menu': (1, 0)}
-        elif key in (pygame.K_w, pygame.K_UP):
+        elif key in (py.K_w, py.K_UP):
             return {'traverse_menu': (0, -1)}
-        elif key in (pygame.K_s, pygame.K_DOWN):
+        elif key in (py.K_s, py.K_DOWN):
             return {'traverse_menu': (0, 1)}
-        elif key == pygame.K_RETURN:
+        elif key == py.K_RETURN:
             return {'choose_menu_option': True}
         return {}
 
     @staticmethod
     def map(key):
-        if key == pygame.K_ESCAPE:
+        if key == py.K_ESCAPE:
             return {'exit': True}
-        elif key == pygame.K_m:
+        elif key == py.K_m:
             return {'exit': True}
         return {}
 
     @staticmethod
     def loot(key):
 
-        if key in (pygame.K_UP, pygame.K_w):
+        if key in (py.K_UP, py.K_w):
             return {'traverse_menu': -1}
-        elif key in (pygame.K_DOWN, pygame.K_x):
+        elif key in (py.K_DOWN, py.K_x):
             return {'traverse_menu': 1}
-        elif key in (pygame.K_LEFT, pygame.K_a):
+        elif key in (py.K_LEFT, py.K_a):
             return {'toggle': 'left'}
-        elif key in (pygame.K_RIGHT, pygame.K_d):
+        elif key in (py.K_RIGHT, py.K_d):
             return {'toggle': 'right'}
-        elif key == pygame.K_RETURN:
+        elif key == py.K_RETURN:
             return {'choose_menu_option': True}
-        elif key == pygame.K_ESCAPE:
+        elif key == py.K_ESCAPE:
             return {'exit': True}
         return {}
 
 
 def handle_targeting_keys(key):
-    if key == pygame.K_ESCAPE:
+    if key == py.K_ESCAPE:
         return {'exit': True}
         
     return {}
     
 def handle_player_dead_keys(key):
     
-    if key == pygame.K_i:
+    if key == py.K_i:
         return {'show_inventory': True}
         
 
-    elif key == pygame.K_ESCAPE:
+    elif key == py.K_ESCAPE:
         # Exit the menu
         return {'exit': True}
         
@@ -159,25 +159,25 @@ def handle_mouse(mouse):
 def handle_level_up_menu(key):
     if key:
         
-        if key == pygame.K_a:
+        if key == py.K_a:
             return {'level_up': 'Strength'}
-        elif key == pygame.K_b:
+        elif key == py.K_b:
             return {'level_up': 'Instinct'}
-        elif key == pygame.K_c:
+        elif key == py.K_c:
             return {'level_up': 'Coordination'}
-        elif key == pygame.K_d:
+        elif key == py.K_d:
             return {'level_up': 'Vitality'}
-        elif key == pygame.K_e:
+        elif key == py.K_e:
             return {'level_up': 'Arcana'}
-        elif key == pygame.K_f:
+        elif key == py.K_f:
             return {'level_up': 'Improvisation'}
-        elif key == pygame.K_g:
+        elif key == py.K_g:
             return {'level_up': 'Wisdom'}
-        elif key == pygame.K_h:
+        elif key == py.K_h:
             return {'level_up': 'Finesse'}
-        elif key == pygame.K_i:
+        elif key == py.K_i:
             return {'level_up': 'Charisma'}
-        elif key == pygame.K_j:
+        elif key == py.K_j:
             return {'level_up': 'Devotion'}
     
     return {}

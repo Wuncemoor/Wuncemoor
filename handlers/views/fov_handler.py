@@ -17,7 +17,7 @@ class FovHandler:
                                            not game_map.tiles[x][y].blocked)
         return fov_map
 
-    @staticmethod
-    def recompute(fov_map, x, y):
+    def recompute(self):
+        x, y, = self.owner.owner.party.p1.x, self.owner.owner.party.p1.y
         # Light wall = True, fov algorithm = 0
-        tcod.map_compute_fov(fov_map, x, y, FOV_RADIUS, True, 0)
+        tcod.map_compute_fov(self.map, x, y, FOV_RADIUS, True, 0)

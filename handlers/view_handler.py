@@ -1,19 +1,19 @@
-import pygame as py
 import tcod as libtcod
 from config.constants import TILES_ON_SCREEN, BLACK
-from config.image_objects import TITLE_SCREEN_BG, TITLE_MENU_BG, TITLE_MENU_BUTTON, INDICATOR_H, MESSAGE_BG, TILE_BASE
+from config.image_objects import MESSAGE_BG, TILE_BASE
 from enums.game_states import GameStates, MenuStates
 from menus import level_up_menu
 from screens.calendar import display_calendar
 from screens.character_screen import character_screen
 from screens.dialogue_screen import dialogue_screen
 from screens.encounter_screen import encounter_screen
-from screens.gui_tools import align_and_blit, get_surface, blit_options, print_message
+from screens.gui_tools import get_surface, print_message
 from screens.inventory_screen import inventory_screen
 from screens.journal_screen import journal_screen
 from screens.reward_screen import reward_screen
 from screens.mini_map import minimap_screen
 from screens.resources_HUD import player_resource_display
+from screens.title_screen import title_screen
 from handlers.views.fov_handler import FovHandler
 from handlers.views.camera import Camera
 
@@ -21,38 +21,39 @@ from handlers.views.camera import Camera
 class ViewHandler:
     def __init__(self, screen):
         self.screen = screen
-        self.option = 0
         self.world_tiles = None
         self.camera = Camera()
         self.camera.owner = self
         self.fov = FovHandler()
         self.fov.owner = self
 
-    def title_screen(self):
-        self.screen.blit(TITLE_SCREEN_BG, (0, 0))
+    @property
+    def mapping(self):
+        state = self.owner.state
+        maps = {
+            GameStates.TITLE: self.title,
+            GameStates.LIFE: self.life,
+            GameStates.ENCOUNTER: self.encounter,
+            GameStates.DIALOGUE: self.dialogue,
+            GameStates.MENUS: self.menus,
+            GameStates.REWARD: self.loot,
+            GameStates.SHOW_MAP: self.map,
+        }
+        return maps.get(state)
 
-        tfont = py.font.Font('screens\\fonts\\lunchds.ttf', 150)
-        stfont = py.font.Font('screens\\fonts\\lunchds.ttf', 60)
-        titletext = tfont.render('WUNCEMOOR', True, (0, 0, 0))
-        tsubt = stfont.render('THE ETERNAL DREAM', True, (0, 0, 0))
+    def render(self):
+        return self.mapping()
 
-        align_and_blit(self.screen, titletext, x_ratio=0.5, y_ratio=0.25)
-        align_and_blit(self.screen, tsubt, x_ratio=0.5, y_ratio=0.38)
-        menu = self.title_menu()
-        align_and_blit(self.screen, menu, x_ratio=0.5, y_ratio=0.75)
+    def title(self):
+        title_screen(self.screen, self.owner.interface)
 
-    def title_menu(self):
-        surf = get_surface(TITLE_MENU_BG)
-        options = ['Start A New Game', 'Continue Previous Game', 'Quit']
-        blit_options(surf, TITLE_MENU_BUTTON, 22, 10, TITLE_MENU_BUTTON.get_height(), options, fontsize=40)
-        surf.blit(INDICATOR_H, (0, 10 + (self.option * TITLE_MENU_BUTTON.get_height())))
-
-        return surf
-
-    def render_all(self, player, message_log):
+    def render_all(self):
         (width, height) = TILES_ON_SCREEN
-
         tilesize = 16
+
+        if self.fov.needs_recompute:
+            self.fov.recompute()
+
         # Draw tiles near player
         if self.fov.recompute:
             for y in range(height):
@@ -69,13 +70,13 @@ class ViewHandler:
         entities_in_render_order = sorted(self.owner.world.current_map.entities, key=lambda x: x.render_order.value)
         for entity in entities_in_render_order:
             self.draw_entity(self.camera.x, self.camera.y, entity, self.fov.map, self.owner.world, tilesize)
-        self.draw_entity(self.camera.x, self.camera.y, player, self.fov.map, self.owner.world, tilesize)
+        self.draw_entity(self.camera.x, self.camera.y, self.owner.party.p1, self.fov.map, self.owner.world, tilesize)
 
         # Print game messages one line at a time
 
         message_surface = get_surface(MESSAGE_BG)
         y = 0
-        for message in message_log.messages:
+        for message in self.owner.log.messages:
             off_x = 30
             off_y = 5
             print_message(message_surface, message, off_x, off_y, y)
@@ -84,31 +85,33 @@ class ViewHandler:
         self.screen.blit(message_surface, (300, 592))
         message_surface.fill(BLACK)
 
-        resource_hud = player_resource_display(player)
+        resource_hud = player_resource_display(self.owner.party.p1)
         self.screen.blit(resource_hud, (0 - 10, 540 + 40))
 
         calendar = display_calendar(self.owner.time.month, self.owner.time.day)
-
+        if self.owner.state == GameStates.TITLE:
+            self.title_screen()
         if self.owner.state == GameStates.LIFE:
             self.screen.blit(calendar, (self.screen.get_width() - calendar.get_width(), self.screen.get_height() - calendar.get_height()))
 
         if self.owner.state == GameStates.SHOW_MAP:
             minimap_screen(self.screen, self.world_tiles)
         elif self.owner.state == GameStates.LEVEL_UP:
-            level_up_menu(self.screen, player)
+            level_up_menu(self.screen, self.owner.party.p1)
         elif self.owner.state == GameStates.DIALOGUE:
-            dialogue_screen(self.screen, player, self.owner.dialogue)
+            dialogue_screen(self.screen, self.owner.party.p1, self.owner.dialogue)
         elif self.owner.state == GameStates.ENCOUNTER:
-            encounter_screen(self.screen, player, self.owner.encounter, message_log)
+            encounter_screen(self.screen, self.owner.party.p1, self.owner.encounter, self.owner.log)
         elif self.owner.state == GameStates.REWARD:
-            reward_screen(self.screen, self.owner.reward, message_log)
+            reward_screen(self.screen, self.owner.reward, self.owner.log)
         elif self.owner.state == GameStates.MENUS:
             if self.owner.menus.state == MenuStates.PARTY:
-                character_screen(self.screen, player)
+                character_screen(self.screen, self.owner.party.p1)
             elif self.owner.menus.state == MenuStates.JOURNAL:
                 journal_screen(self.screen, self.owner.menus)
             elif self.owner.menus.state == MenuStates.INVENTORY:
                 inventory_screen(self.screen, self.owner.menus)
+        self.fov.needs_recompute = False
 
     def draw_entity(self, cx, cy, entity, fov_map, game_map, tilesize):
 

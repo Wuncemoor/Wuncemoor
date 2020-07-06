@@ -1,5 +1,5 @@
 import tcod as libtcod
-from game_messages import Message
+from handlers.views.messages import Message
 from ECS.__entity.__combatant.ai import ConfusedMonster
 
 

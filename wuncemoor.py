@@ -1,7 +1,7 @@
 import tcod as libtcod
 from death_functions import kill_monster, kill_player
 from enums.game_states import GameStates, EncounterStates, RewardStates, MenuStates
-from game_messages import Message
+from handlers.views.messages import Message
 from handlers.input_handler import handle_mouse
 from loader_functions.initialize_new_game import get_game_variables
 from loader_functions.data_loaders import load_game, save_game
@@ -9,7 +9,6 @@ from config.constants import START, BLACK, DARK_BLUE, DARK_ORANGE
 from handlers.state_handlers import DialogueHandler, TimeHandler, EncounterHandler, RewardHandler
 from handlers.game_handler import GameHandler
 from handlers.view_handler import ViewHandler
-import sys
 import pygame as py
 
 
@@ -29,15 +28,42 @@ def main():
     game.state_handler = game.title
     running = True
     while running:
-        view.title_screen()
         for event in py.event.get():
             if event.type == py.QUIT:
-                py.quit()
-                sys.exit()
+                game.quit()
             if event.type == py.KEYDOWN:
 
+                output = game.input.transduce(event.key)
+                game.logic.translate(output)
+
+        game.view.render()
+
+        py.display.flip()
+
+        if game.encounter.state == EncounterStates.ENEMY_TURN:
+            if game.encounter.mob.combatant:
+                enemy_turn_results = game.encounter.mob.combatant.ai.take_turn_e(player)
+                for enemy_turn_result in enemy_turn_results:
+                    message = enemy_turn_result.get('message')
+                    dead_entity = enemy_turn_result.get('dead')
+
+                    if message:
+                        message_log.add_message(message)
+
+                    if dead_entity:
+                        if dead_entity == player:
+                            message, game.state = kill_player(dead_entity)
+                        else:
+                            message = kill_monster(dead_entity)
+
+                        message_log.add_message(message)
+
+                    if game.state == GameStates.PLAYER_DEAD:
+                        break
+                game.encounter.state = EncounterStates.THINKING
+
                 if game.state_handler == game.title:
-                    action = game.input.output(event.key)
+                    action = game.input.transduce(event.key)
                     traverse_menu = action.get('traverse_menu')
                     choose_option = action.get('choose_menu_option')
 
@@ -54,8 +80,7 @@ def main():
                             player, dungeons, world, overworld_tiles, message_log, party = load_game()
                             game.state_handler = game.life
                         elif view.option == 2:
-                            py.quit()
-                            sys.exit()
+                            game.quit()
                 else:
                     loot = Loot()
                     game.view.screen.fill(BLACK)
@@ -83,15 +108,13 @@ def play_game(player, message_log, party, game):
             encounter_results = []
             loot_results = []
             if event.type == py.QUIT:
-                py.quit()
-                sys.exit()
+                game.quit()
             if event.type == py.KEYDOWN:
 
                 action = game.input.output(event.key)
 
                 move = action.get('move')
                 interact = action.get('interact')
-                show_inventory = action.get('show_inventory')
                 show_map = action.get('show_map')
                 show_menus = action.get('show_menus')
                 exit = action.get('exit')
@@ -318,9 +341,7 @@ def play_game(player, message_log, party, game):
                         player_turn_results.append({'targeting_cancelled': True})
                     else:
                         save_game(player, game.dungeons, entities, game.world, message_log, game.state_handler)
-
-                        py.quit()
-                        sys.exit()
+                        game.quit()
 
                 for player_turn_result in player_turn_results:
                     message = player_turn_result.get('message')
