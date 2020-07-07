@@ -1,31 +1,34 @@
 import tcod as libtcod
 from config.constants import TILES_ON_SCREEN, BLACK
-from config.image_objects import MESSAGE_BG, TILE_BASE
+from config.image_objects import MESSAGE_BG, TILE_BASE, TITLE_SCREEN_BG, TITLE_MENU_BG, TITLE_MENU_BUTTON, INDICATOR_H
 from enums.game_states import GameStates, MenuStates
 from menus import level_up_menu
 from screens.calendar import display_calendar
 from screens.character_screen import character_screen
 from screens.dialogue_screen import dialogue_screen
 from screens.encounter_screen import encounter_screen
-from screens.gui_tools import get_surface, print_message
+from screens.gui_tools import get_surface, print_message, align_and_blit, blit_options
 from screens.inventory_screen import inventory_screen
 from screens.journal_screen import journal_screen
 from screens.reward_screen import reward_screen
 from screens.mini_map import minimap_screen
 from screens.resources_HUD import player_resource_display
-from screens.title_screen import title_screen
-from handlers.views.fov_handler import FovHandler
-from handlers.views.camera import Camera
+import pygame as py
 
 
 class ViewHandler:
     def __init__(self, screen):
         self.screen = screen
         self.world_tiles = None
-        self.camera = Camera()
-        self.camera.owner = self
-        self.fov = FovHandler()
-        self.fov.owner = self
+
+    @property
+    def options(self):
+        return self.owner.options.mapping.options
+
+    @property
+    def current_option(self):
+        return self.owner.options.mapping.choice
+
 
     @property
     def mapping(self):
@@ -33,11 +36,11 @@ class ViewHandler:
         maps = {
             GameStates.TITLE: self.title,
             GameStates.LIFE: self.life,
-            GameStates.ENCOUNTER: self.encounter,
-            GameStates.DIALOGUE: self.dialogue,
-            GameStates.MENUS: self.menus,
-            GameStates.REWARD: self.loot,
-            GameStates.SHOW_MAP: self.map,
+            # GameStates.ENCOUNTER: self.encounter,
+            # GameStates.DIALOGUE: self.dialogue,
+            # GameStates.MENUS: self.menus,
+            # GameStates.REWARD: self.loot,
+            # GameStates.SHOW_MAP: self.map,
         }
         return maps.get(state)
 
@@ -45,7 +48,27 @@ class ViewHandler:
         return self.mapping()
 
     def title(self):
-        title_screen(self.screen, self.owner.interface)
+        self.screen.blit(TITLE_SCREEN_BG, (0, 0))
+
+        tfont = py.font.Font('screens\\fonts\\lunchds.ttf', 150)
+        stfont = py.font.Font('screens\\fonts\\lunchds.ttf', 60)
+        titletext = tfont.render('WUNCEMOOR', True, (0, 0, 0))
+        tsubt = stfont.render('THE ETERNAL DREAM', True, (0, 0, 0))
+
+        align_and_blit(self.screen, titletext, x_ratio=0.5, y_ratio=0.25)
+        align_and_blit(self.screen, tsubt, x_ratio=0.5, y_ratio=0.38)
+        menu = self.title_menu()
+        align_and_blit(self.screen, menu, x_ratio=0.5, y_ratio=0.75)
+
+    def title_menu(self):
+        surf = get_surface(TITLE_MENU_BG)
+        blit_options(surf, TITLE_MENU_BUTTON, 22, 10, TITLE_MENU_BUTTON.get_height(), self.options, fontsize=40)
+        surf.blit(INDICATOR_H, (0, 10 + (self.current_option * TITLE_MENU_BUTTON.get_height())))
+
+        return surf
+
+    def life(self):
+        life_screen(self.screen, self.owner.state_handler)
 
     def render_all(self):
         (width, height) = TILES_ON_SCREEN
@@ -58,7 +81,7 @@ class ViewHandler:
         if self.fov.recompute:
             for y in range(height):
                 for x in range(width):
-                    self.draw_tile(self.fov.map, self.owner.world, x, y, self.camera.x, self.camera.y, tilesize)
+                    self.draw_tile(self.owner.world, x, y, tilesize)
 
         for structure in self.owner.world.current_map.structures:
             self.draw_structure(self.camera.x, self.camera.y, structure, self.fov.map, self.owner.world, tilesize)
@@ -137,9 +160,10 @@ class ViewHandler:
                     self.screen.blit(TILE_BASE.get('black'), ((i - cx) * tilesize, (j - cy) * tilesize))
                     count += 1
 
-    def draw_tile(self, fov_map, game_map, x, y, cx, cy, tilesize):
+    def draw_tile(self, game_map, x, y, tilesize):
+        cx, cy = self.camera.x, self.camera.y
 
-        visible = libtcod.map_is_in_fov(fov_map, cx + x, cy + y)
+        visible = libtcod.map_is_in_fov(self.fov.map, cx + x, cy + y)
 
         tile = game_map.tiles[cx + x][cy + y]
 
@@ -147,6 +171,6 @@ class ViewHandler:
             self.screen.blit(tile.image, (x * tilesize, y * tilesize))
             tile.explored = True
         elif tile.explored:
-           self.screen.blit(tile.image2, (x * tilesize, y * tilesize))
+            self.screen.blit(tile.image2, (x * tilesize, y * tilesize))
         else:
             self.screen.blit(TILE_BASE.get('black'), (x * tilesize, y * tilesize))

@@ -37,64 +37,63 @@ def main():
                 game.logic.translate(output)
 
         game.view.render()
-
         py.display.flip()
 
-        if game.encounter.state == EncounterStates.ENEMY_TURN:
-            if game.encounter.mob.combatant:
-                enemy_turn_results = game.encounter.mob.combatant.ai.take_turn_e(player)
-                for enemy_turn_result in enemy_turn_results:
-                    message = enemy_turn_result.get('message')
-                    dead_entity = enemy_turn_result.get('dead')
-
-                    if message:
-                        message_log.add_message(message)
-
-                    if dead_entity:
-                        if dead_entity == player:
-                            message, game.state = kill_player(dead_entity)
-                        else:
-                            message = kill_monster(dead_entity)
-
-                        message_log.add_message(message)
-
-                    if game.state == GameStates.PLAYER_DEAD:
-                        break
-                game.encounter.state = EncounterStates.THINKING
-
-                if game.state_handler == game.title:
-                    action = game.input.transduce(event.key)
-                    traverse_menu = action.get('traverse_menu')
-                    choose_option = action.get('choose_menu_option')
-
-                    if traverse_menu:
-                        if (traverse_menu < 0 and view.option == 0) or (traverse_menu > 0 and view.option == 2):
-                            pass
-                        else:
-                            view.option += traverse_menu
-                    elif choose_option:
-                        if view.option == 0:
-                            player, dungeons, world, overworld_tiles, message_log, party = get_game_variables()
-                            game.state_handler = game.life
-                        elif view.option == 1:
-                            player, dungeons, world, overworld_tiles, message_log, party = load_game()
-                            game.state_handler = game.life
-                        elif view.option == 2:
-                            game.quit()
-                else:
-                    loot = Loot()
-                    game.view.screen.fill(BLACK)
-                    game.view.world_tiles = overworld_tiles
-                    game.world = world
-                    game.dungeons = dungeons
-                    game.dialogue = DialogueHandler([party.journal])
-                    game.time = TimeHandler([party])
-                    game.encounter = EncounterHandler(loot)
-                    game.reward = RewardHandler(loot)
-                    game.take_ownership()
-                    game.view.camera.refocus(player.x, player.y)
-                    game.view.fov.map = game.view.fov.initialize(game.world)
-                    play_game(player, message_log, party, game)
+        # if game.encounter.state == EncounterStates.ENEMY_TURN:
+        #     if game.encounter.mob.combatant:
+        #         enemy_turn_results = game.encounter.mob.combatant.ai.take_turn_e(player)
+        #         for enemy_turn_result in enemy_turn_results:
+        #             message = enemy_turn_result.get('message')
+        #             dead_entity = enemy_turn_result.get('dead')
+        #
+        #             if message:
+        #                 message_log.add_message(message)
+        #
+        #             if dead_entity:
+        #                 if dead_entity == player:
+        #                     message, game.state = kill_player(dead_entity)
+        #                 else:
+        #                     message = kill_monster(dead_entity)
+        #
+        #                 message_log.add_message(message)
+        #
+        #             if game.state == GameStates.PLAYER_DEAD:
+        #                 break
+        #         game.encounter.state = EncounterStates.THINKING
+        #
+        #         if game.state_handler == game.title:
+        #             action = game.input.transduce(event.key)
+        #             traverse_menu = action.get('traverse_menu')
+        #             choose_option = action.get('choose_menu_option')
+        #
+        #             if traverse_menu:
+        #                 if (traverse_menu < 0 and view.option == 0) or (traverse_menu > 0 and view.option == 2):
+        #                     pass
+        #                 else:
+        #                     view.option += traverse_menu
+        #             elif choose_option:
+        #                 if view.option == 0:
+        #                     player, dungeons, world, overworld_tiles, message_log, party = get_game_variables()
+        #                     game.state_handler = game.life
+        #                 elif view.option == 1:
+        #                     player, dungeons, world, overworld_tiles, message_log, party = load_game()
+        #                     game.state_handler = game.life
+        #                 elif view.option == 2:
+        #                     game.quit()
+        #         else:
+        #             loot = Loot()
+        #             game.view.screen.fill(BLACK)
+        #             game.view.world_tiles = overworld_tiles
+        #             game.world = world
+        #             game.dungeons = dungeons
+        #             game.dialogue = DialogueHandler([party.journal])
+        #             game.time = TimeHandler([party])
+        #             game.encounter = EncounterHandler(loot)
+        #             game.reward = RewardHandler(loot)
+        #             game.take_ownership()
+        #             game.view.camera.refocus(player.x, player.y)
+        #             game.view.fov.map = game.view.fov.initialize(game.world)
+        #             play_game(player, message_log, party, game)
         py.display.flip()
 
 

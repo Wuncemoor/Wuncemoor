@@ -1,6 +1,4 @@
-from handlers.log_handler import LogHandler
 from loader_functions.new_game_functions import get_player, equip_player, get_dungeons, get_intro_quest
-from handlers.views.messages import MessageLog
 from handlers.world_handler import WorldHandler
 from handlers.menus.journal import Journal
 from handlers.menus.party import Party

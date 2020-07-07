@@ -3,7 +3,7 @@ from screens.gui_tools import align_and_blit, get_surface, blit_options
 import pygame as py
 
 
-def title_screen(screen, interface):
+def title_screen(screen, options):
     screen.blit(TITLE_SCREEN_BG, (0, 0))
 
     tfont = py.font.Font('screens\\fonts\\lunchds.ttf', 150)
@@ -13,13 +13,12 @@ def title_screen(screen, interface):
 
     align_and_blit(screen, titletext, x_ratio=0.5, y_ratio=0.25)
     align_and_blit(screen, tsubt, x_ratio=0.5, y_ratio=0.38)
-    menu = title_menu(interface)
+    menu = title_menu(options)
     align_and_blit(screen, menu, x_ratio=0.5, y_ratio=0.75)
 
 
-def title_menu(interface):
+def title_menu(options):
     surf = get_surface(TITLE_MENU_BG)
-    options = ['Start A New Game', 'Continue Previous Game', 'Quit']
     blit_options(surf, TITLE_MENU_BUTTON, 22, 10, TITLE_MENU_BUTTON.get_height(), options, fontsize=40)
     surf.blit(INDICATOR_H, (0, 10 + (self.option * TITLE_MENU_BUTTON.get_height())))
 

@@ -1,7 +1,7 @@
 from config.constants import BLACK
 from handlers.input_handler import InputHandler
 from handlers.log_handler import LogHandler
-from handlers.interface_handler import InterfaceHandler
+from handlers.options_handler import OptionsHandler
 from handlers.state_handlers import MenusHandler, TitleHandler, LifeHandler, DialogueHandler, TimeHandler, \
     EncounterHandler, RewardHandler
 from handlers.logic_handler import LogicHandler
@@ -21,6 +21,8 @@ class GameHandler:
         self.logic.owner = self
         self.input = InputHandler()
         self.input.owner = self
+        self.options = OptionsHandler()
+        self.options.owner = self
         self.title = TitleHandler()
         self.title.owner = self
         self.life = LifeHandler()
@@ -41,7 +43,6 @@ class GameHandler:
         self.reward.owner = self
         self.party.owner = self
         self.log.owner = self
-        self.interface.owner = self
 
     def preplay(self, dungeons, world, overworld_tiles, party):
         loot = Loot()
@@ -55,7 +56,6 @@ class GameHandler:
         self.reward = RewardHandler(loot)
         self.party = party
         self.log = LogHandler()
-        self.interface = InterfaceHandler()
         self.take_ownership()
         self.view.camera.refocus(party.p1.x, party.p1.y)
         self.view.fov.map = self.view.fov.initialize(self.world)
