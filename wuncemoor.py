@@ -89,7 +89,6 @@ def main():
         #             game.view.camera.refocus(player.x, player.y)
         #             game.view.fov.map = game.view.fov.initialize(game.world)
         #             play_game(player, message_log, party, game)
-        py.display.flip()
 
 
 def play_game(player, message_log, party, game):

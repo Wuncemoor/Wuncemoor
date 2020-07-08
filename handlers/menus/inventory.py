@@ -27,9 +27,8 @@ class Inventory:
         # if len(self.items) >= self.wt_limit:
         #     results.append({'item_added': None, 'message': Message("You're already overburdened! Get rid of some things or get stronger!", libtcod.dark_purple)})
         # else:
-        results.append({
-            'item_added': item,
-            'message': Message('You pick up the {0}!'.format(item.name), DARK_PURPLE)})
+        results.extend([{'item_added': item},
+                       {'message': Message('You pick up the {0}!'.format(item.name), DARK_PURPLE)}])
         subgroup = self.get_subgroup(item.item)
         subgroup.append(item)
 

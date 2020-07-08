@@ -10,6 +10,7 @@ class LogicHandler:
         self.response = None
 
 
+
     @property
     def mapping(self):
         state = self.owner.state
@@ -47,4 +48,17 @@ class LogicHandler:
             self.response(self, output.get('move'))
         elif 'interact' in output:
             self.response = self.interact.logic
-            self.response(self, output.get('interact'))
+            changes = self.response(self)
+            self.mutate(changes)
+
+    def mutate(self, changes):
+        print(changes)
+        for change in changes:
+            print(change)
+            if 'message' in change:
+                self.owner.log.messages.add_message(change.get('message'))
+            elif 'item_added' in change:
+                print(len(self.owner.world.current_map.entities))
+                self.owner.world.current_map.entities.remove(change.get('item_added'))
+                print(len(self.owner.world.current_map.entities))
+
