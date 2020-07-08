@@ -1,16 +1,13 @@
-from loader_functions.new_game_functions import get_player, equip_player, get_dungeons, get_intro_quest
+from loader_functions.new_game_functions import get_party, get_starting_items, get_dungeons, get_intro_quest
 from handlers.world_handler import WorldHandler
 from handlers.menus.journal import Journal
-from handlers.menus.party import Party
 
 
 def get_game_variables():
 
-    player = get_player()
-    party = Party(player)
-    party.focus = party.p1
+    party = get_party()
 
-    equip_player(party)
+    get_starting_items(party)
 
     dungeons, overworld_tiles = get_dungeons()
 

@@ -3,19 +3,14 @@ from death_functions import kill_monster, kill_player
 from enums.game_states import GameStates, EncounterStates, RewardStates, MenuStates
 from handlers.views.messages import Message
 from handlers.input_handler import handle_mouse
-from loader_functions.initialize_new_game import get_game_variables
-from loader_functions.data_loaders import load_game, save_game
+from loader_functions.data_loaders import save_game
 from config.constants import START, BLACK, DARK_BLUE, DARK_ORANGE
-from handlers.state_handlers import DialogueHandler, TimeHandler, EncounterHandler, RewardHandler
 from handlers.game_handler import GameHandler
 from handlers.view_handler import ViewHandler
 import pygame as py
 
 
 # Main menu
-from map_objects.loot import Loot
-
-
 def main():
 
     (screen_size, caption) = START

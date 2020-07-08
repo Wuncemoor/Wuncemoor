@@ -2,7 +2,6 @@ import math
 import tcod as libtcod
 from enums.render_order import RenderOrder
 
-
 # Generic object representing PC and NPC, items, etc
 class Entity:
 

@@ -23,11 +23,15 @@ class ViewHandler:
 
     @property
     def options(self):
-        return self.owner.options.mapping.options
+        return [option.display for option in self.owner.options.mapping.options]
 
     @property
     def current_option(self):
         return self.owner.options.mapping.choice
+
+    @property
+    def handler(self):
+        return self.owner.state_handler
 
 
     @property
@@ -68,7 +72,48 @@ class ViewHandler:
         return surf
 
     def life(self):
-        life_screen(self.screen, self.owner.state_handler)
+        (width, height) = TILES_ON_SCREEN
+        tilesize = 16
+
+        if self.handler.fov.needs_recompute:
+            self.handler.fov.recompute()
+
+        if self.handler.fov.recompute:
+            for y in range(height):
+                for x in range(width):
+                    self.draw_tile(self.owner.world, x, y, tilesize)
+
+        for structure in self.owner.world.current_map.structures:
+            self.draw_structure(structure, self.owner.world, tilesize)
+        for transition in self.owner.world.current_map.transitions:
+            self.draw_entity(transition, self.owner.world, tilesize)
+        for noncom in self.owner.world.current_map.noncombatants:
+            self.draw_entity(noncom, self.owner.world, tilesize)
+        # draw all entities in list
+        entities_in_render_order = sorted(self.owner.world.current_map.entities, key=lambda x: x.render_order.value)
+        for entity in entities_in_render_order:
+            self.draw_entity(entity, self.owner.world, tilesize)
+        self.draw_party(tilesize)
+
+        # Print game messages one line at a time
+
+        message_surface = get_surface(MESSAGE_BG)
+        y = 0
+        for message in self.owner.log.messages.messages:
+            off_x = 30
+            off_y = 5
+            print_message(message_surface, message, off_x, off_y, y)
+            y += 1
+
+        self.screen.blit(message_surface, (300, 592))
+        message_surface.fill(BLACK)
+
+        resource_hud = player_resource_display(self.owner.party.p1)
+        self.screen.blit(resource_hud, (0 - 10, 540 + 40))
+
+        calendar = display_calendar(self.owner.time.month, self.owner.time.day)
+
+        self.screen.blit(calendar, (self.screen.get_width() - calendar.get_width(), self.screen.get_height() - calendar.get_height()))
 
     def render_all(self):
         (width, height) = TILES_ON_SCREEN
@@ -93,7 +138,7 @@ class ViewHandler:
         entities_in_render_order = sorted(self.owner.world.current_map.entities, key=lambda x: x.render_order.value)
         for entity in entities_in_render_order:
             self.draw_entity(self.camera.x, self.camera.y, entity, self.fov.map, self.owner.world, tilesize)
-        self.draw_entity(self.camera.x, self.camera.y, self.owner.party.p1, self.fov.map, self.owner.world, tilesize)
+        self.draw_party(self.camera.x, self.camera.y, self.owner.party.p1, self.fov.map, self.owner.world, tilesize)
 
         # Print game messages one line at a time
 
@@ -136,20 +181,30 @@ class ViewHandler:
                 inventory_screen(self.screen, self.owner.menus)
         self.fov.needs_recompute = False
 
-    def draw_entity(self, cx, cy, entity, fov_map, game_map, tilesize):
+    def draw_entity(self, entity, game_map, tilesize):
+        cx, cy = self.handler.camera.x, self.handler.camera.y
 
         surfimg = entity.images.sprite
 
-        if libtcod.map_is_in_fov(fov_map, entity.x, entity.y) or (
+        if libtcod.map_is_in_fov(self.handler.fov.map, entity.x, entity.y) or (
                 entity.transition and game_map.tiles[entity.x][entity.y].explored):
             self.screen.blit(surfimg, ((entity.x - cx) * tilesize, (entity.y - cy) * tilesize))
 
-    def draw_structure(self, cx, cy, structure, fov_map, game_map, tilesize):
+    def draw_party(self, tilesize):
+        cx, cy = self.handler.camera.x, self.handler.camera.y
+        party = self.owner.party
+
+        surfimg = party.p1.images.sprite
+
+        self.screen.blit(surfimg, ((party.x - cx) * tilesize, (party.y - cy) * tilesize))
+
+    def draw_structure(self, structure, game_map, tilesize):
+        cx, cy = self.handler.camera.x, self.handler.camera.y
 
         count = 0
         for j in range(structure.rect.y1, structure.rect.y2):
             for i in range(structure.rect.x1, structure.rect.x2):
-                visible = libtcod.map_is_in_fov(fov_map, i, j)
+                visible = libtcod.map_is_in_fov(self.handler.fov.map, i, j)
                 if visible:
                     self.screen.blit(structure.file_objs[0][count], ((i - cx) * tilesize, (j - cy) * tilesize))
                     count += 1
@@ -161,9 +216,9 @@ class ViewHandler:
                     count += 1
 
     def draw_tile(self, game_map, x, y, tilesize):
-        cx, cy = self.camera.x, self.camera.y
+        cx, cy = self.handler.camera.x, self.handler.camera.y
 
-        visible = libtcod.map_is_in_fov(self.fov.map, cx + x, cy + y)
+        visible = libtcod.map_is_in_fov(self.handler.fov.map, cx + x, cy + y)
 
         tile = game_map.tiles[cx + x][cy + y]
 

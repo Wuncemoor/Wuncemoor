@@ -14,13 +14,22 @@ from ECS.__entity.__combatant.equipment import Equipment
 from ECS.__entity.combatant import Combatant
 from ECS.__entity.age import Age
 from maps.starting_map import get_cave, get_town, get_world_map
-
 from ECS.entity import Entity
 from enums.equipment_slots import EquipmentSlots
 from enums.render_order import RenderOrder
 from handlers.menus.journal import Quest, QuestNode
 from config.image_objects import BUNDLE_HERO, BUNDLE_STICK, STAIRS_DOWN, STAIRS_UP
 from config.constants import WHITE
+from handlers.menus.party import Party
+
+
+def get_party():
+    player = get_player()
+    party = Party(player)
+    party.x, party.y = player.x, player.y
+    party.focus = party.p1
+
+    return party
 
 
 def get_player():
@@ -38,11 +47,10 @@ def get_player():
     age = Age(10, 0, 0, 0, (1, 1))
 
     player = Entity(5, 20, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant, age=age)
-
     return player
 
 
-def equip_player(party):
+def get_starting_items(party):
     item_component = Item(
         Equippable('Stick', BUNDLE_STICK, EquipmentSlots.MAIN_HAND, EquippableCore('staff', BUNDLE_STICK),
                    EquippableMaterial('wood'), EquippableQuality('average')))

@@ -1,16 +1,21 @@
 from enums.game_states import GameStates
-from loader_functions.data_loaders import load_game
-from loader_functions.initialize_new_game import get_game_variables
+from handlers.logic.logic_chunks import Move, Interact
 
 
 class LogicHandler:
+
+    def __init__(self):
+        self.move = Move
+        self.interact = Interact
+        self.response = None
+
 
     @property
     def mapping(self):
         state = self.owner.state
         maps = {
             GameStates.TITLE: self.title,
-            # GameStates.LIFE: self.life,
+            GameStates.LIFE: self.life,
             # GameStates.ENCOUNTER: self.encounter,
             # GameStates.DIALOGUE: self.dialogue,
             # GameStates.MENUS: self.menus,
@@ -18,6 +23,10 @@ class LogicHandler:
             # GameStates.SHOW_MAP: self.map,
         }
         return maps.get(state)
+
+    @property
+    def handler(self):
+        return self.owner.state_handler
 
     def translate(self, output):
         self.mapping(output)
@@ -28,4 +37,14 @@ class LogicHandler:
         if 'traverse_menu' in output:
             options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
-            options.choose()
+            self.response = options.choose()
+            self.response(self)
+
+    def life(self, output):
+
+        if 'move' in output:
+            self.response = self.move.logic
+            self.response(self, output.get('move'))
+        elif 'interact' in output:
+            self.response = self.interact.logic
+            self.response(self, output.get('interact'))

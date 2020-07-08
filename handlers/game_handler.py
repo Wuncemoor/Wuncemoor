@@ -57,9 +57,9 @@ class GameHandler:
         self.party = party
         self.log = LogHandler()
         self.take_ownership()
-        self.view.camera.refocus(party.p1.x, party.p1.y)
-        self.view.fov.map = self.view.fov.initialize(self.world)
-        self.owner.state_handler = self.owner.life
+        self.life.camera.refocus(party.p1.x, party.p1.y)
+        self.life.fov.map = self.life.fov.initialize(self.world)
+        self.state_handler = self.life
 
     def quit(self):
         py.quit()
