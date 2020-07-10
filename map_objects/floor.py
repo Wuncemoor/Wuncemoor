@@ -12,7 +12,7 @@ from config.constants import MAX_ROOMS, ROOM_MAX_SIZE, ROOM_MIN_SIZE, IMAGE_OPTI
 from config.image_objects import LIGHT_ROAD, DARK_ROAD, TILE_BASE, LIGHT_DIRT, DARK_DIRT, LIGHT_GRASS, DARK_GRASS
 
 
-class Map:
+class Floor:
 
     def __init__(self, width, height, variant=None, dungeon_level=0, dangerous=False):
 
@@ -65,7 +65,6 @@ class Map:
 
         return tiles
 
-
     def set_dungeon_level(self, level):
         self.dungeon_level = level
 
@@ -82,7 +81,6 @@ class Map:
 
     def create_room(self, room, d_type, subtype):
 
-
         for x in range(room.x1 + 1, room.x2):
             for y in range(room.y1 + 1, room.y2):
                 self.tiles[x][y].blocked = False
@@ -90,7 +88,6 @@ class Map:
                 self.tiles[x][y].type = d_type
                 self.tiles[x][y].subtype = subtype
                 self.get_image(d_type, self.tiles[x][y])
-
 
     def create_h_tunnel(self, x1, x2, y, d_type, subtype=None):
         for x in range(min(x1, x2), max(x1, x2) + 1):
@@ -109,7 +106,7 @@ class Map:
             self.get_image(d_type, self.tiles[x][y])
 
     # Create everything except stairs
-    def fill_map(self, dungeon_type, subtype, node_power):
+    def fill_floor(self, dungeon_type, subtype, node_power):
         rooms = []
         num_rooms = 0
         center_of_last_room_x = None
