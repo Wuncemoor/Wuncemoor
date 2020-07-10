@@ -3,7 +3,7 @@ from ECS.entity import Entity
 from enums.render_order import RenderOrder
 from ECS.__entity.transition import Transition
 from map_objects.dungeon import Dungeon
-from map_objects.map import Map
+from map_objects.floor import Floor
 from config.image_objects import STAIRS_DOWN, STAIRS_UP
 
 
@@ -47,7 +47,7 @@ class DungeonBuilder:
 
     def initialize_maps(self):
 
-        map = Map(self.width, self.height, variant=self.basename, dangerous=True)
+        map = Floor(self.width, self.height, variant=self.basename, dangerous=True)
         map.initialize_tiles()
 
         return map
@@ -81,7 +81,7 @@ class DungeonBuilder:
 
         # Fill in the maps except for stairs
         for map in maps:
-            map.fill_map(self.basename, self.subtype, self.np)
+            map.fill_floor(self.basename, self.subtype, self.np)
 
 
         current_floor = 0

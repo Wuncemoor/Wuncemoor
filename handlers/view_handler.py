@@ -42,7 +42,7 @@ class ViewHandler:
             GameStates.LIFE: self.life,
             # GameStates.ENCOUNTER: self.encounter,
             # GameStates.DIALOGUE: self.dialogue,
-            # GameStates.MENUS: self.menus,
+            GameStates.MENUS: self.menus,
             # GameStates.REWARD: self.loot,
             # GameStates.SHOW_MAP: self.map,
         }
@@ -114,6 +114,16 @@ class ViewHandler:
         calendar = display_calendar(self.owner.time.month, self.owner.time.day)
 
         self.screen.blit(calendar, (self.screen.get_width() - calendar.get_width(), self.screen.get_height() - calendar.get_height()))
+
+    def menus(self):
+        if self.owner.menus.state == MenuStates.PARTY:
+            character_screen(self.screen, self.owner.party.p1)
+        elif self.owner.menus.state == MenuStates.JOURNAL:
+            journal_screen(self.screen, self.owner.menus)
+        elif self.owner.menus.state == MenuStates.INVENTORY:
+            inventory_screen(self.screen, self.owner.menus)
+        elif self.owner.menus.state == MenuStates.MAP:
+            minimap_screen(self.screen, self.world_tiles)
 
     def render_all(self):
         (width, height) = TILES_ON_SCREEN

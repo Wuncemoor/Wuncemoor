@@ -46,7 +46,7 @@ class InputHandler:
         elif key == py.K_i:
             return {'show_menus': 'inventory'}
         elif key == py.K_m:
-            return {'show_map': True}
+            return {'show_menus': 'map'}
         elif key == py.K_j:
             return {'show_menus': 'journal'}
         elif key == py.K_SPACE:
@@ -85,6 +85,8 @@ class InputHandler:
             return {'show_menus': 'party'}
         elif key == py.K_i:
             return {'show_menus': 'inventory'}
+        elif key == py.K_m:
+            return {'show_menus': 'map'}
         elif key in (py.K_a, py.K_LEFT):
             return {'traverse_menu': (-1, 0)}
         elif key in (py.K_d, py.K_RIGHT):

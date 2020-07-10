@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from config.constants import DARK_BLUE
+from enums.game_states import GameStates
 from handlers.views.messages import Message
 from loader_functions.data_loaders import load_game
 from loader_functions.initialize_new_game import get_game_variables
@@ -113,4 +114,36 @@ class Interact(Logic):
         if nothing:
             self.owner.log.messages.add_message(Message('Nothing to see here, move along...', DARK_BLUE))
         return changes
+
+
+class ShowMenus(Logic):
+
+    def logic(self, output):
+        self.owner.state_handler = self.owner.menus
+        opts = {
+            'inventory': self.owner.party.inventory,
+            'journal': self.owner.party.journal,
+            'party': self.owner.party,
+            'map': self.owner.party.map,
+        }
+        self.owner.menus.handle_menu(opts.get(output))
+
+
+class Exit(Logic):
+
+    def logic(self):
+        dict = {
+            GameStates.MENUS: ExitMenus.logic,
+        }
+        state_logic = dict.get(self.state)
+        state_logic(self)
+
+
+class ExitMenus(Logic):
+
+    def logic(self):
+        if self.handler.display is None:
+            self.owner.state_handler = self.owner.life
+        else:
+            self.handler.display = None
 

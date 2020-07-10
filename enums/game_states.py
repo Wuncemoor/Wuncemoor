@@ -37,3 +37,4 @@ class MenuStates(Enum):
     PARTY = 1
     JOURNAL = 2
     INVENTORY = 3
+    MAP = 4

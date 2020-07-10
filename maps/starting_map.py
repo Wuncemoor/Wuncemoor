@@ -3,7 +3,7 @@ from enums.render_order import RenderOrder
 from builders.dungeon_builder import DungeonDirector, DungeonBuilder
 from builders.random_item_maker import EquippableBuilder, Director
 from map_objects.rectangle import Rect
-from map_objects.map import Map
+from map_objects.floor import Floor
 from map_objects.dungeon import Dungeon
 from map_objects.road import Road
 from maps.world_map.biome_functions import apply_simplex_biomes
@@ -73,7 +73,7 @@ def get_cave(subtype):
 
 def get_map(width, height, variant=None, subtype=None, dangerous=False):
 
-    map = Map(width, height, variant=variant, dangerous=dangerous)
+    map = Floor(width, height, variant=variant, dangerous=dangerous)
 
     if variant in ('town', 'second_town', 'third_town', 'fourth_town'):
 
