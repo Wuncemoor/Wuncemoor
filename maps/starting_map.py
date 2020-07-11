@@ -24,17 +24,17 @@ def get_town(node):
     (width, height) = START_TOWN
     name, node_x, node_y = node.name, node.x, node.y
 
-    map = get_map(width, height, variant=name)
+    floor = get_floor(width, height, variant=name)
 
     road = Road(Rect(0, int(height / 2) - 2, width, 4), 'world', 0, (node_x, node_y), ALPHA)
     road.set_transitions('vertical')
-    map.floor_image = 'grass'
+    floor.floor_image = 'grass'
     # add_road also adds transitions
-    map.add_road(road)
+    floor.add_road(road)
     # convert to add_structures later
-    add_house(map, 10, int(height / 2) - 8)
-    add_hut(map, 30, int(height / 2) - 19)
-    add_town(map, 70, int(height / 2) - 6)
+    add_house(floor, 10, int(height / 2) - 8)
+    add_hut(floor, 30, int(height / 2) - 19)
+    add_town(floor, 70, int(height / 2) - 6)
 
     equippable_test = EquippableBuilder(499)
     director = Director()
@@ -44,7 +44,7 @@ def get_town(node):
     item_component = Item(equippable=equippable)
     test_gear = Entity(20, 20, blocks=False, render_order=RenderOrder.ITEM, item=item_component)
 
-    map.entities.append(test_gear)
+    floor.entities.append(test_gear)
 
     # Get samwise but only in first town
     if name == 'town':
@@ -54,9 +54,9 @@ def get_town(node):
         age = Age(13, 12, 28, 0, (1, 4))
         samwise = Entity(18, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom, age=age)
 
-        map.noncombatants.append(samwise)
+        floor.noncombatants.append(samwise)
 
-    town = Dungeon(name, 1, [map], np=0)
+    town = Dungeon(name, 1, [floor], np=0)
 
     return town
 
@@ -71,26 +71,26 @@ def get_cave(subtype):
     return cave
 
 
-def get_map(width, height, variant=None, subtype=None, dangerous=False):
+def get_floor(width, height, variant=None, subtype=None, dangerous=False):
 
-    map = Floor(width, height, variant=variant, dangerous=dangerous)
+    floor = Floor(width, height, variant=variant, dangerous=dangerous)
 
     if variant in ('town', 'second_town', 'third_town', 'fourth_town'):
 
-        map.create_room(Rect(0, 0, width - 1, height - 1), 'town', subtype)
+        floor.create_room(Rect(0, 0, width - 1, height - 1), 'town', subtype)
     elif variant == 'world_map':
-        for row in map.tiles:
+        for row in floor.tiles:
             for tile in row:
                 tile.blocked = False
                 tile.block_sight = False
 
-    return map
+    return floor
 
 
 def get_world_map():
     (width, height) = WORLD_MAP
 
-    map = get_map(width, height, variant='world_map', dangerous=True)
+    map = get_floor(width, height, variant='world_map', dangerous=True)
     start_time = time.time()
     apply_simplex_biomes(map)
     print(time.time() - start_time)
