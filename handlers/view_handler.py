@@ -20,19 +20,19 @@ class ViewHandler:
     def __init__(self, screen):
         self.screen = screen
         self.world_tiles = None
+        self.function = None
 
     @property
     def options(self):
-        return [option.display for option in self.owner.options.mapping.options]
+        return [option.display for option in self.owner.options.current.options]
 
     @property
     def current_option(self):
-        return self.owner.options.mapping.choice
+        return self.owner.options.current.choice
 
     @property
     def handler(self):
         return self.owner.state_handler
-
 
     @property
     def mapping(self):

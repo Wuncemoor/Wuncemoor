@@ -55,7 +55,7 @@ def main():
         #             if game.state == GameStates.PLAYER_DEAD:
         #                 break
         #         game.encounter.state = EncounterStates.THINKING
-        
+
 
 def play_game(player, message_log, party, game):
 

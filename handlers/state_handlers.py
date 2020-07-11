@@ -29,15 +29,11 @@ class MenusHandler:
         self.superstate = GameStates.MENUS
         self.state = None
         self.display = None
-        self.options = None
-        self.current_option = 0
         self.menu = None
 
     def handle_menu(self, menu_obj):
         self.menu = menu_obj
         self.state = menu_obj.superstate
-        self.options = menu_obj.options
-        self.current_option = 0
 
 
 class DialogueHandler:

@@ -22,6 +22,7 @@ class Option(Logic):
         pass
 
 
+
 class NewGame(Option):
 
     display = 'Start A New Game'
@@ -146,4 +147,10 @@ class ExitMenus(Logic):
             self.owner.state_handler = self.owner.life
         else:
             self.handler.display = None
+
+
+class JournalCurrent(Logic):
+
+    def logic(self):
+        pass
 
