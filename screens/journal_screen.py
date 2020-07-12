@@ -3,26 +3,26 @@ from config.image_objects import JOURNAL_OBJS
 from config.constants import RED, DARK_RED, BLACK
 
 
-def journal_screen(screen, menu_handler):
+def journal_screen(self):
     surf = get_surface(JOURNAL_OBJS.get('bg'))
 
-    if menu_handler.display is not None:
-        ind = menu_handler.options.index(menu_handler.display)
-        sj = menu_handler.menu.get_subjournal(menu_handler.display)
+    if self.handler.display is not None:
+        ind = self.handler.options.index(self.handler.display)
+        sj = self.handler.menu.get_subjournal(self.handler.display)
 
-        j_display = journal_options_display(sj, menu_handler.current_option)
-        details = get_entry_details(sj[menu_handler.current_option])
+        j_display = journal_options_display(sj, self.handler.current_option)
+        details = get_entry_details(sj[self.handler.current_option])
         surf.blit(j_display, (30, 112))
         surf.blit(details, (275, 0))
     else:
-        ind = menu_handler.current_option
+        ind = self.owner.options.current.choice
 
     text = JOURNAL_OBJS.get('text' + str(ind))
     icon = JOURNAL_OBJS.get('icon' + str(ind))
     surf.blit(text, (78, 43))
     surf.blit(icon, (92 + 25 * ind, 72))
 
-    align_and_blit(screen, surf)
+    align_and_blit(self.screen, surf)
 
 
 def journal_options_display(subjournal, option):

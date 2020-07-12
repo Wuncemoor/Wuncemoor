@@ -5,8 +5,11 @@ from enums.game_states import GameStates
 class InputHandler:
 
     @property
+    def state(self):
+        return self.owner.state
+
+    @property
     def mapping(self):
-        state = self.owner.state
         maps = {
             GameStates.TITLE: self.title,
             GameStates.LIFE: self.life,
@@ -16,7 +19,7 @@ class InputHandler:
             GameStates.REWARD: self.loot,
             GameStates.SHOW_MAP: self.map,
         }
-        return maps.get(state)
+        return maps.get(self.state)
 
     def transduce(self, key):
         return self.mapping(key)

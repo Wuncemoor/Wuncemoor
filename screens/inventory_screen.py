@@ -4,25 +4,24 @@ from config.image_objects import INVENTORY_BG, INVENTORY_OPTIONS, EQUIPMENT_BG, 
 from screens.gui_tools import get_surface, align_and_blit, get_alpha_surface, get_text_surface
 
 
-def inventory_screen(screen, menu_handler):
+def inventory_screen(self):
 
     surf = get_surface(INVENTORY_BG)
-    if menu_handler.display is None:
-        options = INVENTORY_OPTIONS[menu_handler.current_option]
-        subgroup = menu_handler.menu.subgroups[menu_handler.current_option]
+    if self.handler.display is None:
+        options = INVENTORY_OPTIONS[self.handler.current_option]
+        subgroup = self.handler.menu.subgroups[self.handler.current_option]
     else:
-        ind = menu_handler.options.index(menu_handler.display)
+        ind = self.handler.options.index(self.handler.display)
         options = INVENTORY_OPTIONS[ind]
-        surf.blit(INDICATOR_H, (410, 130 + (32 * menu_handler.current_option)))
-        subgroup = menu_handler.menu.subgroups[ind]
+        surf.blit(INDICATOR_H, (410, 130 + (32 * self.handler.current_option)))
+        subgroup = self.handler.menu.subgroups[ind]
     sg = display_subgroup(subgroup)
 
     align_and_blit(surf, options, x_ratio=0.75, y_ratio=0.19)
     align_and_blit(surf, EQUIPMENT_BG, x_ratio=0.1, y_ratio=0.58)
     surf.blit(sg, (470, 135))
 
-
-    align_and_blit(screen, surf)
+    align_and_blit(self.screen, surf)
 
     return surf
 

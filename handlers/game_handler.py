@@ -13,10 +13,10 @@ from map_objects.loot import Loot
 
 class GameHandler:
 
-    def __init__(self, view):
+    def __init__(self, artist):
         self.state_handler = None
-        self.view = view
-        self.view.owner = self
+        self.artist = artist
+        self.artist.owner = self
         self.logic = LogicHandler()
         self.logic.owner = self
         self.input = InputHandler()
@@ -46,8 +46,8 @@ class GameHandler:
 
     def preplay(self, dungeons, world, overworld_tiles, party):
         loot = Loot()
-        self.view.screen.fill(BLACK)
-        self.view.world_tiles = overworld_tiles
+        self.artist.screen.fill(BLACK)
+        self.artist.world_tiles = overworld_tiles
         self.world = world
         self.dungeons = dungeons
         self.dialogue = DialogueHandler([party.journal])

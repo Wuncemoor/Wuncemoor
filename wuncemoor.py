@@ -6,7 +6,7 @@ from handlers.input_handler import handle_mouse
 from loader_functions.data_loaders import save_game
 from config.constants import START, BLACK, DARK_BLUE, DARK_ORANGE
 from handlers.game_handler import GameHandler
-from handlers.view_handler import ViewHandler
+from handlers.artist_handler import ArtistHandler
 import pygame as py
 
 
@@ -18,8 +18,8 @@ def main():
     py.display.set_caption(caption)
     screen = py.display.set_mode(screen_size)
 
-    view = ViewHandler(screen)
-    game = GameHandler(view)
+    graphics = ArtistHandler(screen)
+    game = GameHandler(graphics)
     game.state_handler = game.title
     running = True
     while running:
@@ -31,7 +31,7 @@ def main():
                 output = game.input.transduce(event.key)
                 game.logic.translate(output)
 
-        game.view.render()
+        game.artist.render()
         py.display.flip()
 
         # if game.encounter.state == EncounterStates.ENEMY_TURN:

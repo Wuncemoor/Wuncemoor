@@ -4,7 +4,7 @@ from config.constants import MINI_MAP
 from config.image_objects import MINIMAP
 
 
-def minimap_screen(screen, world_map):
+def minimap_screen(self):
     (width, height) = MINI_MAP
     (cwidth, cheight) = (1280, 592)
 
@@ -13,7 +13,7 @@ def minimap_screen(screen, world_map):
     offset_y = 50
     i, j = 0, 0
 
-    for row in world_map:
+    for row in self.world_tiles:
         for tile in row:
             img = MINIMAP.get(tile.type)
             window.blit(img, (offset_x + i, offset_y + j))
@@ -23,4 +23,4 @@ def minimap_screen(screen, world_map):
 
     x = cwidth // 2 - width // 2
     y = cheight // 2 - height // 2
-    screen.blit(window, (x, y))
+    self.screen.blit(window, (x, y))

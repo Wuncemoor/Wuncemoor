@@ -4,7 +4,8 @@ import math
 from config.image_objects import CHARACTER_SCREEN
 
 
-def character_screen(screen, player):
+def character_screen(self):
+    player = self.owner.party.p1
     bg = CHARACTER_SCREEN.get('bg')
     level = get_level_icon(player)
     age = get_age_icon(player)
@@ -29,7 +30,7 @@ def character_screen(screen, player):
     surf.blit(combat_stats, (320, 110))
     surf.blit(saving_throws, (500, 120))
     surf.blit(secondary_stats, (475, 345))
-    screen.blit(surf, (215, 136))
+    self.screen.blit(surf, (215, 136))
 
 def get_saving_throws(player):
     ts = 32
