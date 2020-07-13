@@ -2,7 +2,7 @@ class DialogueGraph:
 
     def __init__(self):
         self.graph_dict = {}
-        self.current_convo = 'root'
+        self.conversation = 'root'
 
 
 class DialogueNode:

@@ -31,15 +31,17 @@ class OptionsHandler:
         }
         return maps.get(self.state)()
 
-    def traverse(self, amount):
+    def traverse(self, path):
         if self.state == GameStates.TITLE:
-            self.traverse_int(amount)
+            self.traverse_list(path)
+        elif self.state == GameStates.DIALOGUE:
+            self.traverse_graph(path)
         elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and self.handler.display is None:
-            self.traverse_int(amount[0])
+            self.traverse_list(path[0])
         elif self.handler.state == MenuStates.JOURNAL:
-            self.traverse_int(amount[1])
+            self.traverse_list(path[1])
 
-    def traverse_int(self, amount):
+    def traverse_list(self, amount):
         print(self.current.choice)
         print(amount)
         if (amount < 0 and self.current.choice == 0) or (amount > 0 and self.current.choice >=
@@ -48,6 +50,22 @@ class OptionsHandler:
         else:
             self.current.choice += amount
         print(self.current.choice)
+
+    def traverse_graph(self, path):
+        key = chr(path)
+
+        if key in self.handler.real_io.keys():
+            self.current.conversation = self.handler.real_io.get(key)
+            current_node = self.current.graph_dict.get(self.current.conversation)
+            current_node.visited = True
+            self.handler.set_real_talk()
+            self.handler.broadcast_choice(current_node.signal)
+
+            if self.current.conversation == 'exit':
+                self.current.conversation = 'root'
+                self.owner.state_handler = self.owner.life
+                self.current = None
+
 
     def choose(self):
         option = self.current.options[self.current.choice]

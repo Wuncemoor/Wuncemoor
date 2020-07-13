@@ -16,8 +16,7 @@ class InputHandler:
             GameStates.ENCOUNTER: self.encounter,
             GameStates.DIALOGUE: self.dialogue,
             GameStates.MENUS: self.menus,
-            GameStates.REWARD: self.loot,
-            GameStates.SHOW_MAP: self.map,
+            GameStates.REWARD: self.reward,
         }
         return maps.get(self.state)
 
@@ -111,7 +110,7 @@ class InputHandler:
         return {}
 
     @staticmethod
-    def loot(key):
+    def reward(key):
 
         if key in (py.K_UP, py.K_w):
             return {'traverse_menu': -1}

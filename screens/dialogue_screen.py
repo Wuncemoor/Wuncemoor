@@ -1,12 +1,10 @@
 import math
-
-from config.constants import WHITE, LIGHT_GREY
+from config.constants import WHITE, GREY
 from config.image_objects import DIALOGUE_MENU
-from dialogue.deja_vu_check import deja_vu_check
 from screens.gui_tools import get_surface, get_text_surface
 
 
-def dialogue_screen(screen, player, dialogue_handler):
+def dialogue_screen(self):
     gap = 5
     portrait_off_x = 20
     name_off_y = 40
@@ -14,24 +12,25 @@ def dialogue_screen(screen, player, dialogue_handler):
     interactor_width = 250
     fontsize = 12
     actor_name_fontsize = 20
+    hero = self.owner.party.p1
 
     window = get_surface(DIALOGUE_MENU)
 
-    player_name = get_text_surface(player.name, actor_name_fontsize, WHITE)
-    (pnw, pnh) = player_name.get_size()
+    hero_name = get_text_surface(hero.name, actor_name_fontsize, WHITE)
+    (pnw, pnh) = hero_name.get_size()
 
     pn_off_x = (interactor_width / 2) - (pnw / 2)
-    window.blit(player.images.portrait, (portrait_off_x, name_off_y + pnh + gap))
-    window.blit(player_name, (pn_off_x, name_off_y))
+    window.blit(hero.images.portrait, (portrait_off_x, name_off_y + pnh + gap))
+    window.blit(hero_name, (pn_off_x, name_off_y))
 
-    noncom_name = get_text_surface(dialogue_handler.partner.name.capitalize(), actor_name_fontsize, WHITE)
+    noncom_name = get_text_surface(self.handler.partner.name.capitalize(), actor_name_fontsize, WHITE)
     nnw, nnh = noncom_name.get_width(), noncom_name.get_height()
     nn_off_x = (interactor_width / 2) - (nnw / 2)
-    window.blit(dialogue_handler.partner.images.portrait, (noncom_off_x + portrait_off_x, name_off_y + nnh + gap))
+    window.blit(self.handler.partner.images.portrait, (noncom_off_x + portrait_off_x, name_off_y + nnh + gap))
     window.blit(noncom_name, (noncom_off_x + nn_off_x, name_off_y))
 
-    dialogue = dialogue_handler.partner.noncombatant.dialogue
-    current_node = dialogue.graph_dict.get(dialogue.current_convo)
+    dialogue = self.handler.partner.noncombatant.dialogue
+    current_node = dialogue.graph_dict.get(dialogue.conversation)
 
     words_off_x = 285
     words_off_y = 25
@@ -44,11 +43,11 @@ def dialogue_screen(screen, player, dialogue_handler):
     text_gap = math.ceil(fontsize * 0.2)
     letter_index = ord('a')
     q = 0
-    for option in dialogue_handler.real_talk:
+    for option in self.handler.real_talk:
 
-        deja_vu = deja_vu_check(dialogue_handler, q + 1)
+        deja_vu = self.handler.deja_vu_check(q + 1)
         if deja_vu:
-            color = LIGHT_GREY
+            color = GREY
         else:
             color = WHITE
         text = get_text_surface(str(q + 1) + ' ) ' + option.text, fontsize, color)
@@ -56,4 +55,4 @@ def dialogue_screen(screen, player, dialogue_handler):
         q += 1
         letter_index += 1
 
-    screen.blit(window, (0, 0))
+    self.screen.blit(window, (0, 0))

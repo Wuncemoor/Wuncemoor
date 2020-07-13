@@ -17,13 +17,13 @@ class Option(Logic):
 
     @property
     @abstractmethod
-    def display(self):
+    def text(self):
         pass
 
 
 class NewGame(Option):
 
-    display = 'Start A New Game'
+    text = 'Start A New Game'
 
     def logic(self):
         dungeons, world, overworld_tiles, party = get_game_variables()
@@ -32,7 +32,7 @@ class NewGame(Option):
 
 class LoadGame(Option):
 
-    display = 'Continue A Previous Game'
+    text = 'Continue A Previous Game'
 
     def logic(self):
         dungeons, world, overworld_tiles, party = load_game()
@@ -41,7 +41,7 @@ class LoadGame(Option):
 
 class QuitGame(Option):
 
-    display = 'Quit'
+    text = 'Quit'
 
     def logic(self):
         self.owner.quit()
@@ -109,6 +109,7 @@ class Interact(Logic):
                 self.owner.dialogue.partner = noncom
                 self.owner.dialogue.set_real_talk()
                 self.owner.state_handler = self.owner.dialogue
+                self.owner.options.current = noncom.noncombatant.dialogue
                 nothing = False
         if nothing:
             self.owner.log.messages.add_message(Message('Nothing to see here, move along...', DARK_BLUE))

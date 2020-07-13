@@ -25,7 +25,7 @@ class ArtistHandler:
 
     @property
     def options(self):
-        return [option.display for option in self.owner.options.current.options]
+        return [option.text for option in self.owner.options.current.options]
 
     @property
     def choice(self):
@@ -42,10 +42,9 @@ class ArtistHandler:
             GameStates.TITLE: self.title,
             GameStates.LIFE: self.life,
             # GameStates.ENCOUNTER: self.encounter,
-            # GameStates.DIALOGUE: self.dialogue,
+            GameStates.DIALOGUE: self.dialogue,
             GameStates.MENUS: self.menus,
-            # GameStates.REWARD: self.loot,
-            # GameStates.SHOW_MAP: self.map,
+            # GameStates.REWARD: self.reward,
         }
         return maps.get(state)
 
@@ -238,6 +237,10 @@ class ArtistHandler:
             self.screen.blit(tile.image2, (x * self.tilesize, y * self.tilesize))
         else:
             self.screen.blit(TILE_BASE.get('black'), (x * self.tilesize, y * self.tilesize))
+
+    def dialogue(self):
+        dialogue_screen(self)
+
 
 
 def get_names_under_mouse(entities, fov_map):

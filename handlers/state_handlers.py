@@ -53,7 +53,7 @@ class DialogueHandler:
             for res in response:
                 responses.append(res)
         current_node = self.partner.noncombatant.dialogue.graph_dict.get(
-            self.partner.noncombatant.dialogue.current_convo)
+            self.partner.noncombatant.dialogue.conversation)
         options = current_node.options_text
         self.real_talk = [i for i in options if i.condition is None or i.condition in responses]
         self.set_real_io()
@@ -70,6 +70,15 @@ class DialogueHandler:
         if signal is not None:
             for observer in self.observers:
                 observer.update_plot(signal)
+
+    def deja_vu_check(self, option):
+
+        dialogue = self.partner.noncombatant.dialogue
+
+        nn_string = self.real_io.get(str(option))
+
+        new_node = dialogue.graph_dict.get(nn_string)
+        return new_node.visited
 
 
 class TimeHandler:

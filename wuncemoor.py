@@ -162,14 +162,14 @@ def play_game(player, message_log, party, game):
                     dialogue = game.dialogue.partner.noncombatant.dialogue
 
                     if key in game.dialogue.real_io.keys():
-                        dialogue.current_convo = game.dialogue.real_io.get(key)
-                        current_node = dialogue.graph_dict.get(dialogue.current_convo)
+                        dialogue.conversation = game.dialogue.real_io.get(key)
+                        current_node = dialogue.graph_dict.get(dialogue.conversation)
                         current_node.visited = True
                         game.dialogue.set_real_talk()
                         game.dialogue.broadcast_choice(current_node.signal)
 
-                        if dialogue.current_convo == 'exit':
-                            dialogue.current_convo = 'root'
+                        if dialogue.conversation == 'exit':
+                            dialogue.conversation = 'root'
                             game.state_handler = game.life
 
                 if traverse_menu:
