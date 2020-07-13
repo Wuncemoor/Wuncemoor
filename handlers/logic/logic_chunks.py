@@ -145,6 +145,7 @@ class ExitMenus(Logic):
             self.owner.state_handler = self.owner.life
         else:
             self.handler.display = None
+            self.owner.options.current = self.handler.menu.options
 
 
 class GoToSubJournal(Logic):
@@ -153,4 +154,5 @@ class GoToSubJournal(Logic):
         sub = self.owner.party.journal.get_subjournal()
         if len(sub) > 0:
             self.handler.display = sub
+            self.owner.options.wrap_and_set(sub)
 

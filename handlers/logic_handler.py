@@ -65,6 +65,9 @@ class LogicHandler:
             self.response(self, output.get('show_menus'))
         elif 'traverse_menu' in output:
             self.owner.options.traverse(output.get('traverse_menu'))
+        elif 'choose_option' in output:
+            self.response = self.owner.options.choose()
+            self.response(self)
 
     def mutate(self, changes):
         for change in changes:

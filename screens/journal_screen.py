@@ -7,11 +7,11 @@ def journal_screen(self):
     surf = get_surface(JOURNAL_OBJS.get('bg'))
 
     if self.handler.display is not None:
-        ind = self.handler.options.index(self.handler.display)
-        sj = self.handler.menu.get_subjournal(self.handler.display)
+        ind = self.handler.menu.options.choice
+        sj = self.handler.display
 
-        j_display = journal_options_display(sj, self.handler.current_option)
-        details = get_entry_details(sj[self.handler.current_option])
+        j_display = journal_options_display(sj, self.owner.options.current.choice)
+        details = get_entry_details(sj[self.owner.options.current.choice])
         surf.blit(j_display, (30, 112))
         surf.blit(details, (275, 0))
     else:
@@ -37,6 +37,7 @@ def journal_options_display(subjournal, option):
             color = BLACK
         surf.blit(get_button_surface(obj, i.title, 16, color), (0, 0 + (y * obj.get_height())))
     return surf
+
 
 def get_entry_details(entry):
     surf = get_alpha_surface(275, 530)

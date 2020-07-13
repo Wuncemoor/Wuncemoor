@@ -1,5 +1,5 @@
 from enums.game_states import GameStates, MenuStates
-from handlers.logic.options import title_options
+from handlers.logic.options import title_options, Options
 
 
 class OptionsHandler:
@@ -14,6 +14,9 @@ class OptionsHandler:
     @property
     def handler(self):
         return self.owner.state_handler
+
+    def wrap_and_set(self, options):
+        self.current = Options(options)
 
     @property
     def mapping(self):
@@ -33,7 +36,7 @@ class OptionsHandler:
             self.traverse_int(amount)
         elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and self.handler.display is None:
             self.traverse_int(amount[0])
-        elif self.handler.state in MenuStates.JOURNAL:
+        elif self.handler.state == MenuStates.JOURNAL:
             self.traverse_int(amount[1])
 
     def traverse_int(self, amount):
