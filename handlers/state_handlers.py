@@ -35,6 +35,7 @@ class MenusHandler:
         self.menu = menu_obj
         self.state = menu_obj.superstate
         self.owner.options.current = self.menu.options
+        self.display = None
 
 
 class DialogueHandler:
