@@ -1,4 +1,4 @@
-from handlers.logic.logic_chunks import NewGame, LoadGame, QuitGame, GoToSubJournal
+from handlers.logic.logic_chunks import NewGame, LoadGame, QuitGame, GoToSubJournal, GoToSubInventory
 
 
 class Options:
@@ -18,7 +18,9 @@ def party_options():
 
 
 def inventory_options():
-    options = Options([InvMisc, InvWeapons, InvArmor, InvAccessories, InvSatchel, InvMaterials, InvPlot])
+    options = Options([GoToSubInventory, GoToSubInventory, GoToSubInventory, GoToSubInventory,
+                       GoToSubInventory, GoToSubInventory, GoToSubInventory])
+    return options
 
 
 def journal_options():

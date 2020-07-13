@@ -174,5 +174,3 @@ class RewardHandler:
         self.state = None
         self.options = ['AUTO', 'MANUAL', 'LEAVE']
         self.current_option = 0
-
-

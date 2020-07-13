@@ -155,4 +155,14 @@ class GoToSubJournal(Logic):
         if len(sub) > 0:
             self.handler.display = sub
             self.owner.options.wrap_and_set(sub)
+            self.owner.options.current.choice = 0
 
+
+class GoToSubInventory(Logic):
+
+    def logic(self):
+        sub = self.owner.party.inventory.get_subinventory()
+        if len(sub) > 0:
+            self.handler.display = sub
+            self.owner.options.wrap_and_set(sub)
+            self.owner.options.current.choice = 0
