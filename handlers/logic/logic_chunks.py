@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-
 from config.constants import DARK_BLUE
 from enums.game_states import GameStates
 from handlers.views.messages import Message
@@ -20,7 +19,6 @@ class Option(Logic):
     @abstractmethod
     def display(self):
         pass
-
 
 
 class NewGame(Option):
@@ -149,8 +147,10 @@ class ExitMenus(Logic):
             self.handler.display = None
 
 
-class JournalCurrent(Logic):
+class GoToSubJournal(Logic):
 
     def logic(self):
-        pass
+        sub = self.owner.party.journal.get_subjournal()
+        if len(sub) > 0:
+            self.handler.display = sub
 

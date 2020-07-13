@@ -34,6 +34,7 @@ class MenusHandler:
     def handle_menu(self, menu_obj):
         self.menu = menu_obj
         self.state = menu_obj.superstate
+        self.owner.options.current = self.menu.options
 
 
 class DialogueHandler:

@@ -22,8 +22,6 @@ class ArtistHandler:
         self.world_tiles = None
         self.tilesize = 16
 
-
-
     @property
     def options(self):
         return [option.display for option in self.owner.options.current.options]

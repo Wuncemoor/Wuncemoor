@@ -15,9 +15,8 @@ from ECS.__entity.noncombatant import Noncombatant
 from ECS.__entity.age import Age
 from random import randint
 from dialogue.get_dialogue import get_samwise_dialogue
-from config.constants import WORLD_MAP, START_TOWN, CAVE
+from config.constants import OVERWORLD, START_TOWN, CAVE
 from config.image_objects import ALPHA, BUNDLE_SAMWISE
-import time
 
 
 def get_town(node):
@@ -78,7 +77,7 @@ def get_floor(width, height, variant=None, subtype=None, dangerous=False):
     if variant in ('town', 'second_town', 'third_town', 'fourth_town'):
 
         floor.create_room(Rect(0, 0, width - 1, height - 1), 'town', subtype)
-    elif variant == 'world_map':
+    elif variant == 'overworld':
         for row in floor.tiles:
             for tile in row:
                 tile.blocked = False
@@ -87,26 +86,24 @@ def get_floor(width, height, variant=None, subtype=None, dangerous=False):
     return floor
 
 
-def get_world_map():
-    (width, height) = WORLD_MAP
+def overworld():
+    (width, height) = OVERWORLD
 
-    map = get_floor(width, height, variant='world_map', dangerous=True)
-    start_time = time.time()
-    apply_simplex_biomes(map)
-    print(time.time() - start_time)
-    apply_mode(map)
+    floor = get_floor(width, height, variant='overworld', dangerous=True)
+    apply_simplex_biomes(floor)
+    apply_mode(floor)
     nodes = get_core_plot_nodes(width, height)
     for node in nodes:
-        add_town(map, node.x, node.y)
+        add_town(floor, node.x, node.y)
         stairs = Transition('Stairs', ALPHA, node.name, 0, node.entrance)
         ent = Entity(node.x, node.y, transition=stairs)
-        map.transitions.append(ent)
+        floor.transitions.append(ent)
 
-    world = Dungeon('world', 1, [map], np=0)
+    world = Dungeon('world', 1, [floor], np=0)
     return world, nodes
 
 
-def apply_mode(map):
-    for row in map.tiles:
+def apply_mode(floor):
+    for row in floor.tiles:
         for tile in row:
             tile.mode = str(randint(0, 8))

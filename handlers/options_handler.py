@@ -1,5 +1,5 @@
 from enums.game_states import GameStates, MenuStates
-from handlers.logic.options import title_options, party_options, inventory_options, journal_options
+from handlers.logic.options import title_options
 
 
 class OptionsHandler:
@@ -37,11 +37,14 @@ class OptionsHandler:
             self.traverse_int(amount[1])
 
     def traverse_int(self, amount):
+        print(self.current.choice)
+        print(amount)
         if (amount < 0 and self.current.choice == 0) or (amount > 0 and self.current.choice >=
                                                          (len(self.current.options) - 1)):
             pass
         else:
             self.current.choice += amount
+        print(self.current.choice)
 
     def choose(self):
         option = self.current.options[self.current.choice]
@@ -52,13 +55,7 @@ class OptionsHandler:
         self.current = title_options()
 
     def menus(self):
-        key = self.handler.state
-        dict = {
-            MenuStates.PARTY: party_options(),
-            MenuStates.INVENTORY: inventory_options(),
-            MenuStates.JOURNAL: journal_options(),
-            MenuStates.MAP: map_options(),
-        }
-        self.current = dict.get(key)
+        return self.handler.menu.options
+
 
 

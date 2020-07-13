@@ -8,7 +8,7 @@ class Journal:
         self.codex = []
         self.convo_history = []
         self.superstate = MenuStates.JOURNAL
-        self.options = ['current', 'completed', 'codex', 'convo']
+        self.options = None
 
     def update_plot(self, signal):
         for quest in self.current_quests:
@@ -34,15 +34,10 @@ class Journal:
             return [quest.title, quest.current_node.title]
         return None
 
-    def get_subjournal(self, choice):
-        sj_dict = {
-            'current': self.current_quests,
-            'completed': self.completed_quests,
-            'codex': self.codex,
-            'convo': self.convo_history,
-        }
+    def get_subjournal(self):
+        sj_dict = [self.current_quests, self.completed_quests, self.codex, self.convo_history]
 
-        return sj_dict.get(choice)
+        return sj_dict[self.options.choice]
 
 
 class Quest:
@@ -50,7 +45,6 @@ class Quest:
         self.title = title
         self.plot = []
         self.current_node = current_node
-
 
     def traverse_plot(self, signal):
         self.current_node = self.current_node.plot_paths.get(signal)

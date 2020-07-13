@@ -69,7 +69,7 @@ class InputHandler:
         elif key in (py.K_DOWN, py.K_x):
             return {'traverse_menu': 1}
         elif key == py.K_RETURN:
-            return {'choose_menu_option': True}
+            return {'choose_option': True}
         elif key == py.K_ESCAPE:
             return {'exit': True}
         return {}
@@ -99,7 +99,7 @@ class InputHandler:
         elif key in (py.K_s, py.K_DOWN):
             return {'traverse_menu': (0, 1)}
         elif key == py.K_RETURN:
-            return {'choose_menu_option': True}
+            return {'choose_option': True}
         return {}
 
     @staticmethod

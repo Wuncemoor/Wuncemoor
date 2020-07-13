@@ -1,6 +1,5 @@
 from enums.game_states import MenuStates
-from handlers.menus.inventory import Inventory
-from handlers.menus.map import Map
+
 
 
 class Party:
@@ -10,9 +9,9 @@ class Party:
         self.p2 = None
         self.p3 = None
         self.p4 = None
-        self.options = []
-        self.inventory = Inventory()
-        self.map = Map()
+        self.options = None
+        self.inventory = None
+        self.map = None
         self.focus = None
         self.x = None
         self.y = None

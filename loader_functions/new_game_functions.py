@@ -13,7 +13,9 @@ from ECS.__entity.transition import Transition
 from ECS.__entity.__combatant.equipment import Equipment
 from ECS.__entity.combatant import Combatant
 from ECS.__entity.age import Age
-from maps.starting_map import get_cave, get_town, get_world_map
+from handlers.menus.inventory import Inventory
+from handlers.menus.map import Map
+from maps.starting_map import get_cave, get_town, overworld
 from ECS.entity import Entity
 from enums.equipment_slots import EquipmentSlots
 from enums.render_order import RenderOrder
@@ -26,6 +28,8 @@ from handlers.menus.party import Party
 def get_party():
     player = get_player()
     party = Party(player)
+    party.inventory = Inventory()
+    party.map = Map()
     party.x, party.y = player.x, player.y
     party.focus = party.p1
 
@@ -61,7 +65,7 @@ def get_starting_items(party):
 def get_dungeons():
     dungeons = {}
 
-    world, nodes = get_world_map()
+    world, nodes = overworld()
 
     wm_tiles = world.maps[0].tiles
 
