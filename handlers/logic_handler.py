@@ -65,7 +65,7 @@ class LogicHandler:
         elif 'traverse_menu' in output:
             self.owner.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
-            if self.handler.display is None:
+            if self.handler.menu.sub is None:
                 self.response = self.owner.options.choose()
                 self.response(self)
 

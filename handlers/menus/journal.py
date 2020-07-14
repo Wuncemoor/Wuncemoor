@@ -9,6 +9,7 @@ class Journal:
         self.convo_history = []
         self.superstate = MenuStates.JOURNAL
         self.options = None
+        self.sub = None
 
     def update_plot(self, signal):
         for quest in self.current_quests:

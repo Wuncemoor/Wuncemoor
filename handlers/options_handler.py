@@ -36,20 +36,17 @@ class OptionsHandler:
             self.traverse_list(path)
         elif self.state == GameStates.DIALOGUE:
             self.traverse_graph(path)
-        elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and self.handler.display is None:
+        elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and self.handler.menu.sub is None:
             self.traverse_list(path[0])
         elif self.handler.state == MenuStates.JOURNAL:
             self.traverse_list(path[1])
 
     def traverse_list(self, amount):
-        print(self.current.choice)
-        print(amount)
         if (amount < 0 and self.current.choice == 0) or (amount > 0 and self.current.choice >=
                                                          (len(self.current.options) - 1)):
             pass
         else:
             self.current.choice += amount
-        print(self.current.choice)
 
     def traverse_graph(self, path):
         key = chr(path)
@@ -69,6 +66,7 @@ class OptionsHandler:
 
     def choose(self):
         option = self.current.options[self.current.choice]
+        print(option)
 
         return option.logic
 

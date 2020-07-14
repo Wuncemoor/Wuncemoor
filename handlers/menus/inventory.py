@@ -15,6 +15,7 @@ class Inventory:
         self.plot = []
         self.superstate = MenuStates.INVENTORY
         self.options = None
+        self.sub = None
 
 
     @property

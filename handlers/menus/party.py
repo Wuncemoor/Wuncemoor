@@ -15,6 +15,7 @@ class Party:
         self.focus = None
         self.x = None
         self.y = None
+        self.sub = None
 
     def members(self):
         party = [member for member in (self.p1, self.p2, self.p3, self.p4) if member is not None]

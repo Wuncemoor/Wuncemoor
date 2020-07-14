@@ -5,7 +5,7 @@ from screens.gui_tools import get_surface, align_and_blit, get_alpha_surface, ge
 def inventory_screen(self):
 
     surf = get_surface(INVENTORY_BG)
-    if self.handler.display is None:
+    if self.handler.menu.sub is None:
         options = INVENTORY_OPTIONS[self.owner.options.current.choice]
         subinventory = self.handler.menu.get_subinventory()
     else:

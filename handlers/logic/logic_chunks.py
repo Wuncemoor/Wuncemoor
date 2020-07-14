@@ -119,14 +119,23 @@ class Interact(Logic):
 class ShowMenus(Logic):
 
     def logic(self, output):
-        self.owner.state_handler = self.owner.menus
         opts = {
             'inventory': self.owner.party.inventory,
             'journal': self.owner.party.journal,
             'party': self.owner.party,
             'map': self.owner.party.map,
         }
-        self.owner.menus.handle_menu(opts.get(output))
+        if self.handler is self.owner.menus:
+            if opts.get(output) is self.handler.menu:
+                self.handler.menu.sub = None
+                self.owner.options.current = None
+                self.owner.state_handler = self.owner.life
+            else:
+                self.owner.menus.handle_menu(opts.get(output))
+                self.owner.options.current = self.handler.menu.options
+        else:
+            self.owner.state_handler = self.owner.menus
+            self.owner.menus.handle_menu(opts.get(output))
 
 
 class Exit(Logic):
@@ -142,10 +151,10 @@ class Exit(Logic):
 class ExitMenus(Logic):
 
     def logic(self):
-        if self.handler.display is None:
+        if self.handler.menu.sub is None:
             self.owner.state_handler = self.owner.life
         else:
-            self.handler.display = None
+            self.handler.menu.sub = None
             self.owner.options.current = self.handler.menu.options
 
 
@@ -154,7 +163,7 @@ class GoToSubJournal(Logic):
     def logic(self):
         sub = self.owner.party.journal.get_subjournal()
         if len(sub) > 0:
-            self.handler.display = sub
+            self.handler.menu.sub = sub
             self.owner.options.wrap_and_set(sub)
             self.owner.options.current.choice = 0
 
@@ -164,6 +173,6 @@ class GoToSubInventory(Logic):
     def logic(self):
         sub = self.owner.party.inventory.get_subinventory()
         if len(sub) > 0:
-            self.handler.display = sub
+            self.handler.menu.sub = sub
             self.owner.options.wrap_and_set(sub)
             self.owner.options.current.choice = 0

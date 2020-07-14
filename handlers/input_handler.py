@@ -102,14 +102,6 @@ class InputHandler:
         return {}
 
     @staticmethod
-    def map(key):
-        if key == py.K_ESCAPE:
-            return {'exit': True}
-        elif key == py.K_m:
-            return {'exit': True}
-        return {}
-
-    @staticmethod
     def reward(key):
 
         if key in (py.K_UP, py.K_w):

@@ -6,9 +6,9 @@ from config.constants import RED, DARK_RED, BLACK
 def journal_screen(self):
     surf = get_surface(JOURNAL_OBJS.get('bg'))
 
-    if self.handler.display is not None:
+    if self.handler.menu.sub is not None:
         ind = self.handler.menu.options.choice
-        sj = self.handler.display
+        sj = self.handler.menu.sub
 
         j_display = journal_options_display(sj, self.owner.options.current.choice)
         details = get_entry_details(sj[self.owner.options.current.choice])
