@@ -1,17 +1,15 @@
 import pygame
 import tcod as libtcod
 from config.constants import TILES_ON_SCREEN, BLACK
-from config.image_objects import MESSAGE_BG, TILE_BASE, TITLE_SCREEN_BG, TITLE_MENU_BG, TITLE_MENU_BUTTON, INDICATOR_H
-from enums.game_states import GameStates, MenuStates
-from menus import level_up_menu
+from config.image_objects import MESSAGE_BG, TILE_BASE, TITLE_SCREEN_BG, TITLE_MENU_BG, TITLE_MENU_BUTTON, INDICATOR_H, \
+    ENCOUNTER_MENU, ENCOUNTER_BUTTON, ENCOUNTER_MESSAGE_BG, INDICATOR_V
+from enums.game_states import GameStates, MenuStates, EncounterStates
 from screens.calendar import display_calendar
 from screens.character_screen import character_screen
 from screens.dialogue_screen import dialogue_screen
-from screens.encounter_screen import encounter_screen
-from screens.gui_tools import get_surface, print_message, align_and_blit, blit_options
+from screens.gui_tools import get_surface, print_message, align_and_blit, blit_options, get_alpha_surface
 from screens.inventory_screen import inventory_screen
 from screens.journal_screen import journal_screen
-from screens.reward_screen import reward_screen
 from screens.mini_map import minimap_screen
 from screens.resources_HUD import player_resource_display
 from pygame.font import Font
@@ -24,12 +22,16 @@ class ArtistHandler:
         self.tilesize = 16
 
     @property
-    def options(self):
+    def options_text(self):
         return [option.text for option in self.owner.options.current.options]
 
     @property
     def choice(self):
         return self.owner.options.current.choice
+
+    @property
+    def state(self):
+        return self.owner.state
 
     @property
     def handler(self):
@@ -41,7 +43,7 @@ class ArtistHandler:
         maps = {
             GameStates.TITLE: self.title,
             GameStates.LIFE: self.life,
-            # GameStates.ENCOUNTER: self.encounter,
+            GameStates.ENCOUNTER: self.encounter,
             GameStates.DIALOGUE: self.dialogue,
             GameStates.MENUS: self.menus,
             # GameStates.REWARD: self.reward,
@@ -66,7 +68,7 @@ class ArtistHandler:
 
     def title_menu(self):
         surf = get_surface(TITLE_MENU_BG)
-        blit_options(surf, TITLE_MENU_BUTTON, 22, 10, TITLE_MENU_BUTTON.get_height(), self.options, fontsize=40)
+        blit_options(surf, TITLE_MENU_BUTTON, 22, 10, TITLE_MENU_BUTTON.get_height(), self.options_text, fontsize=40)
         surf.blit(INDICATOR_H, (0, 10 + (self.choice * TITLE_MENU_BUTTON.get_height())))
 
         return surf
@@ -107,12 +109,9 @@ class ArtistHandler:
         self.screen.blit(message_surface, (300, 592))
         message_surface.fill(BLACK)
 
-        resource_hud = player_resource_display(self.owner.party.p1)
-        self.screen.blit(resource_hud, (0 - 10, 540 + 40))
+        self.blit_resource_hud()
 
-        calendar = display_calendar(self.owner.time.month, self.owner.time.day)
-
-        self.screen.blit(calendar, (self.screen.get_width() - calendar.get_width(), self.screen.get_height() - calendar.get_height()))
+        self.blit_calendar()
 
     def menus(self):
         if self.handler.state == MenuStates.PARTY:
@@ -124,70 +123,45 @@ class ArtistHandler:
         elif self.handler.state == MenuStates.MAP:
             minimap_screen(self)
 
-    def render_all(self):
-        (width, height) = TILES_ON_SCREEN
+    def encounter(self):
 
-        if self.fov.needs_recompute:
-            self.fov.recompute()
+        self.screen.blit(self.handler.background, (0, 0))
+        self.blit_resource_hud()
+        self.blit_encounter_menu()
+        self.blit_message_box(off_x=15, off_y=5)
+        self.display_actors()
 
-        # Draw tiles near player
-        if self.fov.recompute:
-            for y in range(height):
-                for x in range(width):
-                    self.draw_tile(self.owner.world, x, y, self.tilesize)
+    def blit_message_box(self, off_x, off_y):
 
-        for structure in self.owner.world.current_map.structures:
-            self.draw_structure(self.camera.x, self.camera.y, structure, self.fov.map, self.owner.world, self.tilesize)
-        for transition in self.owner.world.current_map.transitions:
-            self.draw_entity(self.camera.x, self.camera.y, transition, self.fov.map, self.owner.world, self.tilesize)
-        for noncom in self.owner.world.current_map.noncombatants:
-            self.draw_entity(self.camera.x, self.camera.y, noncom, self.fov.map, self.owner.world, self.tilesize)
-        # draw all entities in list
-        entities_in_render_order = sorted(self.owner.world.current_map.entities, key=lambda x: x.render_order.value)
-        for entity in entities_in_render_order:
-            self.draw_entity(self.camera.x, self.camera.y, entity, self.fov.map, self.owner.world, self.tilesize)
-        self.draw_party(self.camera.x, self.camera.y, self.owner.party.p1, self.fov.map, self.owner.world, self.tilesize)
+        window = get_surface(ENCOUNTER_MESSAGE_BG)
 
-        # Print game messages one line at a time
-
-        message_surface = get_surface(MESSAGE_BG)
         y = 0
-        for message in self.owner.log.messages:
-            off_x = 30
-            off_y = 5
-            print_message(message_surface, message, off_x, off_y, y)
+        for message in self.owner.log.messages.messages:
+            print_message(window, message, off_x, off_y, y)
             y += 1
 
-        self.screen.blit(message_surface, (300, 592))
-        message_surface.fill(BLACK)
+        self.screen.blit(window, (940, 490))
 
-        resource_hud = player_resource_display(self.owner.party.p1)
-        self.screen.blit(resource_hud, (0 - 10, 540 + 40))
+    def display_actors(self):
+        w, h = 1280, 300
+        window = get_alpha_surface(w, h)
+        dim = 160
+        off_x = (w / 4) - (dim / 2)
+        off_y = (h / 2) - (dim / 2)
 
-        calendar = display_calendar(self.owner.time.month, self.owner.time.day)
-        if self.owner.state == GameStates.TITLE:
-            self.title_screen()
-        if self.owner.state == GameStates.LIFE:
-            self.screen.blit(calendar, (self.screen.get_width() - calendar.get_width(), self.screen.get_height() - calendar.get_height()))
+        window.blit(self.owner.party.p1.combatant.images.actor, (off_x, off_y))
+        if self.handler.mob.combatant:
+            window.blit(self.handler.mob.combatant.images.actor, (off_x + (w / 2), off_y))
 
-        if self.owner.state == GameStates.SHOW_MAP:
-            minimap_screen(self.screen, self.world_tiles)
-        elif self.owner.state == GameStates.LEVEL_UP:
-            level_up_menu(self.screen, self.owner.party.p1)
-        elif self.owner.state == GameStates.DIALOGUE:
-            dialogue_screen(self.screen, self.owner.party.p1, self.owner.dialogue)
-        elif self.owner.state == GameStates.ENCOUNTER:
-            encounter_screen(self.screen, self.owner.party.p1, self.owner.encounter, self.owner.log)
-        elif self.owner.state == GameStates.REWARD:
-            reward_screen(self.screen, self.owner.reward, self.owner.log)
-        elif self.owner.state == GameStates.MENUS:
-            if self.owner.menus.state == MenuStates.PARTY:
-                character_screen(self.screen, self.owner.party.p1)
-            elif self.owner.menus.state == MenuStates.JOURNAL:
-                journal_screen(self.screen, self.owner.menus)
-            elif self.owner.menus.state == MenuStates.INVENTORY:
-                inventory_screen(self.screen, self.owner.menus)
-        self.fov.needs_recompute = False
+        if self.handler.state == EncounterStates.FIGHT_TARGETING:
+            window.blit(INDICATOR_V, ((3 * w / 4) - (INDICATOR_V.get_width() / 2), off_y - 40))
+
+        self.screen.blit(window, (0, 180))
+
+    def blit_calendar(self):
+        calendar = display_calendar(self.owner.time)
+        xy = (self.screen.get_width() - calendar.get_width(), self.screen.get_height() - calendar.get_height())
+        self.screen.blit(calendar, xy)
 
     def draw_entity(self, entity):
         cx, cy = self.handler.camera.x, self.handler.camera.y
@@ -241,6 +215,31 @@ class ArtistHandler:
     def dialogue(self):
         dialogue_screen(self)
 
+    def blit_resource_hud(self):
+        resource_hud = player_resource_display(self.owner.party.p1)
+        coord_dict = {
+            GameStates.LIFE: (0 - 10, 540 + 40),
+            GameStates.ENCOUNTER: (0, 0),
+        }
+        xy = coord_dict.get(self.state)
+        self.screen.blit(resource_hud, xy)
+
+    def blit_encounter_menu(self):
+
+        menu = get_alpha_surface(400, 240)
+
+        align_and_blit(menu, ENCOUNTER_MENU)
+
+        buttons_off_x = 130
+        buttons_off_y = 60
+
+        dy = 40
+        blit_options(menu, ENCOUNTER_BUTTON, buttons_off_x, buttons_off_y, dy, self.options_text, fontsize=24)
+
+        if self.handler.state == EncounterStates.THINKING:
+            menu.blit(INDICATOR_H, (buttons_off_x - 50, buttons_off_y - 11 + (dy * self.owner.options.current.choice)))
+
+        self.screen.blit(menu, (0, 480))
 
 
 def get_names_under_mouse(entities, fov_map):

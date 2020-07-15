@@ -20,7 +20,7 @@ class LogicHandler:
         maps = {
             GameStates.TITLE: self.title,
             GameStates.LIFE: self.life,
-            # GameStates.ENCOUNTER: self.encounter,
+            GameStates.ENCOUNTER: self.encounter,
             GameStates.DIALOGUE: self.dialogue,
             GameStates.MENUS: self.menus,
             # GameStates.REWARD: self.reward,
@@ -73,10 +73,27 @@ class LogicHandler:
         if 'converse' in output:
             self.owner.options.traverse(output.get('converse'))
 
+    def encounter(self, output):
+        if 'traverse_menu' in output:
+            self.owner.options.traverse(output.get('traverse_menu'))
+        elif 'choose_option' in output:
+            self.response = self.owner.options.choose()
+            changes = self.response(self)
+            self.mutate(changes)
+
     def mutate(self, changes):
         for change in changes:
             if 'message' in change:
                 self.owner.log.messages.add_message(change.get('message'))
             elif 'item_added' in change:
                 self.owner.world.current_map.entities.remove(change.get('item_added'))
+            elif 'state' in change:
+                self.owner.change_state(change.get('state'))
+            elif 'substate' in change:
+                self.handler.change_state(change.get('substate'))
+            elif 'xp' in change:
+                self.owner.party.p1.combatant.level.add_xp(change.get('xp'))
+
+
+
 

@@ -3,12 +3,12 @@ from config.image_objects import CALENDAR_BG, CALENDAR_CIRCLE
 from config.constants import BLACK
 
 
-def display_calendar(month, day):
+def display_calendar(time):
 
     surf = get_surface(CALENDAR_BG)
 
-    display_month(surf, month)
-    display_day(surf, day)
+    display_month(surf, time.month)
+    display_day(surf, time.day)
 
     return surf
 

@@ -4,7 +4,7 @@ from enums.game_states import GameStates, EncounterStates, RewardStates, MenuSta
 from handlers.views.messages import Message
 from handlers.input_handler import handle_mouse
 from loader_functions.data_loaders import save_game
-from config.constants import START, BLACK, DARK_BLUE, DARK_ORANGE
+from config.constants import START, BLACK, DARK_ORANGE
 from handlers.game_handler import GameHandler
 from handlers.artist_handler import ArtistHandler
 import pygame as py
@@ -18,8 +18,8 @@ def main():
     py.display.set_caption(caption)
     screen = py.display.set_mode(screen_size)
 
-    graphics = ArtistHandler(screen)
-    game = GameHandler(graphics)
+    artist = ArtistHandler(screen)
+    game = GameHandler(artist)
     game.state_handler = game.title
     running = True
     while running:
@@ -34,28 +34,8 @@ def main():
         game.artist.render()
         py.display.flip()
 
-        # if game.encounter.state == EncounterStates.ENEMY_TURN:
-        #     if game.encounter.mob.combatant:
-        #         enemy_turn_results = game.encounter.mob.combatant.ai.take_turn_e(player)
-        #         for enemy_turn_result in enemy_turn_results:
-        #             message = enemy_turn_result.get('message')
-        #             dead_entity = enemy_turn_result.get('dead')
-        #
-        #             if message:
-        #                 message_log.add_message(message)
-        #
-        #             if dead_entity:
-        #                 if dead_entity == player:
-        #                     message, game.state = kill_player(dead_entity)
-        #                 else:
-        #                     message = kill_monster(dead_entity)
-        #
-        #                 message_log.add_message(message)
-        #
-        #             if game.state == GameStates.PLAYER_DEAD:
-        #                 break
-        #         game.encounter.state = EncounterStates.THINKING
 
+# code that still needs to be converted to new MVC system
 
 def play_game(player, message_log, party, game):
 
@@ -72,7 +52,6 @@ def play_game(player, message_log, party, game):
 
                 action = game.input.output(event.key)
 
-                move = action.get('move')
                 interact = action.get('interact')
                 show_map = action.get('show_map')
                 show_menus = action.get('show_menus')
@@ -83,94 +62,9 @@ def play_game(player, message_log, party, game):
                 choose_menu_option = action.get('choose_menu_option')
                 toggle = action.get('toggle')
 
-                if move and game.state == GameStates.LIFE:
-                    dx, dy = move
-                    destination_x = player.x + dx
-                    destination_y = player.y + dy
 
-                    if not game.world.is_blocked(destination_x, destination_y):
 
-                        player.move(dx, dy)
-                        game.view.camera.refocus(player.x, player.y)
 
-                        game.view.fov.needs_recompute = True
-
-                        if game.world.dangerous:
-                            game.time.goes_on()
-                            encountering = game.encounter.check()
-                            if encountering:
-                                tile = game.world.tiles[destination_x][destination_y]
-                                options = ['FIGHT', 'ITEM', 'RUN']
-                                game.encounter.new(tile, options)
-                                game.state_handler = game.encounter
-                            else:
-                                game.encounter.steps_since += 1
-
-                if interact and game.state == GameStates.LIFE:
-                    nothing = True
-                    for entity in game.world.current_map.entities:
-                        if entity.x == player.x and entity.y == player.y:
-                            if entity.item:
-                                pickup_results = party.inventory.add_item(entity)
-                                player_turn_results.extend(pickup_results)
-                                nothing = False
-                                break
-                    for transition in game.world.current_map.transitions:
-                        if transition.x == player.x and transition.y == player.y:
-                            new_dungeon = game.dungeons[transition.transition.go_to_dungeon]
-                            if game.world.current_dungeon.name != transition.transition.go_to_dungeon:
-                                game.world.current_dungeon.time_dilation = game.time.stamp()
-                                game.time.apply_dilation(new_dungeon)
-                                game.world.current_dungeon = new_dungeon
-
-                            new_map = new_dungeon.maps[transition.transition.go_to_floor]
-                            game.world.current_map = new_map
-                            player.x, player.y = transition.transition.go_to_xy[0], transition.transition.go_to_xy[1]
-                            game.view.camera.refocus(player.x, player.y)
-
-                            game.view.fov.map = game.view.fov.initialize(game.world)
-                            game.view.fov.needs_recompute = True
-                            nothing = False
-                            break
-                    for noncom in game.world.current_map.noncombatants:
-                        if noncom.x == player.x and noncom.y == player.y:
-                            game.dialogue.partner = noncom
-                            game.dialogue.set_real_talk()
-                            game.state_handler = game.dialogue
-                            nothing = False
-                    if nothing:
-                        message_log.add_message(Message('Nothing to see here, move along...', DARK_BLUE))
-
-                if show_menus:
-                    game.state_handler = game.menus
-                    opts = {
-                        'inventory': party.inventory,
-                        'journal': party.journal,
-                        'party': party,
-                    }
-                    game.menus.handle_menu(opts.get(show_menus))
-
-                if show_map:
-                    game.state = GameStates.SHOW_MAP
-
-                # still reworking
-                if level_up:
-                    pass
-
-                if converse:
-                    key = chr(converse)
-                    dialogue = game.dialogue.partner.noncombatant.dialogue
-
-                    if key in game.dialogue.real_io.keys():
-                        dialogue.conversation = game.dialogue.real_io.get(key)
-                        current_node = dialogue.graph_dict.get(dialogue.conversation)
-                        current_node.visited = True
-                        game.dialogue.set_real_talk()
-                        game.dialogue.broadcast_choice(current_node.signal)
-
-                        if dialogue.conversation == 'exit':
-                            dialogue.conversation = 'root'
-                            game.state_handler = game.life
 
                 if traverse_menu:
                     if game.state == GameStates.ENCOUNTER:
@@ -198,30 +92,6 @@ def play_game(player, message_log, party, game):
                                 pass
                             else:
                                 game.reward.current_option += traverse_menu
-                    elif game.state is GameStates.MENUS:
-                        if game.menus.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and game.menus.display is None:
-                            if (traverse_menu[0] < 0 and game.menus.current_option == 0) or (
-                                    traverse_menu[0] > 0 and game.menus.current_option == (
-                                    len(game.menus.options) - 1)):
-                                pass
-                            else:
-                                game.menus.current_option += traverse_menu[0]
-                        elif game.menus.state == MenuStates.JOURNAL:
-                            if (traverse_menu[1] < 0 and game.menus.current_option == 0) or (
-                                    traverse_menu[1] > 0 and game.menus.current_option == (
-                                    len(party.journal.get_subjournal(game.menus.display)) - 1)):
-                                pass
-                            else:
-                                game.menus.current_option += traverse_menu[1]
-                        elif game.menus.state == MenuStates.INVENTORY:
-                            ind = game.menus.menu.options.index(game.menus.display)
-                            sg = game.menus.menu.subgroups[ind]
-                            if (traverse_menu[1] < 0 and game.menus.current_option == 0) or (
-                                    traverse_menu[1] > 0 and game.menus.current_option == (
-                                    len(sg) - 1)):
-                                pass
-                            else:
-                                game.menus.current_option += traverse_menu[1]
 
                 if toggle:
                     if game.state == GameStates.REWARD:
@@ -259,18 +129,6 @@ def play_game(player, message_log, party, game):
                                 game.reward.state = RewardStates.SIFTING
                             elif game.reward.current_option > len(game.reward.loot.claimed) - 1:
                                 game.reward.current_option -= 1
-                    elif game.state == GameStates.MENUS:
-                        if game.menus.state is MenuStates.JOURNAL:
-                            if len(party.journal.get_subjournal(game.menus.options[game.menus.current_option])) > 0:
-                                game.menus.display = game.menus.options[game.menus.current_option]
-                                game.menus.current_option = 0
-                        elif game.menus.state is MenuStates.INVENTORY and game.menus.display is None:
-                            subgroup = game.menus.menu.subgroups[game.menus.current_option]
-                            if len(subgroup) > 0:
-                                game.menus.display = game.menus.options[game.menus.current_option]
-                                game.menus.current_option = 0
-                        elif game.menus.state is MenuStates.INVENTORY:
-                            ind = game.menus.menu.options.index(game.menus.display)
 
                 if exit:
                     if game.state == GameStates.ENCOUNTER:
@@ -283,18 +141,6 @@ def play_game(player, message_log, party, game):
                             loot_results.append({'LEAVE': True})
                         elif game.reward.state == RewardStates.THINKING:
                             game.reward.current_option = 2
-                    elif game.state == GameStates.MENUS:
-                        if game.menus.state is MenuStates.PARTY:
-                            game.state_handler = game.life
-                        elif game.menus.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and game.menus.display is None:
-                            game.state_handler = game.life
-                        elif game.menus.state in (MenuStates.JOURNAL, MenuStates.INVENTORY):
-                            if game.menus.state == MenuStates.INVENTORY:
-                                game.menus.current_option = game.menus.menu.options.index(game.menus.display)
-                            game.menus.display = None
-
-                    elif game.state in (GameStates.SHOW_INVENTORY, GameStates.SHOW_MAP):
-                        game.state_handler = game.life
 
                     elif game.state == GameStates.TARGETING:
                         player_turn_results.append({'targeting_cancelled': True})
@@ -452,14 +298,6 @@ def play_game(player, message_log, party, game):
                     elif right_click:
                         player_turn_results.append({'targeting_cancelled': True})
 
-        if game.view.fov.needs_recompute:
-            game.view.fov.recompute(game.view.fov.map, player.x, player.y)
-
-        game.view.render_all(player, message_log)
-
-        game.view.fov.needs_recompute = False
-
-        py.display.flip()
 
         if game.encounter.state == EncounterStates.ENEMY_TURN:
             if game.encounter.mob.combatant:

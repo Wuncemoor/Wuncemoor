@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from config.constants import DARK_BLUE
-from enums.game_states import GameStates
+from config.constants import DARK_BLUE, DARK_ORANGE
+from enums.game_states import GameStates, EncounterStates
 from handlers.views.messages import Message
 from loader_functions.data_loaders import load_game
 from loader_functions.initialize_new_game import get_game_variables
@@ -64,14 +64,8 @@ class Move(Logic):
 
             if self.owner.world.dangerous:
                 self.owner.time.goes_on()
-                encountering = self.owner.encounter.check()
-                if encountering:
-                    tile = self.owner.world.tiles[destination_x][destination_y]
-                    options = ['FIGHT', 'ITEM', 'RUN']
-                    self.owner.encounter.new(tile, options)
-                    self.owner.state_handler = self.encounter
-                else:
-                    self.owner.encounter.steps_since += 1
+                self.owner.encounter.check(self.owner.world.tiles[destination_x][destination_y])
+
 
 
 class Interact(Logic):
@@ -176,3 +170,37 @@ class GoToSubInventory(Logic):
             self.handler.menu.sub = sub
             self.owner.options.wrap_and_set(sub)
             self.owner.options.current.choice = 0
+
+
+class FightTargeting(Option):
+
+    text = 'FIGHT'
+
+    def logic(self):
+        changes = [{'substate': 'fight_targeting'}]
+        return changes
+
+
+class UseSatchel(Option):
+
+    text = 'ITEM'
+
+    def logic(self):
+        pass
+
+class RunAway(Option):
+
+    text = 'RUN'
+
+    def logic(self):
+        changes = [{'state': 'life'}]
+        xp = self.handler.loot.xp
+        gain_xp = xp > 0
+        if gain_xp:
+            changes.append({'xp': xp})
+            message = Message('You gain {0} experience points!'.format(xp), DARK_ORANGE)
+        else:
+            message = Message("You didn't learn much there...", DARK_ORANGE)
+        changes.append({'message': message})
+
+        return changes

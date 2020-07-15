@@ -67,6 +67,7 @@ def align_and_blit(surface, image, x_ratio=0.5, y_ratio=0.5, x_adjust=0, y_adjus
 
     surface.blit(image, (off_x, off_y))
 
+
 def get_wrapped_text(info, width, fontsize, color):
     prewords = info.split()
     words = []

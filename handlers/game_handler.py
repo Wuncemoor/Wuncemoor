@@ -32,9 +32,22 @@ class GameHandler:
         self.menus.owner = self
 
 
+
     @property
     def state(self):
         return self.state_handler.superstate
+
+    def change_state(self, string):
+        state_dict = {
+            'title': self.title,
+            'life': self.life,
+            'menus': self.menus,
+            'dialogue': self.dialogue,
+            'encounter': self.encounter,
+            'reward': self.reward,
+        }
+        self.state_handler = state_dict.get(string)
+        self.options.current = None
 
     def take_ownership(self):
         self.world.owner = self

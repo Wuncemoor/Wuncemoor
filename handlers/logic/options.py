@@ -1,4 +1,5 @@
-from handlers.logic.logic_chunks import NewGame, LoadGame, QuitGame, GoToSubJournal, GoToSubInventory
+from handlers.logic.logic_chunks import NewGame, LoadGame, QuitGame, GoToSubJournal, GoToSubInventory, \
+    FightTargeting, UseSatchel, RunAway
 
 
 class Options:
@@ -25,6 +26,11 @@ def inventory_options():
 
 def journal_options():
     options = Options([GoToSubJournal, GoToSubJournal, GoToSubJournal, GoToSubJournal])
+    return options
+
+
+def encounter_options():
+    options = Options([FightTargeting, UseSatchel, RunAway])
     return options
 
 

@@ -4,6 +4,7 @@ from builders.mob_builder import MobBuilder, MobDirector
 from enums.game_states import EncounterStates, GameStates
 from config.image_objects import BACKGROUNDS
 from enums.render_order import RenderOrder
+from handlers.logic.options import encounter_options
 from handlers.views.camera import Camera
 from handlers.views.fov_handler import FovHandler
 from map_objects.chances.mob_chances import MobChances
@@ -144,21 +145,33 @@ class EncounterHandler:
         self.background = None
         self.mob = None
         self.options = None
-        self.current_option = 0
         self.loot = loot
         self.steps_since = 0
 
-    def check(self):
-        return (self.steps_since / (100 + self.steps_since)) * 50 > randint(1, 100)
+    def change_state(self, string):
+        state_dict = {
+            'fight_targeting': EncounterStates.FIGHT_TARGETING,
+        }
+        self.state = state_dict.get(string)
 
-    def new(self, tile, options):
+    def check(self, tile):
+        encountering = (self.steps_since / (100 + self.steps_since)) * 50 > randint(1, 100)
+        if encountering:
+            self.new(tile)
+            self.owner.state_handler = self
+            self.owner.options.current = self.options
+        else:
+            self.steps_since += 1
+
+    def new(self, tile):
         self.state = EncounterStates.THINKING
         self.background = BACKGROUNDS.get(tile.type)
         self.mob = self.get_encounter_mob(tile)
-        self.options = options
-        self.current_option = 0
+        self.options = encounter_options()
         self.loot.reset()
         self.steps_since = 0
+
+
 
     @staticmethod
     def get_encounter_mob(tile):

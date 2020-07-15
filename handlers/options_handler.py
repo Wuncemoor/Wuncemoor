@@ -1,4 +1,4 @@
-from enums.game_states import GameStates, MenuStates
+from enums.game_states import GameStates, MenuStates, EncounterStates
 from handlers.logic.options import title_options, Options
 
 
@@ -40,6 +40,8 @@ class OptionsHandler:
             self.traverse_list(path[0])
         elif self.handler.state == MenuStates.JOURNAL:
             self.traverse_list(path[1])
+        elif self.handler.state == EncounterStates.THINKING:
+            self.traverse_list(path)
 
     def traverse_list(self, amount):
         if (amount < 0 and self.current.choice == 0) or (amount > 0 and self.current.choice >=
@@ -63,10 +65,8 @@ class OptionsHandler:
                 self.owner.state_handler = self.owner.life
                 self.current = None
 
-
     def choose(self):
         option = self.current.options[self.current.choice]
-        print(option)
 
         return option.logic
 
