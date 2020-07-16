@@ -63,10 +63,14 @@ class InputHandler:
     @staticmethod
     def encounter(key):
 
-        if key in (py.K_UP, py.K_w):
-            return {'traverse_menu': -1}
-        elif key in (py.K_DOWN, py.K_x):
-            return {'traverse_menu': 1}
+        if key in (py.K_a, py.K_LEFT):
+            return {'traverse_menu': (-1, 0)}
+        elif key in (py.K_d, py.K_RIGHT):
+            return {'traverse_menu': (1, 0)}
+        elif key in (py.K_w, py.K_UP):
+            return {'traverse_menu': (0, -1)}
+        elif key in (py.K_s, py.K_DOWN):
+            return {'traverse_menu': (0, 1)}
         elif key == py.K_RETURN:
             return {'choose_option': True}
         elif key == py.K_ESCAPE:

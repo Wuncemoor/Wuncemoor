@@ -175,7 +175,7 @@ class Floor:
                 mob_builder = MobBuilder(0, monster_choice)
                 mob_director = MobDirector()
                 mob_director.set_builder(mob_builder)
-                combatant_component = mob_director.get_combatant()
+                combatant_component = mob_director.get_mob()
                 monster = Entity(x, y, blocks=True, render_order=RenderOrder.ACTOR,
                                  combatant=combatant_component)
 
@@ -198,9 +198,8 @@ class Floor:
         mob_builder = MobBuilder(0, monster_choice)
         mob_director = MobDirector()
         mob_director.set_builder(mob_builder)
-        combatant_component = mob_director.get_combatant()
-        monster = Entity(self.exit[0], self.exit[1], blocks=True,
-                         render_order=RenderOrder.ACTOR, combatant=combatant_component)
+        mob = mob_director.get_mob()
+        mob.x, mob.y = self.exit[0], self.exit[1]
 
-        self.entities.append(monster)
+        self.entities.append(mob)
 

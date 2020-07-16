@@ -4,6 +4,7 @@ from builders.mob_builder import MobBuilder, MobDirector
 from enums.game_states import EncounterStates, GameStates
 from config.image_objects import BACKGROUNDS
 from enums.render_order import RenderOrder
+from handlers.encounter.combat import Combat
 from handlers.logic.options import encounter_options
 from handlers.views.camera import Camera
 from handlers.views.fov_handler import FovHandler
@@ -34,7 +35,16 @@ class MenusHandler:
     def handle_menu(self, menu_obj):
         self.menu = menu_obj
         self.state = menu_obj.superstate
+        self.confirm_submenu()
         self.owner.options.current = self.menu.options
+
+    def confirm_submenu(self):
+        if self.menu.sub is None:
+            pass
+        elif len(self.menu.sub) == 0:
+            self.handler.menu.sub = None
+            self.owner.options.current = self.handler.menu.options
+        # elif len(self.menu.sub) <= self.owner.options.current.options
 
 
 class DialogueHandler:
@@ -91,7 +101,7 @@ class TimeHandler:
 
     def goes_on(self):
         for party in self.observers:
-            for member in party.members():
+            for member in party.members:
                 member.age.get_older([0, 0, 0, 1])
         self.hour += 1
         self.new_day()
@@ -143,13 +153,13 @@ class EncounterHandler:
         self.superstate = GameStates.ENCOUNTER
         self.state = EncounterStates.THINKING
         self.background = None
-        self.mob = None
-        self.options = None
+        self.combat = None
         self.loot = loot
         self.steps_since = 0
 
     def change_state(self, string):
         state_dict = {
+            'thinking': EncounterStates.THINKING,
             'fight_targeting': EncounterStates.FIGHT_TARGETING,
         }
         self.state = state_dict.get(string)
@@ -166,25 +176,15 @@ class EncounterHandler:
     def new(self, tile):
         self.state = EncounterStates.THINKING
         self.background = BACKGROUNDS.get(tile.type)
-        self.mob = self.get_encounter_mob(tile)
-        self.options = encounter_options()
+        self.combat = self.get_combat(tile)
+        self.combat.owner = self
+        self.owner.options.get()
         self.loot.reset()
         self.steps_since = 0
 
-
-
-    @staticmethod
-    def get_encounter_mob(tile):
-        mob_chances = MobChances(tile.type, tile.subtype, tile.np)
-        mcs = mob_chances.get_mob_chances()
-        monster_choice = random_choice_from_dict(mcs)
-
-        mob_builder = MobBuilder(0, monster_choice)
-        mob_director = MobDirector()
-        mob_director.set_builder(mob_builder)
-        combatant = mob_director.get_combatant()
-        mob = Entity(0, 0, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant)
-        return mob
+    def get_combat(self, tile):
+        combat = Combat(self.owner.party, tile)
+        return combat
 
 
 class RewardHandler:

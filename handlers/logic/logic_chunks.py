@@ -64,8 +64,8 @@ class Move(Logic):
 
             if self.owner.world.dangerous:
                 self.owner.time.goes_on()
-                self.owner.encounter.check(self.owner.world.tiles[destination_x][destination_y])
-
+                tile = self.owner.world.tiles[destination_x][destination_y]
+                self.owner.encounter.check(tile)
 
 
 class Interact(Logic):
@@ -132,17 +132,7 @@ class ShowMenus(Logic):
             self.owner.menus.handle_menu(opts.get(output))
 
 
-class Exit(Logic):
-
-    def logic(self):
-        dict = {
-            GameStates.MENUS: ExitMenus.logic,
-        }
-        state_logic = dict.get(self.state)
-        state_logic(self)
-
-
-class ExitMenus(Logic):
+class MenusExit(Logic):
 
     def logic(self):
         if self.handler.menu.sub is None:
@@ -159,7 +149,6 @@ class GoToSubJournal(Logic):
         if len(sub) > 0:
             self.handler.menu.sub = sub
             self.owner.options.wrap_and_set(sub)
-            self.owner.options.current.choice = 0
 
 
 class GoToSubInventory(Logic):
@@ -169,7 +158,6 @@ class GoToSubInventory(Logic):
         if len(sub) > 0:
             self.handler.menu.sub = sub
             self.owner.options.wrap_and_set(sub)
-            self.owner.options.current.choice = 0
 
 
 class FightTargeting(Option):
@@ -178,6 +166,16 @@ class FightTargeting(Option):
 
     def logic(self):
         changes = [{'substate': 'fight_targeting'}]
+        return changes
+
+
+class EncounterExit(Logic):
+
+    def logic(self):
+        if self.handler.state is EncounterStates.FIGHT_TARGETING:
+            changes = [{'substate': 'thinking'}]
+        else:
+            changes = []
         return changes
 
 
@@ -195,8 +193,7 @@ class RunAway(Option):
     def logic(self):
         changes = [{'state': 'life'}]
         xp = self.handler.loot.xp
-        gain_xp = xp > 0
-        if gain_xp:
+        if xp > 0:
             changes.append({'xp': xp})
             message = Message('You gain {0} experience points!'.format(xp), DARK_ORANGE)
         else:

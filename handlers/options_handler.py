@@ -1,5 +1,5 @@
 from enums.game_states import GameStates, MenuStates, EncounterStates
-from handlers.logic.options import title_options, Options
+from handlers.logic.options import title_options, Options, encounter_options, encounter_targeting_options
 
 
 class OptionsHandler:
@@ -15,19 +15,22 @@ class OptionsHandler:
     def handler(self):
         return self.owner.state_handler
 
+    @staticmethod
+    def wrap(options):
+        return Options(options)
+
     def wrap_and_set(self, options):
-        self.current = Options(options)
+        self.current = self.wrap(options)
+
 
     @property
     def mapping(self):
         maps = {
             GameStates.TITLE: self.title,
-            # GameStates.LIFE: self.life,
             # GameStates.ENCOUNTER: self.encounter,
             # GameStates.DIALOGUE: self.dialogue,
             GameStates.MENUS: self.menus,
-            # GameStates.REWARD: self.loot,
-            # GameStates.SHOW_MAP: self.map,
+            # GameStates.REWARD: self.reward,
         }
         return maps.get(self.state)()
 
@@ -41,7 +44,12 @@ class OptionsHandler:
         elif self.handler.state == MenuStates.JOURNAL:
             self.traverse_list(path[1])
         elif self.handler.state == EncounterStates.THINKING:
-            self.traverse_list(path)
+            self.traverse_list(path[1])
+        elif self.handler.state == EncounterStates.FIGHT_TARGETING:
+            self.traverse_combat(path)
+
+    def traverse_combat(self, path):
+        
 
     def traverse_list(self, amount):
         if (amount < 0 and self.current.choice == 0) or (amount > 0 and self.current.choice >=
@@ -75,6 +83,14 @@ class OptionsHandler:
 
     def menus(self):
         return self.handler.menu.options
+
+    def get(self):
+            opts_dict = {
+                EncounterStates.THINKING: encounter_options(),
+                EncounterStates.FIGHT_TARGETING: encounter_targeting_options(self.handler.combat.grid),
+
+            }
+            return opts_dict.get(self.owner.state)
 
 
 

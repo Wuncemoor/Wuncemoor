@@ -47,7 +47,6 @@ class GameHandler:
             'reward': self.reward,
         }
         self.state_handler = state_dict.get(string)
-        self.options.current = None
 
     def take_ownership(self):
         self.world.owner = self

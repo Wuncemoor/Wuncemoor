@@ -1,5 +1,5 @@
 from enums.game_states import GameStates
-from handlers.logic.logic_chunks import Move, Interact, ShowMenus, Exit
+from handlers.logic.logic_chunks import Move, Interact, ShowMenus, MenusExit, EncounterExit
 
 
 class LogicHandler:
@@ -57,7 +57,7 @@ class LogicHandler:
 
     def menus(self, output):
         if 'exit' in output:
-            self.response = Exit.logic
+            self.response = MenusExit.logic
             self.response(self)
         elif 'show_menus' in output:
             self.response = ShowMenus.logic
@@ -78,6 +78,10 @@ class LogicHandler:
             self.owner.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
             self.response = self.owner.options.choose()
+            changes = self.response(self)
+            self.mutate(changes)
+        if 'exit' in output:
+            self.response = EncounterExit.logic
             changes = self.response(self)
             self.mutate(changes)
 

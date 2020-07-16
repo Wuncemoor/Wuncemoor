@@ -4,11 +4,13 @@ from ECS.__entity.__combatant.competence import Competence, Strength, Instinct, 
 from ECS.__entity.__combatant.equipment import Equipment
 from ECS.__entity.__combatant.level import Level
 from ECS.__entity.combatant import Combatant
+from ECS.entity import Entity
 from builders.make_item import make_item
 from ECS.__entity.__combatant.attributes import Attributes
 from ECS.__entity.__combatant.phylo import Phylo
 from ECS.__entity.__combatant.satchel import Satchel
 from config.image_objects import BUNDLE_MOBS
+from enums.render_order import RenderOrder
 
 
 class MobDirector:
@@ -17,7 +19,7 @@ class MobDirector:
     def set_builder(self, builder):
         self.__builder = builder
 
-    def get_combatant(self):
+    def get_mob(self):
         name = self.__builder.get_name()
         bundle = self.__builder.get_images()
         phylo = self.__builder.get_phylo()
@@ -30,7 +32,8 @@ class MobDirector:
         ai = self.__builder.get_ai()
 
         combatant = Combatant(name, bundle, phylo, attributes, level, competence, equipment, satchel, ai, xp)
-        return combatant
+        mob = Entity(0, 0, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant)
+        return mob
 
 
 class MobBuilder:

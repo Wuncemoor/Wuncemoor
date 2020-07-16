@@ -129,7 +129,7 @@ class ArtistHandler:
         self.blit_resource_hud()
         self.blit_encounter_menu()
         self.blit_message_box(off_x=15, off_y=5)
-        self.display_actors()
+        self.blit_combat()
 
     def blit_message_box(self, off_x, off_y):
 
@@ -142,19 +142,18 @@ class ArtistHandler:
 
         self.screen.blit(window, (940, 490))
 
-    def display_actors(self):
+    def blit_combat(self):
         w, h = 1280, 300
         window = get_alpha_surface(w, h)
         dim = 160
-        off_x = (w / 4) - (dim / 2)
-        off_y = (h / 2) - (dim / 2)
-
-        window.blit(self.owner.party.p1.combatant.images.actor, (off_x, off_y))
-        if self.handler.mob.combatant:
-            window.blit(self.handler.mob.combatant.images.actor, (off_x + (w / 2), off_y))
+        count = 0
+        for row in self.handler.combat.grid:
+            for actor in row:
+                window.blit(actor.combatant.images.actor, (count * dim, 70))
+            count += 1
 
         if self.handler.state == EncounterStates.FIGHT_TARGETING:
-            window.blit(INDICATOR_V, ((3 * w / 4) - (INDICATOR_V.get_width() / 2), off_y - 40))
+            window.blit(INDICATOR_V, ((3 * w / 4) - (INDICATOR_V.get_width() / 2), 30))
 
         self.screen.blit(window, (0, 180))
 
