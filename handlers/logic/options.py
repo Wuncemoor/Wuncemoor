@@ -3,13 +3,15 @@ from handlers.logic.logic_chunks import NewGame, LoadGame, QuitGame, GoToSubJour
 
 
 class Options:
-    def __init__(self, options):
+    def __init__(self, options, text=None):
         self.options = options
+        self.text = text
         self.choice = 0
 
 
 def title_options():
-    options = Options([NewGame, LoadGame, QuitGame])
+    text = ['Start A New Game', 'Continue A Previous Game', 'Quit']
+    options = Options([NewGame, LoadGame, QuitGame], text)
     return options
 
 
@@ -30,7 +32,10 @@ def journal_options():
 
 
 def encounter_options():
-    options = Options([FightTargeting, UseSatchel, RunAway])
+    text = ['FIGHT', 'ITEM', 'RUN']
+    options = Options([FightTargeting, UseSatchel, RunAway], text)
     return options
+
+
 
 

@@ -1,15 +1,9 @@
 from random import randint
-from ECS.entity import Entity
-from builders.mob_builder import MobBuilder, MobDirector
 from enums.game_states import EncounterStates, GameStates
 from config.image_objects import BACKGROUNDS
-from enums.render_order import RenderOrder
 from handlers.encounter.combat import Combat
-from handlers.logic.options import encounter_options
 from handlers.views.camera import Camera
 from handlers.views.fov_handler import FovHandler
-from map_objects.chances.mob_chances import MobChances
-from random_utils import random_choice_from_dict
 
 
 class TitleHandler:
@@ -42,9 +36,9 @@ class MenusHandler:
         if self.menu.sub is None:
             pass
         elif len(self.menu.sub) == 0:
-            self.handler.menu.sub = None
-            self.owner.options.current = self.handler.menu.options
-        # elif len(self.menu.sub) <= self.owner.options.current.options
+            self.menu.sub = None
+            self.owner.options.current = self.menu.options
+
 
 
 class DialogueHandler:
@@ -157,19 +151,16 @@ class EncounterHandler:
         self.loot = loot
         self.steps_since = 0
 
-    def change_state(self, string):
-        state_dict = {
-            'thinking': EncounterStates.THINKING,
-            'fight_targeting': EncounterStates.FIGHT_TARGETING,
-        }
-        self.state = state_dict.get(string)
+    def change_state(self, state):
+        self.state = state
+        self.owner.options.get()
 
     def check(self, tile):
         encountering = (self.steps_since / (100 + self.steps_since)) * 50 > randint(1, 100)
         if encountering:
             self.new(tile)
             self.owner.state_handler = self
-            self.owner.options.current = self.options
+            self.owner.options.get()
         else:
             self.steps_since += 1
 
@@ -178,7 +169,6 @@ class EncounterHandler:
         self.background = BACKGROUNDS.get(tile.type)
         self.combat = self.get_combat(tile)
         self.combat.owner = self
-        self.owner.options.get()
         self.loot.reset()
         self.steps_since = 0
 

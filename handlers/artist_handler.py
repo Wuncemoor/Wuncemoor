@@ -4,6 +4,7 @@ from config.constants import TILES_ON_SCREEN, BLACK
 from config.image_objects import MESSAGE_BG, TILE_BASE, TITLE_SCREEN_BG, TITLE_MENU_BG, TITLE_MENU_BUTTON, INDICATOR_H, \
     ENCOUNTER_MENU, ENCOUNTER_BUTTON, ENCOUNTER_MESSAGE_BG, INDICATOR_V
 from enums.game_states import GameStates, MenuStates, EncounterStates
+from handlers.logic.options import encounter_options
 from screens.calendar import display_calendar
 from screens.character_screen import character_screen
 from screens.dialogue_screen import dialogue_screen
@@ -21,9 +22,6 @@ class ArtistHandler:
         self.world_tiles = None
         self.tilesize = 16
 
-    @property
-    def options_text(self):
-        return [option.text for option in self.owner.options.current.options]
 
     @property
     def choice(self):
@@ -68,7 +66,8 @@ class ArtistHandler:
 
     def title_menu(self):
         surf = get_surface(TITLE_MENU_BG)
-        blit_options(surf, TITLE_MENU_BUTTON, 22, 10, TITLE_MENU_BUTTON.get_height(), self.options_text, fontsize=40)
+        text = self.owner.options.current.text
+        blit_options(surf, TITLE_MENU_BUTTON, 22, 10, TITLE_MENU_BUTTON.get_height(), text, fontsize=40)
         surf.blit(INDICATOR_H, (0, 10 + (self.choice * TITLE_MENU_BUTTON.get_height())))
 
         return surf
@@ -147,13 +146,13 @@ class ArtistHandler:
         window = get_alpha_surface(w, h)
         dim = 160
         count = 0
-        for row in self.handler.combat.grid:
+        for row in self.handler.combat.grid.rows:
             for actor in row:
                 window.blit(actor.combatant.images.actor, (count * dim, 70))
             count += 1
 
         if self.handler.state == EncounterStates.FIGHT_TARGETING:
-            window.blit(INDICATOR_V, ((3 * w / 4) - (INDICATOR_V.get_width() / 2), 30))
+            window.blit(INDICATOR_V, ((self.handler.combat.grid.x * dim) + (dim / 2) - (INDICATOR_V.get_width() / 2), 30))
 
         self.screen.blit(window, (0, 180))
 
@@ -231,9 +230,10 @@ class ArtistHandler:
 
         buttons_off_x = 130
         buttons_off_y = 60
+        text = encounter_options().text
 
         dy = 40
-        blit_options(menu, ENCOUNTER_BUTTON, buttons_off_x, buttons_off_y, dy, self.options_text, fontsize=24)
+        blit_options(menu, ENCOUNTER_BUTTON, buttons_off_x, buttons_off_y, dy, text, fontsize=24)
 
         if self.handler.state == EncounterStates.THINKING:
             menu.blit(INDICATOR_H, (buttons_off_x - 50, buttons_off_y - 11 + (dy * self.owner.options.current.choice)))
