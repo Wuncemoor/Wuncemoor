@@ -2,7 +2,7 @@
 from handlers.views.messages import Message
 import random
 import math
-from config.constants import BLACK
+from config.constants import BLACK, DARK_RED
 
 
 class Combatant:
@@ -340,11 +340,10 @@ class Combatant:
         results = []
         self.attributes.current_hp -= amount
 
-        
         if self.attributes.current_hp <= 0:
             results.append({'dead': self.owner})
-            results.append({'xp': self.xp})
-            
+            results.append({'message': Message('{0} is dead!'.format(self.owner.name), DARK_RED)})
+
         return results
         
     def gain_hp(self, amount):

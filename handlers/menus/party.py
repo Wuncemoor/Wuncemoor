@@ -25,3 +25,15 @@ class Party:
     def move(self, dx, dy):
         self.x += dx
         self.y += dy
+
+    def remove(self, entity):
+        if self.p1 is entity:
+            self.p1 = None
+        elif self.p2 is entity:
+            self.p2 = None
+        elif self.p3 is entity:
+            self.p3 = None
+        elif self.p4 is entity:
+            self.p4 = None
+
+

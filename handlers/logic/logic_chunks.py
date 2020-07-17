@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from config.constants import DARK_BLUE, DARK_ORANGE
+from config.constants import DARK_BLUE, DARK_ORANGE, BLACK
 from enums.game_states import GameStates, EncounterStates
 from handlers.views.messages import Message
 from loader_functions.data_loaders import load_game
@@ -13,35 +13,21 @@ class Logic(ABC):
         pass
 
 
-class Option(Logic):
-
-    @property
-    @abstractmethod
-    def text(self):
-        pass
-
-
-class NewGame(Option):
-
-    text = 'Start A New Game'
+class NewGame(Logic):
 
     def logic(self):
         dungeons, world, overworld_tiles, party = get_game_variables()
         self.owner.preplay(dungeons, world, overworld_tiles, party)
 
 
-class LoadGame(Option):
-
-    text = 'Continue A Previous Game'
+class LoadGame(Logic):
 
     def logic(self):
         dungeons, world, overworld_tiles, party = load_game()
         self.owner.preplay(dungeons, world, overworld_tiles, party)
 
 
-class QuitGame(Option):
-
-    text = 'Quit'
+class QuitGame(Logic):
 
     def logic(self):
         self.owner.quit()
@@ -160,12 +146,11 @@ class GoToSubInventory(Logic):
             self.owner.options.wrap_and_set(sub)
 
 
-class FightTargeting(Option):
+class FightTargeting(Logic):
 
-    text = 'FIGHT'
 
     def logic(self):
-        changes = [{'substate': 'fight_targeting'}]
+        changes = [{'substate': EncounterStates.FIGHT_TARGETING}]
         return changes
 
 
@@ -173,22 +158,20 @@ class EncounterExit(Logic):
 
     def logic(self):
         if self.handler.state is EncounterStates.FIGHT_TARGETING:
-            changes = [{'substate': 'thinking'}]
+            changes = [{'substate': EncounterStates.THINKING}]
         else:
             changes = []
         return changes
 
 
-class UseSatchel(Option):
+class UseSatchel(Logic):
 
-    text = 'ITEM'
 
     def logic(self):
         pass
 
-class RunAway(Option):
 
-    text = 'RUN'
+class RunAway(Logic):
 
     def logic(self):
         changes = [{'state': 'life'}]
@@ -200,4 +183,41 @@ class RunAway(Option):
             message = Message("You didn't learn much there...", DARK_ORANGE)
         changes.append({'message': message})
 
+        return changes
+
+
+class AttackMob(Logic):
+
+    def logic(self):
+        changes = []
+        combat = self.handler.combat
+        x, y = combat.grid.x, combat.grid.y
+        attack_results = combat.party.p1.combatant.attack(combat.grid.rows[x][y])
+        changes.extend(attack_results)
+        return changes
+
+
+class EndTurn(Logic):
+
+    def logic(self):
+        changes = []
+        if len(self.handler.combat.enemies.members) > 0:
+            if self.handler.state is EncounterStates.ENEMY_TURN:
+                changes.append({'substate': EncounterStates.THINKING})
+            else:
+                changes.append({'substate': EncounterStates.ENEMY_TURN})
+                changes.append({'automate': 'enemy_turn'})
+        else:
+            changes.append({'message': Message('YOU WIN THE FIGHT!', BLACK)})
+            changes.append({'message': Message('Press [Enter] to loot.', BLACK)})
+            changes.append({'substate': EncounterStates.VICTORY})
+        return changes
+
+
+class EnemyTurn(Logic):
+
+    def logic(self):
+        player = self.handler.combat.party.p1
+        changes = self.handler.combat.enemies.p1.combatant.ai.take_turn_e(player)
+        changes.append({'substate': EncounterStates.THINKING})
         return changes

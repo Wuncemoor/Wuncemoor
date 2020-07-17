@@ -41,12 +41,24 @@ class Combat:
         mob = mob_director.get_mob()
         return mob
 
+    def destroy(self, entity):
+        self.enemies.remove(entity)
+        self.grid.remove(entity)
+
 
 class CombatGrid:
 
     def __init__(self):
         self.rows = [[], [], [], [], [], [], [], []]
-        self.x = 0
+        self.x = 4
         self.y = 0
+
+    def remove(self, entity):
+        for row in self.rows:
+            try:
+                row.remove(entity)
+            except ValueError:
+                pass
+
 
 

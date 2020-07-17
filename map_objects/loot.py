@@ -6,11 +6,12 @@ class Loot:
         self.items = []
         self.claimed = []
 
-    def add_loot(self, dead_entity):
-        self.items.extend(dead_entity.combatant.satchel.items)
-        self.items.extend(dead_entity.combatant.equipment.drop_dead())
-
     def reset(self):
         self.xp = 0
         self.items = []
         self.claimed = []
+
+    def dissect(self, dead_entity):
+        self.xp += dead_entity.combatant.xp
+        self.items.extend(dead_entity.combatant.satchel.items)
+        self.items.extend(dead_entity.combatant.equipment.drop_dead())

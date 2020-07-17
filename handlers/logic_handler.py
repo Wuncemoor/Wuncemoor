@@ -1,5 +1,5 @@
 from enums.game_states import GameStates
-from handlers.logic.logic_chunks import Move, Interact, ShowMenus, MenusExit, EncounterExit
+from handlers.logic.logic_chunks import Move, Interact, ShowMenus, MenusExit, EncounterExit, EndTurn, EnemyTurn
 
 
 class LogicHandler:
@@ -76,6 +76,7 @@ class LogicHandler:
     def encounter(self, output):
         if 'traverse_menu' in output:
             self.owner.options.traverse(output.get('traverse_menu'))
+            print(len(self.handler.combat.enemies.members))
         elif 'choose_option' in output:
             self.response = self.owner.options.choose()
             changes = self.response(self)
@@ -91,12 +92,26 @@ class LogicHandler:
                 self.owner.log.messages.add_message(change.get('message'))
             elif 'item_added' in change:
                 self.owner.world.current_map.entities.remove(change.get('item_added'))
-            elif 'state' in change:
+            elif 'state' is change:
                 self.owner.change_state(change.get('state'))
             elif 'substate' in change:
                 self.handler.change_state(change.get('substate'))
             elif 'xp' in change:
                 self.owner.party.p1.combatant.level.add_xp(change.get('xp'))
+            elif 'dead' in change:
+                entity = change.get('dead')
+                self.handler.combat.destroy(entity)
+                self.handler.loot.dissect(entity)
+            elif 'end_turn' in change:
+                self.response = EndTurn.logic
+                changes = self.response(self)
+                self.mutate(changes)
+            elif 'automate' in change:
+                self.response = EnemyTurn.logic
+                changes = self.response(self)
+                print(changes)
+                self.mutate(changes)
+
 
 
 

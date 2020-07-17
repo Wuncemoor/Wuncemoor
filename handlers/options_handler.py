@@ -1,5 +1,7 @@
 from enums.game_states import GameStates, MenuStates, EncounterStates
-from handlers.logic.options import title_options, Options, encounter_options, encounter_targeting_options
+from handlers.encounter.combat import CombatGrid
+from handlers.logic.logic_chunks import AttackMob
+from handlers.logic.options import title_options, Options, encounter_options
 
 
 class OptionsHandler:
@@ -49,7 +51,31 @@ class OptionsHandler:
             self.traverse_combat(path)
 
     def traverse_combat(self, path):
-        
+        x, y = path
+        if x != 0:
+            self.traverse_combat_rows(x)
+        else:
+            self.traverse_combat_columns(y)
+
+    def traverse_combat_rows(self, x):
+        viable = True
+        current_x = self.current.x
+        while viable:
+            current_x += x
+            if current_x < 0 or current_x == len(self.current.rows):
+                viable = False
+            else:
+                col = self.current.rows[current_x]
+                if len(col) > 0:
+                    self.current.x = current_x
+                    self.current.y = 0
+                    viable = False
+
+    def traverse_combat_columns(self, y):
+        if (y < 0 and self.current.y == 0) or (y > 0 and self.current.y >= (len(self.current.rows[self.current.y]))):
+            pass
+        else:
+            self.current.y += y
 
     def traverse_list(self, amount):
         if (amount < 0 and self.current.choice == 0) or (amount > 0 and self.current.choice >=
@@ -74,7 +100,10 @@ class OptionsHandler:
                 self.current = None
 
     def choose(self):
-        option = self.current.options[self.current.choice]
+        if isinstance(self.current, CombatGrid):
+            option = AttackMob
+        else:
+            option = self.current.options[self.current.choice]
 
         return option.logic
 
@@ -87,10 +116,10 @@ class OptionsHandler:
     def get(self):
             opts_dict = {
                 EncounterStates.THINKING: encounter_options(),
-                EncounterStates.FIGHT_TARGETING: encounter_targeting_options(self.handler.combat.grid),
+                EncounterStates.FIGHT_TARGETING: self.handler.combat.grid,
 
             }
-            return opts_dict.get(self.owner.state)
+            self.current = opts_dict.get(self.handler.state)
 
 
 
