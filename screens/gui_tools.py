@@ -35,7 +35,6 @@ def get_button_surface(image, text, fontsize, color):
     surf.blit(image, (0, 0))
     align_and_blit(surf, text, x_ratio=0.5, y_ratio=0.5, x_adjust=0, y_adjust=math.floor(fontsize/10))
 
-
     return surf
 
 

@@ -11,17 +11,15 @@ def kill_player(player):
     return Message('You died!', RED), GameStates.PLAYER_DEAD
 
 
-def kill_monster(monster):
+def kill_monster(mob):
 
-    death_message = Message('{0} is dead!'.format(monster.name), DARK_RED)
 
-    make_corpse(monster)
-    monster.blocks = False
-    monster.combatant = None
-    monster.ai = None
-    monster.render_order = RenderOrder.CORPSE
+    make_corpse(mob)
+    mob.blocks = False
+    mob.combatant = None
+    mob.ai = None
+    mob.render_order = RenderOrder.CORPSE
 
-    return death_message
 
 
 def make_corpse(entity):
