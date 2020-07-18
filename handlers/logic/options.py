@@ -1,5 +1,5 @@
 from handlers.logic.logic_chunks import NewGame, LoadGame, QuitGame, GoToSubJournal, GoToSubInventory, \
-    FightTargeting, UseSatchel, RunAway
+    FightTargeting, UseSatchel, RunAway, RewardAuto, RewardManual, RewardExit
 
 
 class Options:
@@ -31,9 +31,15 @@ def journal_options():
     return options
 
 
-def encounter_options():
+def encounter_window_options():
     text = ['FIGHT', 'ITEM', 'RUN']
     options = Options([FightTargeting, UseSatchel, RunAway], text)
+    return options
+
+
+def reward_options():
+    text = ['AUTO', 'MANUAL', 'LEAVE']
+    options = Options([RewardAuto, RewardManual, RewardExit], text)
     return options
 
 

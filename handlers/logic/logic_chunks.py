@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from config.constants import DARK_BLUE, DARK_ORANGE, BLACK
-from enums.game_states import GameStates, EncounterStates
+from enums.game_states import GameStates, EncounterStates, RewardStates
 from handlers.views.messages import Message
 from loader_functions.data_loaders import load_game
 from loader_functions.initialize_new_game import get_game_variables
@@ -221,3 +221,43 @@ class EnemyTurn(Logic):
         changes = self.handler.combat.enemies.p1.combatant.ai.take_turn_e(player)
         changes.append({'substate': EncounterStates.THINKING})
         return changes
+
+
+class GoToReward(Logic):
+
+    def logic(self):
+        changes = [{'state': 'reward'}, {'substate': RewardStates.THINKING}]
+        return changes
+
+
+class RewardAuto(Logic):
+
+    def logic(self):
+        self.handler.loot.claimed.extend(self.handler.loot.items)
+        self.handler.loot.items = []
+        self.owner.options.current.choice = 2
+
+
+class RewardManual(Logic):
+
+    def logic(self):
+        loot = self.handler.loot
+        if (len(loot.items) + len(loot.claimed)) > 0:
+            if len(loot.items) > 0:
+                changes = [{'substate': RewardStates.SIFTING}]
+            else:
+                changes = [{'substate': RewardStates.DEPOSITING}]
+        else:
+            changes = []
+        return changes
+
+
+class RewardExit(Logic):
+
+    def logic(self):
+        loot = self.handler.loot
+        changes = [{'xp': loot.xp}]
+        party.inventory.take_loot(loot.claimed)
+        game.reward.current_option = 0
+
+        game.state_handler = game.life

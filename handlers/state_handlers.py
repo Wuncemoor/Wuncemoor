@@ -9,6 +9,7 @@ from handlers.views.fov_handler import FovHandler
 class TitleHandler:
     def __init__(self):
         self.superstate = GameStates.TITLE
+        self.state = None
 
 
 class LifeHandler:
@@ -38,7 +39,6 @@ class MenusHandler:
         elif len(self.menu.sub) == 0:
             self.menu.sub = None
             self.owner.options.current = self.menu.options
-
 
 
 class DialogueHandler:
@@ -183,5 +183,9 @@ class RewardHandler:
         self.superstate = GameStates.REWARD
         self.loot = loot
         self.state = None
-        self.options = ['AUTO', 'MANUAL', 'LEAVE']
-        self.current_option = 0
+
+    def change_state(self, state):
+        self.state = state
+        self.owner.options.get()
+
+

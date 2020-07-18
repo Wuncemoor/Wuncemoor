@@ -12,10 +12,11 @@ def get_reward_menu(reward):
     off_y = 110
     dy = 40
     fontsize = 24
+    options = reward.owner.options
 
-    blit_options(menu, ENCOUNTER_BUTTON, off_x, off_y, dy, reward.options, fontsize)
+    blit_options(menu, ENCOUNTER_BUTTON, off_x, off_y, dy, options.current.text, fontsize)
     if reward.state == RewardStates.THINKING:
-        menu.blit(INDICATOR_H, (off_x - 50, off_y - 11 + (dy * reward.current_option)))
+        menu.blit(INDICATOR_H, (off_x - 50, off_y - 11 + (dy * options.current.choice)))
 
     return menu
 

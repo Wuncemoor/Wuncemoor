@@ -58,13 +58,8 @@ def play_game(player, message_log, party, game):
                 if traverse_menu:
 
                     if game.state == GameStates.REWARD:
-                        if game.reward.state == RewardStates.THINKING:
-                            if (traverse_menu < 0 and game.reward.current_option == 0) or (
-                                    traverse_menu > 0 and game.reward.current_option == (len(game.reward.options) - 1)):
-                                pass
-                            else:
-                                game.reward.current_option += traverse_menu
-                        elif game.reward.state == RewardStates.SIFTING:
+
+                        if game.reward.state == RewardStates.SIFTING:
                             if (traverse_menu < 0 and game.reward.current_option == 0) or (
                                     traverse_menu > 0 and game.reward.current_option == (len(game.reward.items) - 1)):
                                 pass
@@ -85,16 +80,8 @@ def play_game(player, message_log, party, game):
                             loot_results.append({'toggle': 'left'})
 
                 if choose_menu_option:
-                    if game.state == GameStates.ENCOUNTER:
-                        if game.encounter.state == EncounterStates.THINKING:
-                            encounter_results.append({game.encounter.options[game.encounter.current_option]: True})
-                        elif game.encounter.state == EncounterStates.FIGHT_TARGETING:
-                            attack_results = player.combatant.attack(game.encounter.mob)
-                            encounter_results.extend(attack_results)
-                        elif game.encounter.state == EncounterStates.VICTORY:
-                            game.state_handler = game.reward
-                            game.reward.state = RewardStates.THINKING
-                    elif game.state == GameStates.REWARD:
+
+                    if game.state == GameStates.REWARD:
                         if game.reward.state == RewardStates.THINKING:
                             loot_results.append({game.reward.options[game.reward.current_option]: True})
                         elif game.reward.state == RewardStates.SIFTING:

@@ -117,7 +117,7 @@ class InputHandler:
         elif key in (py.K_RIGHT, py.K_d):
             return {'toggle': 'right'}
         elif key == py.K_RETURN:
-            return {'choose_menu_option': True}
+            return {'choose_option': True}
         elif key == py.K_ESCAPE:
             return {'exit': True}
         return {}

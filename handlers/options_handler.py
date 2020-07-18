@@ -1,7 +1,7 @@
-from enums.game_states import GameStates, MenuStates, EncounterStates
+from enums.game_states import GameStates, MenuStates, EncounterStates, RewardStates
 from handlers.encounter.combat import CombatGrid
-from handlers.logic.logic_chunks import AttackMob
-from handlers.logic.options import title_options, Options, encounter_options
+from handlers.logic.logic_chunks import AttackMob, GoToReward
+from handlers.logic.options import title_options, Options, encounter_window_options, reward_options
 
 
 class OptionsHandler:
@@ -49,6 +49,8 @@ class OptionsHandler:
             self.traverse_list(path[1])
         elif self.handler.state == EncounterStates.FIGHT_TARGETING:
             self.traverse_combat(path)
+        elif self.handler.state == RewardStates.THINKING:
+            self.traverse_list(path)
 
     def traverse_combat(self, path):
         x, y = path
@@ -78,6 +80,7 @@ class OptionsHandler:
             self.current.y += y
 
     def traverse_list(self, amount):
+
         if (amount < 0 and self.current.choice == 0) or (amount > 0 and self.current.choice >=
                                                          (len(self.current.options) - 1)):
             pass
@@ -100,7 +103,9 @@ class OptionsHandler:
                 self.current = None
 
     def choose(self):
-        if isinstance(self.current, CombatGrid):
+        if self.handler.state is EncounterStates.VICTORY:
+            option = GoToReward
+        elif isinstance(self.current, CombatGrid):
             option = AttackMob
         else:
             option = self.current.options[self.current.choice]
@@ -114,12 +119,14 @@ class OptionsHandler:
         return self.handler.menu.options
 
     def get(self):
-            opts_dict = {
-                EncounterStates.THINKING: encounter_options(),
-                EncounterStates.FIGHT_TARGETING: self.handler.combat.grid,
+        opts_dict = {
+            EncounterStates.THINKING: encounter_window_options(),
+            EncounterStates.FIGHT_TARGETING: self.owner.encounter.combat.grid,
+            RewardStates.THINKING: reward_options(),
 
-            }
-            self.current = opts_dict.get(self.handler.state)
+
+        }
+        self.current = opts_dict.get(self.handler.state)
 
 
 

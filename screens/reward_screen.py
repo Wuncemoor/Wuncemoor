@@ -1,4 +1,3 @@
-from screens.message_box import get_message_box
 from screens.loot_menu import display_loot, get_reward_menu, display_resources_gain
 from config.image_objects import LOOT_BG, LOOT_BANNER, ENCOUNTER_MESSAGE_BG
 

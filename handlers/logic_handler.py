@@ -23,7 +23,7 @@ class LogicHandler:
             GameStates.ENCOUNTER: self.encounter,
             GameStates.DIALOGUE: self.dialogue,
             GameStates.MENUS: self.menus,
-            # GameStates.REWARD: self.reward,
+            GameStates.REWARD: self.reward,
         }
         return maps.get(self.state)
 
@@ -76,7 +76,6 @@ class LogicHandler:
     def encounter(self, output):
         if 'traverse_menu' in output:
             self.owner.options.traverse(output.get('traverse_menu'))
-            print(len(self.handler.combat.enemies.members))
         elif 'choose_option' in output:
             self.response = self.owner.options.choose()
             changes = self.response(self)
@@ -86,16 +85,28 @@ class LogicHandler:
             changes = self.response(self)
             self.mutate(changes)
 
+    def reward(self, output):
+        if 'traverse_menu' in output:
+            self.owner.options.traverse(output.get('traverse_menu'))
+        elif 'choose_option' in output:
+            self.response = self.owner.options.choose()
+            changes = self.response(self)
+            self.mutate(changes)
+        elif 'toggle' in output:
+            pass
+        elif 'exit' in output:
+            pass
+
     def mutate(self, changes):
         for change in changes:
             if 'message' in change:
                 self.owner.log.messages.add_message(change.get('message'))
             elif 'item_added' in change:
                 self.owner.world.current_map.entities.remove(change.get('item_added'))
-            elif 'state' is change:
-                self.owner.change_state(change.get('state'))
             elif 'substate' in change:
                 self.handler.change_state(change.get('substate'))
+            elif 'state' in change:
+                self.owner.change_state(change.get('state'))
             elif 'xp' in change:
                 self.owner.party.p1.combatant.level.add_xp(change.get('xp'))
             elif 'dead' in change:
@@ -109,7 +120,6 @@ class LogicHandler:
             elif 'automate' in change:
                 self.response = EnemyTurn.logic
                 changes = self.response(self)
-                print(changes)
                 self.mutate(changes)
 
 

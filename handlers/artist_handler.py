@@ -2,15 +2,16 @@ import pygame
 import tcod as libtcod
 from config.constants import TILES_ON_SCREEN, BLACK
 from config.image_objects import MESSAGE_BG, TILE_BASE, TITLE_SCREEN_BG, TITLE_MENU_BG, TITLE_MENU_BUTTON, INDICATOR_H, \
-    ENCOUNTER_MENU, ENCOUNTER_BUTTON, ENCOUNTER_MESSAGE_BG, INDICATOR_V
+    ENCOUNTER_MENU, ENCOUNTER_BUTTON, ENCOUNTER_MESSAGE_BG, INDICATOR_V, LOOT_BG, LOOT_BANNER
 from enums.game_states import GameStates, MenuStates, EncounterStates
-from handlers.logic.options import encounter_options
+from handlers.logic.options import encounter_window_options
 from screens.calendar import display_calendar
 from screens.character_screen import character_screen
 from screens.dialogue_screen import dialogue_screen
 from screens.gui_tools import get_surface, print_message, align_and_blit, blit_options, get_alpha_surface
 from screens.inventory_screen import inventory_screen
 from screens.journal_screen import journal_screen
+from screens.loot_menu import display_loot, display_resources_gain, get_reward_menu
 from screens.mini_map import minimap_screen
 from screens.resources_HUD import player_resource_display
 from pygame.font import Font
@@ -44,7 +45,7 @@ class ArtistHandler:
             GameStates.ENCOUNTER: self.encounter,
             GameStates.DIALOGUE: self.dialogue,
             GameStates.MENUS: self.menus,
-            # GameStates.REWARD: self.reward,
+            GameStates.REWARD: self.reward,
         }
         return maps.get(state)
 
@@ -129,6 +130,21 @@ class ArtistHandler:
         self.blit_encounter_menu()
         self.blit_message_box(off_x=15, off_y=5)
         self.blit_combat()
+
+    def reward(self):
+
+        self.screen.blit(LOOT_BG, (0, 0))
+        self.screen.blit(LOOT_BANNER, (320, 0))
+
+        self.blit_message_box(off_x=15, off_y=5)
+        loot_visual = display_loot(self.handler)
+        self.screen.blit(loot_visual, (0, 300))
+
+        resources = display_resources_gain(self.handler.loot)
+        self.screen.blit(resources, (1000, 180))
+
+        loot_menu = get_reward_menu(self.handler)
+        self.screen.blit(loot_menu, (0, 0))
 
     def blit_message_box(self, off_x, off_y):
 
@@ -230,7 +246,7 @@ class ArtistHandler:
 
         buttons_off_x = 130
         buttons_off_y = 60
-        text = encounter_options().text
+        text = encounter_window_options().text
 
         dy = 40
         blit_options(menu, ENCOUNTER_BUTTON, buttons_off_x, buttons_off_y, dy, text, fontsize=24)
