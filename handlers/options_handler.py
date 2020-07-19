@@ -1,7 +1,7 @@
 from enums.game_states import GameStates, MenuStates, EncounterStates, RewardStates
 from handlers.encounter.combat import CombatGrid
-from handlers.logic.logic_chunks import AttackMob, GoToReward
-from handlers.logic.options import title_options, Options, encounter_window_options, reward_options
+from handlers.logic.logic_chunks import AttackMob, GoToReward, RewardSifting, RewardDepositing
+from handlers.logic.options import title_options, Options, encounter_window_options, reward_options, OptionsFake
 
 
 class OptionsHandler:
@@ -18,8 +18,11 @@ class OptionsHandler:
         return self.owner.state_handler
 
     @staticmethod
-    def wrap(options):
-        return Options(options)
+    def wrap(options, fake=None):
+        if fake:
+            return OptionsFake(options, fake)
+        else:
+            return Options(options)
 
     def wrap_and_set(self, options):
         self.current = self.wrap(options)
@@ -107,6 +110,8 @@ class OptionsHandler:
             option = GoToReward
         elif isinstance(self.current, CombatGrid):
             option = AttackMob
+        elif isinstance(self.current, OptionsFake):
+            option = self.current.fake
         else:
             option = self.current.options[self.current.choice]
 
@@ -123,8 +128,8 @@ class OptionsHandler:
             EncounterStates.THINKING: encounter_window_options(),
             EncounterStates.FIGHT_TARGETING: self.owner.encounter.combat.grid,
             RewardStates.THINKING: reward_options(),
-
-
+            RewardStates.SIFTING: self.wrap(self.owner.reward.loot.items, fake=RewardSifting),
+            RewardStates.DEPOSITING: self.wrap(self.owner.reward.loot.claimed, fake=RewardDepositing),
         }
         self.current = opts_dict.get(self.handler.state)
 

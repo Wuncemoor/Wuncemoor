@@ -256,7 +256,7 @@ class MobBuilder:
 
     def get_satchel(self):
 
-        satchel = Satchel(1)
+        satchel = Satchel(2)
 
         potion = make_item('healing_potion')
         satchel.items.append(potion)

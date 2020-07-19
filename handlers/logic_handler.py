@@ -1,5 +1,6 @@
 from enums.game_states import GameStates
-from handlers.logic.logic_chunks import Move, Interact, ShowMenus, MenusExit, EncounterExit, EndTurn, EnemyTurn
+from handlers.logic.logic_chunks import Move, Interact, ShowMenus, MenusExit, EncounterExit, EndTurn, EnemyTurn, \
+    RewardToggle, RewardExit
 
 
 class LogicHandler:
@@ -93,9 +94,13 @@ class LogicHandler:
             changes = self.response(self)
             self.mutate(changes)
         elif 'toggle' in output:
-            pass
+            self.response = RewardToggle.logic
+            changes = self.response(self, output.get('toggle'))
+            self.mutate(changes)
         elif 'exit' in output:
-            pass
+            self.response = RewardExit.logic
+            changes = self.response(self)
+            self.mutate(changes)
 
     def mutate(self, changes):
         for change in changes:
@@ -121,6 +126,8 @@ class LogicHandler:
                 self.response = EnemyTurn.logic
                 changes = self.response(self)
                 self.mutate(changes)
+            elif 'set_choice' in change:
+                self.owner.options.current.choice = change.get('set_choice')
 
 
 

@@ -41,6 +41,7 @@ class MenusHandler:
             self.owner.options.current = self.menu.options
 
 
+
 class DialogueHandler:
     def __init__(self, observers):
         self.superstate = GameStates.DIALOGUE

@@ -148,7 +148,6 @@ class GoToSubInventory(Logic):
 
 class FightTargeting(Logic):
 
-
     def logic(self):
         changes = [{'substate': EncounterStates.FIGHT_TARGETING}]
         return changes
@@ -165,7 +164,6 @@ class EncounterExit(Logic):
 
 
 class UseSatchel(Logic):
-
 
     def logic(self):
         pass
@@ -236,6 +234,7 @@ class RewardAuto(Logic):
         self.handler.loot.claimed.extend(self.handler.loot.items)
         self.handler.loot.items = []
         self.owner.options.current.choice = 2
+        return []
 
 
 class RewardManual(Logic):
@@ -252,12 +251,67 @@ class RewardManual(Logic):
         return changes
 
 
-class RewardExit(Logic):
+class RewardToLife(Logic):
 
     def logic(self):
         loot = self.handler.loot
         changes = [{'xp': loot.xp}]
-        party.inventory.take_loot(loot.claimed)
-        game.reward.current_option = 0
+        self.owner.party.inventory.take_loot(loot.claimed)
+        self.owner.options.current.choice = 0
 
-        game.state_handler = game.life
+        changes.append({'state': 'life'})
+        return changes
+
+
+class RewardSifting(Logic):
+
+    def logic(self):
+        changes = []
+        loot = self.handler.loot
+        loot.claim(self.owner.options.current.choice)
+        if len(loot.items) == 0:
+            changes.append({'substate': RewardStates.THINKING})
+            changes.append({'set_choice': 2})
+        elif self.owner.options.current.choice > len(loot.items) - 1:
+            self.owner.options.current.choice -= 1
+        return changes
+
+
+class RewardDepositing(Logic):
+
+    def logic(self):
+        changes = []
+        loot = self.handler.loot
+        loot.unclaim(self.owner.options.current.choice)
+        if len(loot.claimed) == 0:
+            changes.append({'substate': RewardStates.SIFTING})
+        elif self.owner.options.current.choice > len(loot.claimed) - 1:
+            self.owner.options.current.choice -= 1
+        return changes
+
+
+class RewardToggle(Logic):
+
+    def logic(self, direction):
+        changes = []
+        loot = self.handler.loot
+        if self.handler.state == RewardStates.SIFTING and direction == 'right' and len(loot.claimed) > 0:
+            changes.append({'substate': RewardStates.DEPOSITING})
+        elif self.handler.state == RewardStates.DEPOSITING and direction == 'left' and len(loot.items) > 0:
+            changes.append({'substate': RewardStates.SIFTING})
+        return changes
+
+
+class RewardExit(Logic):
+
+    def logic(self):
+        changes = []
+        state = self.handler.state
+        if state in (RewardStates.SIFTING, RewardStates.DEPOSITING):
+            changes.append({'substate': RewardStates.THINKING})
+        elif state == RewardStates.THINKING and self.owner.options.current.choice == 2:
+            changes.extend(RewardToLife.logic(self))
+        elif state == RewardStates.THINKING:
+            self.owner.options.current.choice = 2
+        return changes
+
