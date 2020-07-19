@@ -1,5 +1,5 @@
 from handlers.logic.logic_chunks import NewGame, LoadGame, QuitGame, GoToSubJournal, GoToSubInventory, \
-    FightTargeting, UseSatchel, RunAway, RewardAuto, RewardManual, RewardExit
+    FightTargeting, UseSatchel, RunAway, RewardAuto, RewardManual, RewardToLife
 
 
 class Options:
@@ -8,6 +8,14 @@ class Options:
         self.text = text
         self.choice = 0
 
+
+class OptionsFake:
+
+    def __init__(self, options, fake, text=None):
+        self.options = options
+        self.fake = fake
+        self.text = text
+        self.choice = 0
 
 def title_options():
     text = ['Start A New Game', 'Continue A Previous Game', 'Quit']
@@ -39,7 +47,7 @@ def encounter_window_options():
 
 def reward_options():
     text = ['AUTO', 'MANUAL', 'LEAVE']
-    options = Options([RewardAuto, RewardManual, RewardExit], text)
+    options = Options([RewardAuto, RewardManual, RewardToLife], text)
     return options
 
 
