@@ -1,5 +1,6 @@
 import pygame as py
 from enums.game_states import GameStates
+from handlers.menus.settings import Settings
 
 
 class InputHandler:
@@ -33,8 +34,7 @@ class InputHandler:
             return {'choose_option': True}
         return {}
 
-    @staticmethod
-    def life(key):
+    def life(self, key):
         if key in (py.K_UP, py.K_w):
             return {'move': (0, -1)}
         elif key in (py.K_DOWN, py.K_s):
@@ -44,20 +44,19 @@ class InputHandler:
         elif key in (py.K_RIGHT, py.K_d):
             return {'move': (1, 0)}
         elif key == py.K_c:
-            return {'show_menus': 'party'}
+            return {'show_menus': self.owner.party}
         elif key == py.K_i:
-            return {'show_menus': 'inventory'}
+            return {'show_menus': self.owner.party.inventory}
         elif key == py.K_m:
-            return {'show_menus': 'map'}
+            return {'show_menus': self.owner.party.map}
         elif key == py.K_j:
-            return {'show_menus': 'journal'}
+            return {'show_menus': self.owner.party.journal}
         elif key == py.K_SPACE:
             return {'interact': True}
         if key == py.K_RETURN and py.K_LALT:
             return {'fullscreen': True}
         if key == py.K_ESCAPE:
-            return {'exit': True}
-        # No key
+            return {'show_menus': Settings()}
         return {}
 
     @staticmethod
@@ -81,18 +80,17 @@ class InputHandler:
     def dialogue(key):
         return {'converse': key}
 
-    @staticmethod
-    def menus(key):
+    def menus(self, key):
         if key == py.K_ESCAPE:
             return {'exit': True}
-        elif key == py.K_j:
-            return {'show_menus': 'journal'}
         elif key == py.K_c:
-            return {'show_menus': 'party'}
+            return {'show_menus': self.owner.party}
         elif key == py.K_i:
-            return {'show_menus': 'inventory'}
+            return {'show_menus': self.owner.party.inventory}
         elif key == py.K_m:
-            return {'show_menus': 'map'}
+            return {'show_menus': self.owner.party.map}
+        elif key == py.K_j:
+            return {'show_menus': self.owner.party.journal}
         elif key in (py.K_a, py.K_LEFT):
             return {'traverse_menu': (-1, 0)}
         elif key in (py.K_d, py.K_RIGHT):
