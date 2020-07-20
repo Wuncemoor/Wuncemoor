@@ -7,12 +7,12 @@ def inventory_screen(self):
     surf = get_surface(INVENTORY_BG)
     if self.handler.menu.sub is None:
         options = INVENTORY_OPTIONS[self.owner.options.current.choice]
-        subinventory = self.handler.menu.get_subinventory()
+        subinventory = self.handler.menu.get_sub()
     else:
         ind = self.handler.menu.options.choice
         options = INVENTORY_OPTIONS[ind]
         surf.blit(INDICATOR_H, (410, 130 + (32 * self.owner.options.current.choice)))
-        subinventory = self.handler.menu.get_subinventory()
+        subinventory = self.handler.menu.get_sub()
     sg = display_subinventory(subinventory)
 
     align_and_blit(surf, options, x_ratio=0.75, y_ratio=0.19)

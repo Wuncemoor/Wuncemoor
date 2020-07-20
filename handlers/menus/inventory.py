@@ -6,6 +6,7 @@ from enums.equipment_slots import EquipmentSlots
 
 class Inventory:
     def __init__(self):
+        self.superstate = MenuStates.INVENTORY
         self.misc = []
         self.weapons = []
         self.armor = []
@@ -13,16 +14,14 @@ class Inventory:
         self.satchel = []
         self.materials = []
         self.plot = []
-        self.superstate = MenuStates.INVENTORY
+        self.subgroups = self.initialize_subgroups()
         self.options = None
         self.sub = None
 
-
-    @property
-    def subgroups(self):
+    def initialize_subgroups(self):
         return [self.misc, self.weapons, self.armor, self.accessories, self.satchel, self.materials, self.plot]
 
-    def get_subinventory(self):
+    def get_sub(self):
         return self.subgroups[self.options.choice]
 
     def add_item(self, item):
@@ -33,7 +32,7 @@ class Inventory:
         # else:
         results.extend([{'item_added': item},
                        {'message': Message('You pick up the {0}!'.format(item.name), DARK_PURPLE)}])
-        subgroup = self.get_subgroup(item.item)
+        subgroup = self.filter_item(item.item)
         subgroup.append(item)
 
         return results
@@ -42,8 +41,7 @@ class Inventory:
         for item in loot:
             self.add_item(item)
 
-
-    def get_subgroup(self, item):
+    def filter_item(self, item):
 
         if item.equippable:
             if item.equippable.slot == EquipmentSlots.MAIN_HAND:

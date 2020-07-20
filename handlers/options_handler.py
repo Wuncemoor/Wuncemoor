@@ -1,13 +1,14 @@
 from enums.game_states import GameStates, MenuStates, EncounterStates, RewardStates
 from handlers.encounter.combat import CombatGrid
 from handlers.logic.logic_chunks import AttackMob, GoToReward, RewardSifting, RewardDepositing
-from handlers.logic.options import title_options, Options, encounter_window_options, reward_options, OptionsFake
+from handlers.logic.options import title_options, Options, encounter_window_options, reward_options, OptionsFake, \
+    settings_options
 
 
 class OptionsHandler:
 
     def __init__(self):
-        self.current = title_options()
+        self.current = None
 
     @property
     def state(self):
@@ -32,12 +33,18 @@ class OptionsHandler:
     def mapping(self):
         maps = {
             GameStates.TITLE: self.title,
-            # GameStates.ENCOUNTER: self.encounter,
+            GameStates.ENCOUNTER: self.encounter,
             # GameStates.DIALOGUE: self.dialogue,
             GameStates.MENUS: self.menus,
-            # GameStates.REWARD: self.reward,
+            GameStates.REWARD: self.reward,
         }
-        return maps.get(self.state)()
+        return maps.get(self.state)
+
+    def get(self, case=None):
+        if case is None:
+            self.current = self.mapping()
+        elif case == 'sub':
+            pass
 
     def traverse(self, path):
         if self.state == GameStates.TITLE:
@@ -118,20 +125,33 @@ class OptionsHandler:
         return option.logic
 
     def title(self):
-        self.current = title_options()
+        return title_options()
 
     def menus(self):
-        return self.handler.menu.options
+        menus = {
+            MenuStates.PARTY: self.wrap([]),
+            MenuStates.INVENTORY: self.owner.party.inventory.options,
+            MenuStates.JOURNAL: self.owner.party.journal.options,
+            MenuStates.MAP: self.wrap([]),
+            MenuStates.SETTINGS: settings_options(),
+        }
+        return menus.get(self.handler.state)
 
-    def get(self):
-        opts_dict = {
+    def encounter(self):
+        encounter = {
             EncounterStates.THINKING: encounter_window_options(),
             EncounterStates.FIGHT_TARGETING: self.owner.encounter.combat.grid,
+        }
+        return encounter.get(self.handler.state)
+
+    def reward(self):
+        reward = {
             RewardStates.THINKING: reward_options(),
             RewardStates.SIFTING: self.wrap(self.owner.reward.loot.items, fake=RewardSifting),
             RewardStates.DEPOSITING: self.wrap(self.owner.reward.loot.claimed, fake=RewardDepositing),
         }
-        self.current = opts_dict.get(self.handler.state)
+        return reward.get(self.handler.state)
+
 
 
 

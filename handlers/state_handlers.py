@@ -2,6 +2,7 @@ from random import randint
 from enums.game_states import EncounterStates, GameStates
 from config.image_objects import BACKGROUNDS
 from handlers.encounter.combat import Combat
+from handlers.logic.options import encounter_window_options
 from handlers.views.camera import Camera
 from handlers.views.fov_handler import FovHandler
 
@@ -27,19 +28,17 @@ class MenusHandler:
         self.state = None
         self.menu = None
 
-    def handle_menu(self, menu_obj):
-        self.menu = menu_obj
-        self.state = menu_obj.superstate
+    def change_state(self, menu):
+        self.menu = menu
+        self.state = menu.superstate
         self.confirm_submenu()
-        self.owner.options.current = self.menu.options
+        self.owner.options.get()
 
     def confirm_submenu(self):
         if self.menu.sub is None:
             pass
         elif len(self.menu.sub) == 0:
             self.menu.sub = None
-            self.owner.options.current = self.menu.options
-
 
 
 class DialogueHandler:
@@ -176,6 +175,13 @@ class EncounterHandler:
     def get_combat(self, tile):
         combat = Combat(self.owner.party, tile)
         return combat
+
+    def give_options(self):
+        opts_dict = {
+            EncounterStates.THINKING: encounter_window_options(),
+            EncounterStates.FIGHT_TARGETING: self.combat.grid,
+        }
+        return opts_dict.get(self.state)
 
 
 class RewardHandler:

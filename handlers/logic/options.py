@@ -1,5 +1,5 @@
-from handlers.logic.logic_chunks import NewGame, LoadGame, QuitGame, GoToSubJournal, GoToSubInventory, \
-    FightTargeting, UseSatchel, RunAway, RewardAuto, RewardManual, RewardToLife
+from handlers.logic.logic_chunks import NewGame, LoadGame, QuitGame, FightTargeting, UseSatchel, RunAway, RewardAuto, \
+    RewardManual, RewardToLife, MenuGoToSub
 
 
 class Options:
@@ -23,20 +23,8 @@ def title_options():
     return options
 
 
-def party_options():
-    options = Options([])
-    return options
-
-
-def inventory_options():
-    options = Options([GoToSubInventory, GoToSubInventory, GoToSubInventory, GoToSubInventory,
-                       GoToSubInventory, GoToSubInventory, GoToSubInventory])
-    return options
-
-
-def journal_options():
-    options = Options([GoToSubJournal, GoToSubJournal, GoToSubJournal, GoToSubJournal])
-    return options
+def initialize_menu_options(subgroups):
+    return OptionsFake(subgroups, MenuGoToSub)
 
 
 def encounter_window_options():
@@ -49,6 +37,11 @@ def reward_options():
     text = ['AUTO', 'MANUAL', 'LEAVE']
     options = Options([RewardAuto, RewardManual, RewardToLife], text)
     return options
+
+
+def settings_options():
+    pass
+
 
 
 

@@ -38,3 +38,4 @@ class MenuStates(Enum):
     JOURNAL = 2
     INVENTORY = 3
     MAP = 4
+    SETTINGS = 5

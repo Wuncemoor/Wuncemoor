@@ -1,7 +1,7 @@
 from config.constants import BLACK
 from handlers.input_handler import InputHandler
 from handlers.log_handler import LogHandler
-from handlers.logic.options import party_options, journal_options, inventory_options
+from handlers.logic.options import initialize_menu_options
 from handlers.options_handler import OptionsHandler
 from handlers.state_handlers import MenusHandler, TitleHandler, LifeHandler, DialogueHandler, TimeHandler, \
     EncounterHandler, RewardHandler
@@ -68,9 +68,9 @@ class GameHandler:
         self.encounter = EncounterHandler(loot)
         self.reward = RewardHandler(loot)
         self.party = party
-        self.party.options = party_options()
-        self.party.journal.options = journal_options()
-        self.party.inventory.options = inventory_options()
+        self.party.options = initialize_menu_options(self.party.members)
+        self.party.journal.options = initialize_menu_options(self.party.journal.subgroups)
+        self.party.inventory.options = initialize_menu_options(self.party.inventory.subgroups)
         self.log = LogHandler()
         self.take_ownership()
         self.life.camera.refocus(party.p1.x, party.p1.y)

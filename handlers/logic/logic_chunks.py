@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from config.constants import DARK_BLUE, DARK_ORANGE, BLACK
-from enums.game_states import GameStates, EncounterStates, RewardStates
+from enums.game_states import EncounterStates, RewardStates
 from handlers.views.messages import Message
 from loader_functions.data_loaders import load_game
 from loader_functions.initialize_new_game import get_game_variables
@@ -96,26 +96,33 @@ class Interact(Logic):
         return changes
 
 
-class ShowMenus(Logic):
+class MenusToggle(Logic):
 
     def logic(self, output):
-        opts = {
-            'inventory': self.owner.party.inventory,
-            'journal': self.owner.party.journal,
-            'party': self.owner.party,
-            'map': self.owner.party.map,
-        }
-        if self.handler is self.owner.menus:
-            if opts.get(output) is self.handler.menu:
-                self.handler.menu.sub = None
-                self.owner.options.current = None
-                self.owner.state_handler = self.owner.life
-            else:
-                self.owner.menus.handle_menu(opts.get(output))
-                self.owner.options.current = self.handler.menu.options
+
+        if self.handler.menu is output:
+            return MenusSubToLife.logic(self)
         else:
-            self.owner.state_handler = self.owner.menus
-            self.owner.menus.handle_menu(opts.get(output))
+            return MenusToMenus.logic(self, output)
+
+
+class LifeToMenus(Logic):
+
+    def logic(self, obj):
+        return [{'state': 'menus'}, {'substate': obj}]
+
+
+class MenusToMenus(Logic):
+
+    def logic(self, obj):
+        return [{'substate': obj}]
+
+
+class MenusSubToLife(Logic):
+
+    def logic(self):
+        self.handler.menu.sub = None
+        return [{'state': 'life'}]
 
 
 class MenusExit(Logic):
@@ -128,19 +135,10 @@ class MenusExit(Logic):
             self.owner.options.current = self.handler.menu.options
 
 
-class GoToSubJournal(Logic):
+class MenuGoToSub(Logic):
 
     def logic(self):
-        sub = self.owner.party.journal.get_subjournal()
-        if len(sub) > 0:
-            self.handler.menu.sub = sub
-            self.owner.options.wrap_and_set(sub)
-
-
-class GoToSubInventory(Logic):
-
-    def logic(self):
-        sub = self.owner.party.inventory.get_subinventory()
+        sub = self.handler.menu.get_sub()
         if len(sub) > 0:
             self.handler.menu.sub = sub
             self.owner.options.wrap_and_set(sub)
