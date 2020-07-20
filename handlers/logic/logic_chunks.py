@@ -16,8 +16,8 @@ class Logic(ABC):
 class NewGame(Logic):
 
     def logic(self):
-        dungeons, world, overworld_tiles, party = get_game_variables()
-        self.owner.preplay(dungeons, world, overworld_tiles, party)
+        world, overworld_tiles, party = get_game_variables()
+        self.owner.preplay(world, overworld_tiles, party)
 
 
 class LoadGame(Logic):
@@ -69,7 +69,7 @@ class Interact(Logic):
                     break
         for transition in world.current_map.transitions:
             if transition.x == self.owner.party.x and transition.y == self.owner.party.y:
-                new_dungeon = self.owner.dungeons[transition.transition.go_to_dungeon]
+                new_dungeon = self.owner.world.dungeons[transition.transition.go_to_dungeon]
                 if world.current_dungeon.name != transition.transition.go_to_dungeon:
                     world.current_dungeon.time_dilation = self.owner.time.stamp()
                     self.owner.time.apply_dilation(new_dungeon)

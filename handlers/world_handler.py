@@ -1,6 +1,7 @@
 class WorldHandler:
 
-    def __init__(self, current_dungeon, current_map):
+    def __init__(self, dungeons, current_dungeon, current_map):
+        self.dungeons = dungeons
         self.current_dungeon = current_dungeon
         self.current_map = current_map
 

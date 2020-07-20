@@ -11,10 +11,10 @@ def get_game_variables():
 
     dungeons, overworld_tiles = get_dungeons()
 
-    world = WorldHandler(dungeons['town'], dungeons['town'].maps[0])
+    world = WorldHandler(dungeons, dungeons['town'], dungeons['town'].maps[0])
 
     journal = Journal()
     journal.current_quests.append(get_intro_quest())
     party.journal = journal
 
-    return dungeons, world, overworld_tiles, party
+    return world, overworld_tiles, party
