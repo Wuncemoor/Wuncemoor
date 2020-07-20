@@ -32,7 +32,6 @@ class GameHandler:
         self.menus.owner = self
 
 
-
     @property
     def state(self):
         return self.state_handler.superstate

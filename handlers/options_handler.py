@@ -1,22 +1,16 @@
 from enums.game_states import GameStates, MenuStates, EncounterStates, RewardStates
+from handlers.abstract import MVC
 from handlers.encounter.combat import CombatGrid
 from handlers.logic.logic_chunks import AttackMob, GoToReward, RewardSifting, RewardDepositing
 from handlers.logic.options import title_options, Options, encounter_window_options, reward_options, OptionsFake, \
     settings_options
 
 
-class OptionsHandler:
+class OptionsHandler(MVC):
 
     def __init__(self):
         self.current = None
 
-    @property
-    def state(self):
-        return self.owner.state
-
-    @property
-    def handler(self):
-        return self.owner.state_handler
 
     @staticmethod
     def wrap(options, fake=None):
@@ -27,18 +21,6 @@ class OptionsHandler:
 
     def wrap_and_set(self, options):
         self.current = self.wrap(options)
-
-
-    @property
-    def mapping(self):
-        maps = {
-            GameStates.TITLE: self.title,
-            GameStates.ENCOUNTER: self.encounter,
-            # GameStates.DIALOGUE: self.dialogue,
-            GameStates.MENUS: self.menus,
-            GameStates.REWARD: self.reward,
-        }
-        return maps.get(self.state)
 
     def get(self, case=None):
         if case is None:
@@ -127,6 +109,9 @@ class OptionsHandler:
     def title(self):
         return title_options()
 
+    def life(self):
+        pass
+
     def menus(self):
         menus = {
             MenuStates.PARTY: self.wrap([]),
@@ -136,6 +121,9 @@ class OptionsHandler:
             MenuStates.SETTINGS: settings_options(),
         }
         return menus.get(self.handler.state)
+
+    def dialogue(self):
+        pass
 
     def encounter(self):
         encounter = {

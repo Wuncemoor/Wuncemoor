@@ -1,36 +1,12 @@
-from enums.game_states import GameStates
+from handlers.abstract import MVC
 from handlers.logic.logic_chunks import Move, Interact, MenusToggle, MenusExit, EncounterExit, EndTurn, EnemyTurn, \
     RewardToggle, RewardExit, LifeToMenus
 
 
-class LogicHandler:
+class LogicHandler(MVC):
 
     def __init__(self):
         self.response = None
-
-    @property
-    def state(self):
-        return self.owner.state
-
-    @property
-    def handler(self):
-        return self.owner.state_handler
-
-    @property
-    def mapping(self):
-        maps = {
-            GameStates.TITLE: self.title,
-            GameStates.LIFE: self.life,
-            GameStates.ENCOUNTER: self.encounter,
-            GameStates.DIALOGUE: self.dialogue,
-            GameStates.MENUS: self.menus,
-            GameStates.REWARD: self.reward,
-        }
-        return maps.get(self.state)
-
-    @property
-    def handler(self):
-        return self.owner.state_handler
 
     def translate(self, output):
         self.mapping(output)

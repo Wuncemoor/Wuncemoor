@@ -4,6 +4,7 @@ from config.constants import TILES_ON_SCREEN, BLACK
 from config.image_objects import MESSAGE_BG, TILE_BASE, TITLE_SCREEN_BG, TITLE_MENU_BG, TITLE_MENU_BUTTON, INDICATOR_H, \
     ENCOUNTER_MENU, ENCOUNTER_BUTTON, ENCOUNTER_MESSAGE_BG, INDICATOR_V, LOOT_BG, LOOT_BANNER
 from enums.game_states import GameStates, MenuStates, EncounterStates
+from handlers.abstract import MVC
 from handlers.logic.options import encounter_window_options
 from screens.calendar import display_calendar
 from screens.character_screen import character_screen
@@ -17,7 +18,7 @@ from screens.resources_HUD import player_resource_display
 from pygame.font import Font
 
 
-class ArtistHandler:
+class ArtistHandler(MVC):
     def __init__(self, screen):
         self.screen = screen
         self.world_tiles = None
@@ -27,27 +28,6 @@ class ArtistHandler:
     @property
     def choice(self):
         return self.owner.options.current.choice
-
-    @property
-    def state(self):
-        return self.owner.state
-
-    @property
-    def handler(self):
-        return self.owner.state_handler
-
-    @property
-    def mapping(self):
-        state = self.owner.state
-        maps = {
-            GameStates.TITLE: self.title,
-            GameStates.LIFE: self.life,
-            GameStates.ENCOUNTER: self.encounter,
-            GameStates.DIALOGUE: self.dialogue,
-            GameStates.MENUS: self.menus,
-            GameStates.REWARD: self.reward,
-        }
-        return maps.get(state)
 
     def render(self):
         return self.mapping()
