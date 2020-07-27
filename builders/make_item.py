@@ -12,6 +12,7 @@ from item_functions import heal, cast_fireball, cast_confuse, cast_lightning
 import tcod as libtcod
 from config.image_objects import BUNDLE_WEAPONS, BUNDLE_POTION, SCROLL
 
+
 def make_item(item_choice):
 
     if item_choice == 'healing_potion':
