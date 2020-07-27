@@ -16,15 +16,15 @@ class Logic(ABC):
 class NewGame(Logic):
 
     def logic(self):
-        world, overworld_tiles, party = get_game_variables()
-        self.owner.preplay(world, overworld_tiles, party)
+        world, party = get_game_variables()
+        self.owner.preplay(world, party)
 
 
 class LoadGame(Logic):
 
     def logic(self):
-        dungeons, world, overworld_tiles, party = load_game()
-        self.owner.preplay(dungeons, world, overworld_tiles, party)
+        world, party = load_game()
+        self.owner.preplay(world, party)
 
 
 class QuitGame(Logic):

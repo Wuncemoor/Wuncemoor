@@ -1,5 +1,5 @@
 import pygame as py
-from handlers.abstract import MVC
+from abstracts.abstract_mvc import MVC
 from handlers.menus.settings import Settings
 
 

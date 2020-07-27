@@ -1,5 +1,5 @@
 from enums.game_states import GameStates, MenuStates, EncounterStates, RewardStates
-from handlers.abstract import MVC
+from abstracts.abstract_mvc import MVC
 from handlers.encounter.combat import CombatGrid
 from handlers.logic.logic_chunks import AttackMob, GoToReward, RewardSifting, RewardDepositing
 from handlers.logic.options import title_options, Options, encounter_window_options, reward_options, OptionsFake, \

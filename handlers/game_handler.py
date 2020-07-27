@@ -56,10 +56,9 @@ class GameHandler:
         self.party.owner = self
         self.log.owner = self
 
-    def preplay(self, world, overworld_tiles, party):
+    def preplay(self, world, party):
         loot = Loot()
         self.artist.screen.fill(BLACK)
-        self.artist.world_tiles = overworld_tiles
         self.world = world
         self.dialogue = DialogueHandler([party.journal])
         self.time = TimeHandler([party])

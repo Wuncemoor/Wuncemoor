@@ -1,4 +1,4 @@
-from handlers.abstract import MVC
+from abstracts.abstract_mvc import MVC
 from handlers.logic.logic_chunks import Move, Interact, MenusToggle, MenusExit, EncounterExit, EndTurn, EnemyTurn, \
     RewardToggle, RewardExit, LifeToMenus
 

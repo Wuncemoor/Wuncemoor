@@ -301,12 +301,12 @@ def get_hut_obj():
     return obj_lists
 
 
-def get_house_obj():
+def get_house_images():
     # width = 5, height = 6
     pf = 'images\\structures\\house\\'
-    obj_lists = [[py.image.load('images\\entities\\transitions\\alpha.png'), py.image.load(pf + 'house00.png'),
+    obj_lists = [[py.image.load('images\\alpha.png'), py.image.load(pf + 'house00.png'),
                   py.image.load(pf + 'house01.png'), py.image.load(pf + 'house02.png'),
-                  py.image.load('images\\entities\\transitions\\alpha.png'), py.image.load(pf + 'house03.png'),
+                  py.image.load('images\\alpha.png'), py.image.load(pf + 'house03.png'),
                   py.image.load(pf + 'house04.png'), py.image.load(pf + 'house05.png'),
                   py.image.load(pf + 'house06.png'), py.image.load(pf + 'house07.png'),
                   py.image.load(pf + 'house08.png'), py.image.load(pf + 'house09.png'),
@@ -319,9 +319,9 @@ def get_house_obj():
                   py.image.load(pf + 'house22.png'), py.image.load(pf + 'house23.png'),
                   py.image.load(pf + 'house24.png'), py.image.load(pf + 'house25.png'),
                   py.image.load(pf + 'house26.png'), py.image.load(pf + 'house27.png')],
-                 [py.image.load('images\\entities\\transitions\\alpha.png'), py.image.load(pf + 'dark_house00.png'),
+                 [py.image.load('images\\alpha.png'), py.image.load(pf + 'dark_house00.png'),
                   py.image.load(pf + 'dark_house01.png'), py.image.load(pf + 'dark_house02.png'),
-                  py.image.load('images\\entities\\transitions\\alpha.png'), py.image.load(pf + 'dark_house03.png'),
+                  py.image.load('images\\alpha.png'), py.image.load(pf + 'dark_house03.png'),
                   py.image.load(pf + 'dark_house04.png'), py.image.load(pf + 'dark_house05.png'),
                   py.image.load(pf + 'dark_house06.png'), py.image.load(pf + 'dark_house07.png'),
                   py.image.load(pf + 'dark_house08.png'), py.image.load(pf + 'dark_house09.png'),

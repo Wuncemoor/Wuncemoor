@@ -9,19 +9,17 @@ from ECS.__entity.__item.__equippable.equippable_core import EquippableCore
 from ECS.__entity.__item.__equippable.equippable_material import EquippableMaterial
 from ECS.__entity.__item.__equippable.equippable_quality import EquippableQuality
 from ECS.__entity.item import Item
-from ECS.__entity.transition import Transition
 from ECS.__entity.__combatant.equipment import Equipment
 from ECS.__entity.combatant import Combatant
 from ECS.__entity.age import Age
 from handlers.menus.inventory import Inventory
 from handlers.menus.map import Map
-from maps.starting_map import get_cave, get_town, overworld
+
 from ECS.entity import Entity
 from enums.equipment_slots import EquipmentSlots
 from enums.render_order import RenderOrder
 from handlers.menus.journal import Quest, QuestNode
-from config.image_objects import BUNDLE_HERO, BUNDLE_STICK, STAIRS_DOWN, STAIRS_UP
-from config.constants import WHITE
+from config.image_objects import BUNDLE_HERO, BUNDLE_STICK
 from handlers.menus.party import Party
 
 
@@ -61,69 +59,6 @@ def get_starting_items(party):
     stick = Entity(0, 0, item=item_component)
     party.inventory.add_item(stick)
 
-
-def get_dungeons():
-    dungeons = {}
-
-    world, nodes = overworld()
-
-    wm_tiles = world.maps[0].tiles
-
-    dungeons[world.name] = world
-
-    town = get_town(nodes[0])
-    dungeons[town.name] = town
-
-    town2 = get_town(nodes[1])
-    dungeons[town2.name] = town2
-
-    town3 = get_town(nodes[2])
-    dungeons[town3.name] = town3
-
-    town4 = get_town(nodes[3])
-    dungeons[town4.name] = town4
-
-    goblin_cave = get_cave('goblin')
-    dungeons[goblin_cave.name] = goblin_cave
-
-    downstairsimg = STAIRS_DOWN
-    upstairsimg = STAIRS_UP
-
-    # kobold_cave = get_cave( 'kobold')
-    # dungeons[kobold_cave.name] = kobold_cave
-    #
-    #
-    # cave = get_cave(None)
-    # dungeons[cave.name] = cave
-
-    gob_stairs_comp = Transition('Stairs', downstairsimg, 'goblin_cave', 0, goblin_cave.maps[0].entrance)
-    gob_stairs = Entity(10, 30, WHITE, render_order=RenderOrder.STAIRS, transition=gob_stairs_comp)
-    town.maps[0].transitions.append(gob_stairs)
-
-    gob_stairs_up_comp = Transition('Stairs', upstairsimg, 'town', 0, (10, 30))
-    gob_stairs_up = Entity(goblin_cave.maps[0].entrance[0], goblin_cave.maps[0].entrance[1], WHITE,
-                           render_order=RenderOrder.STAIRS, transition=gob_stairs_up_comp)
-    goblin_cave.maps[0].transitions.append(gob_stairs_up)
-
-    # kob_stairs_comp = Transition('Stairs', downstairsimg, 'kobold_cave', 0, kobold_cave.maps[0].entrance)
-    # kob_stairs = Entity(10, 25, libtcod.white, render_order=RenderOrder.STAIRS, transition=kob_stairs_comp)
-    # town.maps[0].transitions.append(kob_stairs)
-    #
-    # kob_stairs_up_comp = Transition('Stairs', upstairsimg, 'town', 0, (10, 25))
-    # kob_stairs_up = Entity(kobold_cave.maps[0].entrance[0], kobold_cave.maps[0].entrance[1], libtcod.white,
-    #                        render_order=RenderOrder.STAIRS, transition=kob_stairs_up_comp)
-    # kobold_cave.maps[0].transitions.append(kob_stairs_up)
-    #
-    # cave_stairs_comp = Transition('Stairs', downstairsimg, 'cave', 0, cave.maps[0].entrance)
-    # cave_stairs = Entity(10, 20, libtcod.white, render_order=RenderOrder.STAIRS, transition=cave_stairs_comp)
-    # town.maps[0].transitions.append(cave_stairs)
-    #
-    # cave_stairs_up_comp = Transition('Stairs', upstairsimg, 'town', 0, (10, 20))
-    # cave_stairs_up = Entity(cave.maps[0].entrance[0], cave.maps[0].entrance[1], libtcod.white,
-    #                         render_order=RenderOrder.STAIRS, transition=cave_stairs_up_comp)
-    # cave.maps[0].transitions.append(cave_stairs_up)
-
-    return dungeons, wm_tiles
 
 
 def get_intro_quest():
