@@ -41,7 +41,9 @@ class Move(Logic):
         destination_x = x + dx
         destination_y = y + dy
 
-        if not self.owner.world.is_blocked(destination_x, destination_y):
+        tile = self.owner.world.current_map.tiles[destination_x][destination_y]
+
+        if not tile.blocker:
 
             self.owner.party.move(dx, dy)
             self.handler.camera.refocus(x, y)

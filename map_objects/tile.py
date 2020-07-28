@@ -1,9 +1,5 @@
-from ECS.__entity.floor import GrassTileFloor, DirtTileFloor
+from map_objects.floors.basic_floors import GrassTileFloor, DirtTileFloor
 from ECS.__entity.blocker import RockTileBlocker
-from config.constants import IMAGE_OPTIONS
-from random import randint
-
-from config.image_objects import LIGHT_GRASS, DARK_GRASS, LIGHT_DIRT, DARK_DIRT, LIGHT_ROCK_WALL, DARK_ROCK_WALL
 
 
 class Tile:
@@ -15,7 +11,7 @@ class Tile:
     Node power increases risk/reward
     """
     def __init__(self, variant):
-        self.base = self.initialize_base(variant)
+        self.floor = self.initialize_floor(variant)
         self.blocker = self.initialize_blocker(variant)
         self.block_sight = self.initialize_block_sight()
         self.explored = False
@@ -23,18 +19,13 @@ class Tile:
         self.subtype = None
         self.mode = None
         self.np = 0
-        self.image = None
-        # Temporary dark image until fov shader implemented
-        self.image2 = None
-        # Temp holder for images that appear overworld entities
-        self.image_air = None
 
-    def initialize_base(self, variant):
-        if variant == 'town':
+    def initialize_floor(self, variant):
+        if variant in ('alpha', 'beta', 'gamma', 'delta'):
             base = GrassTileFloor()
         elif variant == 'cave':
             base = DirtTileFloor()
-        elif variant == 'overworld':
+        else:
             base = None
         return base
 
@@ -50,7 +41,5 @@ class Tile:
         else:
             return self.blocker.opaque
 
-    def clear_blocker(self):
-        self.blocker = None
 
 

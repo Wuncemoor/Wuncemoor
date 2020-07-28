@@ -1,3 +1,4 @@
+from map_objects.floors.basic_floors import RoadTileFloor
 from ECS.entity import Entity
 from random import randint
 
@@ -10,7 +11,6 @@ from map_objects.chances.item_chances import get_item_chances
 from map_objects.chances.mob_chances import MobChances
 from builders.make_item import make_item
 from config.constants import MAX_ROOMS, ROOM_MAX_SIZE, ROOM_MIN_SIZE
-from config.image_objects import LIGHT_ROAD, DARK_ROAD
 
 
 class DangerousMap(Tiles2D):
@@ -165,7 +165,6 @@ class SafeMap(Tiles2D):
         for x in range(road.rect.x1, road.rect.x2):
             for y in range(road.rect.y1, road.rect.y2):
                 self.tiles[x][y].type = 'road'
-                self.tiles[x][y].blocked = False
         for x in range(road.rect.x1, road.rect.x2):
             for y in range(road.rect.y1, road.rect.y2):
                 mode = ''
@@ -182,9 +181,7 @@ class SafeMap(Tiles2D):
                         mode += '1'
                     else:
                         mode += '0'
-
-                self.tiles[x][y].image = LIGHT_ROAD.get(mode)
-                self.tiles[x][y].image2 = DARK_ROAD.get(mode)
+                self.tiles[x][y].floor = RoadTileFloor(mode)
         self.transitions.extend(road.transitions)
 
     def fill_map(self):
