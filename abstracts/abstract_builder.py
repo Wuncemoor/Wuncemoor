@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 
-from map_objects.concrete_maps import DangerousMap, SafeMap
-
 
 class AbstractDungeonBuilder(ABC):
 
@@ -38,27 +36,5 @@ class AbstractDungeonBuilder(ABC):
         return self.np
 
 
-class DangerousDungeonBuilder(AbstractDungeonBuilder):
-
-    def initialize_map(self):
-        map = DangerousMap(self.width, self.height, variant=self.basename)
-        map.initialize_tiles()
-        return map
-
-    @abstractmethod
-    def get_maps(self):
-        pass
-
-
-class SafeDungeonBuilder(AbstractDungeonBuilder):
-
-    def initialize_map(self):
-        map = SafeMap(self.width, self.height, variant=self.basename)
-        map.initialize_tiles()
-        return map
-
-    @abstractmethod
-    def get_maps(self):
-        pass
 
 

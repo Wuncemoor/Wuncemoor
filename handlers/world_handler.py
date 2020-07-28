@@ -1,6 +1,6 @@
 from builders.world_builder import DungeonDirector
 from config.image_objects import MINIMAP
-from map_objects.concrete_maps import DangerousMap
+from map_objects.dungeon_maps import DangerousMap
 
 
 class WorldHandler:

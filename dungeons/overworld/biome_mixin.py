@@ -1,9 +1,7 @@
 from opensimplex import OpenSimplex
 from random import randint
-
 from map_objects.floors import biome_floors
-from config.constants import SIMPLEX, IMAGE_OPTIONS
-from config.image_objects import BIOMES
+from config.constants import SIMPLEX
 
 
 class BiomeMixin:

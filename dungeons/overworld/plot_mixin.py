@@ -1,11 +1,8 @@
 import random
-
-from ECS.__entity.transition import Transition
-from ECS.entity import Entity
-from config.image_objects import BUNDLE_ALPHA, get_town_obj
+from config.image_objects import get_town_obj
 from map_objects.rectangle import Rect
 from map_objects.structure import Structure
-from maps.overworld.plot_node import PlotNode
+from dungeons.overworld.plot_node import PlotNode
 
 
 class PlotMixin:
@@ -108,11 +105,11 @@ class PlotMixin:
     @staticmethod
     def add_town(overworld, node):
         town = Structure(Rect(node.x, node.y, 8, 4), get_town_obj())
-        map.structures.append(town)
-    @staticmethod
-    def add_town(overworld, node):
-        town =
-        self.add_town(overworld, node.x, node.y)
-        stairs = Transition('Stairs', BUNDLE_ALPHA, node.name, 0, node.entrance)
-        ent = Entity(node.x, node.y, transition=stairs)
-        overworld.transitions.append(ent)
+        # map.structures.append(town)
+    # @staticmethod
+    # def add_town(overworld, node):
+    #     town =
+    #     self.add_town(overworld, node.x, node.y)
+    #     stairs = Transition('Stairs', BUNDLE_ALPHA, node.name, 0, node.entrance)
+    #     ent = Entity(node.x, node.y, transition=stairs)
+    #     overworld.transitions.append(ent)
