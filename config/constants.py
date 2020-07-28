@@ -3,7 +3,10 @@ START = ((1280, 720), 'Wuncemoor: The Eternal Dream')
 # (width, height)
 TILES_ON_SCREEN = (80, 37)
 # (width, height)
-START_TOWN = (80, 37)
+DUNGEON_ALPHA = (80, 37)
+DUNGEON_BETA = (100, 50)
+DUNGEON_GAMMA = (200, 100)
+DUNGEON_DELTA = (100, 40)
 # (width, height)
 OVERWORLD = (100, 100)
 # (width, height)
@@ -51,15 +54,5 @@ DUNGEON_FLOOR = {
 IMAGE_OPTIONS = {
     'grass': 13,
     'dirt': 9,
-    'deep': 9,
-    'desert': 9,
-    'forest': 9,
-    'plains': 9,
-    'savannah': 9,
-    'shallow': 9,
-    'snow': 9,
-    'taiga': 9,
-    'temprain': 9,
-    'tropicrain': 9,
-    'tundra': 9,
+    'biome': 9,
 }

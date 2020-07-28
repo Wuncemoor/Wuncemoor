@@ -1,10 +1,9 @@
-import pygame
 import tcod as libtcod
 from config.constants import TILES_ON_SCREEN, BLACK
 from config.image_objects import MESSAGE_BG, TILE_BASE, TITLE_SCREEN_BG, TITLE_MENU_BG, TITLE_MENU_BUTTON, INDICATOR_H, \
     ENCOUNTER_MENU, ENCOUNTER_BUTTON, ENCOUNTER_MESSAGE_BG, INDICATOR_V, LOOT_BG, LOOT_BANNER
 from enums.game_states import GameStates, MenuStates, EncounterStates
-from handlers.abstract import MVC
+from abstracts.abstract_mvc import MVC
 from handlers.logic.options import encounter_window_options
 from screens.calendar import display_calendar
 from screens.character_screen import character_screen
@@ -21,7 +20,6 @@ from pygame.font import Font
 class ArtistHandler(MVC):
     def __init__(self, screen):
         self.screen = screen
-        self.world_tiles = None
         self.tilesize = 16
 
 
@@ -64,34 +62,33 @@ class ArtistHandler(MVC):
                 for x in range(width):
                     self.draw_tile(x, y)
 
-        for structure in self.owner.world.current_map.structures:
-            self.draw_structure(structure)
-        for transition in self.owner.world.current_map.transitions:
-            self.draw_entity(transition)
-        for noncom in self.owner.world.current_map.noncombatants:
-            self.draw_entity(noncom)
-        # draw all entities in list
-        entities_in_render_order = sorted(self.owner.world.current_map.entities, key=lambda x: x.render_order.value)
-        for entity in entities_in_render_order:
-            self.draw_entity(entity)
-        self.draw_party()
+            for transition in self.owner.world.current_map.transitions:
+                self.draw_entity(transition)
+            for noncom in self.owner.world.current_map.noncombatants:
+                self.draw_entity(noncom)
+            # draw all entities in list
+            entities_in_render_order = sorted(self.owner.world.current_map.entities, key=lambda x: x.render_order.value)
+            for entity in entities_in_render_order:
+                self.draw_entity(entity)
+            self.draw_party()
 
-        # Print game messages one line at a time
 
-        message_surface = get_surface(MESSAGE_BG)
-        y = 0
-        for message in self.owner.log.messages.messages:
-            off_x = 30
-            off_y = 5
-            print_message(message_surface, message, off_x, off_y, y)
-            y += 1
+            # Print game messages one line at a time
 
-        self.screen.blit(message_surface, (300, 592))
-        message_surface.fill(BLACK)
+            message_surface = get_surface(MESSAGE_BG)
+            y = 0
+            for message in self.owner.log.messages.messages:
+                off_x = 30
+                off_y = 5
+                print_message(message_surface, message, off_x, off_y, y)
+                y += 1
 
-        self.blit_resource_hud()
+            self.screen.blit(message_surface, (300, 592))
+            message_surface.fill(BLACK)
 
-        self.blit_calendar()
+            self.blit_resource_hud()
+
+            self.blit_calendar()
 
     def menus(self):
         if self.handler.state == MenuStates.PARTY:
@@ -174,22 +171,22 @@ class ArtistHandler(MVC):
 
         self.screen.blit(surfimg, ((party.x - cx) * self.tilesize, (party.y - cy) * self.tilesize))
 
-    def draw_structure(self, structure):
-        cx, cy = self.handler.camera.x, self.handler.camera.y
-
-        count = 0
-        for j in range(structure.rect.y1, structure.rect.y2):
-            for i in range(structure.rect.x1, structure.rect.x2):
-                visible = libtcod.map_is_in_fov(self.handler.fov.map, i, j)
-                if visible:
-                    self.screen.blit(structure.file_objs[0][count], ((i - cx) * self.tilesize, (j - cy) * self.tilesize))
-                    count += 1
-                elif self.owner.world.tiles[i][j].explored:
-                    self.screen.blit(structure.file_objs[1][count], ((i - cx) * self.tilesize, (j - cy) * self.tilesize))
-                    count += 1
-                else:
-                    self.screen.blit(TILE_BASE.get('black'), ((i - cx) * self.tilesize, (j - cy) * self.tilesize))
-                    count += 1
+    # def draw_structure(self, structure):
+    #     cx, cy = self.handler.camera.x, self.handler.camera.y
+    #
+    #     count = 0
+    #     for j in range(structure.rect.y1, structure.rect.y2):
+    #         for i in range(structure.rect.x1, structure.rect.x2):
+    #             visible = libtcod.map_is_in_fov(self.handler.fov.map, i, j)
+    #             if visible:
+    #                 self.screen.blit(structure.file_objs[0][count], ((i - cx) * self.tilesize, (j - cy) * self.tilesize))
+    #                 count += 1
+    #             elif self.owner.world.tiles[i][j].explored:
+    #                 self.screen.blit(structure.file_objs[1][count], ((i - cx) * self.tilesize, (j - cy) * self.tilesize))
+    #                 count += 1
+    #             else:
+    #                 self.screen.blit(TILE_BASE.get('black'), ((i - cx) * self.tilesize, (j - cy) * self.tilesize))
+    #                 count += 1
 
     def draw_tile(self, x, y):
         cx, cy = self.handler.camera.x, self.handler.camera.y
@@ -199,10 +196,10 @@ class ArtistHandler(MVC):
         tile = self.owner.world.tiles[cx + x][cy + y]
 
         if visible:
-            self.screen.blit(tile.image, (x * self.tilesize, y * self.tilesize))
+            self.screen.blit(tile.floor.image, (x * self.tilesize, y * self.tilesize))
             tile.explored = True
         elif tile.explored:
-            self.screen.blit(tile.image2, (x * self.tilesize, y * self.tilesize))
+            self.screen.blit(tile.floor.image2, (x * self.tilesize, y * self.tilesize))
         else:
             self.screen.blit(TILE_BASE.get('black'), (x * self.tilesize, y * self.tilesize))
 
@@ -235,13 +232,3 @@ class ArtistHandler(MVC):
             menu.blit(INDICATOR_H, (buttons_off_x - 50, buttons_off_y - 11 + (dy * self.owner.options.current.choice)))
 
         self.screen.blit(menu, (0, 480))
-
-
-def get_names_under_mouse(entities, fov_map):
-    (x, y) = pygame.mouse.get_pos()
-
-    names = [entity.name for entity in entities if
-             entity.x == x and entity.y == y and libtcod.map_is_in_fov(fov_map, entity.x, entity.y)]
-    names = ', '.join(names)
-
-    return names.capitalize()

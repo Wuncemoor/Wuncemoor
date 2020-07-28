@@ -1,5 +1,7 @@
 from opensimplex import OpenSimplex
 from random import randint
+
+from map_objects.floors import biome_floors
 from config.constants import SIMPLEX, IMAGE_OPTIONS
 from config.image_objects import BIOMES
 
@@ -50,7 +52,7 @@ class BiomeMixin:
                         map.tiles[i][j].type = 'shallow'
                     else:
                         map.tiles[i][j].type = 'deep'
-                    self.get_images(map.tiles[i][j])
+                    self.get_biome_floor(map.tiles[i][j])
 
                 else:
 
@@ -58,20 +60,24 @@ class BiomeMixin:
                     moistlist = self.get_moistlist(temp)
                     biome = self.moisture(moistlist, moist)
                     map.tiles[i][j].type = biome
-                    self.get_images(map.tiles[i][j])
-        self.apply_mode(map)
+                    self.get_biome_floor(map.tiles[i][j])
 
     @staticmethod
-    def apply_mode(map):
-        for row in map.tiles:
-            for tile in row:
-                tile.mode = str(randint(0, 8))
-
-    @staticmethod
-    def get_images(tile):
-        num = randint(0, IMAGE_OPTIONS.get(tile.type) - 1)
-        tile.image = BIOMES.get('light_' + tile.type)[num]
-        tile.image2 = BIOMES.get('dark_' + tile.type)[num]
+    def get_biome_floor(tile):
+        floor_dict = {
+            'deep': biome_floors.DeepTileFloor(),
+            'desert': biome_floors.DesertTileFloor(),
+            'forest': biome_floors.ForestTileFloor(),
+            'plains': biome_floors.PlainsTileFloor(),
+            'savannah': biome_floors.SavannahTileFloor(),
+            'shallow': biome_floors.ShallowTileFloor(),
+            'snow': biome_floors.SnowTileFloor(),
+            'taiga': biome_floors.TaigaTileFloor(),
+            'temprain': biome_floors.TemprainTileFloor(),
+            'tropicrain': biome_floors.TropicrainTileFloor(),
+            'tundra': biome_floors.TundraTileFloor(),
+        }
+        tile.floor = floor_dict.get(tile.type)
 
     @staticmethod
     def moisture(table, moist_level):

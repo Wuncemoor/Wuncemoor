@@ -13,14 +13,16 @@ class PlotMixin:
 
     def apply_core_plot_nodes(self, overworld):
 
-        nodes = self.get_core_plot_nodes(overworld.width, overworld.height)
+        nodes = self.get_core_plot_nodes(overworld)
 
         for node in nodes:
             self.add_town(overworld, node.x, node.y)
             stairs = Transition('Stairs', BUNDLE_ALPHA, node.name, 0, node.entrance)
             ent = Entity(node.x, node.y, transition=stairs)
             overworld.transitions.append(ent)
-        
+
+        return nodes
+
     def get_core_plot_nodes(self, overworld):
 
         nodes = self.get_intro_nodes(overworld.width, overworld.height)
@@ -30,7 +32,7 @@ class PlotMixin:
         tw, th = 8, 4
         spawn = [(5, 20), (70, 20), (5, 20), (5, 5)]
         delta = [-30, -30, -50]
-        name = ['town', 'second_town', 'third_town', 'fourth_town']
+        name = ['alpha', 'beta', 'gamma', 'delta']
         nodes_to_make = 4
         observed_node = 1
         completed_nodes = 0
