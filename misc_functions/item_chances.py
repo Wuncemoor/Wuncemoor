@@ -1,4 +1,4 @@
-from random_utils import from_dungeon_level
+from misc_functions.random_utils import from_dungeon_level
 
 
 def get_item_chances(d_level):

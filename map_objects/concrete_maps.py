@@ -3,12 +3,12 @@ from ECS.entity import Entity
 from random import randint
 
 from abstracts.abstract_map import Tiles2D
-from random_utils import random_choice_from_dict, from_dungeon_level
+from misc_functions.random_utils import random_choice_from_dict, from_dungeon_level
 from enums.render_order import RenderOrder
 from builders.mob_builder import MobDirector, MobBuilder
 from map_objects.rectangle import Rect
-from map_objects.chances.item_chances import get_item_chances
-from map_objects.chances.mob_chances import MobChances
+from misc_functions.item_chances import get_item_chances
+from misc_functions.mob_chances import MobChances
 from builders.make_item import make_item
 from config.constants import MAX_ROOMS, ROOM_MAX_SIZE, ROOM_MIN_SIZE
 

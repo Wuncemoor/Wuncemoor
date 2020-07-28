@@ -1,4 +1,4 @@
-from random_utils import from_dungeon_level, from_node_power
+from misc_functions.random_utils import from_node_power
 from collections import Counter
 
 

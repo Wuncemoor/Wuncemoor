@@ -1,6 +1,4 @@
-
 import tcod as libtcod
-
 from ECS.entity import Entity
 from abstracts.abstract_builder import DangerousDungeonBuilder, SafeDungeonBuilder
 from config.constants import OVERWORLD, DUNGEON_ALPHA, DUNGEON_DELTA, DUNGEON_GAMMA, DUNGEON_BETA
@@ -9,9 +7,9 @@ from ECS.__entity.transition import Transition
 from config.image_objects import STAIRS_DOWN, STAIRS_UP, BUNDLE_ALPHA
 from map_objects.rectangle import Rect
 from map_objects.road import Road
-from maps.dungeon_alpha import DungeonAlphaMixin
-from maps.overworld.biome_functions import BiomeMixin
-from maps.overworld.core_nodes import PlotMixin
+from dungeons.dungeon_alpha import DungeonAlphaMixin
+from dungeons.overworld.biome_functions import BiomeMixin
+from dungeons.overworld.core_nodes import PlotMixin
 
 
 class CaveBuilder(DangerousDungeonBuilder):

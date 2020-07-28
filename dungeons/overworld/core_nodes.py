@@ -2,8 +2,7 @@ import random
 
 from ECS.__entity.transition import Transition
 from ECS.entity import Entity
-from config.image_objects import BUNDLE_ALPHA
-from map_objects.object_files.get_structures import get_town_obj
+from config.image_objects import BUNDLE_ALPHA, get_town_obj
 from map_objects.rectangle import Rect
 from map_objects.structure import Structure
 from maps.overworld.plot_node import PlotNode
@@ -14,12 +13,7 @@ class PlotMixin:
     def apply_core_plot_nodes(self, overworld):
 
         nodes = self.get_core_plot_nodes(overworld)
-
-        for node in nodes:
-            self.add_town(overworld, node.x, node.y)
-            stairs = Transition('Stairs', BUNDLE_ALPHA, node.name, 0, node.entrance)
-            ent = Entity(node.x, node.y, transition=stairs)
-            overworld.transitions.append(ent)
+        self.add_towns(overworld, nodes)
 
         return nodes
 
@@ -106,7 +100,19 @@ class PlotMixin:
                 if [i, j] not in no_fly:
                     node.no_fly_zone.append([i, j])
 
+    def add_towns(self, overworld, nodes):
+        for node in nodes:
+            self.add_town(overworld, node)
+
+
     @staticmethod
-    def add_town(map, x, y):
-        town = Structure(Rect(x, y, 8, 4), get_town_obj())
+    def add_town(overworld, node):
+        town = Structure(Rect(node.x, node.y, 8, 4), get_town_obj())
         map.structures.append(town)
+    @staticmethod
+    def add_town(overworld, node):
+        town =
+        self.add_town(overworld, node.x, node.y)
+        stairs = Transition('Stairs', BUNDLE_ALPHA, node.name, 0, node.entrance)
+        ent = Entity(node.x, node.y, transition=stairs)
+        overworld.transitions.append(ent)

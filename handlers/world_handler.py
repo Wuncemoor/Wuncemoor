@@ -91,7 +91,7 @@ class WorldHandler:
 
     @property
     def dangerous(self):
-        if self.current_map is DangerousMap:
+        if isinstance(self.current_map, DangerousMap):
             return True
         return False
 

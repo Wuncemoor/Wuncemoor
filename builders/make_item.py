@@ -8,7 +8,7 @@ from ECS.__entity.__item.__equippable.equippable_material import EquippableMater
 from handlers.views.messages import Message
 from enums.render_order import RenderOrder
 from enums.equipment_slots import EquipmentSlots
-from item_functions import heal, cast_fireball, cast_confuse, cast_lightning
+from misc_functions.item_functions import heal, cast_fireball, cast_confuse, cast_lightning
 import tcod as libtcod
 from config.image_objects import BUNDLE_WEAPONS, BUNDLE_POTION, SCROLL
 
