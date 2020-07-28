@@ -3,6 +3,7 @@ from ECS.entity import Entity
 from random import randint
 
 from abstracts.abstract_map import Tiles2D
+from map_objects.tile import Tile
 from misc_functions.random_utils import random_choice_from_dict, from_dungeon_level
 from enums.render_order import RenderOrder
 from builders.mob_builder import MobDirector, MobBuilder
@@ -13,7 +14,15 @@ from builders.make_item import make_item
 from config.constants import MAX_ROOMS, ROOM_MAX_SIZE, ROOM_MIN_SIZE
 
 
-class DangerousMap(Tiles2D):
+class RealTilesMixin:
+
+    def initialize_tiles(self):
+        tiles = [[Tile(self.variant) for y in range(self.height)] for x in range(self.width)]
+
+        return tiles
+
+
+class DangerousMap(RealTilesMixin, Tiles2D):
 
     def __init__(self, width, height, variant):
         super().__init__(width, height, variant)
@@ -149,7 +158,7 @@ class DangerousMap(Tiles2D):
         self.entities.append(mob)
 
 
-class SafeMap(Tiles2D):
+class SafeMap(RealTilesMixin, Tiles2D):
 
     def __init__(self, width, height, variant):
         super().__init__(width, height, variant)
@@ -159,7 +168,6 @@ class SafeMap(Tiles2D):
         self.noncombatants = []
         self.entrance = None
         self.exit = None
-
 
     def add_road(self, road):
         for x in range(road.rect.x1, road.rect.x2):
