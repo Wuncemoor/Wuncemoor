@@ -1,7 +1,7 @@
+import pygame as py
 from config.constants import START
 from handlers.game_handler import GameHandler
 from handlers.artist_handler import ArtistHandler
-import pygame as py
 
 
 def main():

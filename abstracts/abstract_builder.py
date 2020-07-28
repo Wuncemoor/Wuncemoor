@@ -7,10 +7,10 @@ class AbstractDungeonBuilder(ABC):
 
     def __init__(self, basename, subtype, floors, width, height, np):
         self.basename = basename
+        self.subtype = subtype
         self.floors = floors
         self.width = width
         self.height = height
-        self.subtype = subtype
         self.np = np
 
     @abstractmethod
@@ -60,4 +60,5 @@ class SafeDungeonBuilder(AbstractDungeonBuilder):
     @abstractmethod
     def get_maps(self):
         pass
+
 

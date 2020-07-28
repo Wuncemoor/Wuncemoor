@@ -1,7 +1,5 @@
 import pygame as py
-
 from config.constants import MINI_MAP
-from config.image_objects import MINIMAP
 
 
 def minimap_screen(self):
@@ -13,9 +11,8 @@ def minimap_screen(self):
     offset_y = 50
     i, j = 0, 0
 
-    for row in self.world_tiles:
-        for tile in row:
-            img = MINIMAP.get(tile.type)
+    for row in self.owner.world.mini:
+        for img in row:
             window.blit(img, (offset_x + i, offset_y + j))
             j += 1
         i += 1
