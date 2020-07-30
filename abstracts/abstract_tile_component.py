@@ -1,24 +1,36 @@
 from abc import ABC, abstractmethod
 
 
-class TileFloor(ABC):
+class AbstractTileComponent(ABC):
 
-    def __init__(self, image, image2):
-        self.image = image
-        self.image2 = image2
+    def __init__(self):
+        self.image = None
+        self.image2 = None
+
+    @property
+    @abstractmethod
+    def name(self):
+        pass
+
+
+class AbstractTileFloor(AbstractTileComponent):
+
+    def __init__(self):
+        super().__init__()
+        self.transition = None
 
     @property
     @abstractmethod
     def name(self):
         pass
 
+    def has_transition(self):
+        if self.transition is not None:
+            return True
+        return False
 
-class TileBlocker(TileFloor):
 
-    @property
-    @abstractmethod
-    def name(self):
-        pass
+class AbstractTileBlocker(AbstractTileComponent):
 
     @property
     @abstractmethod

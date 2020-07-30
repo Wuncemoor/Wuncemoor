@@ -1,8 +1,8 @@
-from abstracts.abstract_tile_component import TileBlocker
+from abstracts.abstract_tile_component import AbstractTileBlocker
 from config.image_objects import LIGHT_ROCK_WALL, DARK_ROCK_WALL
 
 
-class RockTileBlocker(TileBlocker):
+class RockTileBlocker(AbstractTileBlocker):
 
     name = 'Rock Wall'
     image = LIGHT_ROCK_WALL

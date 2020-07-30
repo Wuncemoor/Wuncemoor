@@ -3,6 +3,7 @@ from config.image_objects import get_town_obj
 from map_objects.rectangle import Rect
 from map_objects.structure import Structure
 from dungeons.overworld.plot_node import PlotNode
+from prefabs.overworld_town import OverworldTown
 
 
 class PlotMixin:
@@ -108,7 +109,7 @@ class PlotMixin:
         # map.structures.append(town)
     # @staticmethod
     # def add_town(overworld, node):
-    #     town =
+    #     prefab = OverworldTown
     #     self.add_town(overworld, node.x, node.y)
     #     stairs = Transition('Stairs', BUNDLE_ALPHA, node.name, 0, node.entrance)
     #     ent = Entity(node.x, node.y, transition=stairs)

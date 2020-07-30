@@ -5,7 +5,7 @@ from map_objects.tile import Tile, PrefabTile
 class InitPrefabTiles(InitTiles):
 
     def initialize_tiles(self):
-        tiles = [[PrefabTile(self.variant) for y in range(self.height)] for x in range(self.width)]
+        tiles = [[PrefabTile() for y in range(self.height)] for x in range(self.width)]
 
         return tiles
 
