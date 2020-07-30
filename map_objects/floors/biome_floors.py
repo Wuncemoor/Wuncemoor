@@ -1,12 +1,13 @@
 from random import randint
-from abstracts.abstract_tile_component import TileFloor
+from abstracts.abstract_tile_component import AbstractTileFloor
 from config.constants import IMAGE_OPTIONS
 from config.image_objects import BIOMES
 
 
-class DeepTileFloor(TileFloor):
+class DeepTileFloor(AbstractTileFloor):
 
     def __init__(self):
+        super().__init__()
         num = randint(0, IMAGE_OPTIONS.get('biome') - 1)
         self.image = BIOMES.get('light_deep')[num]
         self.image2 = BIOMES.get('dark_deep')[num]
@@ -14,9 +15,10 @@ class DeepTileFloor(TileFloor):
     name = 'Deep Water'
 
 
-class DesertTileFloor(TileFloor):
+class DesertTileFloor(AbstractTileFloor):
 
     def __init__(self):
+        super().__init__()
         num = randint(0, IMAGE_OPTIONS.get('biome') - 1)
         self.image = BIOMES.get('light_desert')[num]
         self.image2 = BIOMES.get('dark_desert')[num]
@@ -24,9 +26,10 @@ class DesertTileFloor(TileFloor):
     name = 'Desert'
 
 
-class ForestTileFloor(TileFloor):
+class ForestTileFloor(AbstractTileFloor):
 
     def __init__(self):
+        super().__init__()
         num = randint(0, IMAGE_OPTIONS.get('biome') - 1)
         self.image = BIOMES.get('light_forest')[num]
         self.image2 = BIOMES.get('dark_forest')[num]
@@ -34,9 +37,10 @@ class ForestTileFloor(TileFloor):
     name = 'Forest'
 
 
-class PlainsTileFloor(TileFloor):
+class PlainsTileFloor(AbstractTileFloor):
 
     def __init__(self):
+        super().__init__()
         num = randint(0, IMAGE_OPTIONS.get('biome') - 1)
         self.image = BIOMES.get('light_plains')[num]
         self.image2 = BIOMES.get('dark_plains')[num]
@@ -44,9 +48,10 @@ class PlainsTileFloor(TileFloor):
     name = 'Plains'
 
 
-class SavannahTileFloor(TileFloor):
+class SavannahTileFloor(AbstractTileFloor):
 
     def __init__(self):
+        super().__init__()
         num = randint(0, IMAGE_OPTIONS.get('biome') - 1)
         self.image = BIOMES.get('light_savannah')[num]
         self.image2 = BIOMES.get('dark_savannah')[num]
@@ -54,9 +59,10 @@ class SavannahTileFloor(TileFloor):
     name = 'Savannah'
 
 
-class ShallowTileFloor(TileFloor):
+class ShallowTileFloor(AbstractTileFloor):
 
     def __init__(self):
+        super().__init__()
         num = randint(0, IMAGE_OPTIONS.get('biome') - 1)
         self.image = BIOMES.get('light_shallow')[num]
         self.image2 = BIOMES.get('dark_shallow')[num]
@@ -64,9 +70,10 @@ class ShallowTileFloor(TileFloor):
     name = 'Shallow Water'
 
 
-class SnowTileFloor(TileFloor):
+class SnowTileFloor(AbstractTileFloor):
 
     def __init__(self):
+        super().__init__()
         num = randint(0, IMAGE_OPTIONS.get('biome') - 1)
         self.image = BIOMES.get('light_snow')[num]
         self.image2 = BIOMES.get('dark_snow')[num]
@@ -74,9 +81,10 @@ class SnowTileFloor(TileFloor):
     name = 'Snow'
 
 
-class TaigaTileFloor(TileFloor):
+class TaigaTileFloor(AbstractTileFloor):
 
     def __init__(self):
+        super().__init__()
         num = randint(0, IMAGE_OPTIONS.get('biome') - 1)
         self.image = BIOMES.get('light_taiga')[num]
         self.image2 = BIOMES.get('dark_taiga')[num]
@@ -84,9 +92,10 @@ class TaigaTileFloor(TileFloor):
     name = 'Taiga'
 
 
-class TemprainTileFloor(TileFloor):
+class TemprainTileFloor(AbstractTileFloor):
 
     def __init__(self):
+        super().__init__()
         num = randint(0, IMAGE_OPTIONS.get('biome') - 1)
         self.image = BIOMES.get('light_temprain')[num]
         self.image2 = BIOMES.get('dark_temprain')[num]
@@ -94,9 +103,10 @@ class TemprainTileFloor(TileFloor):
     name = 'Temperate Rainforest'
 
 
-class TropicrainTileFloor(TileFloor):
+class TropicrainTileFloor(AbstractTileFloor):
 
     def __init__(self):
+        super().__init__()
         num = randint(0, IMAGE_OPTIONS.get('biome') - 1)
         self.image = BIOMES.get('light_tropicrain')[num]
         self.image2 = BIOMES.get('dark_tropicrain')[num]
@@ -104,9 +114,10 @@ class TropicrainTileFloor(TileFloor):
     name = 'Tropical Rainforest'
 
 
-class TundraTileFloor(TileFloor):
+class TundraTileFloor(AbstractTileFloor):
 
     def __init__(self):
+        super().__init__()
         num = randint(0, IMAGE_OPTIONS.get('biome') - 1)
         self.image = BIOMES.get('light_tundra')[num]
         self.image2 = BIOMES.get('dark_tundra')[num]
