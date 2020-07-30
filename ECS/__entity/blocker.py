@@ -1,4 +1,4 @@
-from abstracts.abstract_structural import TileBlocker
+from abstracts.abstract_tile_component import TileBlocker
 from config.image_objects import LIGHT_ROCK_WALL, DARK_ROCK_WALL
 
 

@@ -1,9 +1,9 @@
+from dungeons.tile_mixins import InitRealTiles
 from map_objects.floors.basic_floors import RoadTileFloor
 from ECS.entity import Entity
 from random import randint
 
-from abstracts.abstract_map import Tiles2D
-from map_objects.tile import Tile
+from abstracts.abstract_maps import ProceduralTiles2D
 from misc_functions.random_utils import random_choice_from_dict, from_dungeon_level
 from enums.render_order import RenderOrder
 from builders.mob_builder import MobDirector, MobBuilder
@@ -14,17 +14,10 @@ from builders.make_item import make_item
 from config.constants import MAX_ROOMS, ROOM_MAX_SIZE, ROOM_MIN_SIZE
 
 
-class RealTilesMixin:
-
-    def initialize_tiles(self):
-        tiles = [[Tile(self.variant) for y in range(self.height)] for x in range(self.width)]
-
-        return tiles
-
-
-class DangerousMap(RealTilesMixin, Tiles2D):
+class DangerousMap(ProceduralTiles2D, InitRealTiles):
 
     def __init__(self, width, height, variant):
+
         super().__init__(width, height, variant)
         self.entities = []
         self.transitions = []
@@ -60,7 +53,7 @@ class DangerousMap(RealTilesMixin, Tiles2D):
             self.get_image(d_type, self.tiles[x][y])
 
     # Create everything except stairs
-    def fill_map(self, dungeon_type, subtype, node_power):
+    def fill_tiles(self, dungeon_type, subtype, node_power):
         rooms = []
         num_rooms = 0
         center_of_last_room_x = None
@@ -158,7 +151,7 @@ class DangerousMap(RealTilesMixin, Tiles2D):
         self.entities.append(mob)
 
 
-class SafeMap(RealTilesMixin, Tiles2D):
+class SafeMap(InitRealTiles, ProceduralTiles2D):
 
     def __init__(self, width, height, variant):
         super().__init__(width, height, variant)
@@ -192,7 +185,7 @@ class SafeMap(RealTilesMixin, Tiles2D):
                 self.tiles[x][y].floor = RoadTileFloor(mode)
         self.transitions.extend(road.transitions)
 
-    def fill_map(self):
+    def fill_tiles(self):
         pass
 
     def add_structure(self):

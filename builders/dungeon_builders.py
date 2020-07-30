@@ -1,18 +1,19 @@
 import tcod as libtcod
 from ECS.entity import Entity
-from abstracts.abstract_builder import DangerousDungeonBuilder, SafeDungeonBuilder
+from abstracts.abstract_dungeon_builder import AbstractDungeonBuilder
 from config.constants import OVERWORLD, DUNGEON_ALPHA, DUNGEON_DELTA, DUNGEON_GAMMA, DUNGEON_BETA
+from dungeons.mixins import InitDangerousMap, InitSafeMap
 from enums.render_order import RenderOrder
 from ECS.__entity.transition import Transition
 from config.image_objects import STAIRS_DOWN, STAIRS_UP, BUNDLE_ALPHA
 from map_objects.rectangle import Rect
 from map_objects.road import Road
 from dungeons.dungeon_alpha import DungeonAlphaMixin
-from dungeons.overworld.biome_functions import BiomeMixin
-from dungeons.overworld.core_nodes import PlotMixin
+from dungeons.overworld.biome_mixin import BiomeMixin
+from dungeons.overworld.plot_mixin import PlotMixin
 
 
-class CaveBuilder(DangerousDungeonBuilder):
+class CaveBuilder(AbstractDungeonBuilder, InitDangerousMap):
 
     def get_maps(self):
 
@@ -26,7 +27,7 @@ class CaveBuilder(DangerousDungeonBuilder):
 
         # Fill in the maps except for stairs
         for map in maps:
-            map.fill_map(self.basename, self.subtype, self.np)
+            map.fill_tiles(self.basename, self.subtype, self.np)
 
         current_map = 0
 
@@ -76,7 +77,7 @@ class CaveBuilder(DangerousDungeonBuilder):
         return maps
 
 
-class OverworldBuilder(DangerousDungeonBuilder, BiomeMixin, PlotMixin):
+class OverworldBuilder(InitDangerousMap, AbstractDungeonBuilder, BiomeMixin, PlotMixin):
 
     def __init__(self):
         self.basename = 'overworld'
@@ -91,7 +92,7 @@ class OverworldBuilder(DangerousDungeonBuilder, BiomeMixin, PlotMixin):
         return [map]
 
 
-class DungeonAlphaBuilder(SafeDungeonBuilder, DungeonAlphaMixin):
+class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin):
 
     def __init__(self, node):
         self.basename = 'alpha'
@@ -131,8 +132,7 @@ class DungeonAlphaBuilder(SafeDungeonBuilder, DungeonAlphaMixin):
         # Get samwise but only in first town
 
 
-
-class DungeonBetaBuilder(SafeDungeonBuilder):
+class DungeonBetaBuilder(InitSafeMap, AbstractDungeonBuilder):
 
     def __init__(self, node):
         self.basename = 'beta'
@@ -153,7 +153,7 @@ class DungeonBetaBuilder(SafeDungeonBuilder):
         return [map]
 
 
-class DungeonGammaBuilder(SafeDungeonBuilder):
+class DungeonGammaBuilder(InitSafeMap, AbstractDungeonBuilder):
 
     def __init__(self, node):
         self.basename = 'gamma'
@@ -173,7 +173,8 @@ class DungeonGammaBuilder(SafeDungeonBuilder):
         map.add_road(road)
         return [map]
 
-class DungeonDeltaBuilder(SafeDungeonBuilder):
+
+class DungeonDeltaBuilder(InitSafeMap, AbstractDungeonBuilder):
 
     def __init__(self, node):
         self.basename = 'delta'

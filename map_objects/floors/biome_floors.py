@@ -1,5 +1,5 @@
 from random import randint
-from abstracts.abstract_structural import TileFloor
+from abstracts.abstract_tile_component import TileFloor
 from config.constants import IMAGE_OPTIONS
 from config.image_objects import BIOMES
 

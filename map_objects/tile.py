@@ -1,8 +1,21 @@
-from map_objects.floors.basic_floors import GrassTileFloor, DirtTileFloor
+from abstracts.abstract_tile import AbstractTile
+from map_objects.floors.basic_floors import GrassTileFloor, DirtTileFloor, PrefabTileFloor
 from ECS.__entity.blocker import RockTileBlocker
 
 
-class Tile:
+class PrefabTile(AbstractTile):
+
+    def __init__(self, variant):
+        super().__init__(variant)
+
+    def initialize_floor(self, variant):
+        return PrefabTileFloor()
+
+    def initialize_blocker(self, variant):
+        return None
+
+
+class Tile(AbstractTile):
     """
     Map tile. It may or may not be blocked, and may or may not block sight.
     On the world map, type is the biome and subtype is the closest exuding Node. (Ex. Rainforest near a goblin cave.)
@@ -13,7 +26,6 @@ class Tile:
     def __init__(self, variant):
         self.floor = self.initialize_floor(variant)
         self.blocker = self.initialize_blocker(variant)
-        self.block_sight = self.initialize_block_sight()
         self.explored = False
         self.type = None
         self.subtype = None
@@ -30,16 +42,11 @@ class Tile:
         return base
 
     def initialize_blocker(self, variant):
-        if variant in ('town', 'overworld'):
-            return None
         if variant == 'cave':
             return RockTileBlocker()
-
-    def initialize_block_sight(self):
-        if self.blocker is None:
-            return False
         else:
-            return self.blocker.opaque
+            return None
+
 
 
 
