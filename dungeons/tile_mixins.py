@@ -1,11 +1,11 @@
 from abstracts.abstract_maps import InitTiles
-from map_objects.tile import Tile, PrefabTile
+from map_objects.tile import Tile, FakeTile
 
 
-class InitPrefabTiles(InitTiles):
+class InitFakeTiles(InitTiles):
 
     def initialize_tiles(self):
-        tiles = [[PrefabTile() for y in range(self.height)] for x in range(self.width)]
+        tiles = [[FakeTile(self.variant) for y in range(self.height)] for x in range(self.width)]
 
         return tiles
 

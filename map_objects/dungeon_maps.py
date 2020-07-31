@@ -1,5 +1,5 @@
 from dungeons.tile_mixins import InitRealTiles
-from map_objects.floors.basic_floors import RoadTileFloor
+from map_objects.majorroad import RoadTileFloor
 from ECS.entity import Entity
 from random import randint
 

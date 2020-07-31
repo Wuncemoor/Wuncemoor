@@ -1,15 +1,25 @@
 from abstracts.abstract_tile import AbstractTile
-from map_objects.floors.basic_floors import GrassTileFloor, DirtTileFloor, PrefabTileFloor
+from abstracts.abstract_tile_component import AbstractTileFloor
+from map_objects.floors.basic_floors import GrassTileFloor, DirtTileFloor
 from ECS.__entity.blocker import RockTileBlocker
 
 
-class PrefabTile(AbstractTile):
+class FakeTileFloor(AbstractTileFloor):
+
+    def __init__(self):
+        super().__init__()
+        self.name = None
+
+    name = 'Fake'
+
+
+class FakeTile(AbstractTile):
 
     def __init__(self, variant):
         super().__init__(variant)
 
     def initialize_floor(self, variant):
-        return PrefabTileFloor()
+        return FakeTileFloor()
 
     def initialize_blocker(self, variant):
         return None
@@ -46,7 +56,3 @@ class Tile(AbstractTile):
             return RockTileBlocker()
         else:
             return None
-
-
-
-
