@@ -3,8 +3,8 @@ from handlers.input_handler import InputHandler
 from handlers.log_handler import LogHandler
 from handlers.logic.options import initialize_menu_options
 from handlers.options_handler import OptionsHandler
-from handlers.state_handlers import MenusHandler, TitleHandler, LifeHandler, DialogueHandler, TimeHandler, \
-    EncounterHandler, RewardHandler
+from handlers import state_handlers
+from handlers.time_handler import TimeHandler
 from handlers.logic_handler import LogicHandler
 import pygame as py
 import sys
@@ -24,13 +24,21 @@ class GameHandler:
         self.input.owner = self
         self.options = OptionsHandler()
         self.options.owner = self
-        self.title = TitleHandler()
+        self.title = state_handlers.TitleHandler()
         self.title.owner = self
-        self.life = LifeHandler()
+        self.life = state_handlers.LifeHandler()
         self.life.owner = self
-        self.menus = MenusHandler()
+        self.menus = state_handlers.MenusHandler()
         self.menus.owner = self
-
+        self.debug = state_handlers.DebugHandler()
+        self.debug.owner = self
+        self.world = None
+        self.dialogue = None
+        self.time = None
+        self.encounter = None
+        self.reward = None
+        self.party = None
+        self.log = None
 
     @property
     def state(self):
@@ -60,10 +68,10 @@ class GameHandler:
         loot = Loot()
         self.artist.screen.fill(BLACK)
         self.world = world
-        self.dialogue = DialogueHandler([party.journal])
+        self.dialogue = state_handlers.DialogueHandler([party.journal])
         self.time = TimeHandler([party])
-        self.encounter = EncounterHandler(loot)
-        self.reward = RewardHandler(loot)
+        self.encounter = state_handlers.EncounterHandler(loot)
+        self.reward = state_handlers.RewardHandler(loot)
         self.party = party
         self.party.options = initialize_menu_options(self.party.members)
         self.party.journal.options = initialize_menu_options(self.party.journal.subgroups)
@@ -74,10 +82,7 @@ class GameHandler:
         self.life.fov.map = self.life.fov.initialize(self.world)
         self.state_handler = self.life
 
-    def quit(self):
+    @staticmethod
+    def quit():
         py.quit()
         sys.exit()
-
-
-
-

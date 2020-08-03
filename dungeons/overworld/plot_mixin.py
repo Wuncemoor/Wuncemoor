@@ -1,6 +1,6 @@
 import random
 from config.image_objects import get_town_obj
-from map_objects.rectangle import Rect
+from map_objects.rect import Rect
 from map_objects.structure import Structure
 from dungeons.overworld.plot_node import PlotNode
 from prefabs.overworld_town import OverworldTown

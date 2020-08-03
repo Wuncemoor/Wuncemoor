@@ -62,8 +62,6 @@ class ArtistHandler(MVC):
                 for x in range(width):
                     self.draw_tile(x, y)
 
-            for transition in self.owner.world.current_map.transitions:
-                self.draw_entity(transition)
             for noncom in self.owner.world.current_map.noncombatants:
                 self.draw_entity(noncom)
             # draw all entities in list
@@ -196,10 +194,10 @@ class ArtistHandler(MVC):
         tile = self.owner.world.tiles[cx + x][cy + y]
 
         if visible:
-            self.screen.blit(tile.floor.image, (x * self.tilesize, y * self.tilesize))
+            self.screen.blit(tile.floor.light_image, (x * self.tilesize, y * self.tilesize))
             tile.explored = True
         elif tile.explored:
-            self.screen.blit(tile.floor.image2, (x * self.tilesize, y * self.tilesize))
+            self.screen.blit(tile.floor.dark_image, (x * self.tilesize, y * self.tilesize))
         else:
             self.screen.blit(TILE_BASE.get('black'), (x * self.tilesize, y * self.tilesize))
 

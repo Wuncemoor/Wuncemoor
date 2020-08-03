@@ -6,8 +6,8 @@ from dungeons.mixins import InitDangerousMap, InitSafeMap
 from enums.render_order import RenderOrder
 from ECS.__entity.transition import Transition
 from config.image_objects import STAIRS_DOWN, STAIRS_UP, BUNDLE_ALPHA
-from map_objects.rectangle import Rect
-from map_objects.road import Road
+from map_objects.rect import Rect
+from map_objects.majorroad import MajorRoad
 from dungeons.dungeon_alpha import DungeonAlphaMixin
 from dungeons.overworld.biome_mixin import BiomeMixin
 from dungeons.overworld.plot_mixin import PlotMixin
@@ -104,9 +104,8 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
 
     def get_maps(self):
         map = self.initialize_map()
-
         rect = Rect(0, int(self.height / 2) - 2, self.width, 4)
-        road = Road(rect, 'overworld', 0, (self.node.x, self.node.y), BUNDLE_ALPHA)
+        road = MajorRoad(rect, self.node)
         road.set_transitions('vertical')
         # add_road also adds transitions to overworld
         map.add_road(road)
@@ -115,13 +114,14 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
         map.noncombatants.append(samwise)
 
         return [map]
-        # convert to add_structures later
+        # convert to add_structures as part of tile rework
         # add_house(floor, 10, int(height / 2) - 8)
         # add_hut(floor, 30, int(height / 2) - 19)
 
         # equippable_test = EquippableBuilder(499)
         # director = Director()
         #
+        # random shopkeeper
         # director.set_builder(equippable_test)
         # equippable = director.get_equippable()
         # item_component = Item(equippable=equippable)
@@ -129,7 +129,6 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
         #
         # floor.entities.append(test_gear)
         #
-        # Get samwise but only in first town
 
 
 class DungeonBetaBuilder(InitSafeMap, AbstractDungeonBuilder):
@@ -144,9 +143,8 @@ class DungeonBetaBuilder(InitSafeMap, AbstractDungeonBuilder):
 
     def get_maps(self):
         map = self.initialize_map()
-
         rect = Rect(0, int(self.height / 2) - 2, self.width, 4)
-        road = Road(rect, 'overworld', 0, (self.node.x, self.node.y), BUNDLE_ALPHA)
+        road = MajorRoad(rect, self.node)
         road.set_transitions('vertical')
         # add_road also adds transitions to overworld
         map.add_road(road)
@@ -165,9 +163,8 @@ class DungeonGammaBuilder(InitSafeMap, AbstractDungeonBuilder):
 
     def get_maps(self):
         map = self.initialize_map()
-
         rect = Rect(0, int(self.height / 2) - 2, self.width, 4)
-        road = Road(rect, 'overworld', 0, (self.node.x, self.node.y), BUNDLE_ALPHA)
+        road = MajorRoad(rect, self.node)
         road.set_transitions('vertical')
         # add_road also adds transitions to overworld
         map.add_road(road)
@@ -186,9 +183,8 @@ class DungeonDeltaBuilder(InitSafeMap, AbstractDungeonBuilder):
 
     def get_maps(self):
         map = self.initialize_map()
-
         rect = Rect(0, int(self.height / 2) - 2, self.width, 4)
-        road = Road(rect, 'overworld', 0, (self.node.x, self.node.y), BUNDLE_ALPHA)
+        road = MajorRoad(rect, self.node)
         road.set_transitions('vertical')
         # add_road also adds transitions to overworld
         map.add_road(road)

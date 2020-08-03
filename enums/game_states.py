@@ -4,17 +4,16 @@ from enum import Enum
 class GameStates(Enum):
     TITLE = 1
     LIFE = 2
-    PLAYER_DEAD = 3
-    SHOW_INVENTORY = 4
-    DROP_INVENTORY = 5
-    TARGETING = 6
-    LEVEL_UP = 7
-    COMPETENCE_MENU = 8
-    ENCOUNTER = 9
-    DIALOGUE = 10
-    SHOW_MAP = 11
-    REWARD = 12
-    MENUS = 13
+    MENUS = 3
+    DIALOGUE = 4
+    ENCOUNTER = 5
+    REWARD = 6
+    DEBUG = 7
+    # States that need to be reimplemented
+    # PLAYER_DEAD = 8
+    # TARGETING = 9
+    # LEVEL_UP = 10
+    # COMPETENCE_MENU = 11
 
 
 class EncounterStates(Enum):
