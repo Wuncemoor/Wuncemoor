@@ -15,6 +15,7 @@ class MVC(ABC):
     @property
     def mapping(self):
         maps = {
+            GameStates.DEBUG: self.debug,
             GameStates.TITLE: self.title,
             GameStates.LIFE: self.life,
             GameStates.ENCOUNTER: self.encounter,
@@ -23,6 +24,10 @@ class MVC(ABC):
             GameStates.REWARD: self.reward,
         }
         return maps.get(self.state)
+
+    @abstractmethod
+    def debug(self):
+        pass
 
     @abstractmethod
     def title(self):
@@ -47,3 +52,4 @@ class MVC(ABC):
     @abstractmethod
     def reward(self):
         pass
+

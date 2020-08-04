@@ -1,105 +1,127 @@
 import pygame as py
 from abstracts.abstract_mvc import MVC
+from enums.game_states import GameStates
 from handlers.menus.settings import Settings
 
 
 class InputHandler(MVC):
 
-    def transduce(self, key):
-        return self.mapping(key)
+    def transduce(self, event):
+        return self.mapping(event)
 
     @staticmethod
-    def title(key):
-        if key in (py.K_UP, py.K_w):
+    def debug(event):
+        if event.key == py.K_ESCAPE:
+            return {'exit': True}
+        elif event.key == py.K_RETURN:
+            return {'command_send': True}
+        elif event.key == py.K_BACKSPACE:
+            return {'command_pop': True}
+        else:
+            return {'command_extend': event.unicode}
+
+    @staticmethod
+    def title(event):
+        if event.key in (py.K_UP, py.K_w):
             return {'traverse_menu': -1}
-        elif key in (py.K_DOWN, py.K_x):
+        elif event.key in (py.K_DOWN, py.K_x):
             return {'traverse_menu': 1}
-        elif key == py.K_RETURN:
+        elif event.key == py.K_RETURN:
             return {'choose_option': True}
+        elif event.key == py.K_PERIOD:
+            return {'debug': GameStates.TITLE}
         return {}
 
-    def life(self, key):
-        if key in (py.K_UP, py.K_w):
+    def life(self, event):
+        if event.key in (py.K_UP, py.K_w):
             return {'move': (0, -1)}
-        elif key in (py.K_DOWN, py.K_s):
+        elif event.key in (py.K_DOWN, py.K_s):
             return {'move': (0, 1)}
-        elif key in (py.K_LEFT, py.K_a):
+        elif event.key in (py.K_LEFT, py.K_a):
             return {'move': (-1, 0)}
-        elif key in (py.K_RIGHT, py.K_d):
+        elif event.key in (py.K_RIGHT, py.K_d):
             return {'move': (1, 0)}
-        elif key == py.K_c:
+        elif event.key == py.K_c:
             return {'show_menus': self.owner.party}
-        elif key == py.K_i:
+        elif event.key == py.K_i:
             return {'show_menus': self.owner.party.inventory}
-        elif key == py.K_m:
+        elif event.key == py.K_m:
             return {'show_menus': self.owner.party.map}
-        elif key == py.K_j:
+        elif event.key == py.K_j:
             return {'show_menus': self.owner.party.journal}
-        elif key == py.K_SPACE:
+        elif event.key == py.K_SPACE:
             return {'interact': True}
-        if key == py.K_RETURN and py.K_LALT:
+        elif event.key == py.K_PERIOD:
+            return {'debug': GameStates.LIFE}
+        if event.key == py.K_RETURN and py.K_LALT:
             return {'fullscreen': True}
-        if key == py.K_ESCAPE:
+        if event.key == py.K_ESCAPE:
             return {'show_menus': Settings()}
         return {}
 
     @staticmethod
-    def encounter(key):
+    def encounter(event):
 
-        if key in (py.K_a, py.K_LEFT):
+        if event.key in (py.K_a, py.K_LEFT):
             return {'traverse_menu': (-1, 0)}
-        elif key in (py.K_d, py.K_RIGHT):
+        elif event.key in (py.K_d, py.K_RIGHT):
             return {'traverse_menu': (1, 0)}
-        elif key in (py.K_w, py.K_UP):
+        elif event.key in (py.K_w, py.K_UP):
             return {'traverse_menu': (0, -1)}
-        elif key in (py.K_s, py.K_DOWN):
+        elif event.key in (py.K_s, py.K_DOWN):
             return {'traverse_menu': (0, 1)}
-        elif key == py.K_RETURN:
+        elif event.key == py.K_RETURN:
             return {'choose_option': True}
-        elif key == py.K_ESCAPE:
+        elif event.key == py.K_ESCAPE:
             return {'exit': True}
+        elif event.key == py.K_PERIOD:
+            return {'debug': GameStates.ENCOUNTER}
         return {}
 
     @staticmethod
-    def dialogue(key):
-        return {'converse': key}
+    def dialogue(event):
+        return {'converse': event.key}
 
-    def menus(self, key):
-        if key == py.K_ESCAPE:
+    def menus(self, event):
+        if event.key == py.K_ESCAPE:
             return {'exit': True}
-        elif key == py.K_c:
+        elif event.key == py.K_c:
             return {'show_menus': self.owner.party}
-        elif key == py.K_i:
+        elif event.key == py.K_i:
             return {'show_menus': self.owner.party.inventory}
-        elif key == py.K_m:
+        elif event.key == py.K_m:
             return {'show_menus': self.owner.party.map}
-        elif key == py.K_j:
+        elif event.key == py.K_j:
             return {'show_menus': self.owner.party.journal}
-        elif key in (py.K_a, py.K_LEFT):
+        elif event.key in (py.K_a, py.K_LEFT):
             return {'traverse_menu': (-1, 0)}
-        elif key in (py.K_d, py.K_RIGHT):
+        elif event.key in (py.K_d, py.K_RIGHT):
             return {'traverse_menu': (1, 0)}
-        elif key in (py.K_w, py.K_UP):
+        elif event.key in (py.K_w, py.K_UP):
             return {'traverse_menu': (0, -1)}
-        elif key in (py.K_s, py.K_DOWN):
+        elif event.key in (py.K_s, py.K_DOWN):
             return {'traverse_menu': (0, 1)}
-        elif key == py.K_RETURN:
+        elif event.key == py.K_RETURN:
             return {'choose_option': True}
+        elif event.key == py.K_PERIOD:
+            return {'debug': GameStates.MENUS}
         return {}
 
     @staticmethod
-    def reward(key):
+    def reward(event):
 
-        if key in (py.K_UP, py.K_w):
+        if event.key in (py.K_UP, py.K_w):
             return {'traverse_menu': -1}
-        elif key in (py.K_DOWN, py.K_x):
+        elif event.key in (py.K_DOWN, py.K_x):
             return {'traverse_menu': 1}
-        elif key in (py.K_LEFT, py.K_a):
+        elif event.key in (py.K_LEFT, py.K_a):
             return {'toggle': 'left'}
-        elif key in (py.K_RIGHT, py.K_d):
+        elif event.key in (py.K_RIGHT, py.K_d):
             return {'toggle': 'right'}
-        elif key == py.K_RETURN:
+        elif event.key == py.K_RETURN:
             return {'choose_option': True}
-        elif key == py.K_ESCAPE:
+        elif event.key == py.K_ESCAPE:
             return {'exit': True}
+        elif event.key == py.K_PERIOD:
+            return {'debug': GameStates.REWARD}
         return {}

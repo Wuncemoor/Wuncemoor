@@ -22,7 +22,7 @@ def main():
                 game.quit()
             if event.type == py.KEYDOWN:
 
-                output = game.input.transduce(event.key)
+                output = game.input.transduce(event)
                 game.logic.translate(output)
 
         game.artist.render()

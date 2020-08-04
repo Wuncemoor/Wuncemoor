@@ -1,5 +1,4 @@
 from ECS.__entity.transition import Transition
-from abstracts.abstract_maps import ProceduralTiles2D
 from abstracts.abstract_structure import AbstractStructure
 from abstracts.abstract_tile_component import ModalTileFloor
 from config.image_objects import LIGHT_ROAD, DARK_ROAD, BUNDLE_ALPHA

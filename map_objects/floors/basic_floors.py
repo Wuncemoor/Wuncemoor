@@ -7,16 +7,18 @@ from config.image_objects import LIGHT_GRASS, DARK_GRASS, LIGHT_DIRT, DARK_DIRT
 
 class GrassTileFloor(AbstractTileFloor):
 
+    name = 'Grass'
+
     def __init__(self):
         super().__init__()
         num = randint(0, IMAGE_OPTIONS.get('grass') - 1)
         self.light_image = LIGHT_GRASS[num]
         self.dark_image = DARK_GRASS[num]
 
-    name = 'Grass'
-
 
 class DirtTileFloor(AbstractTileFloor):
+
+    name = 'Dirt'
 
     def __init__(self):
         super().__init__()
@@ -24,6 +26,6 @@ class DirtTileFloor(AbstractTileFloor):
         self.light_image = LIGHT_DIRT[num]
         self.dark_image = DARK_DIRT[num]
 
-    name = 'Dirt'
-
+    def __repr__(self):
+        return 'DirtTileFloor'
 

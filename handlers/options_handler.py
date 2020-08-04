@@ -140,6 +140,9 @@ class OptionsHandler(MVC):
         }
         return reward.get(self.handler.state)
 
+    def debug(self):
+        pass
+
 
 
 

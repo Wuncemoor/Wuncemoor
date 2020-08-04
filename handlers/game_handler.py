@@ -52,6 +52,7 @@ class GameHandler:
             'dialogue': self.dialogue,
             'encounter': self.encounter,
             'reward': self.reward,
+            'debug': self.debug,
         }
         self.state_handler = state_dict.get(string)
 

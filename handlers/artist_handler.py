@@ -7,6 +7,7 @@ from abstracts.abstract_mvc import MVC
 from handlers.logic.options import encounter_window_options
 from screens.calendar import display_calendar
 from screens.character_screen import character_screen
+from screens.debug_window import debug_window
 from screens.dialogue_screen import dialogue_screen
 from screens.gui_tools import get_surface, print_message, align_and_blit, blit_options, get_alpha_surface
 from screens.inventory_screen import inventory_screen
@@ -29,6 +30,9 @@ class ArtistHandler(MVC):
 
     def render(self):
         return self.mapping()
+
+    def debug(self):
+        debug_window(self)
 
     def title(self):
         self.screen.blit(TITLE_SCREEN_BG, (0, 0))

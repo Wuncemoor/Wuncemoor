@@ -5,7 +5,11 @@ class Message:
     def __init__(self, text, color=WHITE):
         self.text = text
         self.color = color
-        
+
+    @staticmethod
+    def placeholder():
+        return Message('PLACEHOLDER')
+
 
 class MessageLog:
     def __init__(self, capacity):
