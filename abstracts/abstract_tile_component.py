@@ -24,7 +24,9 @@ class AbstractTileFloor(AbstractTileComponent):
             return True
         return False
 
+
 class ModalTileFloor(AbstractTileFloor):
+    """Some floor images are dynamic based on neighboring tiles. Has dictionaries to change image."""
 
     def __init__(self):
         super().__init__()
@@ -39,6 +41,10 @@ class ModalTileFloor(AbstractTileFloor):
     @abstractmethod
     def dark_dict(self):
         pass
+
+    def set_images(self):
+        self.light_image = self.light_dict.get(self.mode)
+        self.dark_image = self.dark_dict.get(self.mode)
 
 
 class AbstractTileBlocker(AbstractTileComponent):
