@@ -6,3 +6,6 @@ class Dungeon:
         self.maps = maps
         self.np = np
         self.time_dilation = [-65, 1, 1, 6]
+
+    def __repr__(self):
+        return 'Dungeon(' + self.name + ', ' + str(self.floors) + ', ' + repr(self.maps) + ', ' + self.np + ')'

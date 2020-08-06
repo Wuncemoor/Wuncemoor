@@ -12,3 +12,7 @@ class Rect:
     
     def intersect(self, other):
         return (self.x1 <= other.x2 and self.x2 >= other.x1 and self.y1 <= other.y2 and self.y2 >= other.y1)
+
+    def __repr__(self):
+        return 'Rect(' + str(self.x1) + ', ' + str(self.y1) + ', ' + str(self.x2 - self.x1) + ', ' + \
+               str(self.y2 - self.y1) + ')'
