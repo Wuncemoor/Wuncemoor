@@ -1,5 +1,7 @@
 import pygame as py
+from screens.frozen_surface import FrozenSurface
 from ECS.image_bundle import ImageBundle
+
 
 TITLE_SCREEN_BG = py.image.load('images\\background\\main_menu.png')
 TITLE_MENU_BG = py.image.load('images\\GUI\\main_menu.png')
@@ -456,32 +458,32 @@ DARK_GRASS = [py.image.load('images\\tiles\\grass\\dark_grass00.png'),
               py.image.load('images\\tiles\\grass\\dark_grass11.png'),
               py.image.load('images\\tiles\\grass\\dark_grass12.png')]
 LIGHT_ROAD = {
-    '00001011': py.image.load('images\\road\\light_road00001011.png'),
-    '00010110': py.image.load('images\\road\\light_road00010110.png'),
-    '00011111': py.image.load('images\\road\\light_road00011111.png'),
-    '01101000': py.image.load('images\\road\\light_road01101000.png'),
-    '01101011': py.image.load('images\\road\\light_road01101011.png'),
-    '01111111': py.image.load('images\\road\\light_road01111111.png'),
-    '11010000': py.image.load('images\\road\\light_road11010000.png'),
-    '11010110': py.image.load('images\\road\\light_road11010110.png'),
-    '11011011': py.image.load('images\\road\\light_road11011011.png'),
-    '11111000': py.image.load('images\\road\\light_road11111000.png'),
-    '11111110': py.image.load('images\\road\\light_road11111110.png'),
-    '11111111': py.image.load('images\\road\\light_road11111111.png'),
+    '00001011': FrozenSurface.load('images\\road\\', 'light_road00001011.png'),
+    '00010110': FrozenSurface.load('images\\road\\', 'light_road00010110.png'),
+    '00011111': FrozenSurface.load('images\\road\\', 'light_road00011111.png'),
+    '01101000': FrozenSurface.load('images\\road\\', 'light_road01101000.png'),
+    '01101011': FrozenSurface.load('images\\road\\', 'light_road01101011.png'),
+    '01111111': FrozenSurface.load('images\\road\\', 'light_road01111111.png'),
+    '11010000': FrozenSurface.load('images\\road\\', 'light_road11010000.png'),
+    '11010110': FrozenSurface.load('images\\road\\', 'light_road11010110.png'),
+    '11011011': FrozenSurface.load('images\\road\\', 'light_road11011011.png'),
+    '11111000': FrozenSurface.load('images\\road\\', 'light_road11111000.png'),
+    '11111110': FrozenSurface.load('images\\road\\', 'light_road11111110.png'),
+    '11111111': FrozenSurface.load('images\\road\\', 'light_road11111111.png'),
 }
 DARK_ROAD = {
-    '00001011': py.image.load('images\\road\\dark_road00001011.png'),
-    '00010110': py.image.load('images\\road\\dark_road00010110.png'),
-    '00011111': py.image.load('images\\road\\dark_road00011111.png'),
-    '01101000': py.image.load('images\\road\\dark_road01101000.png'),
-    '01101011': py.image.load('images\\road\\dark_road01101011.png'),
-    '01111111': py.image.load('images\\road\\dark_road01111111.png'),
-    '11010000': py.image.load('images\\road\\dark_road11010000.png'),
-    '11010110': py.image.load('images\\road\\dark_road11010110.png'),
-    '11011011': py.image.load('images\\road\\dark_road11011011.png'),
-    '11111000': py.image.load('images\\road\\dark_road11111000.png'),
-    '11111110': py.image.load('images\\road\\dark_road11111110.png'),
-    '11111111': py.image.load('images\\road\\dark_road11111111.png'),
+    '00001011': FrozenSurface.load('images\\road\\', 'dark_road00001011.png'),
+    '00010110': FrozenSurface.load('images\\road\\', 'dark_road00010110.png'),
+    '00011111': FrozenSurface.load('images\\road\\', 'dark_road00011111.png'),
+    '01101000': FrozenSurface.load('images\\road\\', 'dark_road01101000.png'),
+    '01101011': FrozenSurface.load('images\\road\\', 'dark_road01101011.png'),
+    '01111111': FrozenSurface.load('images\\road\\', 'dark_road01111111.png'),
+    '11010000': FrozenSurface.load('images\\road\\', 'dark_road11010000.png'),
+    '11010110': FrozenSurface.load('images\\road\\', 'dark_road11010110.png'),
+    '11011011': FrozenSurface.load('images\\road\\', 'dark_road11011011.png'),
+    '11111000': FrozenSurface.load('images\\road\\', 'dark_road11111000.png'),
+    '11111110': FrozenSurface.load('images\\road\\', 'dark_road11111110.png'),
+    '11111111': FrozenSurface.load('images\\road\\', 'dark_road11111111.png'),
 }
 LIGHT_DIRT = [py.image.load('images\\tiles\\dirt\\light_dirt0.png'),
               py.image.load('images\\tiles\\dirt\\light_dirt1.png'),
