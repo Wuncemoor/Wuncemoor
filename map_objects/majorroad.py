@@ -11,6 +11,19 @@ class RoadTileFloor(ModalTileFloor):
     dark_dict = DARK_ROAD
     name = 'Road'
 
+    def __str__(self):
+        static = 'class: RoadTileFloor | mode: '
+        if self.mode is None:
+            dynamic = 'NONE'
+        elif (self.light_image or self.dark_image) is None:
+            dynamic = self.mode + ' | images: NONE'
+        else:
+            dynamic = self.mode + ' | light_image: ' + self.light_image.name + ' | dark_image: ' + self.dark_image.name
+        return static + dynamic
+
+    def __repr__(self):
+        return "RoadTileFloor(" + repr(self.light_image) + ", " + repr(self.dark_image) + ", " + repr(self.transition) + ", " + self.mode + "}"
+
 
 class MajorRoad(AbstractStructure):
     """A unique Structure that connects all dungeons to the overworld. variant is the node that OverworldBuilder made
@@ -25,31 +38,10 @@ class MajorRoad(AbstractStructure):
         trans = Transition('Road leaving town', BUNDLE_ALPHA, 'overworld', 0, (self.variant.x, self.variant.y))
         if dimension == 'vertical':
             for row in self.tiles:
-                for tile in (row[0], row[-1]):
-                    tile.floor.transition = trans
+                row[0].floor.transition = trans
+                row[-1].floor.transition = trans
+
         elif dimension == 'horizontal':
             for row in (self.tiles[0], self.tiles[-1]):
                 for tile in row:
                     tile.floor.transition = trans
-
-# class Road:
-#
-#     def __init__ (self, rect, go_to_dungeon=None, go_to_floor=None, go_to_xy=None, transitions_img=None):
-#         self.rect = rect
-#         self.go_to_dungeon = go_to_dungeon
-#         self.go_to_floor = go_to_floor
-#         self.go_to_xy = go_to_xy
-#         self.transitions = []
-#         self.transitions_img = transitions_img
-#
-#     def set_transitions(self, dimension):
-#         stairs = Transition('Stairs', self.transitions_img, self.go_to_dungeon, self.go_to_floor, self.go_to_xy)
-#         if dimension == 'vertical':
-#             for j in range(self.rect.y1, self.rect.y2):
-#                 self.transitions.append(Entity(self.rect.x1, j, transition=stairs))
-#                 self.transitions.append(Entity(self.rect.x2-1, j, transition=stairs))
-#
-#         elif dimension == 'horizontal':
-#             for i in range(self.rect.x1, self.rect.x2):
-#                 self.transitions.append(Entity(i, self.rect.y1, transition=stairs))
-#                 self.transitions.append(Entity(i, self.rect.y2-1, transition=stairs))
