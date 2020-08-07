@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from config.constants import DARK_BLUE, DARK_ORANGE, BLACK
-from enums.game_states import EncounterStates, RewardStates
+from config.constants import DARK_BLUE, DARK_ORANGE, BLACK, WHITE
+from enums.game_states import EncounterStates, RewardStates, GameStates
 from handlers.views.messages import Message
 from loader_functions.data_loaders import load_game
 from loader_functions.initialize_new_game import get_game_variables
@@ -41,7 +41,7 @@ class Move(Logic):
         destination_x = x + dx
         destination_y = y + dy
 
-        tile = self.owner.world.current_map.tiles[destination_x][destination_y]
+        tile = self.owner.world.current_map.tiles[destination_y][destination_x]
 
         if not tile.blocker:
 
@@ -50,9 +50,26 @@ class Move(Logic):
 
             self.handler.fov.needs_recompute = True
 
-            if self.owner.world.dangerous:
+            if tile.floor.has_transition():
+                transition = tile.floor.transition
+                world = self.owner.world
+                new_dungeon = world.dungeons[transition.go_to_dungeon]
+                if world.current_dungeon.name != transition.go_to_dungeon:
+                    world.current_dungeon.time_dilation = self.owner.time.stamp()
+                    self.owner.time.apply_dilation(new_dungeon)
+                    world.current_dungeon = new_dungeon
+
+                new_map = new_dungeon.maps[transition.go_to_floor]
+                world.current_map = new_map
+                self.owner.party.x = transition.go_to_xy[0]
+                self.owner.party.y = transition.go_to_xy[1]
+                self.handler.camera.refocus(self.owner.party.x, self.owner.party.y)
+
+                self.handler.fov.map = self.handler.fov.initialize(world)
+                self.handler.fov.needs_recompute = True
+
+            elif self.owner.world.dangerous:
                 self.owner.time.goes_on()
-                tile = self.owner.world.tiles[destination_x][destination_y]
                 self.owner.encounter.check(tile)
 
 
@@ -69,23 +86,23 @@ class Interact(Logic):
                     changes.extend(pickup_results)
                     nothing = False
                     break
-        for transition in world.current_map.transitions:
-            if transition.x == self.owner.party.x and transition.y == self.owner.party.y:
-                new_dungeon = self.owner.world.dungeons[transition.transition.go_to_dungeon]
-                if world.current_dungeon.name != transition.transition.go_to_dungeon:
-                    world.current_dungeon.time_dilation = self.owner.time.stamp()
-                    self.owner.time.apply_dilation(new_dungeon)
-                    world.current_dungeon = new_dungeon
-
-                new_map = new_dungeon.maps[transition.transition.go_to_floor]
-                world.current_map = new_map
-                self.owner.party.x, self.owner.party.y = transition.transition.go_to_xy[0], transition.transition.go_to_xy[1]
-                self.handler.camera.refocus(self.owner.party.x, self.owner.party.y)
-
-                self.handler.fov.map = self.handler.fov.initialize(world)
-                self.handler.fov.needs_recompute = True
-                nothing = False
-                break
+        # for transition in world.current_map.transitions:
+        #     if transition.x == self.owner.party.x and transition.y == self.owner.party.y:
+        #         new_dungeon = self.owner.world.dungeons[transition.transition.go_to_dungeon]
+        #         if world.current_dungeon.name != transition.transition.go_to_dungeon:
+        #             world.current_dungeon.time_dilation = self.owner.time.stamp()
+        #             self.owner.time.apply_dilation(new_dungeon)
+        #             world.current_dungeon = new_dungeon
+        #
+        #         new_map = new_dungeon.maps[transition.transition.go_to_floor]
+        #         world.current_map = new_map
+        #         self.owner.party.x, self.owner.party.y = transition.transition.go_to_xy[0], transition.transition.go_to_xy[1]
+        #         self.handler.camera.refocus(self.owner.party.x, self.owner.party.y)
+        #
+        #         self.handler.fov.map = self.handler.fov.initialize(world)
+        #         self.handler.fov.needs_recompute = True
+        #         nothing = False
+        #         break
         for noncom in world.current_map.noncombatants:
             if noncom.x == self.owner.party.x and noncom.y == self.owner.party.y:
                 self.owner.dialogue.partner = noncom
@@ -315,3 +332,40 @@ class RewardExit(Logic):
             self.owner.options.current.choice = 2
         return changes
 
+
+class Debug(Logic):
+
+    def logic(self):
+        changes = [{'state': 'debug'}]
+        return changes
+
+
+class DebugExit(Logic):
+
+    def logic(self, prev):
+        string_dict = {
+            GameStates.TITLE: 'title',
+            GameStates.LIFE: 'life',
+            GameStates.MENUS: 'menus',
+            GameStates.ENCOUNTER: 'encounter',
+            GameStates.REWARD: 'reward',
+            GameStates.DIALOGUE: 'dialogue',
+        }
+        changes = [{'state': string_dict.get(prev)}]
+        return changes
+
+
+class DebugAttemptCommand(Logic):
+
+    def logic(self):
+        changes = [{'debug_message': Message('Command entered: ' + self.handler.current_input, WHITE)}]
+        try:
+            exec(self.handler.current_input, self.handler.allowed_inputs)
+            changes.append({'debug_message': Message('COMMAND ACCEPTED', WHITE)})
+            for message in self.handler.message_slot:
+                changes.append({'debug_message': message})
+            self.handler.current_input = ''
+        except NameError:
+            changes.append({'debug_message': Message('COMMAND NOT RECOGNIZED', WHITE)})
+
+        return changes
