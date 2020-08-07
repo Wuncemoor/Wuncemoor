@@ -2,12 +2,11 @@ from dungeons.tile_mixins import InitRealTiles
 from map_objects.majorroad import RoadTileFloor
 from ECS.entity import Entity
 from random import randint
-
 from abstracts.abstract_maps import ProceduralTiles2D
 from misc_functions.random_utils import random_choice_from_dict, from_dungeon_level
 from enums.render_order import RenderOrder
 from builders.mob_builder import MobDirector, MobBuilder
-from map_objects.rectangle import Rect
+from map_objects.rect import Rect
 from misc_functions.item_chances import get_item_chances
 from misc_functions.mob_chances import MobChances
 from builders.make_item import make_item
@@ -17,10 +16,8 @@ from config.constants import MAX_ROOMS, ROOM_MAX_SIZE, ROOM_MIN_SIZE
 class DangerousMap(ProceduralTiles2D, InitRealTiles):
 
     def __init__(self, width, height, variant):
-
         super().__init__(width, height, variant)
         self.entities = []
-        self.transitions = []
         self.structures = []
         self.noncombatants = []
         self.entrance = None
@@ -156,34 +153,48 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
     def __init__(self, width, height, variant):
         super().__init__(width, height, variant)
         self.entities = []
-        self.transitions = []
         self.structures = []
         self.noncombatants = []
         self.entrance = None
         self.exit = None
 
     def add_road(self, road):
-        for x in range(road.rect.x1, road.rect.x2):
-            for y in range(road.rect.y1, road.rect.y2):
-                self.tiles[x][y].type = 'road'
-        for x in range(road.rect.x1, road.rect.x2):
-            for y in range(road.rect.y1, road.rect.y2):
+        self.set_floors(road)
+        self.set_modes(road)
+
+    def set_floors(self, proto):
+        j, i = 0, 0
+        for y in range(proto.rect.y1, proto.rect.y2):
+            for x in range(proto.rect.x1, proto.rect.x2):
+                self.tiles[y][x].floor = proto.tiles[j][i].floor
+                i += 1
+            j += 1
+            i = 0
+
+    def set_modes(self, proto):
+        for y in range(proto.rect.y1, proto.rect.y2):
+            for x in range(proto.rect.x1, proto.rect.x2):
                 mode = ''
                 try:
-                    tf = [self.tiles[x - 1][y - 1].type == 'road', self.tiles[x][y - 1].type == 'road',
-                          self.tiles[x + 1][y - 1].type == 'road', self.tiles[x - 1][y].type == 'road',
-                          self.tiles[x + 1][y].type == 'road', self.tiles[x - 1][y + 1].type == 'road',
-                          self.tiles[x][y + 1].type == 'road', self.tiles[x + 1][y + 1].type == 'road']
+                    tf = [self.tiles[y - 1][x - 1], self.tiles[y - 1][x],
+                          self.tiles[y - 1][x + 1], self.tiles[y][x - 1],
+                          self.tiles[y][x + 1], self.tiles[y + 1][x - 1],
+                          self.tiles[y + 1][x], self.tiles[y + 1][x + 1]]
                 except IndexError:
-                    tf = [True, True, True, True, True, True, True, True]
+                    tf = [self.tiles[y][x], self.tiles[y][x],
+                          self.tiles[y][x], self.tiles[y][x],
+                          self.tiles[y][x], self.tiles[y][x],
+                          self.tiles[y][x], self.tiles[y][x]]
 
                 for qq in tf:
-                    if qq:
+                    if isinstance(qq.floor, RoadTileFloor):
                         mode += '1'
                     else:
                         mode += '0'
-                self.tiles[x][y].floor = RoadTileFloor(mode)
-        self.transitions.extend(road.transitions)
+                self.tiles[y][x].floor.mode = mode
+                self.tiles[y][x].floor.set_images()
+
+
 
     def fill_tiles(self):
         pass

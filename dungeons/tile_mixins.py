@@ -5,7 +5,7 @@ from map_objects.tile import Tile, FakeTile
 class InitFakeTiles(InitTiles):
 
     def initialize_tiles(self):
-        tiles = [[FakeTile(self.variant) for y in range(self.height)] for x in range(self.width)]
+        tiles = [[FakeTile(self.variant) for x in range(self.width)] for y in range(self.height)]
 
         return tiles
 
@@ -13,6 +13,6 @@ class InitFakeTiles(InitTiles):
 class InitRealTiles(InitTiles):
 
     def initialize_tiles(self):
-        tiles = [[Tile(self.variant) for y in range(self.height)] for x in range(self.width)]
+        tiles = [[Tile(self.variant) for x in range(self.width)] for y in range(self.height)]
 
         return tiles

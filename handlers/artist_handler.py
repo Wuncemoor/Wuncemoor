@@ -193,10 +193,9 @@ class ArtistHandler(MVC):
     def draw_tile(self, x, y):
         cx, cy = self.handler.camera.x, self.handler.camera.y
 
-        visible = libtcod.map_is_in_fov(self.handler.fov.map, cx + x, cy + y)
+        visible = libtcod.map_is_in_fov(self.handler.fov.map, cy + y, cx + x)
 
-        tile = self.owner.world.tiles[cx + x][cy + y]
-
+        tile = self.owner.world.tiles[cy + y][cx + x]
         if visible:
             self.screen.blit(tile.floor.light_image, (x * self.tilesize, y * self.tilesize))
             tile.explored = True
