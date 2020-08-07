@@ -5,15 +5,20 @@ from handlers.encounter.combat import Combat
 from handlers.logic.options import encounter_window_options
 from handlers.views.camera import Camera
 from handlers.views.fov_handler import FovHandler
+from handlers.views.messages import Message
 
 
 class TitleHandler:
+    """Handler for GameStates.TITLE"""
+
     def __init__(self):
         self.superstate = GameStates.TITLE
         self.state = None
 
 
 class LifeHandler:
+    """Handler for GameStates.LIFE"""
+
     def __init__(self):
         self.superstate = GameStates.LIFE
         self.camera = Camera()
@@ -23,6 +28,8 @@ class LifeHandler:
 
 
 class MenusHandler:
+    """Handler for GameStates.MENUS"""
+
     def __init__(self):
         self.superstate = GameStates.MENUS
         self.state = None
@@ -42,6 +49,7 @@ class MenusHandler:
 
 
 class DialogueHandler:
+    """Handler for GameStates.DIALOGUE"""
     def __init__(self, observers):
         self.superstate = GameStates.DIALOGUE
         self.partner = None
@@ -85,6 +93,7 @@ class DialogueHandler:
 
 
 class EncounterHandler:
+    """Handler for GameStates.ENCOUNTER"""
 
     def __init__(self, loot):
         self.superstate = GameStates.ENCOUNTER
@@ -128,6 +137,7 @@ class EncounterHandler:
 
 
 class RewardHandler:
+    """Handler for GameStates.REWARD"""
 
     def __init__(self, loot):
         self.superstate = GameStates.REWARD
@@ -140,9 +150,92 @@ class RewardHandler:
 
 
 class DebugHandler:
+    """Handler for GameStates.DEBUG"""
 
     def __init__(self):
         self.superstate = GameStates.DEBUG
         self.previous_state = None
+        self.allowed_inputs = self.init_allowed_inputs()
+        self.allowed_objs = None
+        self.current_input = ''
+        self.message_slot = None
+
+    def init_allowed_inputs(self):
+        """All other commands not recognized, will add "suggestions" later"""
+        allowed_inputs = {'clear': self.clear, 'repr': self.repr, 'str': self.str, 'name': self.name,
+                          'bool_map': self.bool_map}
+        return allowed_inputs
+
+    def set_allowed_objs(self):
+        """All other commands not recognized, will add "suggestions" later"""
+        tiles = self.owner.world.current_map.tiles
+        objs = {
+            'floor': [[tile.floor for tile in row] for row in tiles],
+            'light_image': [[tile.floor.light_image for tile in row] for row in tiles],
+            'dark_image': [[tile.floor.dark_image for tile in row] for row in tiles],
+            'transition': [[tile.floor.transition for tile in row] for row in tiles],
+        }
+        self.allowed_objs = objs
+
+    def clear(self):
+        """Clear debug screen of old text"""
+        self.owner.log.debugger.messages.clear()
+        # Remove message from previous command
+        self.message_slot = []
+
+    def repr(self, obj, x, y):
+        """Returns __repr__ of obj on current map"""
+
+        message = Message.placeholder()
+        sub_obj = self.allowed_objs.get(obj)[y][x]
+        message.text = repr(sub_obj)
+        self.message_slot = [message]
+
+    def str(self, obj, x, y):
+        """Returns __str__ of obj on current map"""
+
+        message = Message.placeholder()
+        sub_obj = self.allowed_objs.get(obj)[y][x]
+        message.text = str(sub_obj)
+        self.message_slot = [message]
+
+    def name(self, obj, x, y):
+        """Returns obj.name"""
+
+        message = Message.placeholder()
+        sub_obj = self.allowed_objs.get(obj)[y][x]
+        if sub_obj is None:
+            message.text = 'OBJECT NOT FOUND'
+        else:
+            message.text = sub_obj.name
+        self.message_slot = [message]
+
+
+
+
+
+    def bool_map(self, obj):
+        """Returns current map as ASCII made of 1's and 0's based on existence of obj"""
+        mes = []
+        tiles = self.owner.world.current_map.tiles
+        obj_dict = {
+            'transition': [[tile.floor.transition for tile in row] for row in tiles],
+        }
+        vals = obj_dict.get(obj)
+        for row in vals:
+            message = Message.placeholder()
+            text = ''
+            for val in row:
+                if val is not None:
+                    text += '1 '
+                else:
+                    text += '0 '
+            message.text = text
+            mes.append(message)
+        self.message_slot = mes
+
+
+
+
 
 

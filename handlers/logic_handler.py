@@ -1,6 +1,6 @@
 from abstracts.abstract_mvc import MVC
 from handlers.logic.logic_chunks import Move, Interact, MenusToggle, MenusExit, EncounterExit, EndTurn, EnemyTurn, \
-    RewardToggle, RewardExit, LifeToMenus
+    RewardToggle, RewardExit, LifeToMenus, Debug, DebugExit, DebugAttemptCommand
 
 
 class LogicHandler(MVC):
@@ -11,6 +11,20 @@ class LogicHandler(MVC):
     def translate(self, output):
         self.mapping(output)
 
+    def debug(self, output):
+        if 'exit' in output:
+            self.response = DebugExit.logic
+            changes = self.response(self, self.handler.previous_state)
+            self.mutate(changes)
+        elif 'command_send' in output:
+            self.response = DebugAttemptCommand.logic
+            changes = self.response(self)
+            self.mutate(changes)
+        elif 'command_pop' in output:
+            self.handler.current_input = self.handler.current_input[:-1]
+        elif 'command_extend' in output:
+            self.handler.current_input += output.get('command_extend')
+
     def title(self, output):
 
         if 'traverse_menu' in output:
@@ -18,6 +32,12 @@ class LogicHandler(MVC):
         elif 'choose_option' in output:
             self.response = self.owner.options.choose()
             self.response(self)
+        elif 'debug' in output:
+            self.response = Debug.logic
+            changes = self.response(self)
+            prev = self.owner.state
+            self.mutate(changes)
+            self.owner.state_handler.previous_state = prev
 
     def life(self, output):
 
@@ -32,6 +52,12 @@ class LogicHandler(MVC):
             self.response = LifeToMenus.logic
             changes = self.response(self, output.get('show_menus'))
             self.mutate(changes)
+        elif 'debug' in output:
+            self.response = Debug.logic
+            changes = self.response(self)
+            prev = self.owner.state
+            self.mutate(changes)
+            self.owner.state_handler.previous_state = prev
 
     def menus(self, output):
         if 'exit' in output:
@@ -47,10 +73,22 @@ class LogicHandler(MVC):
             if self.handler.menu.sub is None:
                 self.response = self.owner.options.choose()
                 self.response(self)
+        elif 'debug' in output:
+            self.response = Debug.logic
+            changes = self.response(self)
+            prev = self.owner.state
+            self.mutate(changes)
+            self.owner.state_handler.previous_state = prev
 
     def dialogue(self, output):
         if 'converse' in output:
             self.owner.options.traverse(output.get('converse'))
+        elif 'debug' in output:
+            self.response = Debug.logic
+            changes = self.response(self)
+            prev = self.owner.state
+            self.mutate(changes)
+            self.owner.state_handler.previous_state = prev
 
     def encounter(self, output):
         if 'traverse_menu' in output:
@@ -63,6 +101,12 @@ class LogicHandler(MVC):
             self.response = EncounterExit.logic
             changes = self.response(self)
             self.mutate(changes)
+        elif 'debug' in output:
+            self.response = Debug.logic
+            changes = self.response(self)
+            prev = self.owner.state
+            self.mutate(changes)
+            self.owner.state_handler.previous_state = prev
 
     def reward(self, output):
         if 'traverse_menu' in output:
@@ -79,10 +123,18 @@ class LogicHandler(MVC):
             self.response = RewardExit.logic
             changes = self.response(self)
             self.mutate(changes)
+        elif 'debug' in output:
+            self.response = Debug.logic
+            changes = self.response(self)
+            prev = self.owner.state
+            self.mutate(changes)
+            self.owner.state_handler.previous_state = prev
 
     def mutate(self, changes):
         for change in changes:
-            if 'message' in change:
+            if 'debug_message' in change:
+                self.owner.log.debugger.add_message(change.get('debug_message'))
+            elif 'message' in change:
                 self.owner.log.messages.add_message(change.get('message'))
             elif 'item_added' in change:
                 self.owner.world.current_map.entities.remove(change.get('item_added'))

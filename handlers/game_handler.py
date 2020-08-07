@@ -78,6 +78,7 @@ class GameHandler:
         self.party.journal.options = initialize_menu_options(self.party.journal.subgroups)
         self.party.inventory.options = initialize_menu_options(self.party.inventory.subgroups)
         self.log = LogHandler()
+        self.debug.set_allowed_objs()
         self.take_ownership()
         self.life.camera.refocus(party.p1.x, party.p1.y)
         self.life.fov.map = self.life.fov.initialize(self.world)
