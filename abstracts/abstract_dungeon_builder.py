@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class AbstractDungeonBuilder(ABC):
+    """Abstract for DungeonBuilders. Requires at minimum an InitMap mixin to make concrete."""
 
     def __init__(self, basename, subtype, floors, width, height, np):
         self.basename = basename

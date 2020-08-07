@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class EquipmentSlots(Enum):
+    """All the places that a Combatant can put Items in their Equipment"""
     MAIN_HAND = 1
     OFF_HAND = 2
     HEAD = 3

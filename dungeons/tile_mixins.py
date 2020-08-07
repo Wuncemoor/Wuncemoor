@@ -1,8 +1,9 @@
-from abstracts.abstract_maps import InitTiles
+from abstracts.abstract_maps import AbstractInitTiles
 from map_objects.tile import Tile, FakeTile
 
 
-class InitFakeTiles(InitTiles):
+class InitFakeTiles(AbstractInitTiles):
+    """Used to make Structures in Hammerspace before integration into a real Map"""
 
     def initialize_tiles(self):
         tiles = [[FakeTile(self.variant) for x in range(self.width)] for y in range(self.height)]
@@ -10,7 +11,8 @@ class InitFakeTiles(InitTiles):
         return tiles
 
 
-class InitRealTiles(InitTiles):
+class InitRealTiles(AbstractInitTiles):
+    """Used by real Maps in the real game"""
 
     def initialize_tiles(self):
         tiles = [[Tile(self.variant) for x in range(self.width)] for y in range(self.height)]

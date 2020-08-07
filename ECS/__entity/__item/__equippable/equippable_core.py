@@ -1,4 +1,5 @@
 class EquippableCore:
+    """Equippable component representing most of the Equipment piece, other than Quality/Material"""
 
     def __init__(self, core, obj):
         self.core = core

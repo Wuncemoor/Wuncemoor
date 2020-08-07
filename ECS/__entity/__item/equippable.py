@@ -2,6 +2,7 @@ import math
 
 
 class Equippable:
+    """Component for Items to be worn, providing bonuses to the wearer."""
     def __init__(self, name=None, images=None, slot=None, core=None, material=None, quality=None, *modifiers):
         self.name = name
         self.images = images

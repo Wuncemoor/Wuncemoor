@@ -1,4 +1,6 @@
 class Age:
+    """Component for Entities to get older"""
+
     def __init__(self, year, month, day, hour, birthday):
         self.year = year
         self.month = month

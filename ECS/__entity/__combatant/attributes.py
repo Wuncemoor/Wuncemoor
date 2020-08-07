@@ -1,6 +1,6 @@
 
-#Primary stats and their base derivations
 class Attributes:
+    """Contains the 10 primary stats and their base derivatives."""
     def __init__(self, strength=0, instinct=0, coordination=0, vitality=0, arcana=0, improvisation=0, wisdom=0, finesse=0, charisma=0, devotion=0):
         self.strength=strength
         self.instinct=instinct

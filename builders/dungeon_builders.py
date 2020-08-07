@@ -4,8 +4,8 @@ from abstracts.abstract_dungeon_builder import AbstractDungeonBuilder
 from config.constants import OVERWORLD, DUNGEON_ALPHA, DUNGEON_DELTA, DUNGEON_GAMMA, DUNGEON_BETA
 from dungeons.mixins import InitDangerousMap, InitSafeMap
 from enums.render_order import RenderOrder
-from ECS.__entity.transition import Transition
-from config.image_objects import STAIRS_DOWN, STAIRS_UP, BUNDLE_ALPHA
+from map_objects.transition import Transition
+from config.image_objects import STAIRS_DOWN, STAIRS_UP
 from map_objects.rect import Rect
 from map_objects.majorroad import MajorRoad
 from dungeons.dungeon_alpha import DungeonAlphaMixin
@@ -14,6 +14,7 @@ from dungeons.overworld.plot_mixin import PlotMixin
 
 
 class CaveBuilder(AbstractDungeonBuilder, InitDangerousMap):
+    """DungeonBuilder that makes procedural caves. Not currently implemented, but should work"""
 
     def get_maps(self):
 
@@ -78,6 +79,7 @@ class CaveBuilder(AbstractDungeonBuilder, InitDangerousMap):
 
 
 class OverworldBuilder(InitDangerousMap, AbstractDungeonBuilder, BiomeMixin, PlotMixin):
+    """DungeonBuilder that makes the overworld. BiomeMixin applies biomes and PlotMixin creates the core plot"""
 
     def __init__(self):
         self.basename = 'overworld'
@@ -93,6 +95,7 @@ class OverworldBuilder(InitDangerousMap, AbstractDungeonBuilder, BiomeMixin, Plo
 
 
 class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin):
+    """Builds the first dungeon in the core plot, the starting town for the Player"""
 
     def __init__(self, node):
         self.basename = 'alpha'
@@ -132,6 +135,8 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
 
 
 class DungeonBetaBuilder(InitSafeMap, AbstractDungeonBuilder):
+    """Builds the second dungeon in the core plot, another town similar to DungeonAlpha. Will have binary decision
+    that affects DungeonGamma, defaults one way after x time. """
 
     def __init__(self, node):
         self.basename = 'beta'
@@ -152,6 +157,8 @@ class DungeonBetaBuilder(InitSafeMap, AbstractDungeonBuilder):
 
 
 class DungeonGammaBuilder(InitSafeMap, AbstractDungeonBuilder):
+    """Builds the third dungeon in the core plot, a castle city with multiple districts. May have altered
+    strength/influence or opinion of Player based on DungeonBeta events. """
 
     def __init__(self, node):
         self.basename = 'gamma'
@@ -172,6 +179,7 @@ class DungeonGammaBuilder(InitSafeMap, AbstractDungeonBuilder):
 
 
 class DungeonDeltaBuilder(InitSafeMap, AbstractDungeonBuilder):
+    """Builds the fourth dungeon in the core plot, a seaside port town where the Player can gain boat access."""
 
     def __init__(self, node):
         self.basename = 'delta'

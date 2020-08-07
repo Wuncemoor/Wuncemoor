@@ -1,3 +1,4 @@
+
 from builders.mob_builder import MobBuilder, MobDirector
 from handlers.menus.party import Party
 from misc_functions.mob_chances import MobChances
@@ -5,6 +6,7 @@ from misc_functions.random_utils import random_choice_from_dict
 
 
 class Combat:
+    """Created by EncounterHandler at the start of CombatEncounter"""
     def __init__(self, party, tile):
         self.party = party
         self.enemies = self.get_mob_party(tile)
@@ -45,6 +47,7 @@ class Combat:
 
 
 class CombatGrid:
+    """Holds combatants in rows, held by Combat"""
 
     def __init__(self):
         self.rows = [[], [], [], [], [], [], [], []]

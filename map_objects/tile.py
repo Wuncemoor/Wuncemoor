@@ -5,6 +5,7 @@ from ECS.__entity.blocker import RockTileBlocker
 
 
 class FakeTileFloor(AbstractTileFloor):
+    """A fake TileFloor for a fake Tile. Used for Structure creation, before integration with a real Map"""
 
     def __init__(self):
         super().__init__()
@@ -14,6 +15,7 @@ class FakeTileFloor(AbstractTileFloor):
 
 
 class FakeTile(AbstractTile):
+    """A fake Tile with reduced functionality. Used for Structure creation, before integration with a real Map"""
 
     def __init__(self, variant):
         super().__init__(variant)

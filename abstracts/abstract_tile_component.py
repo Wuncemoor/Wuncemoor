@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class AbstractTileComponent(ABC):
+    """You likely want to inherit from  AbstractTileFloor or AbstractTileBlocker"""
 
     def __init__(self):
         self.light_image = None
@@ -14,6 +15,8 @@ class AbstractTileComponent(ABC):
 
 
 class AbstractTileFloor(AbstractTileComponent):
+    """Abstract to make a type of ground for the Player to walk on. Can hold transitions which take Player to another
+    Map when stepped on. """
 
     def __init__(self):
         super().__init__()
@@ -26,7 +29,7 @@ class AbstractTileFloor(AbstractTileComponent):
 
 
 class ModalTileFloor(AbstractTileFloor):
-    """Some floor images are dynamic based on neighboring tiles. Has dictionaries to change image."""
+    """Some TileFloor images are dynamic based on neighboring tiles. Has dictionaries to change image."""
 
     def __init__(self):
         super().__init__()
@@ -48,6 +51,7 @@ class ModalTileFloor(AbstractTileFloor):
 
 
 class AbstractTileBlocker(AbstractTileComponent):
+    """Abstract for TileBlocker components for Tile. Blocks field of view if opaque."""
 
     @property
     @abstractmethod

@@ -13,6 +13,7 @@ from map_objects.loot import Loot
 
 
 class GameHandler:
+    """Handler that holds nearly all aspects of the game while delegating the heavy lifting to StateHandlers"""
 
     def __init__(self, artist):
         self.state_handler = None

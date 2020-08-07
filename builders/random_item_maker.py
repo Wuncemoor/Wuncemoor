@@ -7,7 +7,8 @@ import random
 from config.image_objects import BUNDLE_WEAPONS
 
 
-class Director:
+class EquippableDirector:
+    """Returns an Equippable component based on EquippableBuilder parameters"""
     __builder = None
 
     def set_builder(self, builder):
@@ -35,6 +36,7 @@ class Director:
 
 
 class EquippableBuilder:
+    """Returns Equippable parts to be assembled by the EquippableDirector"""
 
     def __init__(self, node_power):
         self.node_power = node_power

@@ -3,6 +3,7 @@ from enums.game_states import GameStates
 
 
 class MVC(ABC):
+    """Abstract for Model-View-Controller.  """
 
     @property
     def state(self):

@@ -14,6 +14,7 @@ from enums.render_order import RenderOrder
 
 
 class MobDirector:
+    """Returns an Entity with Combatant component based on "equipped" MobBuilder parameters"""
     __builder = None
 
     def set_builder(self, builder):
@@ -37,6 +38,7 @@ class MobDirector:
 
 
 class MobBuilder:
+    """Creates Combatant components to be assembled by the MobDirector"""
 
     def __init__(self, node_power, mob):
         self.node_power = node_power

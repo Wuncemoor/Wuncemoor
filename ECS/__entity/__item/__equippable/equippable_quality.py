@@ -1,5 +1,5 @@
 class EquippableQuality:
-    
+    """Equippable component representing the quality of the Item."""
     def __init__(self, quality):
         
         self.quality = quality

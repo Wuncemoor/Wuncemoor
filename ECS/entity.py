@@ -2,11 +2,10 @@ import math
 import tcod as libtcod
 from enums.render_order import RenderOrder
 
-# Generic object representing PC and NPC, items, etc
 class Entity:
+    """Generic Entity that represents most things in the game world. PC, NPC, items, structures"""
 
-    # Creation
-    def __init__(self, x, y, blocks=False, render_order=RenderOrder.CORPSE, combatant=None, item=None, transition=None,
+    def __init__(self, x, y, blocks=False, render_order=RenderOrder.CORPSE, combatant=None, item=None,
                  noncombatant=None, age=None):
         self.x = x
         self.y = y
@@ -14,7 +13,6 @@ class Entity:
         self.render_order = render_order
         self.combatant = combatant
         self.item = item
-        self.transition = transition
         self.noncombatant = noncombatant
         self.age = age
         self.name = None

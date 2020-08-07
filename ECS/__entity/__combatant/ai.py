@@ -4,6 +4,7 @@ from handlers.views.messages import Message
 
 
 class BasicMonster:
+    """Basic mob behavior. take_turn is old and take_turn_e is a prototype for new Encounter"""
     def take_turn(self, target, fov_map, game_map, entities):
         results = []
         entity = self.owner
@@ -27,6 +28,7 @@ class BasicMonster:
 
 
 class ConfusedMonster:
+    """Old mob behavior for when hit with a confusing spell"""
     def __init__(self, previous_ai, number_of_turns=10):
         self.previous_ai = previous_ai
         self.number_of_turns = number_of_turns

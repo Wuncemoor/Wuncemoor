@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class GameStates(Enum):
+    """States of the game that occur discretely"""
     TITLE = 1
     LIFE = 2
     MENUS = 3
@@ -17,6 +18,7 @@ class GameStates(Enum):
 
 
 class EncounterStates(Enum):
+    """Substates that occur in GameStates.ENCOUNTER"""
 
     THINKING = 1
     FIGHT_TARGETING = 2
@@ -25,6 +27,7 @@ class EncounterStates(Enum):
 
 
 class RewardStates(Enum):
+    """Substates that occur in GameStates.REWARD"""
 
     THINKING = 1
     SIFTING = 2
@@ -32,6 +35,7 @@ class RewardStates(Enum):
 
 
 class MenuStates(Enum):
+    """Substates that occur in GameStates.MENUS"""
 
     PARTY = 1
     JOURNAL = 2

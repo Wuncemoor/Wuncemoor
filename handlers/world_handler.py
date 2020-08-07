@@ -4,6 +4,7 @@ from map_objects.dungeon_maps import DangerousMap
 
 
 class WorldHandler:
+    """Holds all of the Dungeons that comprise the current world. Creates game world by delegating to DungeonDirector"""
 
     def __init__(self):
         self.build = DungeonDirector()

@@ -1,6 +1,7 @@
 from handlers.views.messages import Message
 
 class Competence:
+    """Will be implemented later. Similar to skills/abilities/feats"""
     
     def __init__(self, strength, instinct, coordination, vitality, arcana, improvisation, wisdom, finesee, charisma, devotion):
         self.strength = Strength()

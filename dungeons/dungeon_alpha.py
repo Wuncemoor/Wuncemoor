@@ -7,6 +7,7 @@ from enums.render_order import RenderOrder
 
 
 class DungeonAlphaMixin:
+    """Mixin for DungeonAlphaBuilder, adds functionality unique to starting town"""
 
     def get_samwise(self):
 

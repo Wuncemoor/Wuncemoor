@@ -5,6 +5,7 @@ from config.constants import SIMPLEX
 
 
 class BiomeMixin:
+    """Mixin for OverworldBuilder. Allows placement of BiomeTileFloors via OpenSimplex algorithm"""
 
     def apply_simplex_biomes(self, map):
         (octaves, persist, lacuna, scale, moist_mod, temp_mod, water_level) = SIMPLEX

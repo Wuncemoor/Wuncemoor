@@ -6,6 +6,7 @@ from config.constants import BLACK, DARK_RED
 
 
 class Combatant:
+    """Component for Entities to fight with"""
     def __init__(self, name, images, phylo, attributes, level, competence, equipment, satchel, ai=None, xp=0, sex=None):
         
         self.name = name
@@ -208,7 +209,8 @@ class Combatant:
 
     
 #True bonuses (or penalties) to saving throws (default savethrow is d100 +/- bonus)    
-    
+
+    # Athletics
     @property
     def savethrow_reflex(self):
         bonus = self.attributes.instinct + self.attributes.improvisation + self.attributes.finesse
@@ -233,7 +235,8 @@ class Combatant:
     def savethrow_stun(self):
         bonus = self.attributes.vitality + self.attributes.improvisation
         return bonus
-    
+
+    # Fortitudes
     @property
     def savethrow_panic(self):
         bonus = self.attributes.improvisation + self.attributes.wisdom + self.attributes.charisma
@@ -258,7 +261,8 @@ class Combatant:
     def savethrow_enrage(self):
         bonus = self.attributes.wisdom + self.attributes.charisma
         return bonus
-        
+
+    # Resiliences
     @property
     def savethrow_illness(self):
         bonus = self.attributes.vitality 
@@ -306,29 +310,34 @@ class Combatant:
         
 #Turn order and positioning stats
 
-    #Who goes first?
+
     @property
     def initiative(self):
+        """Who goes first?"""
         bonus = self.attributes.instinct + self.attributes.improvisation
         return bonus
-    #How quickly do they gain action potential?    
+
     @property
     def speed(self):
+        """How quickly do they gain action potential?"""
         vroom = self.attributes.coordination + self.attributes.finesse
         return vroom
-    #Zone of control (ZoC) / and Attacks of Opportunity (AoO)
+
     @property
     def presence(self):
+        """Zone of control (ZoC) / and Attacks of Opportunity (AoO)"""
         woah = self.attributes.strength + self.attributes.vitality
         return woah
-    #Combo moves with multiple combatants
+
     @property
     def teamwork(self):
+        """Combo moves with multiple combatants"""
         combo_potential = self.attributes.coordination
         return combo_potential
-    #Used to determine formations, designated leader gives aura buffs
+
     @property
     def leadership(self):
+        """Used to determine formations, designated leader gives aura buffs"""
         captain = self.attributes.coordination + self.attributes.charisma
         return captain
     
@@ -393,9 +402,6 @@ class Combatant:
         if self.current_vp > self.max_vp:
             self.current_vp = self.max_vp
         
-            
-    
-        
     def attack(self, target):
         compare_slash = self.power_slash - target.combatant.resist_slash
         compare_pierce = self.power_pierce - target.combatant.resist_pierce
@@ -409,8 +415,7 @@ class Combatant:
             attack_type, attack, resist_type = self.power_pierce, 'pierce', target.combatant.resist_pierce
         elif best_attack == compare_blunt:
             attack_type, attack, resist_type = self.power_blunt, 'blunt', target.combatant.resist_blunt
-            
-            
+
         results = []
         hit_vs_dodge = self.accuracy - target.combatant.dodge + random.randrange(100) - 50
         
@@ -464,6 +469,3 @@ class Combatant:
         
     def set_xp(self, xp):
         self.xp = xp
-
-
-       

@@ -14,6 +14,8 @@ from config.constants import MAX_ROOMS, ROOM_MAX_SIZE, ROOM_MIN_SIZE
 
 
 class DangerousMap(ProceduralTiles2D, InitRealTiles):
+    """One of two "real" Maps, along with SafeMap. Time flows normally (1 hr/step) on a DangerousMap and every step
+    has a chance for a combat encounter to trigger. """
 
     def __init__(self, width, height, variant):
         super().__init__(width, height, variant)
@@ -149,6 +151,8 @@ class DangerousMap(ProceduralTiles2D, InitRealTiles):
 
 
 class SafeMap(InitRealTiles, ProceduralTiles2D):
+    """One of two "real Maps, alongside DangerousMap. Movement does not trigger the passage of time or combat checks.
+    Time/Combat can still occur through other events """
 
     def __init__(self, width, height, variant):
         super().__init__(width, height, variant)

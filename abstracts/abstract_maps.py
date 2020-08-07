@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 
 
-class InitTiles(ABC):
+class AbstractInitTiles(ABC):
+    """Abstract fpr creating an array of Tile objects. You likely want to inherit from InitRealTiles or InitFakeTiles"""
 
     def __init__(self):
         self.tiles = self.initialize_tiles()
@@ -11,18 +12,21 @@ class InitTiles(ABC):
         pass
 
 
-class FillTiles(ABC):
+class AbstractFillTiles(ABC):
+    """Abstract for filling an array of Tile objects"""
 
     @abstractmethod
     def fill_tiles(self):
         pass
 
 
-class PrefabTiles2D(InitTiles, FillTiles, ABC):
+class PrefabTiles2D(AbstractInitTiles, AbstractFillTiles, ABC):
+    """Abstract for tiles that are always linked together in the same configuration"""
     pass
 
 
-class ProceduralTiles2D(InitTiles, FillTiles, ABC):
+class ProceduralTiles2D(AbstractInitTiles, AbstractFillTiles, ABC):
+    """Abstract for procedurally creating Tile arrays based on parameters"""
 
     def __init__(self, width, height, variant):
         self.width = width

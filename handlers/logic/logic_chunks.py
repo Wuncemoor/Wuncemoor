@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abstracts.abstract_logic import AbstractLogic
 from config.constants import DARK_BLUE, DARK_ORANGE, BLACK, WHITE
 from enums.game_states import EncounterStates, RewardStates, GameStates
 from handlers.views.messages import Message
@@ -6,34 +6,27 @@ from loader_functions.data_loaders import load_game
 from loader_functions.initialize_new_game import get_game_variables
 
 
-class Logic(ABC):
-
-    @abstractmethod
-    def logic(self):
-        pass
-
-
-class NewGame(Logic):
+class NewGame(AbstractLogic):
 
     def logic(self):
         world, party = get_game_variables()
         self.owner.preplay(world, party)
 
 
-class LoadGame(Logic):
+class LoadGame(AbstractLogic):
 
     def logic(self):
         world, party = load_game()
         self.owner.preplay(world, party)
 
 
-class QuitGame(Logic):
+class QuitGame(AbstractLogic):
 
     def logic(self):
         self.owner.quit()
 
 
-class Move(Logic):
+class Move(AbstractLogic):
 
     def logic(self, output):
         dx, dy = output
@@ -73,7 +66,7 @@ class Move(Logic):
                 self.owner.encounter.check(tile)
 
 
-class Interact(Logic):
+class Interact(AbstractLogic):
 
     def logic(self):
         nothing = True
@@ -115,7 +108,7 @@ class Interact(Logic):
         return changes
 
 
-class MenusToggle(Logic):
+class MenusToggle(AbstractLogic):
 
     def logic(self, output):
 
@@ -125,26 +118,26 @@ class MenusToggle(Logic):
             return MenusToMenus.logic(self, output)
 
 
-class LifeToMenus(Logic):
+class LifeToMenus(AbstractLogic):
 
     def logic(self, obj):
         return [{'state': 'menus'}, {'substate': obj}]
 
 
-class MenusToMenus(Logic):
+class MenusToMenus(AbstractLogic):
 
     def logic(self, obj):
         return [{'substate': obj}]
 
 
-class MenusSubToLife(Logic):
+class MenusSubToLife(AbstractLogic):
 
     def logic(self):
         self.handler.menu.sub = None
         return [{'state': 'life'}]
 
 
-class MenusExit(Logic):
+class MenusExit(AbstractLogic):
 
     def logic(self):
         if self.handler.menu.sub is None:
@@ -154,7 +147,7 @@ class MenusExit(Logic):
             self.owner.options.current = self.handler.menu.options
 
 
-class MenuGoToSub(Logic):
+class MenuGoToSub(AbstractLogic):
 
     def logic(self):
         sub = self.handler.menu.get_sub()
@@ -163,14 +156,14 @@ class MenuGoToSub(Logic):
             self.owner.options.wrap_and_set(sub)
 
 
-class FightTargeting(Logic):
+class FightTargeting(AbstractLogic):
 
     def logic(self):
         changes = [{'substate': EncounterStates.FIGHT_TARGETING}]
         return changes
 
 
-class EncounterExit(Logic):
+class EncounterExit(AbstractLogic):
 
     def logic(self):
         if self.handler.state is EncounterStates.FIGHT_TARGETING:
@@ -180,13 +173,13 @@ class EncounterExit(Logic):
         return changes
 
 
-class UseSatchel(Logic):
+class UseSatchel(AbstractLogic):
 
     def logic(self):
         pass
 
 
-class RunAway(Logic):
+class RunAway(AbstractLogic):
 
     def logic(self):
         changes = [{'state': 'life'}]
@@ -201,7 +194,7 @@ class RunAway(Logic):
         return changes
 
 
-class AttackMob(Logic):
+class AttackMob(AbstractLogic):
 
     def logic(self):
         changes = []
@@ -212,7 +205,7 @@ class AttackMob(Logic):
         return changes
 
 
-class EndTurn(Logic):
+class EndTurn(AbstractLogic):
 
     def logic(self):
         changes = []
@@ -229,7 +222,7 @@ class EndTurn(Logic):
         return changes
 
 
-class EnemyTurn(Logic):
+class EnemyTurn(AbstractLogic):
 
     def logic(self):
         player = self.handler.combat.party.p1
@@ -238,14 +231,14 @@ class EnemyTurn(Logic):
         return changes
 
 
-class GoToReward(Logic):
+class GoToReward(AbstractLogic):
 
     def logic(self):
         changes = [{'state': 'reward'}, {'substate': RewardStates.THINKING}]
         return changes
 
 
-class RewardAuto(Logic):
+class RewardAuto(AbstractLogic):
 
     def logic(self):
         self.handler.loot.claimed.extend(self.handler.loot.items)
@@ -254,7 +247,7 @@ class RewardAuto(Logic):
         return []
 
 
-class RewardManual(Logic):
+class RewardManual(AbstractLogic):
 
     def logic(self):
         loot = self.handler.loot
@@ -268,7 +261,7 @@ class RewardManual(Logic):
         return changes
 
 
-class RewardToLife(Logic):
+class RewardToLife(AbstractLogic):
 
     def logic(self):
         loot = self.handler.loot
@@ -280,7 +273,7 @@ class RewardToLife(Logic):
         return changes
 
 
-class RewardSifting(Logic):
+class RewardSifting(AbstractLogic):
 
     def logic(self):
         changes = []
@@ -294,7 +287,7 @@ class RewardSifting(Logic):
         return changes
 
 
-class RewardDepositing(Logic):
+class RewardDepositing(AbstractLogic):
 
     def logic(self):
         changes = []
@@ -307,7 +300,7 @@ class RewardDepositing(Logic):
         return changes
 
 
-class RewardToggle(Logic):
+class RewardToggle(AbstractLogic):
 
     def logic(self, direction):
         changes = []
@@ -319,7 +312,7 @@ class RewardToggle(Logic):
         return changes
 
 
-class RewardExit(Logic):
+class RewardExit(AbstractLogic):
 
     def logic(self):
         changes = []
@@ -333,14 +326,14 @@ class RewardExit(Logic):
         return changes
 
 
-class Debug(Logic):
+class Debug(AbstractLogic):
 
     def logic(self):
         changes = [{'state': 'debug'}]
         return changes
 
 
-class DebugExit(Logic):
+class DebugExit(AbstractLogic):
 
     def logic(self, prev):
         string_dict = {
@@ -355,7 +348,7 @@ class DebugExit(Logic):
         return changes
 
 
-class DebugAttemptCommand(Logic):
+class DebugAttemptCommand(AbstractLogic):
 
     def logic(self):
         changes = [{'debug_message': Message('Command entered: ' + self.handler.current_input, WHITE)}]

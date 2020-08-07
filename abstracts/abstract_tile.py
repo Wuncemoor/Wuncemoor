@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 
 
 class AbstractTile(ABC):
+    """Abstract for tiles. You likely want to inherit from FakeTile or Tile"""
+
     def __init__(self, variant):
         self.floor = self.initialize_floor(variant)
         self.blocker = self.initialize_blocker(variant)

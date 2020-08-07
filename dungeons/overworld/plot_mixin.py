@@ -3,10 +3,10 @@ from config.image_objects import get_town_obj
 from map_objects.rect import Rect
 from map_objects.structure import Structure
 from dungeons.overworld.plot_node import PlotNode
-from prefabs.overworld_town import OverworldTown
 
 
 class PlotMixin:
+    """Mixin for OverworldBuilder. Creates PlotNodes to mark coordinates of core plot locations"""
 
     def apply_core_plot_nodes(self, overworld):
 

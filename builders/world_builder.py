@@ -1,10 +1,12 @@
 from builders.dungeon_builders import OverworldBuilder, DungeonAlphaBuilder, DungeonBetaBuilder, DungeonGammaBuilder, \
     DungeonDeltaBuilder
-from config.constants import CAVE
 from map_objects.dungeon import Dungeon
 
 
 class DungeonDirector:
+    """Assists WorldHandler by receiving high level commands and returning Dungeons (and occasionally other things).
+    Dungeon creation is delegated to DungeonBuilders. """
+
     def __init__(self):
         self.builder = None
 
@@ -47,14 +49,4 @@ class DungeonDirector:
         nodes = self.builder.apply_core_plot_nodes(overworld)
         return nodes
 
-
-
-def get_cave(subtype):
-    (width, height) = CAVE
-    dungeon_builder = DungeonBuilder('cave', subtype, 5, width, height, 75)
-    dungeon_director = DungeonDirector()
-    dungeon_director.set_builder(dungeon_builder)
-    cave = dungeon_director.get_dungeon()
-
-    return cave
 

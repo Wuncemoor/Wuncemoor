@@ -1,4 +1,5 @@
 class Item:
+    """Component for Entities. Behavior is determined by Item components"""
     def __init__(self, equippable=None, useable=None, craftable=None, important=False, stackable=False):
         self.equippable = equippable
         self.useable = useable

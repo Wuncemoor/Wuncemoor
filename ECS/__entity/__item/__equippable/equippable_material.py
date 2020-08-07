@@ -1,4 +1,5 @@
 class EquippableMaterial:
+    """Equippable component representing the material that the Item is made of."""
     
     def __init__(self, material):
         

@@ -14,6 +14,7 @@ from config.image_objects import BUNDLE_WEAPONS, BUNDLE_POTION, SCROLL
 
 
 def make_item(item_choice):
+    """Will be reworked along with item update, but still functional as is"""
 
     if item_choice == 'healing_potion':
 
