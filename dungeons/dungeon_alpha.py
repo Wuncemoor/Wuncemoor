@@ -14,5 +14,5 @@ class DungeonAlphaMixin:
         dialogue = get_samwise_dialogue()
         noncom = Noncombatant('samwise', BUNDLE_SAMWISE, dialogue)
         age = Age(13, 12, 28, 0, (1, 4))
-        samwise = Entity(18, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom, age=age)
+        samwise = Entity(5, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom, age=age)
         return samwise

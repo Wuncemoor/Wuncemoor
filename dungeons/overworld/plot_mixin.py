@@ -1,8 +1,7 @@
 import random
-from config.image_objects import get_town_obj
 from map_objects.rect import Rect
-from map_objects.structure import Structure
 from dungeons.overworld.plot_node import PlotNode
+from prefabs.overworld_town import OverworldTown
 
 
 class PlotMixin:
@@ -105,7 +104,8 @@ class PlotMixin:
 
     @staticmethod
     def add_town(overworld, node):
-        town = Structure(Rect(node.x, node.y, 8, 4), get_town_obj())
+        pass
+        # town = OverworldTown(overworld, node)
         # map.structures.append(town)
     # @staticmethod
     # def add_town(overworld, node):

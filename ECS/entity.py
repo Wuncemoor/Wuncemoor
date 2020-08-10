@@ -38,11 +38,6 @@ class Entity:
             if self.item.useable:
                 self.item.useable.owner = self
 
-        if self.transition:
-            self.transition.owner = self
-            self.name = self.transition.name
-            self.images = self.transition.images
-
         if self.noncombatant:
             self.noncombatant.owner = self
             self.name = self.noncombatant.name

@@ -13,7 +13,7 @@ class DungeonDirector:
     def overworld(self):
         self.builder = OverworldBuilder()
         overworld = self.get_dungeon()
-        nodes = self.get_nodes(overworld.maps[0])
+        nodes = self.builder.apply_core_plot_nodes(overworld.maps[0])
 
         return overworld, nodes
 
@@ -45,8 +45,5 @@ class DungeonDirector:
 
         return dungeon
 
-    def get_nodes(self, overworld):
-        nodes = self.builder.apply_core_plot_nodes(overworld)
-        return nodes
 
 
