@@ -2,7 +2,6 @@ import pygame as py
 from screens.frozen_surface import FrozenSurface
 from ECS.image_bundle import ImageBundle
 
-
 TITLE_SCREEN_BG = py.image.load('images\\background\\main_menu.png')
 TITLE_MENU_BG = py.image.load('images\\GUI\\main_menu.png')
 TITLE_MENU_BUTTON = py.image.load('images\\GUI\\mm_button.png')
@@ -430,7 +429,6 @@ TILE_BASE = {
 DARK_ROCK_WALL = py.image.load('images\\tiles\\dark_wall.png')
 LIGHT_ROCK_WALL = py.image.load('images\\tiles\\light_wall.png')
 
-
 LIGHT_GRASS = [py.image.load('images\\tiles\\grass\\light_grass00.png'),
                py.image.load('images\\tiles\\grass\\light_grass01.png'),
                py.image.load('images\\tiles\\grass\\light_grass02.png'),
@@ -854,40 +852,68 @@ def get_house_images():
     return obj_lists
 
 
-def get_town_obj():
-    # width = 8, height = 4
-    pf = 'images\\structures\\town\\'
-    obj_lists = [[py.image.load(pf + 'light_town00.png'), py.image.load(pf + 'light_town01.png'),
-                  py.image.load(pf + 'light_town02.png'), py.image.load(pf + 'light_town03.png'),
-                  py.image.load(pf + 'light_town04.png'), py.image.load(pf + 'light_town05.png'),
-                  py.image.load(pf + 'light_town06.png'), py.image.load(pf + 'light_town07.png'),
-                  py.image.load(pf + 'light_town08.png'), py.image.load(pf + 'light_town09.png'),
-                  py.image.load(pf + 'light_town10.png'), py.image.load(pf + 'light_town11.png'),
-                  py.image.load(pf + 'light_town12.png'), py.image.load(pf + 'light_town13.png'),
-                  py.image.load(pf + 'light_town14.png'), py.image.load(pf + 'light_town15.png'),
-                  py.image.load(pf + 'light_town16.png'), py.image.load(pf + 'light_town17.png'),
-                  py.image.load(pf + 'light_town18.png'), py.image.load(pf + 'light_town19.png'),
-                  py.image.load(pf + 'light_town20.png'), py.image.load(pf + 'light_town21.png'),
-                  py.image.load(pf + 'light_town22.png'), py.image.load(pf + 'light_town23.png'),
-                  py.image.load(pf + 'light_town24.png'), py.image.load(pf + 'light_town25.png'),
-                  py.image.load(pf + 'light_town26.png'), py.image.load(pf + 'light_town27.png'),
-                  py.image.load(pf + 'light_town28.png'), py.image.load(pf + 'light_town29.png'),
-                  py.image.load(pf + 'light_town30.png'), py.image.load(pf + 'light_town31.png')],
-                 [py.image.load(pf + 'dark_town00.png'), py.image.load(pf + 'dark_town01.png'),
-                  py.image.load(pf + 'dark_town02.png'), py.image.load(pf + 'dark_town03.png'),
-                  py.image.load(pf + 'dark_town04.png'), py.image.load(pf + 'dark_town05.png'),
-                  py.image.load(pf + 'dark_town06.png'), py.image.load(pf + 'dark_town07.png'),
-                  py.image.load(pf + 'dark_town08.png'), py.image.load(pf + 'dark_town09.png'),
-                  py.image.load(pf + 'dark_town10.png'), py.image.load(pf + 'dark_town11.png'),
-                  py.image.load(pf + 'dark_town12.png'), py.image.load(pf + 'dark_town13.png'),
-                  py.image.load(pf + 'dark_town14.png'), py.image.load(pf + 'dark_town15.png'),
-                  py.image.load(pf + 'dark_town16.png'), py.image.load(pf + 'dark_town17.png'),
-                  py.image.load(pf + 'dark_town18.png'), py.image.load(pf + 'dark_town19.png'),
-                  py.image.load(pf + 'dark_town20.png'), py.image.load(pf + 'dark_town21.png'),
-                  py.image.load(pf + 'dark_town22.png'), py.image.load(pf + 'dark_town23.png'),
-                  py.image.load(pf + 'dark_town24.png'), py.image.load(pf + 'dark_town25.png'),
-                  py.image.load(pf + 'dark_town26.png'), py.image.load(pf + 'dark_town27.png'),
-                  py.image.load(pf + 'dark_town28.png'), py.image.load(pf + 'dark_town29.png'),
-                  py.image.load(pf + 'dark_town30.png'), py.image.load(pf + 'dark_town31.png')]
-                 ]
-    return obj_lists
+OVERWORLD_TOWN = [[[FrozenSurface.load('images\\structures\\town\\', 'light_town00.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town01.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town02.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town03.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town04.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town05.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town06.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town07.png')],
+                   [FrozenSurface.load('images\\structures\\town\\', 'light_town08.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town09.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town10.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town11.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town12.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town13.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town14.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town15.png')],
+                   [FrozenSurface.load('images\\structures\\town\\', 'light_town16.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town17.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town18.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town19.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town20.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town21.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town22.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town23.png')],
+                   [FrozenSurface.load('images\\structures\\town\\', 'light_town24.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town25.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town26.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town27.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town28.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town29.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town30.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'light_town31.png')]],
+                  [[FrozenSurface.load('images\\structures\\town\\', 'dark_town00.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town01.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town02.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town03.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town04.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town05.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town06.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town07.png')],
+                   [FrozenSurface.load('images\\structures\\town\\', 'dark_town08.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town09.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town10.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town11.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town12.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town13.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town14.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town15.png')],
+                   [FrozenSurface.load('images\\structures\\town\\', 'dark_town16.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town17.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town18.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town19.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town20.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town21.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town22.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town23.png')],
+                   [FrozenSurface.load('images\\structures\\town\\', 'dark_town24.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town25.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town26.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town27.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town28.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town29.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town30.png'),
+                    FrozenSurface.load('images\\structures\\town\\', 'dark_town31.png')]]]
+

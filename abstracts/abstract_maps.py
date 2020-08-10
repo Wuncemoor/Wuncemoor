@@ -22,7 +22,12 @@ class AbstractFillTiles(ABC):
 
 class PrefabTiles2D(AbstractInitTiles, AbstractFillTiles, ABC):
     """Abstract for tiles that are always linked together in the same configuration"""
-    pass
+    def __init__(self, variant):
+        self.width = len(variant.images[0][0])
+        self.height = len(variant.images[0])
+        self.variant = variant
+        super().__init__()
+
 
 
 class ProceduralTiles2D(AbstractInitTiles, AbstractFillTiles, ABC):

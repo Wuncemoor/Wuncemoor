@@ -1,5 +1,4 @@
 import random
-from map_objects.rect import Rect
 from dungeons.overworld.plot_node import PlotNode
 from prefabs.overworld_town import OverworldTown
 
@@ -77,7 +76,8 @@ class PlotMixin:
                             x_options.append(x)
                             y_options.append(y)
         else:
-            for y in range(delta[completed_nodes - 1] + nodes[completed_nodes - 1].y, abs(delta[completed_nodes - 1]) + nodes[completed_nodes - 1].y + 1):
+            for y in range(delta[completed_nodes - 1] + nodes[completed_nodes - 1].y,
+                           abs(delta[completed_nodes - 1]) + nodes[completed_nodes - 1].y + 1):
                 if 0 <= y < (height - th):
                     for x in range(delta[completed_nodes - 1] + nodes[completed_nodes - 1].x,
                                    abs(delta[completed_nodes - 1]) + nodes[completed_nodes - 1].x + 1):
@@ -101,16 +101,13 @@ class PlotMixin:
         for node in nodes:
             self.add_town(overworld, node)
 
-
     @staticmethod
     def add_town(overworld, node):
-        pass
-        # town = OverworldTown(overworld, node)
-        # map.structures.append(town)
-    # @staticmethod
-    # def add_town(overworld, node):
-    #     prefab = OverworldTown
-    #     self.add_town(overworld, node.x, node.y)
-    #     stairs = Transition('Stairs', BUNDLE_ALPHA, node.name, 0, node.entrance)
-    #     ent = Entity(node.x, node.y, transition=stairs)
-    #     overworld.transitions.append(ent)
+        town = OverworldTown(node)
+        y, x = 0, 0
+        for j in range(node.y, node.y + len(node.images[0])):
+            for i in range(node.x, node.x + len(node.images[0][0])):
+                overworld.tiles[j][i].floor = town.tiles[y][x].floor
+                x += 1
+            y += 1
+            x = 0

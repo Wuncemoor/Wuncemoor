@@ -1,5 +1,5 @@
 from map_objects.transition import Transition
-from abstracts.abstract_structure import AbstractStructure
+from abstracts.abstract_structure import ProceduralStructure
 from abstracts.abstract_tile_component import ModalTileFloor
 from config.image_objects import LIGHT_ROAD, DARK_ROAD, BUNDLE_ALPHA
 
@@ -25,7 +25,7 @@ class RoadTileFloor(ModalTileFloor):
         return "RoadTileFloor(" + repr(self.light_image) + ", " + repr(self.dark_image) + ", " + repr(self.transition) + ", " + self.mode + "}"
 
 
-class MajorRoad(AbstractStructure):
+class MajorRoad(ProceduralStructure):
     """A unique Structure that connects all dungeons to the overworld. variant is the node that OverworldBuilder made
     for this map """
 
