@@ -58,39 +58,39 @@ class ArtistHandler(MVC):
     def life(self):
         (width, height) = TILES_ON_SCREEN
 
+
         if self.handler.fov.needs_recompute:
             self.handler.fov.recompute()
+            self.handler.fov.needs_recompute = False
 
-        if self.handler.fov.recompute:
-            for y in range(height):
-                for x in range(width):
-                    self.draw_tile(x, y)
+        for y in range(height):
+            for x in range(width):
+                self.draw_tile(x, y)
 
-            for noncom in self.owner.world.current_map.noncombatants:
-                self.draw_entity(noncom)
-            # draw all entities in list
-            entities_in_render_order = sorted(self.owner.world.current_map.entities, key=lambda x: x.render_order.value)
-            for entity in entities_in_render_order:
-                self.draw_entity(entity)
-            self.draw_party()
+        for noncom in self.owner.world.current_map.noncombatants:
+            self.draw_entity(noncom)
+        entities_in_render_order = sorted(self.owner.world.current_map.entities, key=lambda x: x.render_order.value)
+        for entity in entities_in_render_order:
+            self.draw_entity(entity)
+        self.draw_party()
 
 
-            # Print game messages one line at a time
+        # Print game messages one line at a time
 
-            message_surface = get_surface(MESSAGE_BG)
-            y = 0
-            for message in self.owner.log.messages.messages:
-                off_x = 30
-                off_y = 5
-                print_message(message_surface, message, off_x, off_y, y)
-                y += 1
+        message_surface = get_surface(MESSAGE_BG)
+        y = 0
+        for message in self.owner.log.messages.messages:
+            off_x = 30
+            off_y = 5
+            print_message(message_surface, message, off_x, off_y, y)
+            y += 1
 
-            self.screen.blit(message_surface, (300, 592))
-            message_surface.fill(BLACK)
+        self.screen.blit(message_surface, (300, 592))
+        message_surface.fill(BLACK)
 
-            self.blit_resource_hud()
+        self.blit_resource_hud()
 
-            self.blit_calendar()
+        self.blit_calendar()
 
     def menus(self):
         if self.handler.state == MenuStates.PARTY:
@@ -161,8 +161,7 @@ class ArtistHandler(MVC):
 
         surfimg = entity.images.sprite
 
-        if libtcod.map_is_in_fov(self.handler.fov.map, entity.x, entity.y) or (
-                entity.transition and self.owner.world.tiles[entity.x][entity.y].explored):
+        if libtcod.map_is_in_fov(self.handler.fov.map, entity.y, entity.x):
             self.screen.blit(surfimg, ((entity.x - cx) * self.tilesize, (entity.y - cy) * self.tilesize))
 
     def draw_party(self):
