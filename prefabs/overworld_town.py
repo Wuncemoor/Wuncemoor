@@ -1,8 +1,6 @@
-from abstracts.abstract_maps import PrefabTiles2D
 from abstracts.abstract_structure import PrefabStructure
 from abstracts.abstract_tile_component import AbstractTileFloor
 from config.image_objects import OVERWORLD_TOWN, BUNDLE_ALPHA
-from dungeons.tile_mixins import InitFakeTiles
 from map_objects.transition import Transition
 
 

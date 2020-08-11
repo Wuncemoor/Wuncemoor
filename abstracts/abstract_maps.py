@@ -29,7 +29,6 @@ class PrefabTiles2D(AbstractInitTiles, AbstractFillTiles, ABC):
         super().__init__()
 
 
-
 class ProceduralTiles2D(AbstractInitTiles, AbstractFillTiles, ABC):
     """Abstract for procedurally creating Tile arrays based on parameters"""
 

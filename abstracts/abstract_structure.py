@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from abstracts.abstract_maps import ProceduralTiles2D, PrefabTiles2D
 from dungeons.tile_mixins import InitFakeTiles
 
@@ -11,6 +11,10 @@ class ProceduralStructure(InitFakeTiles, ProceduralTiles2D, ABC):
         self.rect = rect
         self.fill_tiles()
 
+    @abstractmethod
+    def set_transitions(self):
+        pass
+
 
 class PrefabStructure(InitFakeTiles, PrefabTiles2D, ABC):
     """Abstract to make a Structure in Hammerspace. images stored in 2D array for integration with real Map"""
@@ -18,3 +22,7 @@ class PrefabStructure(InitFakeTiles, PrefabTiles2D, ABC):
     def __init__(self, variant):
         super().__init__(variant)
         self.fill_tiles()
+
+    @abstractmethod
+    def set_transitions(self):
+        pass
