@@ -17,12 +17,15 @@ class OverworldTownFloor(AbstractTileFloor):
         return 'OverworldTownFloor()'
 
 
-class OverworldTown(PrefabStructure):
-    """Variant = PlotNode"""
+class OverworldStructure(PrefabStructure):
+    """Fills tiles with generic townfloor image, fills floor transitions based on given plot node"""
+
+    _images = OVERWORLD_TOWN
+
     def __init__(self, node):
-        super().__init__(node)
+        super().__init__()
         self.fill_tiles()
-        self.set_transitions()
+        self.set_transitions(node)
 
     def fill_tiles(self):
         i, j = 0, 0
@@ -33,8 +36,8 @@ class OverworldTown(PrefabStructure):
             j += 1
             i = 0
 
-    def set_transitions(self):
-        trans = Transition('The entrance to ' + self.variant.name.capitalize(), BUNDLE_ALPHA, self.variant.name, 0, (self.variant.entrance[0], self.variant.entrance[1]))
+    def set_transitions(self, node):
+        trans = Transition('The entrance to ' + node.name.capitalize(), BUNDLE_ALPHA, node.name, 0, (node.entrance[0], node.entrance[1]))
         for row in self.tiles:
             for tile in row:
                 tile.floor.transition = trans
