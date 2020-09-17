@@ -1,5 +1,3 @@
-from config.image_objects import OVERWORLD_TOWN
-
 
 class PlotNode:
     """Represents core plot location on overworld. Made by OverworldBuilder then passed to DungeonBuilder to connect
@@ -11,5 +9,4 @@ class PlotNode:
         self.y = y
         self.entrance = entrance
         self.no_fly_zone = no_fly_zone
-        self.images = OVERWORLD_TOWN
 

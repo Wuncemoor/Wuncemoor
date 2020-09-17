@@ -53,6 +53,17 @@ class ModalTileFloor(AbstractTileFloor):
 class AbstractTileBlocker(AbstractTileComponent):
     """Abstract for TileBlocker components for Tile. Blocks field of view if opaque."""
 
+    @classmethod
+    def has_overshadow(cls):
+        if cls.overshadow is not None:
+            return True
+        return False
+
+    @property
+    @abstractmethod
+    def overshadow(self):
+        pass
+    
     @property
     @abstractmethod
     def opaque(self):

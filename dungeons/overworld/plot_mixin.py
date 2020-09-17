@@ -1,6 +1,6 @@
 import random
 from dungeons.overworld.plot_node import PlotNode
-from prefabs.overworld_town import OverworldTown
+from prefabs.overworld_town import OverworldStructure
 
 
 class PlotMixin:
@@ -103,10 +103,10 @@ class PlotMixin:
 
     @staticmethod
     def add_town(overworld, node):
-        town = OverworldTown(node)
+        town = OverworldStructure(node)
         y, x = 0, 0
-        for j in range(node.y, node.y + len(node.images[0])):
-            for i in range(node.x, node.x + len(node.images[0][0])):
+        for j in range(node.y, node.y + len(town._images[0])):
+            for i in range(node.x, node.x + len(town._images[0][0])):
                 overworld.tiles[j][i].floor = town.tiles[y][x].floor
                 x += 1
             y += 1

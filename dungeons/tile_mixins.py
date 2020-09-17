@@ -6,7 +6,7 @@ class InitFakeTiles(AbstractInitTiles):
     """Used to make Structures in Hammerspace before integration into a real Map"""
 
     def initialize_tiles(self):
-        tiles = [[FakeTile(self.variant) for x in range(self.width)] for y in range(self.height)]
+        tiles = [[FakeTile() for x in range(self.width)] for y in range(self.height)]
 
         return tiles
 

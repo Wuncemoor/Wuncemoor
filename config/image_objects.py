@@ -502,17 +502,15 @@ DARK_DIRT = [py.image.load('images\\tiles\\dirt\\dark_dirt0.png'),
              py.image.load('images\\tiles\\dirt\\dark_dirt7.png'),
              py.image.load('images\\tiles\\dirt\\dark_dirt8.png')]
 
-STRUCTURE = {
-    'wall_top_h': py.image.load('images\\structures\\inn\\wall_top_h.png'),
-    'wall_top_v': py.image.load('images\\structures\\inn\\wall_top_v.png'),
-    'wall_mid': py.image.load('images\\structures\\inn\\wall_mid.png'),
-    'wall_bot': py.image.load('images\\structures\\inn\\wall_bot.png'),
-    'pillar_top': py.image.load('images\\structures\\inn\\pillar_top.png'),
-    'pillar_mid': py.image.load('images\\structures\\inn\\pillar_mid.png'),
-    'pillar_bot': py.image.load('images\\structures\\inn\\pillar_bot.png'),
-    'inn_floor_s': py.image.load('images\\structures\\inn\\inn_floor_s.png'),
-}
 
+WALL_TOP_H = FrozenSurface.load('images\\structures\\inn\\', 'wall_top_h.png')
+WALL_TOP_V = FrozenSurface.load('images\\structures\\inn\\', 'wall_top_v.png')
+WALL_MID = FrozenSurface.load('images\\structures\\inn\\', 'wall_mid.png')
+WALL_BOT = FrozenSurface.load('images\\structures\\inn\\', 'wall_bot.png')
+PILLAR_TOP = FrozenSurface.load('images\\structures\\inn\\', 'pillar_top.png')
+PILLAR_MID = FrozenSurface.load('images\\structures\\inn\\', 'pillar_mid.png')
+PILLAR_BOT = FrozenSurface.load('images\\structures\\inn\\', 'pillar_bot.png')
+INN_FLOOR_S = FrozenSurface.load('images\\structures\\inn\\', 'inn_floor_s.png')
 
 def get_hut_obj():
     # width 17, height 17

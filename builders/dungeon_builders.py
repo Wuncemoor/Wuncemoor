@@ -106,17 +106,21 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
         self.node = node
 
     def get_maps(self):
-        map = self.initialize_map()
-        rect = Rect(0, int(self.height / 2) - 2, self.width, 4)
-        road = MajorRoad(rect, self.node)
-        road.set_transitions('vertical')
-        # add_road also adds transitions to overworld
-        map.add_road(road)
+        alpha_map = self.initialize_map()
+        major = self.get_major_road()
+        # connect also adds transitions to overworld
+        alpha_map.connect_to_overworld(major)
+
+        structures = self.get_structures()
+        rects = self.get_rects()
+
+        alpha_map.integrate_structures(structures, rects)
+
         samwise = self.get_samwise()
 
-        map.noncombatants.append(samwise)
+        alpha_map.noncombatants.append(samwise)
 
-        return [map]
+        return [alpha_map]
         # convert to add_structures as part of tile rework
         # add_house(floor, 10, int(height / 2) - 8)
         # add_hut(floor, 30, int(height / 2) - 19)
@@ -152,7 +156,7 @@ class DungeonBetaBuilder(InitSafeMap, AbstractDungeonBuilder):
         road = MajorRoad(rect, self.node)
         road.set_transitions('vertical')
         # add_road also adds transitions to overworld
-        map.add_road(road)
+        map.connect_to_overworld(road)
         return [map]
 
 
@@ -174,7 +178,7 @@ class DungeonGammaBuilder(InitSafeMap, AbstractDungeonBuilder):
         road = MajorRoad(rect, self.node)
         road.set_transitions('vertical')
         # add_road also adds transitions to overworld
-        map.add_road(road)
+        map.connect_to_overworld(road)
         return [map]
 
 
@@ -195,5 +199,5 @@ class DungeonDeltaBuilder(InitSafeMap, AbstractDungeonBuilder):
         road = MajorRoad(rect, self.node)
         road.set_transitions('vertical')
         # add_road also adds transitions to overworld
-        map.add_road(road)
+        map.connect_to_overworld(road)
         return [map]
