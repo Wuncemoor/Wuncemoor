@@ -19,8 +19,8 @@ class ProceduralStructure(InitFakeTiles, ProceduralTiles2D, ABC):
 class PrefabStructure(InitFakeTiles, PrefabTiles2D, ABC):
     """Abstract to make a Structure in Hammerspace. images stored in 2D array for integration with real Map"""
 
-    def __init__(self, variant):
-        super().__init__(variant)
+    def __init__(self):
+        super().__init__()
         self.fill_tiles()
 
     @abstractmethod
