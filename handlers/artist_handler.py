@@ -57,7 +57,7 @@ class ArtistHandler(MVC):
 
     def life(self):
         (width, height) = TILES_ON_SCREEN
-
+        cx, cy = self.handler.camera.x, self.handler.camera.y
 
         if self.handler.fov.needs_recompute:
             self.handler.fov.recompute()
@@ -65,13 +65,23 @@ class ArtistHandler(MVC):
 
         for y in range(height):
             for x in range(width):
-                self.draw_tile(x, y)
+                visible = libtcod.map_is_in_fov(self.handler.fov.map, cy + y, cx + x)
+                tile = self.owner.world.tiles[cy + y][cx + x]
+                self.draw_tile_floor(tile, x, y, visible)
 
         for noncom in self.owner.world.current_map.noncombatants:
             self.draw_entity(noncom)
         entities_in_render_order = sorted(self.owner.world.current_map.entities, key=lambda x: x.render_order.value)
         for entity in entities_in_render_order:
             self.draw_entity(entity)
+
+        for y in range(height):
+            for x in range(width):
+                visible = libtcod.map_is_in_fov(self.handler.fov.map, cy + y, cx + x)
+                tile = self.owner.world.tiles[cy + y][cx + x]
+                if tile.blocker and tile.explored:
+                    self.draw_tile_blocker(tile, x, y, visible)
+
         self.draw_party()
 
 
@@ -172,36 +182,20 @@ class ArtistHandler(MVC):
 
         self.screen.blit(surfimg, ((party.x - cx) * self.tilesize, (party.y - cy) * self.tilesize))
 
-    # def draw_structure(self, structure):
-    #     cx, cy = self.handler.camera.x, self.handler.camera.y
-    #
-    #     count = 0
-    #     for j in range(structure.rect.y1, structure.rect.y2):
-    #         for i in range(structure.rect.x1, structure.rect.x2):
-    #             visible = libtcod.map_is_in_fov(self.handler.fov.map, i, j)
-    #             if visible:
-    #                 self.screen.blit(structure.file_objs[0][count], ((i - cx) * self.tilesize, (j - cy) * self.tilesize))
-    #                 count += 1
-    #             elif self.owner.world.tiles[i][j].explored:
-    #                 self.screen.blit(structure.file_objs[1][count], ((i - cx) * self.tilesize, (j - cy) * self.tilesize))
-    #                 count += 1
-    #             else:
-    #                 self.screen.blit(TILE_BASE.get('black'), ((i - cx) * self.tilesize, (j - cy) * self.tilesize))
-    #                 count += 1
-
-    def draw_tile(self, x, y):
-        cx, cy = self.handler.camera.x, self.handler.camera.y
-
-        visible = libtcod.map_is_in_fov(self.handler.fov.map, cy + y, cx + x)
-
-        tile = self.owner.world.tiles[cy + y][cx + x]
-        if visible:
+    def draw_tile_floor(self, tile, x, y, vis):
+        if vis or (tile.explored and tile.floor.transition):
             self.screen.blit(tile.floor.light_image, (x * self.tilesize, y * self.tilesize))
             tile.explored = True
         elif tile.explored:
             self.screen.blit(tile.floor.dark_image, (x * self.tilesize, y * self.tilesize))
         else:
             self.screen.blit(TILE_BASE.get('black'), (x * self.tilesize, y * self.tilesize))
+
+    def draw_tile_blocker(self, tile, x, y, vis):
+        if vis:
+            self.screen.blit(tile.blocker.light_image, (x * self.tilesize, y * self.tilesize))
+        else:
+            self.screen.blit(tile.blocker.dark_image, (x * self.tilesize, y * self.tilesize))
 
     def dialogue(self):
         dialogue_screen(self)
