@@ -151,7 +151,7 @@ class DangerousMap(ProceduralTiles2D, InitRealTiles):
 
 
 class SafeMap(InitRealTiles, ProceduralTiles2D):
-    """One of two "real Maps, alongside DangerousMap. Movement does not trigger the passage of time or combat checks.
+    """One of two "real" Maps, alongside DangerousMap. Movement does not trigger the passage of time or combat checks.
     Time/Combat can still occur through other events """
 
     def __init__(self, width, height, variant):
@@ -162,9 +162,12 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
         self.entrance = None
         self.exit = None
 
-    def add_road(self, road):
-        self.set_floors(road)
-        self.set_modes(road)
+    def connect_to_overworld(self, structure):
+        """Receives a Structure (such as a MajorRoad) and sets the tiles (containing Transitions) and their images
+        using the Structure as a blueprint. """
+
+        self.set_floors(structure)
+        self.set_modes(structure)
 
     def set_floors(self, proto):
         j, i = 0, 0
@@ -203,5 +206,17 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
     def fill_tiles(self):
         pass
 
-    def add_structure(self):
-        pass
+    def integrate_structures(self, structures, rects):
+        # list() stops self.tiles from becoming an iterator, [0] removes extra list() brackets
+        self.tiles = list(map(self.integrate_structure, structures, rects))[0]
+
+    def integrate_structure(self, struct, rect):
+        j, i = 0, 0
+        for y in range(rect.y1, rect.y2):
+            for x in range(rect.x1, rect.x2):
+                self.tiles[y][x].floor = struct._floor
+                self.tiles[y][x].blocker = struct._blockers[j][i]
+                i += 1
+            j += 1
+            i = 0
+        return self.tiles
