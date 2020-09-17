@@ -17,13 +17,13 @@ class FakeTileFloor(AbstractTileFloor):
 class FakeTile(AbstractTile):
     """A fake Tile with reduced functionality. Used for Structure creation, before integration with a real Map"""
 
-    def __init__(self, variant):
-        super().__init__(variant)
+    def __init__(self):
+        super().__init__()
 
-    def initialize_floor(self, variant):
+    def initialize_floor(self):
         return FakeTileFloor()
 
-    def initialize_blocker(self, variant):
+    def initialize_blocker(self):
         return None
 
 
