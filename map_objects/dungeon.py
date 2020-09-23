@@ -8,4 +8,4 @@ class Dungeon:
         self.time_dilation = [-65, 1, 1, 6]
 
     def __repr__(self):
-        return 'Dungeon(' + self.name + ', ' + str(self.floors) + ', ' + repr(self.maps) + ', ' + self.np + ')'
+        return 'Dungeon(' + self.name + ', ' + str(self.floors) + ', ' + repr(self.maps) + ', ' + str(self.np) + ')'
