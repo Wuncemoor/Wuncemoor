@@ -1,6 +1,6 @@
 from abstracts.abstract_mvc import MVC
 from handlers.logic.logic_chunks import Move, Interact, MenusToggle, MenusExit, EncounterExit, EndTurn, EnemyTurn, \
-    RewardToggle, RewardExit, LifeToMenus, Debug, DebugExit, DebugAttemptCommand
+    RewardToggle, RewardExit, LifeToMenus, Debug, DebugExit, DebugAttemptCommand, ShopExit
 
 
 class LogicHandler(MVC):
@@ -82,13 +82,22 @@ class LogicHandler(MVC):
 
     def dialogue(self, output):
         if 'converse' in output:
-            self.owner.options.traverse(output.get('converse'))
+            changes = self.owner.options.traverse(output.get('converse'))
+            self.mutate(changes)
         elif 'debug' in output:
             self.response = Debug.logic
             changes = self.response(self)
             prev = self.owner.state
             self.mutate(changes)
             self.owner.state_handler.previous_state = prev
+
+    def shop(self, output):
+        if 'exit' in output:
+            self.response = ShopExit.logic
+            changes = self.response(self)
+            self.mutate(changes)
+        elif 'traverse_menu' in output:
+            self.owner.options.traverse(output.get('traverse_menu'))
 
     def encounter(self, output):
         if 'traverse_menu' in output:

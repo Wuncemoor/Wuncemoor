@@ -60,7 +60,6 @@ def get_starting_items(party):
     party.inventory.add_item(stick)
 
 
-
 def get_intro_quest():
     title = 'An Ominous Dream'
     node2 = QuestNode("Talked to Samwise",

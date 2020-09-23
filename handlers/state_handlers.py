@@ -235,6 +235,23 @@ class DebugHandler:
         self.message_slot = mes
 
 
+class ShopHandler:
+    """Handler for GameStates.SHOP"""
+
+    def __init__(self):
+        self.superstate = GameStates.SHOP
+        self.shopkeeper = None
+        self.sub = None
+
+    def get_subs(self):
+        player_subinv = self.owner.party.inventory.subgroups[self.owner.options.current.choice]
+        shop_subinv = self.shopkeeper.shopkeeper.inventory.subgroups[self.owner.options.current.choice]
+        return player_subinv, shop_subinv
+
+
+
+
+
 
 
 
