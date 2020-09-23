@@ -3,7 +3,7 @@ from abstracts.abstract_mvc import MVC
 from handlers.encounter.combat import CombatGrid
 from handlers.logic.logic_chunks import AttackMob, GoToReward, RewardSifting, RewardDepositing
 from handlers.logic.options import title_options, Options, encounter_window_options, reward_options, OptionsFake, \
-    settings_options
+    settings_options, shop_options
 
 
 class OptionsHandler(MVC):
@@ -32,7 +32,9 @@ class OptionsHandler(MVC):
         if self.state == GameStates.TITLE:
             self.traverse_list(path)
         elif self.state == GameStates.DIALOGUE:
-            self.traverse_graph(path)
+            return self.traverse_graph(path)
+        elif self.owner.state == GameStates.SHOP and self.handler.sub is None:
+            self.traverse_list((path[0]))
         elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and self.handler.menu.sub is None:
             self.traverse_list(path[0])
         elif self.handler.state == MenuStates.JOURNAL:
@@ -81,6 +83,7 @@ class OptionsHandler(MVC):
 
     def traverse_graph(self, path):
         key = chr(path)
+        changes = []
 
         if key in self.handler.real_io.keys():
             self.current.conversation = self.handler.real_io.get(key)
@@ -91,8 +94,15 @@ class OptionsHandler(MVC):
 
             if self.current.conversation == 'exit':
                 self.current.conversation = 'root'
-                self.owner.state_handler = self.owner.life
+                changes.append({'state': 'life'})
                 self.current = None
+            elif self.current.conversation == 'shop':
+                self.current.conversation = 'root'
+                shopkeeper = self.owner.dialogue.partner
+                changes.append({'state': 'shop'})
+                self.current = shop_options()
+                self.owner.shop.shopkeeper = shopkeeper
+        return changes
 
     def choose(self):
         if self.handler.state is EncounterStates.VICTORY:
@@ -123,6 +133,9 @@ class OptionsHandler(MVC):
         return menus.get(self.handler.state)
 
     def dialogue(self):
+        pass
+
+    def shop(self):
         pass
 
     def encounter(self):

@@ -79,23 +79,7 @@ class Interact(AbstractLogic):
                     changes.extend(pickup_results)
                     nothing = False
                     break
-        # for transition in world.current_map.transitions:
-        #     if transition.x == self.owner.party.x and transition.y == self.owner.party.y:
-        #         new_dungeon = self.owner.world.dungeons[transition.transition.go_to_dungeon]
-        #         if world.current_dungeon.name != transition.transition.go_to_dungeon:
-        #             world.current_dungeon.time_dilation = self.owner.time.stamp()
-        #             self.owner.time.apply_dilation(new_dungeon)
-        #             world.current_dungeon = new_dungeon
-        #
-        #         new_map = new_dungeon.maps[transition.transition.go_to_floor]
-        #         world.current_map = new_map
-        #         self.owner.party.x, self.owner.party.y = transition.transition.go_to_xy[0], transition.transition.go_to_xy[1]
-        #         self.handler.camera.refocus(self.owner.party.x, self.owner.party.y)
-        #
-        #         self.handler.fov.map = self.handler.fov.initialize(world)
-        #         self.handler.fov.needs_recompute = True
-        #         nothing = False
-        #         break
+
         for noncom in world.current_map.noncombatants:
             if noncom.x == self.owner.party.x and noncom.y == self.owner.party.y:
                 self.owner.dialogue.partner = noncom
@@ -153,6 +137,15 @@ class MenuGoToSub(AbstractLogic):
         sub = self.handler.menu.get_sub()
         if len(sub) > 0:
             self.handler.menu.sub = sub
+            self.owner.options.wrap_and_set(sub)
+
+
+class ShopGoToSub(AbstractLogic):
+
+    def logic(self):
+        sub = self.handler.get_sub()
+        if len(sub) > 0:
+            self.handler.sub = sub
             self.owner.options.wrap_and_set(sub)
 
 
@@ -361,4 +354,11 @@ class DebugAttemptCommand(AbstractLogic):
         except NameError:
             changes.append({'debug_message': Message('COMMAND NOT RECOGNIZED', WHITE)})
 
+        return changes
+
+
+class ShopExit(AbstractLogic):
+
+    def logic(self):
+        changes = [{'state': 'life'}]
         return changes
