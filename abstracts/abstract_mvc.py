@@ -21,6 +21,7 @@ class MVC(ABC):
             GameStates.LIFE: self.life,
             GameStates.ENCOUNTER: self.encounter,
             GameStates.DIALOGUE: self.dialogue,
+            GameStates.SHOP: self.shop,
             GameStates.MENUS: self.menus,
             GameStates.REWARD: self.reward,
         }
@@ -44,6 +45,10 @@ class MVC(ABC):
 
     @abstractmethod
     def dialogue(self):
+        pass
+
+    @abstractmethod
+    def shop(self):
         pass
 
     @abstractmethod

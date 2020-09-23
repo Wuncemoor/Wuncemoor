@@ -82,6 +82,23 @@ class InputHandler(MVC):
     def dialogue(event):
         return {'converse': event.key}
 
+    def shop(self, event):
+        if event.key == py.K_ESCAPE:
+            return {'exit': True}
+        elif event.key in (py.K_a, py.K_LEFT):
+            return {'traverse_menu': (-1, 0)}
+        elif event.key in (py.K_d, py.K_RIGHT):
+            return {'traverse_menu': (1, 0)}
+        elif event.key in (py.K_w, py.K_UP):
+            return {'traverse_menu': (0, -1)}
+        elif event.key in (py.K_s, py.K_DOWN):
+            return {'traverse_menu': (0, 1)}
+        elif event.key == py.K_RETURN:
+            return {'choose_option': True}
+        elif event.key == py.K_PERIOD:
+            return {'debug': GameStates.MENUS}
+        return {}
+
     def menus(self, event):
         if event.key == py.K_ESCAPE:
             return {'exit': True}

@@ -7,9 +7,10 @@ class GameStates(Enum):
     LIFE = 2
     MENUS = 3
     DIALOGUE = 4
-    ENCOUNTER = 5
-    REWARD = 6
-    DEBUG = 7
+    SHOP = 5
+    ENCOUNTER = 6
+    REWARD = 7
+    DEBUG = 8
     # States that need to be reimplemented
     # PLAYER_DEAD = 8
     # TARGETING = 9

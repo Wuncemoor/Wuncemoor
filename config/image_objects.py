@@ -11,6 +11,7 @@ ENCOUNTER_MESSAGE_BG = py.image.load('images\\GUI\\encounter\\message_bg.png')
 ENCOUNTER_MENU = py.image.load('images\\GUI\\menus\\encounter_menu.png')
 ENCOUNTER_BUTTON = py.image.load('images\\GUI\\menus\\option_button.png')
 DIALOGUE_MENU = py.image.load('images\\GUI\\dialogue_menu.png')
+SHOP_MENU = py.image.load('images\\GUI\\shop_menu.png')
 LEVELUP_MENU = py.image.load('images\\GUI\\levelup_menu.png')
 
 INVENTORY_BG = py.image.load('images\\GUI\\inventory\\inven_bg.png')

@@ -9,6 +9,7 @@ from screens.calendar import display_calendar
 from screens.character_screen import character_screen
 from screens.debug_window import debug_window
 from screens.dialogue_screen import dialogue_screen
+from screens.shop_screen import shop_screen
 from screens.gui_tools import get_surface, print_message, align_and_blit, blit_options, get_alpha_surface
 from screens.inventory_screen import inventory_screen
 from screens.journal_screen import journal_screen
@@ -199,6 +200,9 @@ class ArtistHandler(MVC):
 
     def dialogue(self):
         dialogue_screen(self)
+
+    def shop(self):
+        shop_screen(self)
 
     def blit_resource_hud(self):
         resource_hud = player_resource_display(self.owner.party.p1)
