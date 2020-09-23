@@ -1,9 +1,12 @@
+from ECS.__entity.shopkeeper import Shopkeeper
 from ECS.entity import Entity
 from ECS.__entity.age import Age
 from ECS.__entity.noncombatant import Noncombatant
+from builders.make_item import make_item
 from config.image_objects import BUNDLE_SAMWISE
 from dialogue.get_dialogue import get_samwise_dialogue
 from enums.render_order import RenderOrder
+from handlers.menus.inventory import Inventory
 from map_objects.majorroad import MajorRoad
 from map_objects.rect import Rect
 from prefabs.alpha_prefabs import TownAlphaInn
@@ -18,8 +21,14 @@ class DungeonAlphaMixin:
         dialogue = get_samwise_dialogue()
         noncom = Noncombatant('samwise', BUNDLE_SAMWISE, dialogue)
         age = Age(13, 12, 28, 0, (1, 4))
-        samwise = Entity(5, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom, age=age)
+        inven = Inventory()
+        potion = make_item('healing_potion')
+        inven.add_item(potion)
+        shopkeeper = Shopkeeper(inven)
+        samwise = Entity(5, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom, age=age, shopkeeper=shopkeeper)
         return samwise
+
+
 
     def get_major_road(self):
         rect = Rect(0, int(self.height / 2) - 2, self.width, 4)

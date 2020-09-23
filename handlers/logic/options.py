@@ -1,5 +1,5 @@
 from handlers.logic.logic_chunks import NewGame, LoadGame, QuitGame, FightTargeting, UseSatchel, RunAway, RewardAuto, \
-    RewardManual, RewardToLife, MenuGoToSub
+    RewardManual, RewardToLife, MenuGoToSub, ShopGoToSub
 
 
 class Options:
@@ -41,6 +41,10 @@ def reward_options():
 
 def settings_options():
     pass
+
+
+def shop_options():
+    return OptionsFake(['misc', 'weapons', 'armor', 'accessories', 'satchel', 'materials', 'plot'], fake=ShopGoToSub)
 
 
 
