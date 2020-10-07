@@ -24,6 +24,10 @@ INVENTORY_OPTIONS = [py.image.load('images\\GUI\\inventory\\miscellaneous.png'),
                      py.image.load('images\\GUI\\inventory\\materials.png'),
                      py.image.load('images\\GUI\\inventory\\plot.png')]
 
+GOLD = py.image.load('images\\GUI\\menus\\silver.png')
+SILVER = py.image.load('images\\GUI\\menus\\silver.png')
+COPPER = py.image.load('images\\GUI\\menus\\copper.png')
+
 JOURNAL_OBJS = {
     'bg': py.image.load('images\\GUI\\journal\\journal_bg.png'),
     'icon0': py.image.load('images\\GUI\\journal\\current.png'),
@@ -915,4 +919,5 @@ OVERWORLD_TOWN = [[[FrozenSurface.load('images\\structures\\town\\', 'light_town
                     FrozenSurface.load('images\\structures\\town\\', 'dark_town29.png'),
                     FrozenSurface.load('images\\structures\\town\\', 'dark_town30.png'),
                     FrozenSurface.load('images\\structures\\town\\', 'dark_town31.png')]]]
+
 

@@ -27,6 +27,7 @@ def get_party():
     player = get_player()
     party = Party(player)
     party.inventory = Inventory()
+    party.inventory.money += 100
     party.map = Map()
     party.x, party.y = player.x, player.y
     party.focus = party.p1
@@ -53,7 +54,7 @@ def get_player():
 
 
 def get_starting_items(party):
-    item_component = Item(
+    item_component = Item(1,
         Equippable('Stick', BUNDLE_STICK, EquipmentSlots.MAIN_HAND, EquippableCore('staff', BUNDLE_STICK),
                    EquippableMaterial('wood'), EquippableQuality('average')))
     stick = Entity(0, 0, item=item_component)

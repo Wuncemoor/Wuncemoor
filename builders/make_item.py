@@ -18,7 +18,7 @@ def make_item(item_choice):
 
     if item_choice == 'healing_potion':
 
-        item_component = Item(
+        item_component = Item(5,
             useable=Useable('Healing Potion', BUNDLE_POTION, use_function=heal, amount=400))
         item = Entity(0, 0, render_order=RenderOrder.ITEM, item=item_component)
     elif item_choice == 'sword':

@@ -14,7 +14,7 @@ class Inventory:
         self.satchel = []
         self.materials = []
         self.plot = []
-        self.gold = 0
+        self.money = 0
         self.subgroups = self.initialize_subgroups()
         self.options = None
         self.sub = None

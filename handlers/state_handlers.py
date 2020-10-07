@@ -240,6 +240,7 @@ class ShopHandler:
 
     def __init__(self):
         self.superstate = GameStates.SHOP
+        self.state = ShopStates.BASE
         self.shopkeeper = None
         self.sub = None
 
