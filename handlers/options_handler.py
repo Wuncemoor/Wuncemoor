@@ -1,9 +1,9 @@
-from enums.game_states import GameStates, MenuStates, EncounterStates, RewardStates
+from enums.game_states import GameStates, MenuStates, EncounterStates, RewardStates, ShopStates
 from abstracts.abstract_mvc import MVC
 from handlers.encounter.combat import CombatGrid
 from handlers.logic.logic_chunks import AttackMob, GoToReward, RewardSifting, RewardDepositing
 from handlers.logic.options import title_options, Options, encounter_window_options, reward_options, OptionsFake, \
-    settings_options, shop_options
+    settings_options, shop_base_categories
 
 
 class OptionsHandler(MVC):
@@ -33,7 +33,7 @@ class OptionsHandler(MVC):
             self.traverse_list(path)
         elif self.state == GameStates.DIALOGUE:
             return self.traverse_graph(path)
-        elif self.owner.state == GameStates.SHOP and self.handler.sub is None:
+        elif self.owner.state == GameStates.SHOP and self.handler.state == ShopStates.BASE:
             self.traverse_list((path[0]))
         elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and self.handler.menu.sub is None:
             self.traverse_list(path[0])
@@ -100,7 +100,8 @@ class OptionsHandler(MVC):
                 self.current.conversation = 'root'
                 shopkeeper = self.owner.dialogue.partner
                 changes.append({'state': 'shop'})
-                self.current = shop_options()
+                changes.append({'snapshot': True})
+                self.current = shop_base_categories()
                 self.owner.shop.shopkeeper = shopkeeper
         return changes
 
@@ -136,7 +137,7 @@ class OptionsHandler(MVC):
         pass
 
     def shop(self):
-        pass
+        return shop_base_categories()
 
     def encounter(self):
         encounter = {

@@ -1,14 +1,18 @@
 from config.constants import WHITE
 from config.image_objects import SHOP_MENU, INVENTORY_OPTIONS
+from enums.game_states import ShopStates
 from screens.display_money import display_money
 from screens.gui_tools import get_surface, align_and_blit, get_text_surface, get_alpha_surface
 
 
 def shop_screen(self):
     surf = get_surface(SHOP_MENU)
-    if self.handler.sub is None:
+    if self.handler.state is ShopStates.BASE:
         options_img = INVENTORY_OPTIONS[self.owner.options.current.choice]
-        party_subinv, shop_subinv = self.handler.get_subs()
+        party_subinv, shop_subinv = self.handler.get_subinventories(self.owner.options.current.choice)
+    elif self.handler.state in (ShopStates.BUYING, ShopStates.SELLING, ShopStates.TRANSACTING):
+        options_img = INVENTORY_OPTIONS[self.handler.sub_index]
+        party_subinv, shop_subinv = self.handler.get_subinventories(self.handler.sub_index)
     else:
         ind = self.handler.menu.options.choice
         options_img = INVENTORY_OPTIONS[ind]

@@ -1,5 +1,6 @@
+from copy import copy
 from random import randint
-from enums.game_states import EncounterStates, GameStates
+from enums.game_states import EncounterStates, GameStates, ShopStates
 from config.image_objects import BACKGROUNDS
 from handlers.encounter.combat import Combat
 from handlers.logic.options import encounter_window_options
@@ -242,12 +243,34 @@ class ShopHandler:
         self.superstate = GameStates.SHOP
         self.state = ShopStates.BASE
         self.shopkeeper = None
-        self.sub = None
+        self.snapshot = None
+        self.sub_index = None
+        self.transaction_details = []
 
-    def get_subs(self):
-        player_subinv = self.owner.party.inventory.subgroups[self.owner.options.current.choice]
-        shop_subinv = self.shopkeeper.shopkeeper.inventory.subgroups[self.owner.options.current.choice]
+    def get_subinventories(self, index):
+        player_subinv = self.snapshot[0].subgroups[index]
+        shop_subinv = self.snapshot[1].subgroups[index]
         return player_subinv, shop_subinv
+
+    def take_snapshot(self):
+        player_inventory = copy(self.owner.party.inventory)
+        shop_inventory = copy(self.shopkeeper.shopkeeper.inventory)
+        self.snapshot = [player_inventory, shop_inventory]
+
+    def change_state(self, state):
+        self.state = state
+        if self.state is ShopStates.BASE:
+            case = None
+        else:
+            case = 'sub'
+        self.owner.options.get(case=case)
+        self.owner.options.current.choice = self.sub_index
+        if self.state is ShopStates.BASE:
+            self.sub_index = None
+
+
+
+
 
 
 

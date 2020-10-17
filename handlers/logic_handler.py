@@ -99,9 +99,10 @@ class LogicHandler(MVC):
         elif 'traverse_menu' in output:
             self.owner.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
-            if self.handler.sub is None:
+            if self.handler.sub_index is None:
                 self.response = self.owner.options.choose()
-                self.response(self)
+                changes = self.response(self)
+                self.mutate(changes)
 
     def encounter(self, output):
         if 'traverse_menu' in output:
@@ -171,6 +172,9 @@ class LogicHandler(MVC):
                 self.mutate(changes)
             elif 'set_choice' in change:
                 self.owner.options.current.choice = change.get('set_choice')
+            elif 'snapshot' in change:
+                self.handler.take_snapshot()
+
 
 
 

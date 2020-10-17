@@ -1,6 +1,6 @@
 from abstracts.abstract_logic import AbstractLogic
 from config.constants import DARK_BLUE, DARK_ORANGE, BLACK, WHITE
-from enums.game_states import EncounterStates, RewardStates, GameStates
+from enums.game_states import EncounterStates, RewardStates, GameStates, ShopStates
 from handlers.views.messages import Message
 from loader_functions.data_loaders import load_game
 from loader_functions.initialize_new_game import get_game_variables
@@ -140,13 +140,27 @@ class MenuGoToSub(AbstractLogic):
             self.owner.options.wrap_and_set(sub)
 
 
-class ShopGoToSub(AbstractLogic):
+class ShopBaseGoToSub(AbstractLogic):
 
     def logic(self):
-        sub = self.handler.get_sub()
-        if len(sub) > 0:
-            self.handler.sub = sub
-            self.owner.options.wrap_and_set(sub)
+        player_sub, shop_sub = self.handler.get_subinventories(self.owner.options.current.choice)
+        print(self.owner.options.current.choice)
+        if len(shop_sub) > 0:
+            changes = [{'substate': ShopStates.BUYING}]
+            self.handler.sub_index = self.owner.options.current.choice
+            self.owner.options.wrap_and_set(shop_sub)
+        elif len(player_sub) > 0:
+            changes = [{'substate': ShopStates.SELLING}]
+            self.handler.sub_index = self.owner.options.current.choice
+            self.owner.options.wrap_and_set(player_sub)
+        elif len(self.handler.transaction_details) > 0:
+            changes = [{'substate': ShopStates.TRANSACTING}]
+            self.handler.sub_index = self.owner.options.current.choice
+            self.owner.options.wrap_and_set(self.handler.transaction_details)
+        else:
+            changes = []
+        print(self.handler.sub_index)
+        return changes
 
 
 class FightTargeting(AbstractLogic):
@@ -360,5 +374,8 @@ class DebugAttemptCommand(AbstractLogic):
 class ShopExit(AbstractLogic):
 
     def logic(self):
-        changes = [{'state': 'life'}]
+        if self.handler.state == ShopStates.BASE:
+            changes = [{'state': 'life'}]
+        elif self.handler.state in (ShopStates.BUYING, ShopStates.SELLING, ShopStates.TRANSACTING):
+            changes = [{'substate': ShopStates.BASE}]
         return changes

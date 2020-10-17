@@ -43,3 +43,12 @@ class MenuStates(Enum):
     INVENTORY = 3
     MAP = 4
     SETTINGS = 5
+
+
+class ShopStates(Enum):
+    """Substates that occur in GameStates.SHOP"""
+
+    BASE = 1
+    BUYING = 2
+    SELLING = 3
+    TRANSACTING = 4
