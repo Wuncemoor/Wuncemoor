@@ -10,12 +10,12 @@ def journal_screen(self):
         ind = self.handler.menu.options.choice
         sj = self.handler.menu.sub
 
-        j_display = journal_options_display(sj, self.owner.options.current.choice)
-        details = get_entry_details(sj[self.owner.options.current.choice])
+        j_display = journal_options_display(sj, self.game.options.current.choice)
+        details = get_entry_details(sj[self.game.options.current.choice])
         surf.blit(j_display, (30, 112))
         surf.blit(details, (275, 0))
     else:
-        ind = self.owner.options.current.choice
+        ind = self.game.options.current.choice
 
     text = JOURNAL_OBJS.get('text' + str(ind))
     icon = JOURNAL_OBJS.get('icon' + str(ind))

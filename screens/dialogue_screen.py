@@ -12,7 +12,7 @@ def dialogue_screen(self):
     interactor_width = 250
     fontsize = 12
     actor_name_fontsize = 20
-    hero = self.owner.party.p1
+    hero = self.game.party.p1
 
     window = get_surface(DIALOGUE_MENU)
 

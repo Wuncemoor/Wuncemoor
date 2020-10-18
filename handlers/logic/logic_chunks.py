@@ -11,60 +11,60 @@ class NewGame(AbstractLogic):
 
     def logic(self):
         world, party = get_game_variables()
-        self.owner.preplay(world, party)
+        self.game.preplay(world, party)
 
 
 class LoadGame(AbstractLogic):
 
     def logic(self):
         world, party = load_game()
-        self.owner.preplay(world, party)
+        self.game.preplay(world, party)
 
 
 class QuitGame(AbstractLogic):
 
     def logic(self):
-        self.owner.quit()
+        self.game.quit()
 
 
 class Move(AbstractLogic):
 
     def logic(self, output):
         dx, dy = output
-        x, y = self.owner.party.x, self.owner.party.y
+        x, y = self.game.party.x, self.game.party.y
         destination_x = x + dx
         destination_y = y + dy
 
-        tile = self.owner.world.current_map.tiles[destination_y][destination_x]
+        tile = self.game.world.current_map.tiles[destination_y][destination_x]
 
         if not tile.blocker:
 
-            self.owner.party.move(dx, dy)
+            self.game.party.move(dx, dy)
             self.handler.camera.refocus(x, y)
 
             self.handler.fov.needs_recompute = True
 
             if tile.floor.has_transition():
                 transition = tile.floor.transition
-                world = self.owner.world
+                world = self.game.world
                 new_dungeon = world.dungeons[transition.go_to_dungeon]
                 if world.current_dungeon.name != transition.go_to_dungeon:
-                    world.current_dungeon.time_dilation = self.owner.time.stamp()
-                    self.owner.time.apply_dilation(new_dungeon)
+                    world.current_dungeon.time_dilation = self.game.time.stamp()
+                    self.game.time.apply_dilation(new_dungeon)
                     world.current_dungeon = new_dungeon
 
                 new_map = new_dungeon.maps[transition.go_to_floor]
                 world.current_map = new_map
-                self.owner.party.x = transition.go_to_xy[0]
-                self.owner.party.y = transition.go_to_xy[1]
-                self.handler.camera.refocus(self.owner.party.x, self.owner.party.y)
+                self.game.party.x = transition.go_to_xy[0]
+                self.game.party.y = transition.go_to_xy[1]
+                self.handler.camera.refocus(self.game.party.x, self.game.party.y)
 
                 self.handler.fov.map = self.handler.fov.initialize(world)
                 self.handler.fov.needs_recompute = True
 
-            elif self.owner.world.dangerous:
-                self.owner.time.goes_on()
-                self.owner.encounter.check(tile)
+            elif self.game.world.dangerous:
+                self.game.time.goes_on()
+                self.game.encounter.check(tile)
 
 
 class Interact(AbstractLogic):
@@ -72,24 +72,24 @@ class Interact(AbstractLogic):
     def logic(self):
         nothing = True
         changes = []
-        world = self.owner.world
+        world = self.game.world
         for entity in world.current_map.entities:
-            if entity.x == self.owner.party.x and entity.y == self.owner.party.y:
+            if entity.x == self.game.party.x and entity.y == self.game.party.y:
                 if entity.item:
-                    pickup_results = self.owner.party.inventory.add_item(entity)
+                    pickup_results = self.game.party.inventory.add_item(entity)
                     changes.extend(pickup_results)
                     nothing = False
                     break
 
         for noncom in world.current_map.noncombatants:
-            if noncom.x == self.owner.party.x and noncom.y == self.owner.party.y:
-                self.owner.dialogue.partner = noncom
-                self.owner.dialogue.set_real_talk()
-                self.owner.state_handler = self.owner.dialogue
-                self.owner.options.current = noncom.noncombatant.dialogue
+            if noncom.x == self.game.party.x and noncom.y == self.game.party.y:
+                self.game.dialogue.partner = noncom
+                self.game.dialogue.set_real_talk()
+                self.game.state_handler = self.game.dialogue
+                self.game.options.current = noncom.noncombatant.dialogue
                 nothing = False
         if nothing:
-            self.owner.log.messages.add_message(Message('Nothing to see here, move along...', DARK_BLUE))
+            self.game.log.messages.add_message(Message('Nothing to see here, move along...', DARK_BLUE))
         return changes
 
 
@@ -126,10 +126,10 @@ class MenusExit(AbstractLogic):
 
     def logic(self):
         if self.handler.menu.sub is None:
-            self.owner.state_handler = self.owner.life
+            self.game.state_handler = self.game.life
         else:
             self.handler.menu.sub = None
-            self.owner.options.current = self.handler.menu.options
+            self.game.options.current = self.handler.menu.options
 
 
 class MenuGoToSub(AbstractLogic):
@@ -138,26 +138,25 @@ class MenuGoToSub(AbstractLogic):
         sub = self.handler.menu.get_sub()
         if len(sub) > 0:
             self.handler.menu.sub = sub
-            self.owner.options.wrap_and_set(sub)
+            self.game.options.wrap_and_set(sub)
 
 
 class ShopBaseGoToSub(AbstractLogic):
 
     def logic(self):
-        player_sub, shop_sub = self.handler.get_subinventories(self.owner.options.current.choice)
-        print(self.owner.options.current.choice)
+        player_sub, shop_sub = self.handler.get_subinventories(self.game.options.current.choice)
         if len(shop_sub) > 0:
             changes = [{'substate': ShopStates.BUYING}]
-            self.handler.sub_index = self.owner.options.current.choice
-            self.owner.options.wrap_and_set(shop_sub)
+            self.handler.sub_index = self.game.options.current.choice
+            self.game.options.wrap_and_set(shop_sub)
         elif len(player_sub) > 0:
             changes = [{'substate': ShopStates.SELLING}]
-            self.handler.sub_index = self.owner.options.current.choice
-            self.owner.options.wrap_and_set(player_sub)
+            self.handler.sub_index = self.game.options.current.choice
+            self.game.options.wrap_and_set(player_sub)
         elif len(self.handler.transaction_details) > 0:
             changes = [{'substate': ShopStates.TRANSACTING}]
-            self.handler.sub_index = self.owner.options.current.choice
-            self.owner.options.wrap_and_set(self.handler.transaction_details)
+            self.handler.sub_index = self.game.options.current.choice
+            self.game.options.wrap_and_set(self.handler.transaction_details)
         else:
             changes = []
         print(self.handler.sub_index)
@@ -251,7 +250,7 @@ class RewardAuto(AbstractLogic):
     def logic(self):
         self.handler.loot.claimed.extend(self.handler.loot.items)
         self.handler.loot.items = []
-        self.owner.options.current.choice = 2
+        self.game.options.current.choice = 2
         return []
 
 
@@ -274,8 +273,8 @@ class RewardToLife(AbstractLogic):
     def logic(self):
         loot = self.handler.loot
         changes = [{'xp': loot.xp}]
-        self.owner.party.inventory.take_loot(loot.claimed)
-        self.owner.options.current.choice = 0
+        self.game.party.inventory.take_loot(loot.claimed)
+        self.game.options.current.choice = 0
 
         changes.append({'state': 'life'})
         return changes
@@ -286,12 +285,12 @@ class RewardSifting(AbstractLogic):
     def logic(self):
         changes = []
         loot = self.handler.loot
-        loot.claim(self.owner.options.current.choice)
+        loot.claim(self.game.options.current.choice)
         if len(loot.items) == 0:
             changes.append({'substate': RewardStates.THINKING})
             changes.append({'set_choice': 2})
-        elif self.owner.options.current.choice > len(loot.items) - 1:
-            self.owner.options.current.choice -= 1
+        elif self.game.options.current.choice > len(loot.items) - 1:
+            self.game.options.current.choice -= 1
         return changes
 
 
@@ -300,11 +299,11 @@ class RewardDepositing(AbstractLogic):
     def logic(self):
         changes = []
         loot = self.handler.loot
-        loot.unclaim(self.owner.options.current.choice)
+        loot.unclaim(self.game.options.current.choice)
         if len(loot.claimed) == 0:
             changes.append({'substate': RewardStates.SIFTING})
-        elif self.owner.options.current.choice > len(loot.claimed) - 1:
-            self.owner.options.current.choice -= 1
+        elif self.game.options.current.choice > len(loot.claimed) - 1:
+            self.game.options.current.choice -= 1
         return changes
 
 
@@ -327,10 +326,10 @@ class RewardExit(AbstractLogic):
         state = self.handler.state
         if state in (RewardStates.SIFTING, RewardStates.DEPOSITING):
             changes.append({'substate': RewardStates.THINKING})
-        elif state == RewardStates.THINKING and self.owner.options.current.choice == 2:
+        elif state == RewardStates.THINKING and self.game.options.current.choice == 2:
             changes.extend(RewardToLife.logic(self))
         elif state == RewardStates.THINKING:
-            self.owner.options.current.choice = 2
+            self.game.options.current.choice = 2
         return changes
 
 
@@ -386,10 +385,10 @@ class FullscreenToggle(AbstractLogic):
 
     def logic(self):
 
-        if self.owner.artist.fullscreen:
-            self.owner.artist.screen = py.display.set_mode(SCREEN_SIZE)
-            self.owner.artist.fullscreen = False
+        if self.game.artist.fullscreen:
+            self.game.artist.screen = py.display.set_mode(SCREEN_SIZE)
+            self.game.artist.fullscreen = False
         else:
-            self.owner.artist.screen = py.display.set_mode(SCREEN_SIZE, flags=py.FULLSCREEN)
-            self.owner.artist.fullscreen = True
+            self.game.artist.screen = py.display.set_mode(SCREEN_SIZE, flags=py.FULLSCREEN)
+            self.game.artist.fullscreen = True
 

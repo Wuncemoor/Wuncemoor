@@ -7,11 +7,11 @@ class MVC(ABC):
 
     @property
     def state(self):
-        return self.owner.state
+        return self.game.state
 
     @property
     def handler(self):
-        return self.owner.state_handler
+        return self.game.state_handler
 
     @property
     def mapping(self):

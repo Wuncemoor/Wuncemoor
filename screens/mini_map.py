@@ -11,7 +11,7 @@ def minimap_screen(self):
     offset_y = 50
     i, j = 0, 0
 
-    for row in self.owner.world.mini:
+    for row in self.game.world.mini:
         for img in row:
             window.blit(img, (offset_x + i, offset_y + j))
             j += 1

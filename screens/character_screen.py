@@ -5,7 +5,7 @@ from config.image_objects import CHARACTER_SCREEN
 
 
 def character_screen(self):
-    player = self.owner.party.p1
+    player = self.game.party.p1
     bg = CHARACTER_SCREEN.get('bg')
     level = get_level_icon(player)
     age = get_age_icon(player)

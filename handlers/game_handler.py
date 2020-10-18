@@ -15,15 +15,9 @@ from map_objects.loot import Loot
 class GameHandler:
     """Handler that holds nearly all aspects of the game while delegating the heavy lifting to StateHandlers"""
 
-    def __init__(self, artist):
+    def __init__(self, options):
         self.state_handler = None
-        self.artist = artist
-        self.artist.owner = self
-        self.logic = LogicHandler()
-        self.logic.owner = self
-        self.input = InputHandler()
-        self.input.owner = self
-        self.options = OptionsHandler()
+        self.options = options
         self.options.owner = self
         self.title = state_handlers.TitleHandler()
         self.title.owner = self
@@ -71,7 +65,6 @@ class GameHandler:
 
     def preplay(self, world, party):
         loot = Loot()
-        self.artist.screen.fill(BLACK)
         self.world = world
         self.dialogue = state_handlers.DialogueHandler([party.journal])
         self.shop = state_handlers.ShopHandler()

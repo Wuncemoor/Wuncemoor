@@ -8,20 +8,20 @@ from screens.gui_tools import get_surface, align_and_blit, get_text_surface, get
 def shop_screen(self):
     surf = get_surface(SHOP_MENU)
     if self.handler.state is ShopStates.BASE:
-        options_img = INVENTORY_OPTIONS[self.owner.options.current.choice]
-        party_subinv, shop_subinv = self.handler.get_subinventories(self.owner.options.current.choice)
+        options_img = INVENTORY_OPTIONS[self.game.options.current.choice]
+        party_subinv, shop_subinv = self.handler.get_subinventories(self.game.options.current.choice)
     elif self.handler.state in (ShopStates.BUYING, ShopStates.SELLING, ShopStates.TRANSACTING):
         options_img = INVENTORY_OPTIONS[self.handler.sub_index]
         party_subinv, shop_subinv = self.handler.get_subinventories(self.handler.sub_index)
     else:
         ind = self.handler.menu.options.choice
         options_img = INVENTORY_OPTIONS[ind]
-        surf.blit(INDICATOR_H, (410, 130 + (32 * self.owner.options.current.choice)))
+        surf.blit(INDICATOR_H, (410, 130 + (32 * self.game.options.current.choice)))
         subinventory = self.handler.menu.get_sub()
     ps, ss = display_partysub(party_subinv), display_shopsub(shop_subinv)
     sk_name = get_text_surface(self.handler.shopkeeper.name.capitalize(), fontsize=18)
     sk_money = display_money(self.handler.shopkeeper.shopkeeper.inventory.money, color=WHITE)
-    party_money = display_money(self.owner.party.inventory.money, color=WHITE)
+    party_money = display_money(self.game.party.inventory.money, color=WHITE)
     td_text = get_text_surface('Transaction Details', fontsize=14, color=WHITE)
     align_and_blit(surf, options_img, x_ratio=0.17, y_ratio=0.16)
     align_and_blit(surf, options_img, x_ratio=0.5, y_ratio=0.16)

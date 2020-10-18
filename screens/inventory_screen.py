@@ -7,15 +7,15 @@ def inventory_screen(self):
 
     surf = get_surface(INVENTORY_BG)
     if self.handler.menu.sub is None:
-        options = INVENTORY_OPTIONS[self.owner.options.current.choice]
+        options = INVENTORY_OPTIONS[self.game.options.current.choice]
         subinventory = self.handler.menu.get_sub()
     else:
         ind = self.handler.menu.options.choice
         options = INVENTORY_OPTIONS[ind]
-        surf.blit(INDICATOR_H, (410, 130 + (32 * self.owner.options.current.choice)))
+        surf.blit(INDICATOR_H, (410, 130 + (32 * self.game.options.current.choice)))
         subinventory = self.handler.menu.get_sub()
     sg = display_subinventory(subinventory)
-    party_money = display_money(self.owner.party.inventory.money)
+    party_money = display_money(self.game.party.inventory.money)
 
     align_and_blit(surf, party_money, x_ratio=0.6, y_ratio=0.19)
     align_and_blit(surf, options, x_ratio=0.75, y_ratio=0.19)

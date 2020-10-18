@@ -28,7 +28,7 @@ class ArtistHandler(MVC):
 
     @property
     def choice(self):
-        return self.owner.options.current.choice
+        return self.game.options.current.choice
 
     def render(self):
         return self.mapping()
@@ -51,7 +51,7 @@ class ArtistHandler(MVC):
 
     def title_menu(self):
         surf = get_surface(TITLE_MENU_BG)
-        text = self.owner.options.current.text
+        text = self.game.options.current.text
         blit_options(surf, TITLE_MENU_BUTTON, 22, 10, TITLE_MENU_BUTTON.get_height(), text, fontsize=40)
         surf.blit(INDICATOR_H, (0, 10 + (self.choice * TITLE_MENU_BUTTON.get_height())))
 
@@ -68,19 +68,19 @@ class ArtistHandler(MVC):
         for y in range(height):
             for x in range(width):
                 visible = libtcod.map_is_in_fov(self.handler.fov.map, cy + y, cx + x)
-                tile = self.owner.world.tiles[cy + y][cx + x]
+                tile = self.game.world.tiles[cy + y][cx + x]
                 self.draw_tile_floor(tile, x, y, visible)
 
-        for noncom in self.owner.world.current_map.noncombatants:
+        for noncom in self.game.world.current_map.noncombatants:
             self.draw_entity(noncom)
-        entities_in_render_order = sorted(self.owner.world.current_map.entities, key=lambda x: x.render_order.value)
+        entities_in_render_order = sorted(self.game.world.current_map.entities, key=lambda x: x.render_order.value)
         for entity in entities_in_render_order:
             self.draw_entity(entity)
 
         for y in range(height):
             for x in range(width):
                 visible = libtcod.map_is_in_fov(self.handler.fov.map, cy + y, cx + x)
-                tile = self.owner.world.tiles[cy + y][cx + x]
+                tile = self.game.world.tiles[cy + y][cx + x]
                 if tile.blocker and tile.explored:
                     self.draw_tile_blocker(tile, x, y, visible)
 
@@ -91,7 +91,7 @@ class ArtistHandler(MVC):
 
         message_surface = get_surface(MESSAGE_BG)
         y = 0
-        for message in self.owner.log.messages.messages:
+        for message in self.game.log.messages.messages:
             off_x = 30
             off_y = 5
             print_message(message_surface, message, off_x, off_y, y)
@@ -142,7 +142,7 @@ class ArtistHandler(MVC):
         window = get_surface(ENCOUNTER_MESSAGE_BG)
 
         y = 0
-        for message in self.owner.log.messages.messages:
+        for message in self.game.log.messages.messages:
             print_message(window, message, off_x, off_y, y)
             y += 1
 
@@ -164,7 +164,7 @@ class ArtistHandler(MVC):
         self.screen.blit(window, (0, 180))
 
     def blit_calendar(self):
-        calendar = display_calendar(self.owner.time)
+        calendar = display_calendar(self.game.time)
         xy = (self.screen.get_width() - calendar.get_width(), self.screen.get_height() - calendar.get_height())
         self.screen.blit(calendar, xy)
 
@@ -178,7 +178,7 @@ class ArtistHandler(MVC):
 
     def draw_party(self):
         cx, cy = self.handler.camera.x, self.handler.camera.y
-        party = self.owner.party
+        party = self.game.party
 
         surfimg = party.p1.images.sprite
 
@@ -206,7 +206,7 @@ class ArtistHandler(MVC):
         shop_screen(self)
 
     def blit_resource_hud(self):
-        resource_hud = player_resource_display(self.owner.party.p1)
+        resource_hud = player_resource_display(self.game.party.p1)
         coord_dict = {
             GameStates.LIFE: (0 - 10, 540 + 40),
             GameStates.ENCOUNTER: (0, 0),
@@ -228,6 +228,6 @@ class ArtistHandler(MVC):
         blit_options(menu, ENCOUNTER_BUTTON, buttons_off_x, buttons_off_y, dy, text, fontsize=24)
 
         if self.handler.state == EncounterStates.THINKING:
-            menu.blit(INDICATOR_H, (buttons_off_x - 50, buttons_off_y - 11 + (dy * self.owner.options.current.choice)))
+            menu.blit(INDICATOR_H, (buttons_off_x - 50, buttons_off_y - 11 + (dy * self.game.options.current.choice)))
 
         self.screen.blit(menu, (0, 480))

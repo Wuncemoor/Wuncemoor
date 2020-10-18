@@ -34,16 +34,16 @@ class LogicHandler(MVC):
             self.response = FullscreenToggle.logic
             self.response(self)
         elif 'traverse_menu' in output:
-            self.owner.options.traverse(output.get('traverse_menu'))
+            self.game.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
-            self.response = self.owner.options.choose()
+            self.response = self.game.options.choose()
             self.response(self)
         elif 'debug' in output:
             self.response = Debug.logic
             changes = self.response(self)
-            prev = self.owner.state
+            prev = self.game.state
             self.mutate(changes)
-            self.owner.state_handler.previous_state = prev
+            self.game.state_handler.previous_state = prev
 
     def life(self, output):
 
@@ -64,9 +64,9 @@ class LogicHandler(MVC):
         elif 'debug' in output:
             self.response = Debug.logic
             changes = self.response(self)
-            prev = self.owner.state
+            prev = self.game.state
             self.mutate(changes)
-            self.owner.state_handler.previous_state = prev
+            self.game.state_handler.previous_state = prev
 
     def menus(self, output):
         if 'fullscreen' in output:
@@ -80,31 +80,31 @@ class LogicHandler(MVC):
             changes = self.response(self, output.get('show_menus'))
             self.mutate(changes)
         elif 'traverse_menu' in output:
-            self.owner.options.traverse(output.get('traverse_menu'))
+            self.game.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
             if self.handler.menu.sub is None:
-                self.response = self.owner.options.choose()
+                self.response = self.game.options.choose()
                 self.response(self)
         elif 'debug' in output:
             self.response = Debug.logic
             changes = self.response(self)
-            prev = self.owner.state
+            prev = self.game.state
             self.mutate(changes)
-            self.owner.state_handler.previous_state = prev
+            self.game.state_handler.previous_state = prev
 
     def dialogue(self, output):
         if 'fullscreen' in output:
             self.response = FullscreenToggle.logic
             self.response(self)
         elif 'converse' in output:
-            changes = self.owner.options.traverse(output.get('converse'))
+            changes = self.game.options.traverse(output.get('converse'))
             self.mutate(changes)
         elif 'debug' in output:
             self.response = Debug.logic
             changes = self.response(self)
-            prev = self.owner.state
+            prev = self.game.state
             self.mutate(changes)
-            self.owner.state_handler.previous_state = prev
+            self.game.state_handler.previous_state = prev
 
     def shop(self, output):
         if 'fullscreen' in output:
@@ -115,10 +115,10 @@ class LogicHandler(MVC):
             changes = self.response(self)
             self.mutate(changes)
         elif 'traverse_menu' in output:
-            self.owner.options.traverse(output.get('traverse_menu'))
+            self.game.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
             if self.handler.sub_index is None:
-                self.response = self.owner.options.choose()
+                self.response = self.game.options.choose()
                 changes = self.response(self)
                 self.mutate(changes)
 
@@ -127,9 +127,9 @@ class LogicHandler(MVC):
             self.response = FullscreenToggle.logic
             self.response(self)
         elif 'traverse_menu' in output:
-            self.owner.options.traverse(output.get('traverse_menu'))
+            self.game.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
-            self.response = self.owner.options.choose()
+            self.response = self.game.options.choose()
             changes = self.response(self)
             self.mutate(changes)
         if 'exit' in output:
@@ -139,18 +139,18 @@ class LogicHandler(MVC):
         elif 'debug' in output:
             self.response = Debug.logic
             changes = self.response(self)
-            prev = self.owner.state
+            prev = self.game.state
             self.mutate(changes)
-            self.owner.state_handler.previous_state = prev
+            self.game.state_handler.previous_state = prev
 
     def reward(self, output):
         if 'fullscreen' in output:
             self.response = FullscreenToggle.logic
             self.response(self)
         elif 'traverse_menu' in output:
-            self.owner.options.traverse(output.get('traverse_menu'))
+            self.game.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
-            self.response = self.owner.options.choose()
+            self.response = self.game.options.choose()
             changes = self.response(self)
             self.mutate(changes)
         elif 'toggle' in output:
@@ -164,24 +164,24 @@ class LogicHandler(MVC):
         elif 'debug' in output:
             self.response = Debug.logic
             changes = self.response(self)
-            prev = self.owner.state
+            prev = self.game.state
             self.mutate(changes)
-            self.owner.state_handler.previous_state = prev
+            self.game.state_handler.previous_state = prev
 
     def mutate(self, changes):
         for change in changes:
             if 'debug_message' in change:
-                self.owner.log.debugger.add_message(change.get('debug_message'))
+                self.game.log.debugger.add_message(change.get('debug_message'))
             elif 'message' in change:
-                self.owner.log.messages.add_message(change.get('message'))
+                self.game.log.messages.add_message(change.get('message'))
             elif 'item_added' in change:
-                self.owner.world.current_map.entities.remove(change.get('item_added'))
+                self.game.world.current_map.entities.remove(change.get('item_added'))
             elif 'substate' in change:
                 self.handler.change_state(change.get('substate'))
             elif 'state' in change:
-                self.owner.change_state(change.get('state'))
+                self.game.change_state(change.get('state'))
             elif 'xp' in change:
-                self.owner.party.p1.combatant.level.add_xp(change.get('xp'))
+                self.game.party.p1.combatant.level.add_xp(change.get('xp'))
             elif 'dead' in change:
                 entity = change.get('dead')
                 self.handler.combat.destroy(entity)
@@ -195,7 +195,7 @@ class LogicHandler(MVC):
                 changes = self.response(self)
                 self.mutate(changes)
             elif 'set_choice' in change:
-                self.owner.options.current.choice = change.get('set_choice')
+                self.game.options.current.choice = change.get('set_choice')
             elif 'snapshot' in change:
                 self.handler.take_snapshot()
 

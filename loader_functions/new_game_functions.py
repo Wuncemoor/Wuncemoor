@@ -14,7 +14,6 @@ from ECS.__entity.combatant import Combatant
 from ECS.__entity.age import Age
 from handlers.menus.inventory import Inventory
 from handlers.menus.map import Map
-
 from ECS.entity import Entity
 from enums.equipment_slots import EquipmentSlots
 from enums.render_order import RenderOrder
