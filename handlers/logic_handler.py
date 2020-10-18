@@ -1,6 +1,6 @@
 from abstracts.abstract_mvc import MVC
 from handlers.logic.logic_chunks import Move, Interact, MenusToggle, MenusExit, EncounterExit, EndTurn, EnemyTurn, \
-    RewardToggle, RewardExit, LifeToMenus, Debug, DebugExit, DebugAttemptCommand, ShopExit
+    RewardToggle, RewardExit, LifeToMenus, Debug, DebugExit, DebugAttemptCommand, ShopExit, FullscreenToggle
 
 
 class LogicHandler(MVC):
@@ -12,6 +12,9 @@ class LogicHandler(MVC):
         self.mapping(output)
 
     def debug(self, output):
+        if 'fullscreen' in output:
+            self.response = FullscreenToggle.logic
+            self.response(self)
         if 'exit' in output:
             self.response = DebugExit.logic
             changes = self.response(self, self.handler.previous_state)
@@ -27,7 +30,10 @@ class LogicHandler(MVC):
 
     def title(self, output):
 
-        if 'traverse_menu' in output:
+        if 'fullscreen' in output:
+            self.response = FullscreenToggle.logic
+            self.response(self)
+        elif 'traverse_menu' in output:
             self.owner.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
             self.response = self.owner.options.choose()
@@ -41,7 +47,10 @@ class LogicHandler(MVC):
 
     def life(self, output):
 
-        if 'move' in output:
+        if 'fullscreen' in output:
+            self.response = FullscreenToggle.logic
+            self.response(self)
+        elif 'move' in output:
             self.response = Move.logic
             self.response(self, output.get('move'))
         elif 'interact' in output:
@@ -60,7 +69,10 @@ class LogicHandler(MVC):
             self.owner.state_handler.previous_state = prev
 
     def menus(self, output):
-        if 'exit' in output:
+        if 'fullscreen' in output:
+            self.response = FullscreenToggle.logic
+            self.response(self)
+        elif 'exit' in output:
             self.response = MenusExit.logic
             self.response(self)
         elif 'show_menus' in output:
@@ -81,7 +93,10 @@ class LogicHandler(MVC):
             self.owner.state_handler.previous_state = prev
 
     def dialogue(self, output):
-        if 'converse' in output:
+        if 'fullscreen' in output:
+            self.response = FullscreenToggle.logic
+            self.response(self)
+        elif 'converse' in output:
             changes = self.owner.options.traverse(output.get('converse'))
             self.mutate(changes)
         elif 'debug' in output:
@@ -92,7 +107,10 @@ class LogicHandler(MVC):
             self.owner.state_handler.previous_state = prev
 
     def shop(self, output):
-        if 'exit' in output:
+        if 'fullscreen' in output:
+            self.response = FullscreenToggle.logic
+            self.response(self)
+        elif 'exit' in output:
             self.response = ShopExit.logic
             changes = self.response(self)
             self.mutate(changes)
@@ -105,7 +123,10 @@ class LogicHandler(MVC):
                 self.mutate(changes)
 
     def encounter(self, output):
-        if 'traverse_menu' in output:
+        if 'fullscreen' in output:
+            self.response = FullscreenToggle.logic
+            self.response(self)
+        elif 'traverse_menu' in output:
             self.owner.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
             self.response = self.owner.options.choose()
@@ -123,7 +144,10 @@ class LogicHandler(MVC):
             self.owner.state_handler.previous_state = prev
 
     def reward(self, output):
-        if 'traverse_menu' in output:
+        if 'fullscreen' in output:
+            self.response = FullscreenToggle.logic
+            self.response(self)
+        elif 'traverse_menu' in output:
             self.owner.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
             self.response = self.owner.options.choose()

@@ -1,10 +1,10 @@
 import pygame as py
-from config.constants import START, WHITE
+from config.constants import SCREEN_SIZE, WHITE
 from screens.gui_tools import get_text_surface, align_and_blit, print_message
 
 
 def debug_window(self):
-    window = py.Surface(START[0])
+    window = py.Surface(SCREEN_SIZE)
     input = get_text_surface(self.handler.current_input, fontsize=30, color=WHITE)
     y = 0
     for message in self.owner.log.debugger.messages:

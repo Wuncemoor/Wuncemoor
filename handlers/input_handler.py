@@ -11,7 +11,9 @@ class InputHandler(MVC):
 
     @staticmethod
     def debug(event):
-        if event.key == py.K_ESCAPE:
+        if event.key == py.K_F11:
+            return {'fullscreen': True}
+        elif event.key == py.K_ESCAPE:
             return {'exit': True}
         elif event.key == py.K_RETURN:
             return {'command_send': True}
@@ -22,7 +24,9 @@ class InputHandler(MVC):
 
     @staticmethod
     def title(event):
-        if event.key in (py.K_UP, py.K_w):
+        if event.key == py.K_F11:
+            return {'fullscreen': True}
+        elif event.key in (py.K_UP, py.K_w):
             return {'traverse_menu': -1}
         elif event.key in (py.K_DOWN, py.K_x):
             return {'traverse_menu': 1}
@@ -33,7 +37,9 @@ class InputHandler(MVC):
         return {}
 
     def life(self, event):
-        if event.key in (py.K_UP, py.K_w):
+        if event.key == py.K_F11:
+            return {'fullscreen': True}
+        elif event.key in (py.K_UP, py.K_w):
             return {'move': (0, -1)}
         elif event.key in (py.K_DOWN, py.K_s):
             return {'move': (0, 1)}
@@ -61,8 +67,9 @@ class InputHandler(MVC):
 
     @staticmethod
     def encounter(event):
-
-        if event.key in (py.K_a, py.K_LEFT):
+        if event.key == py.K_F11:
+            return {'fullscreen': True}
+        elif event.key in (py.K_a, py.K_LEFT):
             return {'traverse_menu': (-1, 0)}
         elif event.key in (py.K_d, py.K_RIGHT):
             return {'traverse_menu': (1, 0)}
@@ -80,10 +87,14 @@ class InputHandler(MVC):
 
     @staticmethod
     def dialogue(event):
+        if event.key == py.K_F11:
+            return {'fullscreen': True}
         return {'converse': event.key}
 
     def shop(self, event):
-        if event.key == py.K_ESCAPE:
+        if event.key == py.K_F11:
+            return {'fullscreen': True}
+        elif event.key == py.K_ESCAPE:
             return {'exit': True}
         elif event.key in (py.K_a, py.K_LEFT):
             return {'traverse_menu': (-1, 0)}
@@ -100,7 +111,9 @@ class InputHandler(MVC):
         return {}
 
     def menus(self, event):
-        if event.key == py.K_ESCAPE:
+        if event.key == py.K_F11:
+            return {'fullscreen': True}
+        elif event.key == py.K_ESCAPE:
             return {'exit': True}
         elif event.key == py.K_c:
             return {'show_menus': self.owner.party}
@@ -126,8 +139,9 @@ class InputHandler(MVC):
 
     @staticmethod
     def reward(event):
-
-        if event.key in (py.K_UP, py.K_w):
+        if event.key == py.K_F11:
+            return {'fullscreen': True}
+        elif event.key in (py.K_UP, py.K_w):
             return {'traverse_menu': -1}
         elif event.key in (py.K_DOWN, py.K_x):
             return {'traverse_menu': 1}

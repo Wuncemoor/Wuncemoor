@@ -1,9 +1,10 @@
 from abstracts.abstract_logic import AbstractLogic
-from config.constants import DARK_BLUE, DARK_ORANGE, BLACK, WHITE
+from config.constants import DARK_BLUE, DARK_ORANGE, BLACK, WHITE, SCREEN_SIZE
 from enums.game_states import EncounterStates, RewardStates, GameStates, ShopStates
 from handlers.views.messages import Message
 from loader_functions.data_loaders import load_game
 from loader_functions.initialize_new_game import get_game_variables
+import pygame as py
 
 
 class NewGame(AbstractLogic):
@@ -379,3 +380,16 @@ class ShopExit(AbstractLogic):
         elif self.handler.state in (ShopStates.BUYING, ShopStates.SELLING, ShopStates.TRANSACTING):
             changes = [{'substate': ShopStates.BASE}]
         return changes
+
+
+class FullscreenToggle(AbstractLogic):
+
+    def logic(self):
+
+        if self.owner.artist.fullscreen:
+            self.owner.artist.screen = py.display.set_mode(SCREEN_SIZE)
+            self.owner.artist.fullscreen = False
+        else:
+            self.owner.artist.screen = py.display.set_mode(SCREEN_SIZE, flags=py.FULLSCREEN)
+            self.owner.artist.fullscreen = True
+

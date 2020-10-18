@@ -1,5 +1,7 @@
 # (screen, title)
-START = ((1280, 720), 'Wuncemoor: The Eternal Dream')
+SCREEN_SIZE = (1280, 720)
+CAPTION = 'Wuncemoor: The Eternal Dream'
+
 # (width, height)
 TILES_ON_SCREEN = (80, 37)
 # (width, height)

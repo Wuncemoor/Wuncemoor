@@ -1,15 +1,14 @@
 import pygame as py
-from config.constants import START
+from config.constants import SCREEN_SIZE, CAPTION
 from handlers.game_handler import GameHandler
 from handlers.artist_handler import ArtistHandler
 
 
 def main():
 
-    (screen_size, caption) = START
     py.init()
-    py.display.set_caption(caption)
-    screen = py.display.set_mode(screen_size)
+    py.display.set_caption(CAPTION)
+    screen = py.display.set_mode(SCREEN_SIZE)
 
     artist = ArtistHandler(screen)
     game = GameHandler(artist)

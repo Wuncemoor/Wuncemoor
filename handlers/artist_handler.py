@@ -23,6 +23,7 @@ class ArtistHandler(MVC):
     def __init__(self, screen):
         self.screen = screen
         self.tilesize = 16
+        self.fullscreen = False
 
 
     @property
