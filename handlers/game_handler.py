@@ -1,11 +1,7 @@
-from config.constants import BLACK
-from handlers.input_handler import InputHandler
 from handlers.log_handler import LogHandler
 from handlers.logic.options import initialize_menu_options
-from handlers.options_handler import OptionsHandler
 from handlers import state_handlers
 from handlers.time_handler import TimeHandler
-from handlers.logic_handler import LogicHandler
 import pygame as py
 import sys
 
@@ -17,6 +13,7 @@ class GameHandler:
 
     def __init__(self, options):
         self.state_handler = None
+        self.fullscreen = False
         self.options = options
         self.options.owner = self
         self.title = state_handlers.TitleHandler()

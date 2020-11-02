@@ -1,5 +1,5 @@
 # (screen, title)
-SCREEN_SIZE = (1280, 720)
+SCREEN_SIZE = (1920, 1080)
 CAPTION = 'Wuncemoor: The Eternal Dream'
 
 # (width, height)

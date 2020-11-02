@@ -385,10 +385,10 @@ class FullscreenToggle(AbstractLogic):
 
     def logic(self):
 
-        if self.game.artist.fullscreen:
-            self.game.artist.screen = py.display.set_mode(SCREEN_SIZE)
-            self.game.artist.fullscreen = False
+        if self.game.fullscreen:
+            self.game.screen = py.display.set_mode(SCREEN_SIZE)
+            self.game.fullscreen = False
         else:
-            self.game.artist.screen = py.display.set_mode(SCREEN_SIZE, flags=py.FULLSCREEN)
-            self.game.artist.fullscreen = True
+            self.game.screen = py.display.set_mode(SCREEN_SIZE, flags=py.FULLSCREEN)
+            self.game.fullscreen = True
 

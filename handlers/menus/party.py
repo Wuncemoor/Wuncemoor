@@ -17,6 +17,11 @@ class Party:
         self.sub = None
         self.formation = None
 
+
+    @property
+    def member_slots(self):
+        slots = [self.p1, self.p2, self.p3, self.p4]
+        return slots
     @property
     def members(self):
         party = [member for member in (self.p1, self.p2, self.p3, self.p4) if member is not None]
