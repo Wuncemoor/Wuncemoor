@@ -1,6 +1,7 @@
 **/.idea
 **/venv
 **/__pycache__
+**/images
 THINGS_TO_DO.txt
 savegame.dat.bak
 savegame.dat.dat

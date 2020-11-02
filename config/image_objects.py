@@ -24,6 +24,12 @@ INVENTORY_OPTIONS = [py.image.load('images\\GUI\\inventory\\miscellaneous.png'),
                      py.image.load('images\\GUI\\inventory\\materials.png'),
                      py.image.load('images\\GUI\\inventory\\plot.png')]
 
+LIFE_BACKDROP = py.image.load('images\\GUI\\life\\life_backdrop.png')
+MINI_MAP = py.image.load('images\\GUI\\life\\minimap.png')
+CLOCK = py.image.load('images\\GUI\\life\\clock.png')
+UPCOMING_EVENTS = py.image.load('images\\GUI\\life\\upcoming_events.png')
+TURN_ORDER_QUEUE = py.image.load('images\\GUI\\encounter\\turn_order_queue.png')
+
 GOLD = py.image.load('images\\GUI\\menus\\silver.png')
 SILVER = py.image.load('images\\GUI\\menus\\silver.png')
 COPPER = py.image.load('images\\GUI\\menus\\copper.png')
@@ -44,8 +50,8 @@ JOURNAL_OBJS = {
 LOOT_BG = py.image.load('images\\GUI\\looting\\loot_bg.png')
 LOOT_BANNER = py.image.load('images\\GUI\\looting\\loot_banner.png')
 
-CALENDAR_BG = py.image.load('images\\GUI\\calendar.png')
-CALENDAR_CIRCLE = py.image.load('images\\GUI\\calendar_circle.png')
+CALENDAR_BG = py.image.load('images\\GUI\\life\\calendar.png')
+CALENDAR_CIRCLE = py.image.load('images\\GUI\\life\\calendar_circle.png')
 
 INDICATOR_H = py.image.load('images\\GUI\\menus\\indicator_h.png')
 INDICATOR_V = py.image.load('images\\GUI\\menus\\indicator_v.png')
@@ -60,7 +66,6 @@ BUNDLE_HERO = ImageBundle(py.image.load('images\\entities\\combatants\\hero\\spr
                           py.image.load('images\\entities\\combatants\\hero\\portrait.png'),
                           py.image.load('images\\entities\\combatants\\hero\\port_mini.png'),
                           py.image.load('images\\entities\\combatants\\hero\\actor.png'))
-CORPSE = py.image.load('images\\entities\\combatants\\corpse.png')
 
 BUNDLE_SAMWISE = ImageBundle(py.image.load('images\\entities\\noncombatants\\samwise\\sprite.png'),
                              py.image.load('images\\entities\\noncombatants\\samwise\\portrait.png'),
@@ -84,12 +89,10 @@ BUNDLE_POTION = ImageBundle(py.image.load('images\\entities\\items\\useables\\po
 SCROLL = py.image.load('images\\entities\\items\\useables\\scroll\\sprite.png')
 
 BUNDLE_MOBS = {
-    'rat': ImageBundle(py.image.load('images\\entities\\combatants\\rat\\sprite.png'),
-                       actor=py.image.load('images\\entities\\combatants\\rat\\actor.png')),
+    'rat': ImageBundle(actor=py.image.load('images\\entities\\combatants\\rat\\actor.png')),
     'bat': ImageBundle(actor=py.image.load('images\\entities\\combatants\\bat\\actor.png')),
     'bear': ImageBundle(actor=py.image.load('images\\entities\\combatants\\bear\\actor.png')),
-    'goblin': ImageBundle(py.image.load('images\\entities\\combatants\\goblin\\sprite.png'),
-                          actor=py.image.load('images\\entities\\combatants\\goblin\\actor.png')),
+    'goblin': ImageBundle(actor=py.image.load('images\\entities\\combatants\\goblin\\actor.png')),
     'kobold': ImageBundle(actor=py.image.load('images\\entities\\combatants\\kobold\\actor.png')),
     'raccoon': ImageBundle(actor=py.image.load('images\\entities\\combatants\\raccoon\\actor.png')),
     'salamander': ImageBundle(actor=py.image.load('images\\entities\\combatants\\salamander\\actor.png')),
@@ -144,6 +147,12 @@ CHARACTER_SCREEN = {
     'male': py.image.load('images\\GUI\\character_sheet\\male_icon.png'),
     'female': py.image.load('images\\GUI\\character_sheet\\female_icon.png'),
 }
+RESOURCE_HUD_BASE = py.image.load('images\\GUI\\life\\resources_hud\\base_layer.png')
+RESOURCE_HUD_OVERLAY = py.image.load('images\\GUI\\life\\resources_hud\\portrait_overlay.png')
+HP = py.image.load('images\\GUI\\life\\resources_hud\\hp.png')
+MP = py.image.load('images\\GUI\\life\\resources_hud\\mp.png')
+TP = py.image.load('images\\GUI\\life\\resources_hud\\tp.png')
+VP = py.image.load('images\\GUI\\life\\resources_hud\\vp.png')
 
 RESOURCE_HUD = {
     'frame': py.image.load('images\\GUI\\resources_hud\\portrait_mini_frame.png'),
