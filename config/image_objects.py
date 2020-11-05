@@ -154,6 +154,8 @@ MP = py.image.load('images\\GUI\\life\\resources_hud\\mp.png')
 TP = py.image.load('images\\GUI\\life\\resources_hud\\tp.png')
 VP = py.image.load('images\\GUI\\life\\resources_hud\\vp.png')
 
+PARTY_SETTINGS_FRAME = py.image.load('images\\GUI\\life\\party_settings_frame.png')
+
 RESOURCE_HUD = {
     'frame': py.image.load('images\\GUI\\resources_hud\\portrait_mini_frame.png'),
     'resource_bar': py.image.load('images\\GUI\\resources_hud\\resource_bar.png'),

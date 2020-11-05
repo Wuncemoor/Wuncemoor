@@ -3,7 +3,8 @@ import tcod
 from pygame.transform import scale
 
 from config.constants import WHITE, TILES_ON_SCREEN
-from config.image_objects import RESOURCE_HUD_BASE, RESOURCE_HUD_OVERLAY, HP, MP, TP, VP, TILE_BASE
+from config.image_objects import RESOURCE_HUD_BASE, RESOURCE_HUD_OVERLAY, HP, MP, TP, VP, TILE_BASE, \
+    PARTY_SETTINGS_FRAME
 from screens.gui_tools import get_alpha_surface, get_text_surface, get_surface, align_and_blit
 
 
@@ -11,7 +12,9 @@ def get_life_left_panel(party):
     PANEL_WIDTH, PANEL_HEIGHT = 264, 1080
     panel = get_alpha_surface(PANEL_WIDTH, PANEL_HEIGHT)
     party_resources_hud = get_life_party_resources(party)
+    party_travel_settings = get_life_party_travel_settings(party)
     panel.blit(party_resources_hud, (8, 36))
+    panel.blit(party_travel_settings, (8, 36 + party_resources_hud.get_height()))
     return panel
 
 
@@ -65,6 +68,22 @@ def get_life_member_stats(entity):
     stats.blit(scale(vp, (int(vp.get_width()*percent_vp), vp.get_height())), (86, 58))
 
     return stats
+
+
+def get_life_party_travel_settings(party):
+    window = get_alpha_surface(248, 186)
+    setting_titles = ['Formation', 'Move Speed', 'Rations']
+    settings = [party.formation, party.move_speed, party.rations]
+    for i in range(3):
+        settings_frame = get_surface(PARTY_SETTINGS_FRAME)
+        setting_title = get_text_surface(setting_titles[i], color=WHITE)
+        align_and_blit(settings_frame, setting_title, y_ratio=0.24)
+        setting = get_text_surface(settings[i], fontsize=16)
+        align_and_blit(settings_frame, setting, y_ratio=0.68)
+        window.blit(settings_frame, (0, i*settings_frame.get_height()))
+    return window
+
+
 
 
 def get_life_main_screen(self):

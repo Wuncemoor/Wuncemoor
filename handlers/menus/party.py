@@ -15,7 +15,9 @@ class Party:
         self.x = None
         self.y = None
         self.sub = None
-        self.formation = None
+        self.formation = 'Unorganized'
+        self.move_speed = 'Normal'
+        self.rations = 'None'
 
 
     @property
