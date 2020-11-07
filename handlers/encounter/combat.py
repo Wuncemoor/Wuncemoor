@@ -14,11 +14,11 @@ class Combat:
 
     def initialize_grid(self):
         grid = CombatGrid()
-        if self.party.formation is None:
+        if self.party.formation is 'Unorganized':
             grid.rows[3].extend(self.party.members)
         else:
             pass
-        if self.enemies.formation is None:
+        if self.enemies.formation is 'Unorganized':
             grid.rows[4].extend(self.enemies.members)
         else:
             pass
