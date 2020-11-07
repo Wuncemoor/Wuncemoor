@@ -2,7 +2,7 @@ from numpy.core._multiarray_umath import sqrt
 import tcod
 from pygame.transform import scale
 
-from config.constants import WHITE, TILES_ON_SCREEN
+from config.constants import WHITE, TILES_ON_SCREEN, TILESIZE
 from config.image_objects import RESOURCE_HUD_BASE, RESOURCE_HUD_OVERLAY, HP, MP, TP, VP, TILE_BASE, \
     PARTY_SETTINGS_FRAME
 from screens.gui_tools import get_alpha_surface, get_text_surface, get_surface, align_and_blit
@@ -125,7 +125,7 @@ def draw_entity(self, main_screen, entity):
     surfimg = entity.images.sprite
 
     if tcod.map_is_in_fov(self.handler.fov.map, entity.y, entity.x):
-        main_screen.blit(surfimg, ((entity.x - cx) * self.tilesize, (entity.y - cy) * self.tilesize))
+        main_screen.blit(surfimg, ((entity.x - cx) * TILESIZE, (entity.y - cy) * TILESIZE - (TILESIZE/3)))
 
 
 def draw_party(self, main_screen):
@@ -134,24 +134,24 @@ def draw_party(self, main_screen):
 
     surfimg = party.p1.images.sprite
 
-    main_screen.blit(surfimg, ((party.x - cx) * self.tilesize, (party.y - cy) * self.tilesize))
+    main_screen.blit(surfimg, ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
 
 
 def draw_tile_floor(main_screen, tile, x, y, vis):
     if vis or (tile.explored and tile.floor.transition):
-        main_screen.blit(tile.floor.light_image, (x * 16, y * 16))
+        main_screen.blit(tile.floor.light_image, (x * TILESIZE, y * TILESIZE))
         tile.explored = True
     elif tile.explored:
-        main_screen.blit(tile.floor.dark_image, (x * 16, y * 16))
+        main_screen.blit(tile.floor.dark_image, (x * TILESIZE, y * TILESIZE))
     else:
-        main_screen.blit(TILE_BASE.get('black'), (x * 16, y * 16))
+        main_screen.blit(TILE_BASE.get('black'), (x * TILESIZE, y * TILESIZE))
 
 
 def draw_tile_blocker(main_screen, tile, x, y, vis):
     if vis:
-        main_screen.blit(tile.blocker.light_image, (x * 16, y * 16))
+        main_screen.blit(tile.blocker.light_image, (x * TILESIZE, y * TILESIZE))
     else:
-        main_screen.blit(tile.blocker.dark_image, (x * 16, y * 16))
+        main_screen.blit(tile.blocker.dark_image, (x * TILESIZE, y * TILESIZE))
 
 
 

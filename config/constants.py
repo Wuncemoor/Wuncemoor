@@ -2,10 +2,11 @@
 SCREEN_SIZE = (1920, 1080)
 CAPTION = 'Wuncemoor: The Eternal Dream'
 
+TILESIZE = 48
 # (width, height)
-TILES_ON_SCREEN = (80, 37)
+TILES_ON_SCREEN = (29, 21)
 # (width, height)
-DUNGEON_ALPHA = (80, 37)
+DUNGEON_ALPHA = (200, 150)
 DUNGEON_BETA = (100, 50)
 DUNGEON_GAMMA = (200, 100)
 DUNGEON_DELTA = (100, 40)

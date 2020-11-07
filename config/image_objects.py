@@ -445,6 +445,8 @@ TILE_BASE = {
 DARK_ROCK_WALL = py.image.load('images\\tiles\\dark_wall.png')
 LIGHT_ROCK_WALL = py.image.load('images\\tiles\\light_wall.png')
 
+GRASS = py.image.load('images\\tiles\\grass.png')
+
 LIGHT_GRASS = [py.image.load('images\\tiles\\grass\\light_grass00.png'),
                py.image.load('images\\tiles\\grass\\light_grass01.png'),
                py.image.load('images\\tiles\\grass\\light_grass02.png'),

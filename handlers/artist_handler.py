@@ -12,8 +12,7 @@ from screens.debug_window import debug_window
 from screens.dialogue_screen import dialogue_screen
 from screens.life_screen import get_life_left_panel, get_life_main_screen
 from screens.shop_screen import shop_screen
-from screens.gui_tools import get_surface, print_message, align_and_blit, blit_options, get_alpha_surface, \
-    get_text_surface
+from screens.gui_tools import get_surface, print_message, align_and_blit, blit_options, get_alpha_surface
 from screens.inventory_screen import inventory_screen
 from screens.journal_screen import journal_screen
 from screens.loot_menu import display_loot, display_resources_gain, get_reward_menu
@@ -25,7 +24,6 @@ from pygame.font import Font
 class ArtistHandler(MVC):
     def __init__(self, screen):
         self.screen = screen
-        self.tilesize = 16
 
     @property
     def choice(self):
