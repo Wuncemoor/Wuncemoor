@@ -31,16 +31,15 @@ class Move(AbstractLogic):
 
     def logic(self, output):
         dx, dy = output
-        x, y = self.game.party.x, self.game.party.y
-        destination_x = x + dx
-        destination_y = y + dy
+        destination_x = self.game.party.x + dx
+        destination_y = self.game.party.y + dy
 
         tile = self.game.world.current_map.tiles[destination_y][destination_x]
 
         if not tile.blocker:
 
             self.game.party.move(dx, dy)
-            self.handler.camera.refocus(x, y)
+            self.handler.camera.refocus(self.game.party.x, self.game.party.y)
 
             self.handler.fov.needs_recompute = True
 
