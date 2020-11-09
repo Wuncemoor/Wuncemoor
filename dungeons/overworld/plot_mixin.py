@@ -20,7 +20,7 @@ class PlotMixin:
 
     def get_intro_nodes(self, width, height):
         tw, th = 8, 4
-        no_fly_zone = [(5, 20), (70, 20), (5, 20), (5, 5)]
+        spawn_location = [(7, 38), (70, 20), (5, 20), (5, 5)]
         delta = [-30, -30, -50]
         name = ['alpha', 'beta', 'gamma', 'delta']
         nodes_to_make = 4
@@ -29,18 +29,18 @@ class PlotMixin:
         buffer = 5
         nodes = []
 
-        self.make_nodes(nodes_to_make, completed_nodes, observed_node, nodes, width, height, tw, th, no_fly_zone, delta, name, buffer)
+        self.make_nodes(nodes_to_make, completed_nodes, observed_node, nodes, width, height, tw, th, spawn_location, delta, name, buffer)
         return nodes
 
-    def make_nodes(self, nodes_to_make, completed_nodes, observed_node, nodes, width, height, tw, th, no_fly_zone, delta, name, buffer):
+    def make_nodes(self, nodes_to_make, completed_nodes, observed_node, nodes, width, height, tw, th, spawn_location, delta, name, buffer):
         if nodes_to_make == 0:
             pass
         else:
-            ntm, cn, on, n = self.change_nodes(nodes_to_make, completed_nodes, observed_node, nodes, width, height, tw, th, no_fly_zone, delta, name,
+            ntm, cn, on, n = self.change_nodes(nodes_to_make, completed_nodes, observed_node, nodes, width, height, tw, th, spawn_location, delta, name,
                        buffer)
-            self.make_nodes(ntm, cn, on, n, width, height, tw, th, no_fly_zone, delta, name, buffer)
+            self.make_nodes(ntm, cn, on, n, width, height, tw, th, spawn_location, delta, name, buffer)
 
-    def change_nodes(self, nodes_to_make, completed_nodes, observed_node, nodes, width, height, tw, th, no_fly_zone, delta, name,
+    def change_nodes(self, nodes_to_make, completed_nodes, observed_node, nodes, width, height, tw, th, spawn_location, delta, name,
                        buffer):
         xy_options, x_options, y_options = self.get_options(width, height, nodes, delta, tw, th, completed_nodes)
         if len(x_options) == 0 or len(y_options) == 0:
@@ -51,7 +51,7 @@ class PlotMixin:
 
         else:
             rand_xy = random.choice(xy_options)
-            nn = PlotNode(name[completed_nodes], rand_xy[0], rand_xy[1], no_fly_zone[completed_nodes])
+            nn = PlotNode(name[completed_nodes], rand_xy[0], rand_xy[1], spawn_location[completed_nodes])
             self.apply_noflyzone(nn, nodes, rand_xy, tw, th, buffer)
             nodes.append(nn)
             completed_nodes += 1

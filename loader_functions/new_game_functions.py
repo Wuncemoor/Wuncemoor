@@ -48,7 +48,7 @@ def get_player():
                           equipment=equipment, satchel=satchel, sex='male')
     age = Age(10, 0, 0, 0, (1, 1))
 
-    player = Entity(5, 20, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant, age=age)
+    player = Entity(7, 35, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant, age=age)
     return player
 
 
