@@ -1,8 +1,10 @@
+from abstracts.abstract_structure import ProceduralStructure, PrefabStructure
 from dungeons.tile_mixins import InitRealTiles
 from map_objects.majorroad import RoadTileFloor
 from ECS.entity import Entity
 from random import randint
 from abstracts.abstract_maps import ProceduralTiles2D
+from map_objects.town_walls import StoneWallTileBlocker
 from misc_functions.random_utils import random_choice_from_dict, from_dungeon_level
 from enums.render_order import RenderOrder
 from builders.mob_builder import MobDirector, MobBuilder
@@ -96,7 +98,7 @@ class DangerousMap(ProceduralTiles2D, InitRealTiles):
                         self.create_v_tunnel(prev_y, new_y, prev_x, dungeon_type, subtype)
                         self.create_h_tunnel(prev_x, new_x, new_y, dungeon_type, subtype)
                 # append room to list
-                #self.place_entities(new_room, dungeon_type, subtype, node_power)
+                # self.place_entities(new_room, dungeon_type, subtype, node_power)
 
                 rooms.append(new_room)
                 self.exit = (center_of_last_room_x, center_of_last_room_y)
@@ -162,61 +164,72 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
         self.entrance = None
         self.exit = None
 
-    def connect_to_overworld(self, structure):
+    def connect_to_overworld(self, major_road):
         """Receives a Structure (such as a MajorRoad) and sets the tiles (containing Transitions) and their images
         using the Structure as a blueprint. """
 
-        self.set_floors(structure)
-        self.set_modes(structure)
+        self.integrate_protostructure(major_road, flag='major')
+        self.set_modes(major_road, 'floor')
 
-    def set_floors(self, proto):
+    def integrate_protostructures(self, structures):
+        # list() stops self.tiles from becoming an iterator, [0] removes extra list() brackets
+        self.tiles = list(map(self.integrate_protostructure, structures))[0]
+
+    def integrate_protostructure(self, proto, flag=None):
         j, i = 0, 0
-        for y in range(proto.rect.y1, proto.rect.y2):
-            for x in range(proto.rect.x1, proto.rect.x2):
-                self.tiles[y][x].floor = proto.tiles[j][i].floor
-                i += 1
-            j += 1
-            i = 0
+        if isinstance(proto, ProceduralStructure):
+            for y in range(proto.rect.y1, proto.rect.y2):
+                for x in range(proto.rect.x1, proto.rect.x2):
+                    if (proto.tiles[j][i].floor or flag) is not None:
+                        self.tiles[y][x].floor = proto.tiles[j][i].floor
+                    if (proto.tiles[j][i].blocker or flag) is not None:
+                        self.tiles[y][x].blocker = proto.tiles[j][i].blocker
+                    i += 1
+                j += 1
+                i = 0
+            return self.tiles
+        elif issubclass(proto, PrefabStructure):
+            for y in range(proto.rect.y1, proto.rect.y2):
+                for x in range(proto.rect.x1, proto.rect.x2):
+                    self.tiles[y][x].floor = proto._floor
+                    self.tiles[y][x].blocker = proto._blockers[j][i]
+                    i += 1
+                j += 1
+                i = 0
+            return self.tiles
 
-    def set_modes(self, proto):
+    def set_modes(self, proto, tile_component):
         for y in range(proto.rect.y1, proto.rect.y2):
             for x in range(proto.rect.x1, proto.rect.x2):
                 mode = ''
                 try:
-                    tf = [self.tiles[y - 1][x - 1], self.tiles[y - 1][x],
-                          self.tiles[y - 1][x + 1], self.tiles[y][x - 1],
-                          self.tiles[y][x + 1], self.tiles[y + 1][x - 1],
-                          self.tiles[y + 1][x], self.tiles[y + 1][x + 1]]
+                    nearby_tiles = [self.tiles[y - 1][x - 1], self.tiles[y - 1][x],
+                                    self.tiles[y - 1][x + 1], self.tiles[y][x - 1],
+                                    self.tiles[y][x + 1], self.tiles[y + 1][x - 1],
+                                    self.tiles[y + 1][x], self.tiles[y + 1][x + 1]]
                 except IndexError:
-                    tf = [self.tiles[y][x], self.tiles[y][x],
-                          self.tiles[y][x], self.tiles[y][x],
-                          self.tiles[y][x], self.tiles[y][x],
-                          self.tiles[y][x], self.tiles[y][x]]
+                    nearby_tiles = [self.tiles[y][x], self.tiles[y][x],
+                                    self.tiles[y][x], self.tiles[y][x],
+                                    self.tiles[y][x], self.tiles[y][x],
+                                    self.tiles[y][x], self.tiles[y][x]]
 
-                for qq in tf:
-                    if isinstance(qq.floor, RoadTileFloor):
-                        mode += '1'
-                    else:
-                        mode += '0'
-                self.tiles[y][x].floor.mode = mode
-                self.tiles[y][x].floor.set_images()
-
-
+                if tile_component == 'floor':
+                    for tile in nearby_tiles:
+                        if isinstance(tile.floor, proto.floor_component):
+                            mode += '1'
+                        else:
+                            mode += '0'
+                    self.tiles[y][x].floor.mode = mode
+                    self.tiles[y][x].floor.set_images()
+                elif tile_component == 'blocker':
+                    for tile in nearby_tiles:
+                        if isinstance(tile.blocker, StoneWallTileBlocker):
+                            mode += '1'
+                        else:
+                            mode += '0'
+                    if self.tiles[y][x].blocker is not None:
+                        self.tiles[y][x].blocker.mode = mode
+                        self.tiles[y][x].blocker.set_images()
 
     def fill_tiles(self):
         pass
-
-    def integrate_structures(self, structures, rects):
-        # list() stops self.tiles from becoming an iterator, [0] removes extra list() brackets
-        self.tiles = list(map(self.integrate_structure, structures, rects))[0]
-
-    def integrate_structure(self, struct, rect):
-        j, i = 0, 0
-        for y in range(rect.y1, rect.y2):
-            for x in range(rect.x1, rect.x2):
-                self.tiles[y][x].floor = struct._floor
-                self.tiles[y][x].blocker = struct._blockers[j][i]
-                i += 1
-            j += 1
-            i = 0
-        return self.tiles
