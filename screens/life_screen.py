@@ -84,8 +84,6 @@ def get_life_party_travel_settings(party):
     return window
 
 
-
-
 def get_life_main_screen(self):
     main_screen = get_alpha_surface(1392, 1008)
     (width, height) = TILES_ON_SCREEN

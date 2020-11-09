@@ -212,9 +212,6 @@ class DebugHandler:
         self.message_slot = [message]
 
 
-
-
-
     def bool_map(self, obj):
         """Returns current map as ASCII made of 1's and 0's based on existence of obj"""
         mes = []

@@ -8,7 +8,7 @@ class Age:
         self.hour = hour
         self.birthday = birthday
 
-    def get_older(self, diff):
+    def become_older(self, diff):
         year, month, day, hour = diff
 
         self.year += year

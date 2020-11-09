@@ -1,12 +1,14 @@
 from abstracts.abstract_structure import PrefabStructure
 from map_objects.blockers.inn_blockers import inn_blocker_array
 from map_objects.floors.structure_floors import WoodTileFloor
+from map_objects.rect import Rect
 
 
 class TownAlphaInn(PrefabStructure):
 
     _floor = WoodTileFloor()
     _blockers = inn_blocker_array()
+    rect = Rect(25, 25, 9, 7)
 
     def __init__(self):
         super().__init__()
