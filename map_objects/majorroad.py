@@ -29,6 +29,11 @@ class MajorRoad(ProceduralStructure):
     """A unique Structure that connects all dungeons to the overworld. variant is the node that OverworldBuilder made
     for this map """
 
+    floor_component = RoadTileFloor
+
+    def __init__(self, rect, variant):
+        super().__init__(rect, variant)
+
     def fill_tiles(self):
         for row in self.tiles:
             for tile in row:

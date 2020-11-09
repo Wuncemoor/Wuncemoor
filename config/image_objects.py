@@ -447,6 +447,32 @@ LIGHT_ROCK_WALL = py.image.load('images\\tiles\\light_wall.png')
 
 GRASS = py.image.load('images\\tiles\\grass.png')
 
+STONE_WALL = {
+    '00001000': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall00001000.png'),
+    '00010000': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall00010000.png'),
+    '00001010': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall00001010.png'),
+    '00011000': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall00011000.png'),
+    '00011100': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall00011000.png'),
+    '00011001': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall00011000.png'),
+    '10011000': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall00011000.png'),
+    '00111000': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall00011000.png'),
+    '00010010': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall00010010.png'),
+    '00000010': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall00000010.png'),
+    '01001010': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall01001010.png'),
+    '01100010': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall01000010.png'),
+    '11000010': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall01000010.png'),
+    '01000011': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall01000010.png'),
+    '01000110': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall01000010.png'),
+    '01010010': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall01010010.png'),
+    '01000010': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall01000010.png'),
+    '01011010': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall01011010.png'),
+    '01000000': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall01000000.png'),
+    '00011010': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall00011010.png'),
+    '01011000': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall01011000.png'),
+    '01001000': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall01001000.png'),
+    '01010000': FrozenSurface.load('images\\entities\\blockers\\stone_wall\\', 'stone_wall01010000.png'),
+}
+
 LIGHT_GRASS = [py.image.load('images\\tiles\\grass\\light_grass00.png'),
                py.image.load('images\\tiles\\grass\\light_grass01.png'),
                py.image.load('images\\tiles\\grass\\light_grass02.png'),

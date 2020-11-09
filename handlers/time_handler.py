@@ -10,7 +10,7 @@ class TimeHandler:
     def goes_on(self):
         for party in self.observers:
             for member in party.members:
-                member.age.get_older([0, 0, 0, 1])
+                member.age.become_older([0, 0, 0, 1])
         self.hour += 1
         self.new_day()
 
@@ -45,11 +45,11 @@ class TimeHandler:
             for entity in dmap.entities:
                 if entity.age:
                     diff = map(lambda x, y: x - y, self.stamp(), dungeon.time_dilation)
-                    entity.age.get_older(list(diff))
+                    entity.age.become_older(list(diff))
             for noncom in dmap.noncombatants:
                 if noncom.age:
                     diff = map(lambda x, y: x - y, self.stamp(), dungeon.time_dilation)
-                    noncom.age.get_older(list(diff))
+                    noncom.age.become_older(list(diff))
 
     def stamp(self):
         return [self.year, self.month, self.day, self.hour]

@@ -107,14 +107,17 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
 
     def get_maps(self):
         alpha_map = self.initialize_map()
-        major = self.get_major_road()
+        outer_scenery_dim = 5
+        walls = self.get_town_walls(outer_scenery_dim)
+        alpha_map.integrate_protostructure(walls)
+        alpha_map.set_modes(walls, 'blocker')
+        major = self.get_major_road(outer_scenery_dim)
         # connect also adds transitions to overworld
         alpha_map.connect_to_overworld(major)
 
-        structures = self.get_structures()
-        rects = self.get_rects()
+        structures = self.get_prefab_structures()
 
-        alpha_map.integrate_structures(structures, rects)
+        alpha_map.integrate_protostructures(structures)
 
         samwise = self.get_samwise()
 

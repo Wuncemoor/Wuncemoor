@@ -9,6 +9,7 @@ from enums.render_order import RenderOrder
 from handlers.menus.inventory import Inventory
 from map_objects.majorroad import MajorRoad
 from map_objects.rect import Rect
+from map_objects.town_walls import TownWalls
 from prefabs.alpha_prefabs import TownAlphaInn
 
 
@@ -25,24 +26,25 @@ class DungeonAlphaMixin:
         potion = make_item('healing_potion')
         inven.add_item(potion)
         shopkeeper = Shopkeeper(inven)
-        samwise = Entity(5, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom, age=age, shopkeeper=shopkeeper)
+        samwise = Entity(6, 16, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom, age=age, shopkeeper=shopkeeper)
         return samwise
 
-
-
-    def get_major_road(self):
-        rect = Rect(0, int(self.height / 2) - 2, self.width, 4)
+    def get_major_road(self, outer_scenery_dim):
+        rect = Rect(outer_scenery_dim, int(self.height / 2) - 2, self.width - outer_scenery_dim*2, 4)
         road = MajorRoad(rect, self.node)
         road.set_transitions('vertical')
         return road
 
-    def get_structures(self):
+    @staticmethod
+    def get_prefab_structures():
         structures = [TownAlphaInn]
         return structures
 
-    def get_rects(self):
-        rects = [Rect(25, 25, 9, 7)]
-        return rects
+    def get_town_walls(self, outer_scenery_dim):
+        rect = Rect(outer_scenery_dim, outer_scenery_dim, self.width - outer_scenery_dim*2, self.height - outer_scenery_dim*2)
+        walls = TownWalls(rect, 'stone')
+        return walls
+
 
 
 
