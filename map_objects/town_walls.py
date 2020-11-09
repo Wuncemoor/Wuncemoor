@@ -15,7 +15,6 @@ class TownWalls(ProceduralStructure):
         i, j = 0, 0
         for row in self.tiles:
             for tile in row:
-                print(str(i) + ' ' + str(j))
                 if (i in (0, self.width - 1)) or (j in (0, self.height - 1)):
                     tile.floor = self.set_floor()
                     tile.blocker = self.set_blocker()
@@ -28,7 +27,6 @@ class TownWalls(ProceduralStructure):
 
     def set_transitions(self):
         pass
-
 
     @staticmethod
     def set_floor():
