@@ -68,3 +68,24 @@ class AbstractTileBlocker(AbstractTileComponent):
     @abstractmethod
     def opaque(self):
         pass
+
+
+class ModalTileBlocker(AbstractTileBlocker):
+
+    def __init__(self):
+        super().__init__()
+        self.mode = None
+
+    @property
+    @abstractmethod
+    def light_dict(self):
+        pass
+
+    @property
+    @abstractmethod
+    def dark_dict(self):
+        pass
+
+    def set_images(self):
+        self.light_image = self.light_dict.get(self.mode)
+        self.dark_image = self.dark_dict.get(self.mode)
