@@ -13,7 +13,7 @@ class GameHandler:
 
     def __init__(self, options):
         self.state_handler = None
-        self.fullscreen = False
+        self.fullscreen = True
         self.options = options
         self.options.owner = self
         self.title = state_handlers.TitleHandler()

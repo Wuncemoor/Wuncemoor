@@ -11,7 +11,7 @@ def main():
 
     py.init()
     py.display.set_caption(CAPTION)
-    screen = py.display.set_mode(SCREEN_SIZE)
+    screen = py.display.set_mode(SCREEN_SIZE, flags=py.FULLSCREEN)
 
     input = InputHandler()
     logic = LogicHandler()
