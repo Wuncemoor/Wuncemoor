@@ -1,14 +1,14 @@
 from map_objects.transition import Transition
 from abstracts.abstract_structure import ProceduralStructure
 from abstracts.abstract_tile_component import ModalTileFloor
-from config.image_objects import LIGHT_ROAD, DARK_ROAD, BUNDLE_ALPHA
+from config.image_objects import BUNDLE_ALPHA, DIRT_ROAD
 
 
-class RoadTileFloor(ModalTileFloor):
+class DirtRoadTileFloor(ModalTileFloor):
     """Floor component for Tile used to represent road. Currently the only type of road floor."""
 
-    light_dict = LIGHT_ROAD
-    dark_dict = DARK_ROAD
+    light_dict = DIRT_ROAD
+    dark_dict = DIRT_ROAD
     name = 'Road'
 
     def __str__(self):
@@ -29,7 +29,7 @@ class MajorRoad(ProceduralStructure):
     """A unique Structure that connects all dungeons to the overworld. variant is the node that OverworldBuilder made
     for this map """
 
-    floor_component = RoadTileFloor
+    floor_component = DirtRoadTileFloor
 
     def __init__(self, rect, variant):
         super().__init__(rect, variant)
@@ -37,7 +37,7 @@ class MajorRoad(ProceduralStructure):
     def fill_tiles(self):
         for row in self.tiles:
             for tile in row:
-                tile.floor = RoadTileFloor()
+                tile.floor = DirtRoadTileFloor()
 
     def set_transitions(self, dimension):
         trans = Transition('Road leaving town', BUNDLE_ALPHA, 'overworld', 0, (self.variant.x, self.variant.y))

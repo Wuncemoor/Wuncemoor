@@ -1,6 +1,6 @@
 from abstracts.abstract_structure import ProceduralStructure, PrefabStructure
 from dungeons.tile_mixins import InitRealTiles
-from map_objects.majorroad import RoadTileFloor
+from map_objects.majorroad import DirtRoadTileFloor
 from ECS.entity import Entity
 from random import randint
 from abstracts.abstract_maps import ProceduralTiles2D
@@ -168,8 +168,7 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
         """Receives a Structure (such as a MajorRoad) and sets the tiles (containing Transitions) and their images
         using the Structure as a blueprint. """
 
-        self.integrate_protostructure(major_road, flag='major')
-        self.set_modes(major_road, 'floor')
+
 
     def integrate_protostructures(self, structures):
         # list() stops self.tiles from becoming an iterator, [0] removes extra list() brackets
