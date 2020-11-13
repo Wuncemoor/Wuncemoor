@@ -42,6 +42,6 @@ class StoneWallTileBlocker(ModalTileBlocker):
     light_dict = STONE_WALL
     dark_dict = STONE_WALL
     name = 'Stone Wall'
-    opaque = True
+    opaque = False
     overshadow = None
 
