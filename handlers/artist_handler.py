@@ -20,6 +20,8 @@ from screens.mini_map import minimap_screen
 from screens.resources_HUD import player_resource_display
 from pygame.font import Font
 
+from screens.title_screen import get_title_text, get_title_menu
+
 
 class ArtistHandler(MVC):
     def __init__(self, screen):
@@ -38,23 +40,12 @@ class ArtistHandler(MVC):
     def title(self):
         self.screen.blit(TITLE_SCREEN_BG, (0, 0))
 
-        tfont = Font('screens\\fonts\\lunchds.ttf', 150)
-        stfont = Font('screens\\fonts\\lunchds.ttf', 60)
-        titletext = tfont.render('WUNCEMOOR', True, (0, 0, 0))
-        tsubt = stfont.render('THE ETERNAL DREAM', True, (0, 0, 0))
+        text, subtext = get_title_text()
+        align_and_blit(self.screen, text, x_ratio=0.5, y_ratio=0.15)
+        align_and_blit(self.screen, subtext, x_ratio=0.5, y_ratio=0.28)
 
-        align_and_blit(self.screen, titletext, x_ratio=0.5, y_ratio=0.25)
-        align_and_blit(self.screen, tsubt, x_ratio=0.5, y_ratio=0.38)
-        menu = self.title_menu()
+        menu = get_title_menu(self.game.options.current)
         align_and_blit(self.screen, menu, x_ratio=0.5, y_ratio=0.75)
-
-    def title_menu(self):
-        surf = get_surface(TITLE_MENU_BG)
-        text = self.game.options.current.text
-        blit_options(surf, TITLE_MENU_BUTTON, 22, 10, TITLE_MENU_BUTTON.get_height(), text, fontsize=40)
-        surf.blit(INDICATOR_H, (0, 10 + (self.choice * TITLE_MENU_BUTTON.get_height())))
-
-        return surf
 
     def life(self):
 

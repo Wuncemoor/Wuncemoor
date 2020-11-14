@@ -3,8 +3,8 @@ from screens.frozen_surface import FrozenSurface
 from ECS.image_bundle import ImageBundle
 
 TITLE_SCREEN_BG = py.image.load('images\\background\\main_menu.png')
-TITLE_MENU_BG = py.image.load('images\\GUI\\main_menu.png')
-TITLE_MENU_BUTTON = py.image.load('images\\GUI\\mm_button.png')
+TITLE_MENU_BG = py.image.load('images\\GUI\\menus\\title_menu.png')
+TITLE_MENU_BUTTON = py.image.load('images\\GUI\\menus\\title_button.png')
 
 MESSAGE_BG = py.image.load('images\\GUI\\message_bg.png')
 ENCOUNTER_MESSAGE_BG = py.image.load('images\\GUI\\encounter\\message_bg.png')
@@ -55,6 +55,7 @@ CALENDAR_CIRCLE = py.image.load('images\\GUI\\life\\calendar_circle.png')
 
 INDICATOR_H = py.image.load('images\\GUI\\menus\\indicator_h.png')
 INDICATOR_V = py.image.load('images\\GUI\\menus\\indicator_v.png')
+POINTER_RIGHT = py.image.load('images\\GUI\\icons\\pointer_right.png')
 
 STAIRS_DOWN = ImageBundle(py.image.load('images\\entities\\transitions\\stairsdown.png'))
 STAIRS_UP = ImageBundle(py.image.load('images\\entities\\transitions\\stairsup.png'))

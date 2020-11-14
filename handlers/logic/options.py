@@ -1,5 +1,5 @@
 from handlers.logic.logic_chunks import NewGame, LoadGame, QuitGame, FightTargeting, UseSatchel, RunAway, RewardAuto, \
-    RewardManual, RewardToLife, MenuGoToSub, ShopBaseGoToSub
+    RewardManual, RewardToLife, MenuGoToSub, ShopBaseGoToSub, TitleSettings, TitleAcknowledgements
 
 
 class Options:
@@ -19,8 +19,8 @@ class OptionsFake:
 
 
 def title_options():
-    text = ['Start A New Game', 'Continue A Previous Game', 'Quit']
-    options = Options([NewGame, LoadGame, QuitGame], text)
+    text = ['New Game', 'Load Game', 'Settings', 'Acknowledgements', 'Quit']
+    options = Options([NewGame, LoadGame, TitleSettings, TitleAcknowledgements, QuitGame], text)
     return options
 
 

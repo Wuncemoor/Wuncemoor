@@ -21,6 +21,18 @@ class LoadGame(AbstractLogic):
         self.game.preplay(world, party)
 
 
+class TitleSettings(AbstractLogic):
+
+    def logic(self):
+        self.game.quit()
+
+
+class TitleAcknowledgements(AbstractLogic):
+
+    def logic(self):
+        self.game.quit()
+
+
 class QuitGame(AbstractLogic):
 
     def logic(self):
