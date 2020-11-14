@@ -1,8 +1,8 @@
 from numpy.core._multiarray_umath import sqrt
 import tcod
+from pygame.surface import Surface
 from pygame.transform import scale
-
-from config.constants import WHITE, TILES_ON_SCREEN, TILESIZE
+from config.constants import WHITE, TILES_ON_SCREEN, TILESIZE, BLACK
 from config.image_objects import RESOURCE_HUD_BASE, RESOURCE_HUD_OVERLAY, HP, MP, TP, VP, TILE_BASE, \
     PARTY_SETTINGS_FRAME
 from screens.gui_tools import get_alpha_surface, get_text_surface, get_surface, align_and_blit
@@ -140,7 +140,9 @@ def draw_tile_floor(main_screen, tile, x, y, vis):
         main_screen.blit(tile.floor.light_image, (x * TILESIZE, y * TILESIZE))
         tile.explored = True
     elif tile.explored:
-        main_screen.blit(tile.floor.dark_image, (x * TILESIZE, y * TILESIZE))
+        darkened = get_darkened_image()
+        main_screen.blit(tile.floor.light_image, (x * TILESIZE, y * TILESIZE))
+        main_screen.blit(darkened, (x*TILESIZE, y * TILESIZE))
     else:
         main_screen.blit(TILE_BASE.get('black'), (x * TILESIZE, y * TILESIZE))
 
@@ -150,6 +152,13 @@ def draw_tile_blocker(main_screen, tile, x, y, vis):
         main_screen.blit(tile.blocker.light_image, (x * TILESIZE, y * TILESIZE))
     else:
         main_screen.blit(tile.blocker.dark_image, (x * TILESIZE, y * TILESIZE))
+
+
+def get_darkened_image():
+    overlay = Surface((TILESIZE, TILESIZE))
+    overlay.fill(BLACK)
+    overlay.set_alpha(100)
+    return overlay
 
 
 
