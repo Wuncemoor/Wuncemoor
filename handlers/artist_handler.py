@@ -1,16 +1,12 @@
-import tcod as libtcod
-from config.constants import BLACK, WHITE
-from config.image_objects import MESSAGE_BG, TILE_BASE, TITLE_SCREEN_BG, TITLE_MENU_BG, TITLE_MENU_BUTTON, INDICATOR_H, \
-    ENCOUNTER_MENU, ENCOUNTER_BUTTON, ENCOUNTER_MESSAGE_BG, INDICATOR_V, LOOT_BG, LOOT_BANNER, LIFE_BACKDROP, \
-    TURN_ORDER_QUEUE, MINI_MAP, CLOCK, UPCOMING_EVENTS
+from config.image_objects import TITLE_SCREEN_BG, INDICATOR_H, ENCOUNTER_MENU, ENCOUNTER_BUTTON, \
+    ENCOUNTER_MESSAGE_BG, INDICATOR_V, LOOT_BG, LOOT_BANNER, LIFE_BACKDROP, TURN_ORDER_QUEUE
 from enums.game_states import GameStates, MenuStates, EncounterStates
 from abstracts.abstract_mvc import MVC
 from handlers.logic.options import encounter_window_options
-from screens.calendar import display_calendar
 from screens.character_screen import character_screen
 from screens.debug_window import debug_window
 from screens.dialogue_screen import dialogue_screen
-from screens.life_screen import get_life_left_panel, get_life_main_screen
+from screens.life_screen import get_life_left_panel, get_life_main_screen, get_life_right_panel
 from screens.shop_screen import shop_screen
 from screens.gui_tools import get_surface, print_message, align_and_blit, blit_options, get_alpha_surface
 from screens.inventory_screen import inventory_screen
@@ -18,7 +14,6 @@ from screens.journal_screen import journal_screen
 from screens.loot_menu import display_loot, display_resources_gain, get_reward_menu
 from screens.mini_map import minimap_screen
 from screens.resources_HUD import player_resource_display
-from pygame.font import Font
 
 from screens.title_screen import get_title_text, get_title_menu
 
@@ -58,25 +53,8 @@ class ArtistHandler(MVC):
         main_screen = get_life_main_screen(self)
         self.screen.blit(main_screen, (264, 36))
 
-        message_surface = get_surface(MESSAGE_BG)
-        y = 0
-        for message in self.game.log.messages.messages:
-            off_x = 30
-            off_y = 5
-            print_message(message_surface, message, off_x, off_y, y)
-            y += 1
-
-        self.screen.blit(message_surface, (1920-264, 36+248+50+160+200))
-        message_surface.fill(BLACK)
-
-        minimap = get_surface(MINI_MAP)
-        self.screen.blit(minimap, (1920-254, 36))
-
-        self.blit_clock()
-        self.blit_calendar()
-        self.blit_upcoming_events()
-
-
+        right_panel = get_life_right_panel(self.game)
+        self.screen.blit(right_panel, (1654, 0))
 
     def menus(self):
         if self.handler.state == MenuStates.PARTY:
@@ -138,21 +116,6 @@ class ArtistHandler(MVC):
 
         self.screen.blit(window, (0, 0))
 
-    def blit_clock(self):
-        clock = get_surface(CLOCK)
-        self.screen.blit(clock, (1920-254, 36+248))
-
-    def blit_calendar(self):
-        calendar = display_calendar(self.game.time)
-        xy = (1920-254, 36+248+50)
-        self.screen.blit(calendar, xy)
-
-    def blit_upcoming_events(self):
-        events = get_surface(UPCOMING_EVENTS)
-        self.screen.blit(events, (1920-254, 36+248+50+160))
-
-
-
     def dialogue(self):
         dialogue_screen(self)
 
@@ -186,9 +149,8 @@ class ArtistHandler(MVC):
 
         self.screen.blit(menu, (0, 840))
 
-
     def blit_turn_order_queue(self):
         toq = get_surface(TURN_ORDER_QUEUE)
-        align_and_blit(self.screen, toq, y_ratio=0.1)
+        align_and_blit(self.screen, toq, x_ratio=0.15, y_ratio=0.05)
 
 

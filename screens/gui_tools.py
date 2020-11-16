@@ -6,16 +6,14 @@ from config.constants import BLACK, WHITE
 def get_surface(image):
 
     surf = get_alpha_surface(image.get_width(), image.get_height())
-
     surf.blit(image, (0, 0))
+
     return surf
 
 
 def get_alpha_surface(width, height):
-    res_display = py.Surface((width, height))
-    ALPHA = py.Color(128, 175, 120)
-    res_display.set_colorkey(ALPHA)
-    res_display.fill(ALPHA)
+
+    res_display = py.Surface((width, height), py.SRCALPHA)
 
     return res_display
 
@@ -29,6 +27,7 @@ def get_text_surface(text, fontsize=12, color=BLACK):
 
 
 def get_button_surface(image, text, fontsize, color):
+
     w, h = image.get_width(), image.get_height()
     surf = get_alpha_surface(w, h)
     text = get_text_surface(text, fontsize, color)

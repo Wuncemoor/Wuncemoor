@@ -12,6 +12,7 @@ def display_calendar(time):
 
     return surf
 
+
 def display_month(surf, month):
 
     dict = {
@@ -36,7 +37,7 @@ def display_month(surf, month):
 
 def display_day(surf, day):
 
-    dict = {
+    day_dict = {
         1: (0, 0), 2: (1, 0), 3: (2, 0), 4: (3, 0), 5: (4, 0), 6: (5, 0),
         7: (0, 1), 8: (1, 1), 9: (2, 1), 10: (3, 1), 11: (4, 1), 12: (5, 1),
         13: (0, 2), 14: (1, 2), 15: (2, 2), 16: (3, 2), 17: (4, 2), 18: (5, 2),
@@ -44,6 +45,6 @@ def display_day(surf, day):
         25: (0, 4), 26: (1, 4), 27: (2, 4), 28: (3, 4), 29: (4, 4), 30: (5, 4),
     }
 
-    (x, y) = dict.get(day)
+    (x, y) = day_dict.get(day)
     align_and_blit(surf, CALENDAR_CIRCLE, x_ratio=0, y_ratio=0, x_adjust=(25 + 30 * x),
                    y_adjust=(75 + 18 * y))

@@ -29,6 +29,7 @@ SIMPLEX = (5, 0.5, 2.5, 0.0075, 0.5, 0.1, 0.15)
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+TRANSPARENT = (0, 0, 0, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 ORANGE = (255, 165, 0)
@@ -59,3 +60,6 @@ IMAGE_OPTIONS = {
     'dirt': 9,
     'biome': 9,
 }
+
+LIFE_PANEL_WIDTH = 264
+LIFE_PANEL_HEIGHT = 1080

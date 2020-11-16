@@ -2,15 +2,15 @@ from numpy.core._multiarray_umath import sqrt
 import tcod
 from pygame.surface import Surface
 from pygame.transform import scale
-from config.constants import WHITE, TILES_ON_SCREEN, TILESIZE, BLACK
+from config.constants import WHITE, TILES_ON_SCREEN, TILESIZE, BLACK, TRANSPARENT, LIFE_PANEL_WIDTH, LIFE_PANEL_HEIGHT
 from config.image_objects import RESOURCE_HUD_BASE, RESOURCE_HUD_OVERLAY, HP, MP, TP, VP, TILE_BASE, \
-    PARTY_SETTINGS_FRAME
-from screens.gui_tools import get_alpha_surface, get_text_surface, get_surface, align_and_blit
+    PARTY_SETTINGS_FRAME, MINI_MAP, CLOCK, UPCOMING_EVENTS, EVENT_LOG_BG
+from screens.displays.calendar import display_calendar
+from screens.gui_tools import get_alpha_surface, get_text_surface, get_surface, align_and_blit, print_message
 
 
 def get_life_left_panel(party):
-    PANEL_WIDTH, PANEL_HEIGHT = 264, 1080
-    panel = get_alpha_surface(PANEL_WIDTH, PANEL_HEIGHT)
+    panel = get_alpha_surface(LIFE_PANEL_WIDTH, LIFE_PANEL_HEIGHT)
     party_resources_hud = get_life_party_resources(party)
     party_travel_settings = get_life_party_travel_settings(party)
     panel.blit(party_resources_hud, (8, 36))
@@ -42,7 +42,7 @@ def get_life_cropped_portrait(entity):
         for x in range(83):
             out_of_bounds = sqrt((y - center_y)*(y - center_y) + (x - center_x)*(x - center_x)) > 33
             if out_of_bounds:
-                cropped.set_at((x, y), (128, 175, 120))
+                cropped.set_at((x, y), TRANSPARENT)
     return cropped
 
 
@@ -140,7 +140,7 @@ def draw_tile_floor(main_screen, tile, x, y, vis):
         main_screen.blit(tile.floor.light_image, (x * TILESIZE, y * TILESIZE))
         tile.explored = True
     elif tile.explored:
-        darkened = get_darkened_image()
+        darkened = get_darkened_overlay()
         main_screen.blit(tile.floor.light_image, (x * TILESIZE, y * TILESIZE))
         main_screen.blit(darkened, (x*TILESIZE, y * TILESIZE))
     else:
@@ -154,12 +154,46 @@ def draw_tile_blocker(main_screen, tile, x, y, vis):
         main_screen.blit(tile.blocker.dark_image, (x * TILESIZE, y * TILESIZE))
 
 
-def get_darkened_image():
+def get_darkened_overlay():
     overlay = Surface((TILESIZE, TILESIZE))
     overlay.fill(BLACK)
     overlay.set_alpha(100)
     return overlay
 
 
+def get_life_right_panel(game):
+    off_x, off_y = 8, 36
+    panel = get_alpha_surface(LIFE_PANEL_WIDTH, LIFE_PANEL_HEIGHT)
+
+    for display in [get_life_minimap(), get_life_clock(), display_calendar(game.time), get_upcoming_events(),
+                    get_life_event_log(game.log)]:
+        panel.blit(display, (off_x, off_y))
+        off_y += display.get_height()
+
+    return panel
 
 
+def get_life_minimap():
+    minimap = get_surface(MINI_MAP)
+    return minimap
+
+
+def get_life_clock():
+    clock = get_surface(CLOCK)
+    return clock
+
+
+def get_upcoming_events():
+    events = get_surface(UPCOMING_EVENTS)
+    return events
+
+
+def get_life_event_log(log):
+    event_log = get_surface(EVENT_LOG_BG)
+    y = 0
+    for message in log.messages.messages:
+        off_x = 5
+        off_y = 5
+        print_message(event_log, message, off_x, off_y, y)
+        y += 1
+    return event_log

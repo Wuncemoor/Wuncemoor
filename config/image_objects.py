@@ -6,7 +6,6 @@ TITLE_SCREEN_BG = py.image.load('images\\background\\main_menu.png')
 TITLE_MENU_BG = py.image.load('images\\GUI\\menus\\title_menu.png')
 TITLE_MENU_BUTTON = py.image.load('images\\GUI\\menus\\title_button.png')
 
-MESSAGE_BG = py.image.load('images\\GUI\\message_bg.png')
 ENCOUNTER_MESSAGE_BG = py.image.load('images\\GUI\\encounter\\message_bg.png')
 ENCOUNTER_MENU = py.image.load('images\\GUI\\menus\\encounter_menu.png')
 ENCOUNTER_BUTTON = py.image.load('images\\GUI\\menus\\option_button.png')
@@ -28,6 +27,8 @@ LIFE_BACKDROP = py.image.load('images\\GUI\\life\\life_backdrop.png')
 MINI_MAP = py.image.load('images\\GUI\\life\\minimap.png')
 CLOCK = py.image.load('images\\GUI\\life\\clock.png')
 UPCOMING_EVENTS = py.image.load('images\\GUI\\life\\upcoming_events.png')
+EVENT_LOG_BG = py.image.load('images\\GUI\\life\\event_log_bg.png')
+
 TURN_ORDER_QUEUE = py.image.load('images\\GUI\\encounter\\turn_order_queue.png')
 
 GOLD = py.image.load('images\\GUI\\menus\\silver.png')
