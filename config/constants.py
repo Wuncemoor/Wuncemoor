@@ -40,26 +40,5 @@ DARK_PURPLE = (143, 0, 191)
 DARK_BLUE = (0, 0, 191)
 DARK_ORANGE = (191, 95, 0)
 
-DUNGEON_FLOOR = {
-    'town': 'grass',
-    'cave': 'dirt',
-    'deep': 'deep',
-    'desert': 'desert',
-    'forest': 'forest',
-    'plains': 'plains',
-    'savannah': 'savannah',
-    'shallow': 'shallow',
-    'snow': 'snow',
-    'taiga': 'taiga',
-    'temprain': 'temprain',
-    'tropicrain': 'tropicrain',
-    'tundra': 'tundra',
-}
-IMAGE_OPTIONS = {
-    'grass': 13,
-    'dirt': 9,
-    'biome': 9,
-}
-
 LIFE_PANEL_WIDTH = 264
 LIFE_PANEL_HEIGHT = 1080

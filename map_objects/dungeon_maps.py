@@ -1,6 +1,6 @@
 from abstracts.abstract_structure import ProceduralStructure, PrefabStructure
 from dungeons.tile_mixins import InitRealTiles
-from map_objects.majorroad import DirtRoadTileFloor
+from map_objects.floors.structure_floors import DirtRoadTileFloor
 from ECS.entity import Entity
 from random import randint
 from abstracts.abstract_maps import ProceduralTiles2D

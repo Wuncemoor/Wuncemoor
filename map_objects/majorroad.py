@@ -1,28 +1,7 @@
+from map_objects.floors.structure_floors import DirtRoadTileFloor
 from map_objects.transition import Transition
 from abstracts.abstract_structure import ProceduralStructure
-from abstracts.abstract_tile_component import ModalTileFloor
-from config.image_objects import BUNDLE_ALPHA, DIRT_ROAD
-
-
-class DirtRoadTileFloor(ModalTileFloor):
-    """Floor component for Tile used to represent road. Currently the only type of road floor."""
-
-    light_dict = DIRT_ROAD
-    dark_dict = DIRT_ROAD
-    name = 'Road'
-
-    def __str__(self):
-        static = 'class: RoadTileFloor | mode: '
-        if self.mode is None:
-            dynamic = 'NONE'
-        elif (self.light_image or self.dark_image) is None:
-            dynamic = self.mode + ' | images: NONE'
-        else:
-            dynamic = self.mode + ' | light_image: ' + self.light_image.name + ' | dark_image: ' + self.dark_image.name
-        return static + dynamic
-
-    def __repr__(self):
-        return "RoadTileFloor(" + repr(self.light_image) + ", " + repr(self.dark_image) + ", " + repr(self.transition) + ", " + self.mode + "}"
+from config.image_objects import BUNDLE_ALPHA
 
 
 class MajorRoad(ProceduralStructure):

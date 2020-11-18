@@ -172,8 +172,7 @@ class DebugHandler:
         tiles = self.owner.world.current_map.tiles
         objs = {
             'floor': [[tile.floor for tile in row] for row in tiles],
-            'light_image': [[tile.floor.light_image for tile in row] for row in tiles],
-            'dark_image': [[tile.floor.dark_image for tile in row] for row in tiles],
+            'light_image': [[tile.floor.image for tile in row] for row in tiles],
             'transition': [[tile.floor.transition for tile in row] for row in tiles],
         }
         self.allowed_objs = objs
