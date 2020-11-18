@@ -5,6 +5,7 @@ from pygame.transform import scale
 from config.constants import WHITE, TILES_ON_SCREEN, TILESIZE, BLACK, TRANSPARENT, LIFE_PANEL_WIDTH, LIFE_PANEL_HEIGHT
 from config.image_objects import RESOURCE_HUD_BASE, RESOURCE_HUD_OVERLAY, HP, MP, TP, VP, TILE_BASE, \
     PARTY_SETTINGS_FRAME, MINI_MAP, CLOCK, UPCOMING_EVENTS, EVENT_LOG_BG
+from prefabs.overworld_town import OverworldTownTileFloor
 from screens.displays.calendar import display_calendar
 from screens.gui_tools import get_alpha_surface, get_text_surface, get_surface, align_and_blit, print_message
 
@@ -136,15 +137,17 @@ def draw_party(self, main_screen):
 
 
 def draw_tile_floor(main_screen, tile, x, y, vis):
+
+    main_screen.blit(tile.floor.image, (x * TILESIZE, y * TILESIZE))
     if vis or (tile.explored and tile.floor.transition):
-        main_screen.blit(tile.floor.light_image, (x * TILESIZE, y * TILESIZE))
         tile.explored = True
     elif tile.explored:
-        darkened = get_darkened_overlay()
-        main_screen.blit(tile.floor.light_image, (x * TILESIZE, y * TILESIZE))
-        main_screen.blit(darkened, (x*TILESIZE, y * TILESIZE))
+        main_screen.blit(get_darkened_overlay(), (x*TILESIZE, y * TILESIZE))
     else:
         main_screen.blit(TILE_BASE.get('black'), (x * TILESIZE, y * TILESIZE))
+
+    if tile.decoration is not None:
+        main_screen.blit(tile.decoration.image, (x * TILESIZE, y * TILESIZE))
 
 
 def draw_tile_blocker(main_screen, tile, x, y, vis):

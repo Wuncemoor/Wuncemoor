@@ -37,6 +37,7 @@ class Tile(AbstractTile):
     def __init__(self, variant):
         self.floor = self.initialize_floor(variant)
         self.blocker = self.initialize_blocker(variant)
+        self.decoration = None
         self.explored = False
         self.type = None
         self.subtype = None
