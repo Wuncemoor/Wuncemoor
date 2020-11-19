@@ -9,6 +9,7 @@ class MajorRoad(ProceduralStructure):
     for this map """
 
     floor_component = DirtTileFloor
+    is_interior = False
 
     def __init__(self, rect, variant):
         super().__init__(rect, variant)

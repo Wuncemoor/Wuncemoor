@@ -8,6 +8,8 @@ class TownWalls(ProceduralStructure):
     """A structure that surrounds a town, separating it from the nearby scenery. Variant is the type of material the
     wall is built out of."""
 
+    is_interior = False
+
     def __init__(self, rect, variant):
         super().__init__(rect, variant)
 

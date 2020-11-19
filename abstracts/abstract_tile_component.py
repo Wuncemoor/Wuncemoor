@@ -50,7 +50,7 @@ class AbstractTileBlocker(AbstractTileComponent):
     def has_overshadow(cls):
         if cls.overshadow is not None:
             return True
-        return False
+        return None
 
     @property
     @abstractmethod

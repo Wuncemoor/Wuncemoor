@@ -180,6 +180,7 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
                         self.tiles[y][x].floor = proto.tiles[j][i].floor
                     if (proto.tiles[j][i].blocker or flag) is not None:
                         self.tiles[y][x].blocker = proto.tiles[j][i].blocker
+                    self.tiles[y][x].is_interior = proto.is_interior
                     i += 1
                 j += 1
                 i = 0
@@ -189,6 +190,7 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
                 for x in range(proto.rect.x1, proto.rect.x2):
                     self.tiles[y][x].floor = proto.tiles[j][i].floor
                     self.tiles[y][x].blocker = proto._blockers[j][i]
+                    self.tiles[y][x].is_interior = proto.is_interior
                     i += 1
                 j += 1
                 i = 0
