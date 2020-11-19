@@ -5,7 +5,6 @@ from pygame.transform import scale
 from config.constants import WHITE, TILES_ON_SCREEN, TILESIZE, BLACK, TRANSPARENT, LIFE_PANEL_WIDTH, LIFE_PANEL_HEIGHT
 from config.image_objects import RESOURCE_HUD_BASE, RESOURCE_HUD_OVERLAY, HP, MP, TP, VP, TILE_BASE, \
     PARTY_SETTINGS_FRAME, MINI_MAP, CLOCK, UPCOMING_EVENTS, EVENT_LOG_BG
-from prefabs.overworld_town import OverworldTownTileFloor
 from screens.displays.calendar import display_calendar
 from screens.gui_tools import get_alpha_surface, get_text_surface, get_surface, align_and_blit, print_message
 
@@ -99,20 +98,17 @@ def get_life_main_screen(self):
         for x in range(width):
             visible = tcod.map_is_in_fov(self.handler.fov.map, cy + y, cx + x)
             tile = self.game.world.tiles[cy + y][cx + x]
-            draw_tile_floor(main_screen, tile, x, y, visible)
+
+            draw_tile(main_screen, tile, x, y, visible)
+
+            if not visible and not tile.floor.transition:
+                draw_darkened_overlay(main_screen, x, y)
 
     for noncom in self.game.world.current_map.noncombatants:
         draw_entity(self, main_screen, noncom)
     entities_in_render_order = sorted(self.game.world.current_map.entities, key=lambda x: x.render_order.value)
     for entity in entities_in_render_order:
         self.draw_entity(entity)
-
-    for y in range(height):
-        for x in range(width):
-            visible = tcod.map_is_in_fov(self.handler.fov.map, cy + y, cx + x)
-            tile = self.game.world.tiles[cy + y][cx + x]
-            if tile.blocker and tile.explored:
-                draw_tile_blocker(main_screen, tile, x, y, visible)
 
     draw_party(self, main_screen)
     return main_screen
@@ -136,24 +132,36 @@ def draw_party(self, main_screen):
     main_screen.blit(surfimg, ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
 
 
+def draw_tile(main_screen, tile, x, y, vis):
+
+    draw_tile_floor(main_screen, tile, x, y, vis)
+    draw_tile_decoration(main_screen, tile, x, y, vis)
+    draw_tile_blocker(main_screen, tile, x, y)
+
+
 def draw_tile_floor(main_screen, tile, x, y, vis):
 
-    main_screen.blit(tile.floor.image, (x * TILESIZE, y * TILESIZE))
-    if vis or (tile.explored and tile.floor.transition):
+    if vis:
+        main_screen.blit(tile.floor.image, (x * TILESIZE, y * TILESIZE))
         tile.explored = True
     elif tile.explored:
-        main_screen.blit(get_darkened_overlay(), (x*TILESIZE, y * TILESIZE))
+        main_screen.blit(tile.floor.image, (x * TILESIZE, y * TILESIZE))
     else:
         main_screen.blit(TILE_BASE.get('black'), (x * TILESIZE, y * TILESIZE))
 
-    if tile.decoration is not None:
+
+def draw_tile_decoration(main_screen, tile, x, y, vis):
+    if tile.decoration and (vis or (tile.explored and tile.floor.transition)):
         main_screen.blit(tile.decoration.image, (x * TILESIZE, y * TILESIZE))
 
 
-def draw_tile_blocker(main_screen, tile, x, y, vis):
-    main_screen.blit(tile.blocker.image, (x * TILESIZE, y * TILESIZE))
-    if not vis:
-        main_screen.blit(get_darkened_overlay(), (x * TILESIZE, y * TILESIZE))
+def draw_tile_blocker(main_screen, tile, x, y):
+    if tile.blocker and tile.explored:
+        main_screen.blit(tile.blocker.image, (x * TILESIZE, y * TILESIZE))
+
+
+def draw_darkened_overlay(main_screen, x, y):
+    main_screen.blit(get_darkened_overlay(), (x * TILESIZE, y * TILESIZE))
 
 
 def get_darkened_overlay():
