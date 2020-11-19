@@ -21,7 +21,7 @@ FPS = 60
 ROOM_MAX_SIZE = 10
 ROOM_MIN_SIZE = 6
 MAX_ROOMS = 3
-FOV_RADIUS = 20
+FOV_RADIUS = 8
 
 # (octaves, persist, lacuna, scale, moist_mod, temp_mod, water_level)
 SIMPLEX = (5, 0.5, 2.5, 0.0075, 0.5, 0.1, 0.15)

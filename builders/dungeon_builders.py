@@ -121,6 +121,8 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
         structures = self.get_prefab_structures()
 
         alpha_map.integrate_protostructures(structures)
+        for struct in structures:
+            alpha_map.set_modes(struct, 'floor')
 
         samwise = self.get_samwise()
 

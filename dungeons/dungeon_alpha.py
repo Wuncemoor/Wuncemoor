@@ -10,7 +10,7 @@ from handlers.menus.inventory import Inventory
 from map_objects.majorroad import MajorRoad
 from map_objects.rect import Rect
 from map_objects.town_walls import TownWalls
-from prefabs.alpha_prefabs import TownAlphaInn
+from prefabs.alpha_prefabs import TownAlphaInn, TownAlphaMageHouse
 
 
 class DungeonAlphaMixin:
@@ -37,7 +37,7 @@ class DungeonAlphaMixin:
 
     @staticmethod
     def get_prefab_structures():
-        structures = [TownAlphaInn]
+        structures = [TownAlphaInn(), TownAlphaMageHouse()]
         return structures
 
     def get_town_walls(self, outer_scenery_dim):

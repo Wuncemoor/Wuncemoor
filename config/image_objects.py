@@ -234,7 +234,6 @@ TILE_BASE = {
 }
 
 GRASS_TILE_FLOOR = py.image.load('images\\tiles\\grass.png')
-DIRT_TILE_FLOOR = py.image.load('images\\tiles\\roads\\dirt_road11111111.png')
 
 STONE_WALL = {
     '00001000': py.image.load('images\\entities\\blockers\\stone_wall\\stone_wall00001000.png'),
@@ -262,7 +261,7 @@ STONE_WALL = {
     '01010000': py.image.load('images\\entities\\blockers\\stone_wall\\stone_wall01010000.png'),
 }
 
-DIRT_ROAD = {
+DIRT_TILE_FLOOR = {
     '00001011': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road00001011.png'),
     '00010110': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road00010110.png'),
     '00011111': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road00011111.png'),
@@ -295,3 +294,24 @@ OVERWORLD_TOWN = [[py.image.load('images\\tiles\\overworld\\town\\town0.png'),
                   [py.image.load('images\\tiles\\overworld\\town\\town6.png'),
                    py.image.load('images\\tiles\\overworld\\town\\town7.png'),
                    py.image.load('images\\tiles\\overworld\\town\\town8.png')]]
+
+
+EXT_LEFT_EDGE_BOT = py.image.load('images\\structures\\mage_house\\ext_left_edge_bot.png')
+EXT_LEFT_EDGE_TOP = py.image.load('images\\structures\\mage_house\\ext_left_edge_top.png')
+EXT_EXTEND_BOT = py.image.load('images\\structures\\mage_house\\ext_extend_bot.png')
+EXT_EXTEND_TOP = py.image.load('images\\structures\\mage_house\\ext_extend_top.png')
+EXT_LEFT_DOORFRAME_BOT = py.image.load('images\\structures\\mage_house\\ext_left_doorframe_bot.png')
+EXT_LEFT_DOORFRAME_TOP = py.image.load('images\\structures\\mage_house\\ext_left_doorframe_top.png')
+EXT_DOORWAY_BOT = py.image.load('images\\structures\\mage_house\\ext_doorway_bot.png')
+EXT_DOORWAY_TOP = py.image.load('images\\structures\\mage_house\\ext_doorway_top.png')
+EXT_RIGHT_DOORFRAME_BOT = py.image.load('images\\structures\\mage_house\\ext_right_doorframe_bot.png')
+EXT_RIGHT_DOORFRAME_TOP = py.image.load('images\\structures\\mage_house\\ext_right_doorframe_top.png')
+EXT_WINDOW_LEFT_BOT = py.image.load('images\\structures\\mage_house\\ext_window_left_bot.png')
+EXT_WINDOW_LEFT_TOP = py.image.load('images\\structures\\mage_house\\ext_window_left_top.png')
+EXT_WINDOW_RIGHT_BOT = py.image.load('images\\structures\\mage_house\\ext_window_right_bot.png')
+EXT_WINDOW_RIGHT_TOP = py.image.load('images\\structures\\mage_house\\ext_window_right_top.png')
+EXT_RIGHT_EDGE_BOT = py.image.load('images\\structures\\mage_house\\ext_right_edge_bot.png')
+EXT_RIGHT_EDGE_TOP = py.image.load('images\\structures\\mage_house\\ext_right_edge_top.png')
+
+BLUE_ROOF_LEFT_CONNECT = py.image.load('images\\structures\\mage_house\\blue_roof_left_connect.png')
+BLUE_ROOF_MID_CONNECT = py.image.load('images\\structures\\mage_house\\blue_roof_mid_connect.png')

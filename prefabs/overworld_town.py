@@ -1,6 +1,7 @@
 from abstracts.abstract_structure import PrefabStructure
 from abstracts.abstract_tile_component import AbstractTileFloor
 from config.image_objects import OVERWORLD_TOWN, BUNDLE_ALPHA
+from map_objects.rect import Rect
 from map_objects.transition import Transition
 
 
@@ -20,6 +21,7 @@ class OverworldTown(PrefabStructure):
     """Fills tiles with generic townfloor image, fills floor transitions based on given plot node"""
 
     _images = OVERWORLD_TOWN
+    rect = Rect(0, 0, len(_images[0]), len(_images))
 
     def __init__(self, node):
         super().__init__()
