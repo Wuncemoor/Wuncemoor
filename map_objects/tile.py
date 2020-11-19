@@ -1,6 +1,6 @@
 from abstracts.abstract_tile import AbstractTile
 from abstracts.abstract_tile_component import AbstractTileFloor
-from map_objects.floors.basic_floors import GrassTileFloor, DirtTileFloor
+from map_objects.floors.outside_floors import GrassTileFloor, DirtTileFloor
 from ECS.__entity.blocker import RockTileBlocker
 
 

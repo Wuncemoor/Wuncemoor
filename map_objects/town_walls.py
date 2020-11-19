@@ -1,7 +1,7 @@
 from abstracts.abstract_structure import ProceduralStructure
 from abstracts.abstract_tile_component import ModalTileBlocker
 from config.image_objects import STONE_WALL
-from map_objects.floors.basic_floors import GrassTileFloor
+from map_objects.floors.outside_floors import GrassTileFloor
 
 
 class TownWalls(ProceduralStructure):
@@ -39,8 +39,7 @@ class TownWalls(ProceduralStructure):
 
 class StoneWallTileBlocker(ModalTileBlocker):
 
-    light_dict = STONE_WALL
-    dark_dict = STONE_WALL
+    image_dict = STONE_WALL
     name = 'Stone Wall'
     opaque = False
     overshadow = None

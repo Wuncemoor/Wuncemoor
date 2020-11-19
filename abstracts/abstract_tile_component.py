@@ -71,14 +71,8 @@ class ModalTileBlocker(AbstractTileBlocker):
 
     @property
     @abstractmethod
-    def light_dict(self):
-        pass
-
-    @property
-    @abstractmethod
-    def dark_dict(self):
+    def image_dict(self):
         pass
 
     def set_images(self):
-        self.light_image = self.light_dict.get(self.mode)
-        self.dark_image = self.dark_dict.get(self.mode)
+        self.image = self.image_dict.get(self.mode)

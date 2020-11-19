@@ -151,10 +151,9 @@ def draw_tile_floor(main_screen, tile, x, y, vis):
 
 
 def draw_tile_blocker(main_screen, tile, x, y, vis):
-    if vis:
-        main_screen.blit(tile.blocker.light_image, (x * TILESIZE, y * TILESIZE))
-    else:
-        main_screen.blit(tile.blocker.dark_image, (x * TILESIZE, y * TILESIZE))
+    main_screen.blit(tile.blocker.image, (x * TILESIZE, y * TILESIZE))
+    if not vis:
+        main_screen.blit(get_darkened_overlay(), (x * TILESIZE, y * TILESIZE))
 
 
 def get_darkened_overlay():

@@ -1,27 +1,25 @@
+
 from abstracts.abstract_tile_component import AbstractTileFloor, ModalTileFloor
-from config.image_objects import INN_FLOOR_S, DIRT_ROAD
+from config.image_objects import GRASS_TILE_FLOOR, DIRT_TILE_FLOOR
 
 
-class WoodTileFloor(AbstractTileFloor):
+class GrassTileFloor(AbstractTileFloor):
 
-    name = 'Wood Floor'
+    name = 'Grass'
 
     def __init__(self):
         super().__init__()
-        self.image = INN_FLOOR_S
-
-    def __repr__(self):
-        return 'WoodTileFloor'
+        self.image = GRASS_TILE_FLOOR
 
 
-class DirtRoadTileFloor(ModalTileFloor):
+class DirtTileFloor(ModalTileFloor):
     """Floor component for Tile used to represent road. Currently the only type of road floor."""
 
-    image_dict = DIRT_ROAD
+    image_dict = DIRT_TILE_FLOOR
     name = 'Dirt Road'
 
     def __str__(self):
-        static = 'class: DirtRoadTileFloor | mode: '
+        static = 'class: DirtTileFloor | mode: '
         if self.mode is None:
             dynamic = 'NONE'
         elif self.image is None:
@@ -31,4 +29,5 @@ class DirtRoadTileFloor(ModalTileFloor):
         return static + dynamic
 
     def __repr__(self):
-        return "DirtRoadTileFloor(" + repr(self.image) + ", " + repr(self.transition) + ", " + self.mode + "}"
+        return "DirtTileFloor(" + repr(self.image) + ", " + repr(self.transition) + ", " + self.mode + "}"
+

@@ -9,8 +9,7 @@ class PillarTileBlocker(AbstractTileBlocker):
     overshadow = [PILLAR_MID, PILLAR_TOP]
 
     def __init__(self):
-        self.light_image = PILLAR_BOT
-        self.dark_image = PILLAR_BOT
+        self.image = PILLAR_BOT
 
 
 class HWallTileBlocker(AbstractTileBlocker):
@@ -20,8 +19,7 @@ class HWallTileBlocker(AbstractTileBlocker):
     overshadow = [WALL_MID, WALL_TOP_H]
 
     def __init__(self):
-        self.light_image = WALL_BOT
-        self.dark_image = WALL_BOT
+        self.image = WALL_BOT
 
 
 class VWallTileBlocker(AbstractTileBlocker):
@@ -31,8 +29,7 @@ class VWallTileBlocker(AbstractTileBlocker):
     overshadow = None
 
     def __init__(self):
-        self.light_image = WALL_TOP_V
-        self.dark_image = WALL_TOP_V
+        self.image = WALL_TOP_V
 
 
 def inn_blocker_array():
