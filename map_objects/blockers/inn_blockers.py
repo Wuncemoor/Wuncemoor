@@ -44,3 +44,14 @@ def inn_blocker_array():
              [vw, None, None, None, None, None, None, None, vw],
              [pil,  hw,   hw,   hw,   hw,   hw,   hw,  hw, pil]]
     return array
+
+
+def inn_overhead_array():
+    array = [[None, None, None, None, None, None, None, None, None],
+             [None, None, None, None, None, None, None, None, None],
+             [None, None, None, None, None, None, None, None, None],
+             [None, None, None, None, None, None, None, None, None],
+             [None, None, None, None, None, None, None, None, None],
+             [None, None, None, None, None, None, None, None, None],
+             [None, None, None, None, None, None, None, None, None]]
+    return array

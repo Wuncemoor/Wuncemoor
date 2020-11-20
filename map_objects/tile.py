@@ -1,7 +1,6 @@
 from abstracts.abstract_tile import AbstractTile
 from abstracts.abstract_tile_component import AbstractTileFloor
 from map_objects.floors.outside_floors import GrassTileFloor, DirtTileFloor
-from ECS.__entity.blocker import RockTileBlocker
 
 
 class FakeTileFloor(AbstractTileFloor):
@@ -36,8 +35,9 @@ class Tile(AbstractTile):
     """
     def __init__(self, variant):
         self.floor = self.initialize_floor(variant)
-        self.blocker = self.initialize_blocker(variant)
         self.decoration = None
+        self.blocker = self.initialize_blocker(variant)
+        self.overhead = None
         self.is_interior = False
         self.explored = False
         self.type = None
@@ -54,7 +54,4 @@ class Tile(AbstractTile):
         return base
 
     def initialize_blocker(self, variant):
-        if variant == 'cave':
-            return RockTileBlocker()
-        else:
-            return None
+        return None
