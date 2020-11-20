@@ -94,14 +94,13 @@ def get_life_main_screen(self):
         self.handler.fov.recompute()
         self.handler.fov.needs_recompute = False
 
-
     is_interior = is_party_on_interior_tile(self.game.party, self.game.world.tiles)
     for y in range(height):
         for x in range(width):
             visible = tcod.map_is_in_fov(self.handler.fov.map, cy + y, cx + x)
             tile = self.game.world.tiles[cy + y][cx + x]
 
-            draw_tile(main_screen, tile, x, y, visible, is_interior)
+            draw_tile(main_screen, self.game.world.tiles, tile, x, y, cx, cy, visible, is_interior)
 
             if not visible and not tile.floor.transition:
                 draw_darkened_overlay(main_screen, x, y)
@@ -141,11 +140,12 @@ def draw_party(self, main_screen):
     main_screen.blit(surfimg, ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
 
 
-def draw_tile(main_screen, tile, x, y, vis, interior):
+def draw_tile(main_screen, tiles, tile, x, y, cx, cy, visible, is_interior):
 
-    draw_tile_floor(main_screen, tile, x, y, vis)
-    draw_tile_decoration(main_screen, tile, x, y, vis)
-    draw_tile_blocker(main_screen, tile, x, y, interior)
+    draw_tile_floor(main_screen, tile, x, y, visible)
+    draw_tile_decoration(main_screen, tile, x, y, visible)
+    draw_tile_blocker(main_screen, tile, x, y)
+    draw_tile_overhead(main_screen, tiles, tile, x, y, cx, cy, is_interior)
 
 
 def draw_tile_floor(main_screen, tile, x, y, vis):
@@ -164,13 +164,17 @@ def draw_tile_decoration(main_screen, tile, x, y, vis):
         main_screen.blit(tile.decoration.image, (x * TILESIZE, y * TILESIZE))
 
 
-def draw_tile_blocker(main_screen, tile, x, y, interior):
+def draw_tile_blocker(main_screen, tile, x, y):
     if tile.blocker and tile.explored:
         main_screen.blit(tile.blocker.image, (x * TILESIZE, y * TILESIZE))
-        if tile.blocker.overshadow is not None and interior is False:
-            for index, match in enumerate(tile.blocker.overshadow):
-                if match is not None:
-                    main_screen.blit(match, (x * TILESIZE, ((y - (1+index)) * TILESIZE)))
+
+
+def draw_tile_overhead(main_screen, tiles, tile, x, y, cx, cy, interior):
+    if tile.overhead:
+        for obj in tile.overhead:
+            associated_tile = tiles[cy + y - obj.distance_overhead][cx + x]
+            if (tile.explored or associated_tile.explored) and interior is False:
+                main_screen.blit(obj.image, (x * TILESIZE, ((y - obj.distance_overhead) * TILESIZE)))
 
 
 def draw_darkened_overlay(main_screen, x, y):
