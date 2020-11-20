@@ -190,6 +190,7 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
                 for x in range(proto.rect.x1, proto.rect.x2):
                     self.tiles[y][x].floor = proto.tiles[j][i].floor
                     self.tiles[y][x].blocker = proto._blockers[j][i]
+                    self.tiles[y][x].overhead = proto._overhead[j][i]
                     self.tiles[y][x].is_interior = proto.is_interior
                     i += 1
                 j += 1

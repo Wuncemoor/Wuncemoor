@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 
 
 class AbstractTileComponent(ABC):
-    """You likely want to inherit from  AbstractTileFloor or AbstractTileBlocker"""
+    """You likely want to inherit from  AbstractTileFloor, AbstractTileBlocker, or AbstractTileOverhead"""
 
-    def __init__(self):
-        self.image = None
+    def __init__(self, image=None):
+        self.image = image
 
     @property
     @abstractmethod
@@ -46,17 +46,9 @@ class ModalTileFloor(AbstractTileFloor):
 class AbstractTileBlocker(AbstractTileComponent):
     """Abstract for TileBlocker components for Tile. Blocks field of view if opaque."""
 
-    @classmethod
-    def has_overshadow(cls):
-        if cls.overshadow is not None:
-            return True
-        return None
+    def __init__(self, image=None):
+        super().__init__(image)
 
-    @property
-    @abstractmethod
-    def overshadow(self):
-        pass
-    
     @property
     @abstractmethod
     def opaque(self):
@@ -76,3 +68,15 @@ class ModalTileBlocker(AbstractTileBlocker):
 
     def set_images(self):
         self.image = self.image_dict.get(self.mode)
+
+
+class AbstractTileOverhead(AbstractTileComponent):
+
+    def __init__(self, distance_overhead: int, image=None):
+        super().__init__(image)
+        self.distance_overhead = distance_overhead
+
+    @property
+    @abstractmethod
+    def name(self):
+        pass
