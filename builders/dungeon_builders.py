@@ -116,11 +116,12 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
         alpha_map.integrate_protostructure(major_road, flag='major')
 
         alpha_map.set_modes(walls, 'blocker')
-        alpha_map.set_modes(major_road, 'floor')
 
         structures = self.get_prefab_structures()
 
         alpha_map.integrate_protostructures(structures)
+
+        alpha_map.set_modes(major_road, 'floor')
         for struct in structures:
             alpha_map.set_modes(struct, 'floor')
 

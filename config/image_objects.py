@@ -274,6 +274,15 @@ DIRT_TILE_FLOOR = {
     '11111000': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road11111000.png'),
     '11111110': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road11111110.png'),
     '11111111': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road11111111.png'),
+    '00111111': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road00111111.png'),
+    '01101111': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road01101111.png'),
+    '10011111': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road10011111.png'),
+    '11010111': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road11010111.png'),
+    '11101011': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road11101011.png'),
+    '11110110': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road11110110.png'),
+    '11111001': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road11111001.png'),
+    '11111100': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road11111100.png'),
+    '11111011': FrozenSurface.load('images\\tiles\\roads\\', 'dirt_road11111011.png'),
 }
 
 WALL_TOP_H = FrozenSurface.load('images\\structures\\inn\\', 'wall_top_h.png')

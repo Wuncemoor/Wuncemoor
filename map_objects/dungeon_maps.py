@@ -189,8 +189,10 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
             for y in range(proto.rect.y1, proto.rect.y2):
                 for x in range(proto.rect.x1, proto.rect.x2):
                     self.tiles[y][x].floor = proto.tiles[j][i].floor
-                    self.tiles[y][x].blocker = proto._blockers[j][i]
-                    self.tiles[y][x].overhead = proto._overhead[j][i]
+                    if proto._blockers:
+                        self.tiles[y][x].blocker = proto._blockers[j][i]
+                    if proto._overhead:
+                        self.tiles[y][x].overhead = proto._overhead[j][i]
                     self.tiles[y][x].is_interior = proto.is_interior
                     i += 1
                 j += 1
@@ -222,7 +224,7 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
                     self.tiles[y][x].floor.set_images()
                 elif tile_component == 'blocker':
                     for tile in nearby_tiles:
-                        if isinstance(tile.blocker, StoneWallTileBlocker):
+                        if isinstance(tile.blocker, self.tiles[y][x].blocker.__class__):
                             mode += '1'
                         else:
                             mode += '0'

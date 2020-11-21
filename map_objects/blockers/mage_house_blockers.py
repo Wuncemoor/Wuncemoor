@@ -57,12 +57,15 @@ def mage_house_blocker_array():
     rw3 = MageHouseTileBlocker(EXT_RIGHT_WALL)
     rw4 = MageHouseTileBlocker(EXT_RIGHT_WALL)
 
-    array = [[bl,    be,  bldf, None,  brdf,   blw,   brw, br],
-             [lw4, None, None, None, None, None, None, rw4],
-             [lw3, None, None, None, None, None, None, rw3],
-             [lw2, None, None, None, None, None, None, rw2],
-             [lw1, None, None, None, None, None, None, rw1],
-             [fl,    fe,  fldf, None,  frdf,   flw,  frw, fr]]
+    array = [[bl,    be,   be,   be,   be,   be,   be,   be,  blw,  brw,  br],
+             [lw4, None, None, None, None, None, None, None, None, None, rw4],
+             [lw3, None, None, None, None, None, None, None, None, None, rw3],
+             [lw2, None, None, None, None, None, None, None, None, None, rw2],
+             [lw1, None, None, None, None, None, None, None, None, None, rw1],
+             [lw1, None, None, None, None, None, None, None, None, None, rw1],
+             [lw1, None, None, None, None, None, None, None, None, None, rw1],
+             [lw1, None, None, None, None, None, None, None, None, None, rw1],
+             [fl,    fe,  flw,  frw, fldf, None,  frdf,   flw,  frw, fe,  fr]]
     return array
 
 
@@ -96,10 +99,14 @@ def mage_house_overhead_array():
     rfm = [MageHouseRoofTileOverhead(2, BLUE_ROOF_FRONT_MID_PEAK)]
     rbm = [MageHouseRoofTileOverhead(2, BLUE_ROOF_BACK_MID_PEAK)]
 
-    array = [[bl,    be,  bldf, bdw,  brdf,   blw,   brw, br],
-             [lw4,  rbm,  rbm,  rbm,  rbm,  rbm,  rbm, rw4],
-             [lw3,  rfm,  rfm,  rfm,  rfm,  rfm,  rfm, rw3],
-             [lw2, roof, roof, roof, roof, roof, roof, rw2],
-             [lw1, roof, roof, roof, roof, roof, roof, rw1],
-             [fl,    fe,  fldf, fdw,  frdf,   flw,  frw, fr]]
+    array = [[bl,    be,   be,   be,   be,   be,  be,   be,   blw,   brw, br],
+             [lw1, roof, roof, roof, roof, roof, roof, roof, roof, roof, rw1],
+             [lw1, roof, roof, roof, roof, roof, roof, roof, roof, roof, rw1],
+             [lw4,  rbm,  rbm,  rbm,  rbm,  rbm,  rbm,  rbm,  rbm,  rbm, rw4],
+             [lw3,  rfm,  rfm,  rfm,  rfm,  rfm,  rfm,  rfm,  rfm,  rfm, rw3],
+             [lw2, roof, roof, roof, roof, roof, roof, roof, roof, roof, rw2],
+             [lw1, roof, roof, roof, roof, roof, roof, roof, roof, roof, rw1],
+             [lw1, roof, roof, roof, roof, roof, roof, roof, roof, roof, rw1],
+             [fl,    fe,  flw,  frw, fldf, fdw,  frdf,   flw,  frw, fe,  fr]]
+    return array
     return array

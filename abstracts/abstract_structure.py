@@ -34,5 +34,15 @@ class PrefabStructure(InitFakeTiles, PrefabTiles2D, ABC):
 
     @property
     @abstractmethod
+    def _blockers(self):
+        pass
+
+    @property
+    @abstractmethod
+    def _overhead(self):
+        pass
+
+    @property
+    @abstractmethod
     def is_interior(self):
         pass

@@ -22,6 +22,8 @@ class OverworldTown(PrefabStructure):
 
     _images = OVERWORLD_TOWN
     rect = Rect(0, 0, len(_images[0]), len(_images))
+    _blockers = None
+    _overhead = None
     is_interior = False
 
     def __init__(self, node):
