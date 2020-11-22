@@ -11,7 +11,7 @@ DUNGEON_BETA = (100, 50)
 DUNGEON_GAMMA = (200, 100)
 DUNGEON_DELTA = (100, 40)
 # (width, height)
-OVERWORLD = (100, 100)
+OVERWORLD = (300, 300)
 # (width, height)
 MINI_MAP = (400, 400)
 # (width, height)
@@ -24,7 +24,9 @@ MAX_ROOMS = 3
 FOV_RADIUS = 8
 
 # (octaves, persist, lacuna, scale, moist_mod, temp_mod, water_level)
-SIMPLEX = (5, 0.5, 2.5, 0.0075, 0.5, 0.1, 0.15)
+SIMPLEX = (5, 0.5, 2.5, 0.02
+
+           , 0.5, 0.1, 0.15)
 
 
 WHITE = (255, 255, 255)

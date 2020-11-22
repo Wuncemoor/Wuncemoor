@@ -12,8 +12,8 @@ class BiomeMixin:
         width, height = map.width, map.height
         equator = height / 2
 
-        heightmesh = OpenSimplex(seed=randint(1, 1000000))
-        moistmesh = OpenSimplex(seed=randint(1, 1000000))
+        altitude_mesh = OpenSimplex(seed=randint(1, 1000000))
+        rainfall_mesh = OpenSimplex(seed=randint(1, 1000000))
 
         for j in range(height):
 
@@ -31,10 +31,10 @@ class BiomeMixin:
                     octavex = j * scale * freq
                     octavey = i * scale * freq
 
-                    hvalue = heightmesh.noise2d(x=octavex, y=octavey)
-                    mvalue = moistmesh.noise2d(x=octavex, y=octavey)
-                    altitude += hvalue * amp
-                    moist += mvalue * amp
+                    altitude_value = altitude_mesh.noise2d(x=octavex, y=octavey)
+                    rainfall_value = rainfall_mesh.noise2d(x=octavex, y=octavey)
+                    altitude += altitude_value * amp
+                    moist += rainfall_value * amp
 
                     amp *= persist
                     freq *= lacuna
