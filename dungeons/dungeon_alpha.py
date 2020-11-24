@@ -7,10 +7,15 @@ from config.image_objects import BUNDLE_SAMWISE
 from dialogue.get_dialogue import get_samwise_dialogue
 from enums.render_order import RenderOrder
 from handlers.menus.inventory import Inventory
-from map_objects.majorroad import MajorRoad
-from map_objects.rect import Rect
-from map_objects.town_walls import TownWalls
-from prefabs.alpha_prefabs import TownAlphaInn, TownAlphaMageHouse, TownAlphaMageHousePathway
+from world_objects.majorroad import MajorRoad
+from world_objects.rect import Rect
+from world_objects.town_walls import TownWalls
+from prefabs.alpha_prefabs import TownAlphaInn, TownAlphaMageHouse, TownAlphaMageHousePathway, \
+    TownAlphaMayorHousePathway, TownAlphaMayorHouse, TownAlphaGuardHut, TownAlphaGuardHutPathway1, \
+    TownAlphaGuardHutPathway2, TownAlphaTavern, TownAlphaTavernPathway1, TownAlphaChurch, TownAlphaChurchPathway, \
+    TownAlphaMarketSquare, TownAlphaOrphanage, TownAlphaOrphanagePathway, TownAlphaInnTavernPathway, \
+    TownAlphaInnPathway, TownAlphaTavernPathway2, TownAlphaMageGarden, TownAlphaGuardTrainingGrounds, \
+    TownAlphaChurchGraveyard
 
 
 class DungeonAlphaMixin:
@@ -37,7 +42,9 @@ class DungeonAlphaMixin:
 
     @staticmethod
     def get_prefab_structures():
-        structures = [TownAlphaInn(), TownAlphaMageHouse(), TownAlphaMageHousePathway()]
+        structures = [TownAlphaInn(), TownAlphaInnPathway(), TownAlphaMageHouse(), TownAlphaMageGarden(), TownAlphaMageHousePathway(), TownAlphaMayorHouse(),
+                      TownAlphaMayorHousePathway(), TownAlphaGuardHut(), TownAlphaGuardTrainingGrounds(), TownAlphaGuardHutPathway1(), TownAlphaTavern(),
+                      TownAlphaGuardHutPathway2(), TownAlphaChurch(), TownAlphaChurchGraveyard(), TownAlphaChurchPathway(), TownAlphaMarketSquare(), TownAlphaOrphanage(), TownAlphaOrphanagePathway(), TownAlphaInnTavernPathway(), TownAlphaTavernPathway1(), TownAlphaTavernPathway2()]
         return structures
 
     def get_town_walls(self, outer_scenery_dim):
