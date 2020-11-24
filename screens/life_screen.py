@@ -89,21 +89,25 @@ def get_life_main_screen(self):
     (width, height) = TILES_ON_SCREEN
 
     cx, cy = self.handler.camera.x, self.handler.camera.y
+    largest_overhead = 3
 
     if self.handler.fov.needs_recompute:
         self.handler.fov.recompute()
         self.handler.fov.needs_recompute = False
 
     is_interior = is_party_on_interior_tile(self.game.party, self.game.world.tiles)
-    for y in range(height):
+    for y in range(height + largest_overhead):
         for x in range(width):
-            visible = tcod.map_is_in_fov(self.handler.fov.map, cy + y, cx + x)
-            tile = self.game.world.tiles[cy + y][cx + x]
+            try:
+                visible = tcod.map_is_in_fov(self.handler.fov.map, cy + y, cx + x)
+                tile = self.game.world.tiles[cy + y][cx + x]
 
-            draw_tile(main_screen, self.game.world.tiles, tile, x, y, cx, cy, visible, is_interior)
+                draw_tile(main_screen, self.game.world.tiles, tile, x, y, cx, cy, visible, is_interior)
 
-            if not visible and not tile.floor.transition:
-                draw_darkened_overlay(main_screen, x, y)
+                if not visible and not tile.floor.transition:
+                    draw_darkened_overlay(main_screen, x, y)
+            except IndexError:
+                pass
 
     for noncom in self.game.world.current_map.noncombatants:
         draw_entity(self, main_screen, noncom)
