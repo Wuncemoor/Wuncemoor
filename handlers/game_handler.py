@@ -5,7 +5,7 @@ from handlers.time_handler import TimeHandler
 import pygame as py
 import sys
 
-from map_objects.loot import Loot
+from world_objects.loot import Loot
 
 
 class GameHandler:

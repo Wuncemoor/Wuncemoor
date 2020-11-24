@@ -1,4 +1,4 @@
-from map_objects.dungeon_maps import DangerousMap, SafeMap
+from world_objects.dungeon_maps import DangerousMap, SafeMap
 
 
 class InitDangerousMap:

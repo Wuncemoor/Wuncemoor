@@ -1,5 +1,5 @@
-from map_objects.floors.outside_floors import DirtTileFloor
-from map_objects.transition import Transition
+from world_objects.floors.outside_floors import DirtTileFloor
+from world_objects.transition import Transition
 from abstracts.abstract_structure import ProceduralStructure
 from config.image_objects import BUNDLE_ALPHA
 

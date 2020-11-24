@@ -1,5 +1,5 @@
 from abstracts.abstract_maps import AbstractInitTiles
-from map_objects.tile import Tile, FakeTile
+from world_objects.tile import Tile, FakeTile
 
 
 class InitFakeTiles(AbstractInitTiles):

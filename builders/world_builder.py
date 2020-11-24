@@ -1,6 +1,6 @@
 from builders.dungeon_builders import OverworldBuilder, DungeonAlphaBuilder, DungeonBetaBuilder, DungeonGammaBuilder, \
     DungeonDeltaBuilder
-from map_objects.dungeon import Dungeon
+from world_objects.dungeon import Dungeon
 
 
 class DungeonDirector:

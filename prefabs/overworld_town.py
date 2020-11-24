@@ -1,8 +1,8 @@
 from abstracts.abstract_structure import PrefabStructure
 from abstracts.abstract_tile_component import AbstractTileFloor
 from config.image_objects import OVERWORLD_TOWN, BUNDLE_ALPHA
-from map_objects.rect import Rect
-from map_objects.transition import Transition
+from world_objects.rect import Rect
+from world_objects.transition import Transition
 
 
 class OverworldTownTileFloor(AbstractTileFloor):

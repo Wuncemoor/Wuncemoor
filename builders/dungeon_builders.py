@@ -4,10 +4,10 @@ from abstracts.abstract_dungeon_builder import AbstractDungeonBuilder
 from config.constants import OVERWORLD, DUNGEON_ALPHA, DUNGEON_DELTA, DUNGEON_GAMMA, DUNGEON_BETA
 from dungeons.mixins import InitDangerousMap, InitSafeMap
 from enums.render_order import RenderOrder
-from map_objects.transition import Transition
+from world_objects.transition import Transition
 from config.image_objects import STAIRS_DOWN, STAIRS_UP
-from map_objects.rect import Rect
-from map_objects.majorroad import MajorRoad
+from world_objects.rect import Rect
+from world_objects.majorroad import MajorRoad
 from dungeons.dungeon_alpha import DungeonAlphaMixin
 from dungeons.overworld.biome_mixin import BiomeMixin
 from dungeons.overworld.plot_mixin import PlotMixin
@@ -130,9 +130,6 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
         alpha_map.noncombatants.append(samwise)
 
         return [alpha_map]
-        # convert to add_structures as part of tile rework
-        # add_house(floor, 10, int(height / 2) - 8)
-        # add_hut(floor, 30, int(height / 2) - 19)
 
         # equippable_test = EquippableBuilder(499)
         # director = Director()

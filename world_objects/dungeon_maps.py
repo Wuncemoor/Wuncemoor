@@ -3,11 +3,11 @@ from dungeons.tile_mixins import InitRealTiles
 from ECS.entity import Entity
 from random import randint
 from abstracts.abstract_maps import ProceduralTiles2D
-from map_objects.town_walls import StoneWallTileBlocker
+from world_objects.town_walls import StoneWallTileBlocker
 from misc_functions.random_utils import random_choice_from_dict, from_dungeon_level
 from enums.render_order import RenderOrder
 from builders.mob_builder import MobDirector, MobBuilder
-from map_objects.rect import Rect
+from world_objects.rect import Rect
 from misc_functions.item_chances import get_item_chances
 from misc_functions.mob_chances import MobChances
 from builders.make_item import make_item
