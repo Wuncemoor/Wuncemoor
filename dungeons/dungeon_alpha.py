@@ -26,7 +26,7 @@ class DungeonAlphaMixin:
         potion = make_item('healing_potion')
         inven.add_item(potion)
         shopkeeper = Shopkeeper(inven)
-        samwise = Entity(6, 34, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom, age=age, shopkeeper=shopkeeper)
+        samwise = Entity(73, 24, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom, age=age, shopkeeper=shopkeeper)
         return samwise
 
     def get_major_road(self, outer_scenery_dim):
