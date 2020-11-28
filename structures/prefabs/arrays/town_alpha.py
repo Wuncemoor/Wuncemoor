@@ -36,8 +36,7 @@ from config.image_objects import EXT_LEFT_EDGE_BOT, EXT_EXTEND_BOT, EXT_LEFT_DOO
     GREEN_ROOF_FRONT_RIGHT_CONNECT, GREEN_ROOF_BACK_RIGHT_CONNECT, GREEN_ROOF_LEFT, GREEN_ROOF_FRONT_LEFT_PEAK, \
     GREEN_ROOF_BACK_LEFT_PEAK, GREEN_ROOF_RIGHT, GREEN_ROOF_FRONT_RIGHT_PEAK, GREEN_ROOF_BACK_RIGHT_PEAK, \
     GREEN_ROOF_MID, GREEN_ROOF_FRONT_MID_PEAK, GREEN_ROOF_BACK_MID_PEAK
-from world_objects.blockers.structure_blockers import PillarTileBlocker, HWallTileBlocker, VWallTileBlocker, \
-    WoodenWallTileBlocker
+from world_objects.blockers.structure_blockers import WoodenWallTileBlocker
 from world_objects.overheads.basic_overheads import WoodenWallOverhead, RoofOverhead
 
 

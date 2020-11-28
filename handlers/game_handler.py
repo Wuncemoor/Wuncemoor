@@ -84,7 +84,8 @@ class GameHandler:
         for dung in self.world.dungeons.values():
             for map in dung.maps:
                 for entity in map.noncombatants:
-                    entity.shopkeeper.inventory.options = initialize_menu_options(entity.shopkeeper.inventory)
+                    if entity.shopkeeper:
+                        entity.shopkeeper.inventory.options = initialize_menu_options(entity.shopkeeper.inventory)
 
 
     @staticmethod

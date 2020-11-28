@@ -128,7 +128,6 @@ def is_party_on_interior_tile(party, tiles):
 
 def draw_entity(self, main_screen, entity):
     cx, cy = self.handler.camera.x, self.handler.camera.y
-
     surfimg = entity.images.sprite
 
     if tcod.map_is_in_fov(self.handler.fov.map, entity.y, entity.x):

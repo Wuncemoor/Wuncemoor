@@ -1,5 +1,5 @@
 from abstracts.abstract_structure import PrefabStructure
-from prefabs.arrays.town_alpha import mage_house_blocker_array, mage_house_overhead_array, mayor_house_blocker_array, \
+from structures.prefabs.arrays.town_alpha import mage_house_blocker_array, mage_house_overhead_array, mayor_house_blocker_array, \
     mayor_house_overhead_array, guard_hut_blocker_array, guard_hut_overhead_array, church_blocker_array, \
     church_overhead_array, orphanage_blocker_array, orphanage_overhead_array, inn_blocker_array, inn_overhead_array, \
     tavern_blocker_array, tavern_overhead_array
@@ -365,6 +365,7 @@ class TownAlphaInn(PrefabStructure):
 
     def set_transitions(self):
         pass
+
 
 class TownAlphaTavern(PrefabStructure):
     floor_component = DirtTileFloor

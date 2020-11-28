@@ -1,6 +1,6 @@
 import random
 from dungeons.overworld.plot_node import PlotNode
-from prefabs.overworld_town import OverworldTown
+from structures.prefabs.overworld_town import OverworldTown
 
 
 class PlotMixin:
