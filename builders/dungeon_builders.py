@@ -125,9 +125,8 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
         for struct in structures:
             alpha_map.set_modes(struct, 'floor')
 
-        samwise = self.get_samwise()
-
-        alpha_map.noncombatants.append(samwise)
+        noncombatants = self.get_noncombatants()
+        alpha_map.noncombatants.extend(noncombatants)
 
         return [alpha_map]
 

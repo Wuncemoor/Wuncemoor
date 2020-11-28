@@ -73,6 +73,48 @@ BUNDLE_SAMWISE = ImageBundle(py.image.load('images\\entities\\noncombatants\\sam
                              py.image.load('images\\entities\\noncombatants\\samwise\\portrait.png'),
                              py.image.load('images\\entities\\noncombatants\\samwise\\port_mini.png'))
 
+BUNDLE_MAGE = ImageBundle(py.image.load('images\\entities\\noncombatants\\mage\\sprite.png'),
+                             py.image.load('images\\entities\\noncombatants\\mage\\portrait.png'),
+                             py.image.load('images\\entities\\noncombatants\\mage\\port_mini.png'))
+
+BUNDLE_GUARD_CAPTAIN = ImageBundle(py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite.png'),
+                             py.image.load('images\\entities\\noncombatants\\guard_captain\\portrait.png'),
+                             py.image.load('images\\entities\\noncombatants\\guard_captain\\port_mini.png'))
+
+BUNDLE_PRIEST = ImageBundle(py.image.load('images\\entities\\noncombatants\\priest\\sprite.png'),
+                             py.image.load('images\\entities\\noncombatants\\priest\\portrait.png'),
+                             py.image.load('images\\entities\\noncombatants\\priest\\port_mini.png'))
+
+BUNDLE_ROGUE = ImageBundle(py.image.load('images\\entities\\noncombatants\\rogue\\sprite.png'),
+                             py.image.load('images\\entities\\noncombatants\\rogue\\portrait.png'),
+                             py.image.load('images\\entities\\noncombatants\\rogue\\port_mini.png'))
+
+BUNDLE_HOMER = ImageBundle(py.image.load('images\\entities\\noncombatants\\homer\\sprite.png'),
+                             py.image.load('images\\entities\\noncombatants\\homer\\portrait.png'),
+                             py.image.load('images\\entities\\noncombatants\\homer\\port_mini.png'))
+
+BUNDLE_MAYOR = ImageBundle(py.image.load('images\\entities\\noncombatants\\mayor\\sprite.png'),
+                             py.image.load('images\\entities\\noncombatants\\mayor\\portrait.png'),
+                             py.image.load('images\\entities\\noncombatants\\mayor\\port_mini.png'))
+
+BUNDLE_INNKEEPER = ImageBundle(py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite.png'),
+                             py.image.load('images\\entities\\noncombatants\\innkeeper\\portrait.png'),
+                             py.image.load('images\\entities\\noncombatants\\innkeeper\\port_mini.png'))
+
+BUNDLE_TAVERNKEEPER = ImageBundle(py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite.png'),
+                             py.image.load('images\\entities\\noncombatants\\tavernkeeper\\portrait.png'),
+                             py.image.load('images\\entities\\noncombatants\\tavernkeeper\\port_mini.png'))
+
+DUNGEON_ALPHA_NONCOMBATANT_IMAGE_BUNDLES = {'samwise': BUNDLE_SAMWISE,
+                                            'mage': BUNDLE_MAGE,
+                                            'guard_captain': BUNDLE_GUARD_CAPTAIN,
+                                            'priest': BUNDLE_PRIEST,
+                                            'rogue': BUNDLE_ROGUE,
+                                            'mayor': BUNDLE_MAYOR,
+                                            'homer': BUNDLE_HOMER,
+                                            'innkeeper': BUNDLE_INNKEEPER,
+                                            'tavernkeeper': BUNDLE_TAVERNKEEPER, }
+
 BUNDLE_STICK = ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\sprite.png'),
                            py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\portrait.png'),
                            py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\port_mini.png'))

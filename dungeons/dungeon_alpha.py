@@ -1,16 +1,9 @@
-from ECS.__entity.shopkeeper import Shopkeeper
-from ECS.entity import Entity
-from ECS.__entity.age import Age
-from ECS.__entity.noncombatant import Noncombatant
-from builders.make_item import make_item
-from config.image_objects import BUNDLE_SAMWISE
-from dialogue.get_dialogue import get_samwise_dialogue
-from enums.render_order import RenderOrder
-from handlers.menus.inventory import Inventory
+from entities.prefabs.dungeon_alpha import get_samwise, get_mage, get_guard_captain, get_priest, get_rogue, get_homer, \
+    get_mayor, get_innkeeper, get_tavernkeeper
 from world_objects.majorroad import MajorRoad
 from world_objects.rect import Rect
 from world_objects.town_walls import TownWalls
-from prefabs.alpha_prefabs import TownAlphaInn, TownAlphaMageHouse, TownAlphaMageHousePathway, \
+from structures.prefabs.dungeon_alpha import TownAlphaInn, TownAlphaMageHouse, TownAlphaMageHousePathway, \
     TownAlphaMayorHousePathway, TownAlphaMayorHouse, TownAlphaGuardHut, TownAlphaGuardHutPathway1, \
     TownAlphaGuardHutPathway2, TownAlphaTavern, TownAlphaTavernPathway1, TownAlphaChurch, TownAlphaChurchPathway, \
     TownAlphaMarketSquare, TownAlphaOrphanage, TownAlphaOrphanagePathway, TownAlphaInnTavernPathway, \
@@ -22,17 +15,9 @@ class DungeonAlphaMixin:
     """Mixin for DungeonAlphaBuilder, adds functionality unique to starting town"""
 
     @staticmethod
-    def get_samwise():
-
-        dialogue = get_samwise_dialogue()
-        noncom = Noncombatant('samwise', BUNDLE_SAMWISE, dialogue)
-        age = Age(13, 12, 28, 0, (1, 4))
-        inven = Inventory()
-        potion = make_item('healing_potion')
-        inven.add_item(potion)
-        shopkeeper = Shopkeeper(inven)
-        samwise = Entity(73, 24, blocks=False, render_order=RenderOrder.ACTOR, noncombatant=noncom, age=age, shopkeeper=shopkeeper)
-        return samwise
+    def get_noncombatants():
+        noncombatants = [get_samwise(), get_mage(), get_guard_captain(), get_priest(), get_rogue(), get_homer(), get_mayor(), get_innkeeper(), get_tavernkeeper()]
+        return noncombatants
 
     def get_major_road(self, outer_scenery_dim):
         rect = Rect(outer_scenery_dim, int(self.height / 2) - 2, self.width - outer_scenery_dim*2, 4)
