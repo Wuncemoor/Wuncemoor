@@ -130,20 +130,19 @@ def is_party_on_interior_tile(party, tiles):
 
 def draw_entity(self, main_screen, entity):
     cx, cy = self.handler.camera.x, self.handler.camera.y
-    surfimg = entity.images.sprite
+    sprite = entity.images.sprite
 
     if tcod.map_is_in_fov(self.handler.fov.map, entity.y, entity.x):
-        main_screen.blit(surfimg, ((entity.x - cx) * TILESIZE, (entity.y - cy) * TILESIZE - (TILESIZE/3)))
+        main_screen.blit(sprite[self.frame], ((entity.x - cx) * TILESIZE, (entity.y - cy) * TILESIZE - (TILESIZE/3)))
 
 
 def draw_party(self, main_screen):
     cx, cy = self.handler.camera.x, self.handler.camera.y
     party = self.game.party
 
-    surfimgs = party.p1.images.sprite
-    
+    sprite = party.p1.images.sprite
 
-    main_screen.blit(surfimgs[math.floor(self.milliseconds/250)], ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
+    main_screen.blit(sprite[self.frame], ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
 
 
 def draw_tile(main_screen, tiles, tile, x, y, cx, cy, visible, is_interior):

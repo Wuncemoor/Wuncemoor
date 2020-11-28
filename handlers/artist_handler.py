@@ -22,16 +22,14 @@ class ArtistHandler(MVC):
     def __init__(self, screen, clock):
         self.screen = screen
         self.clock = clock
-        self.milliseconds = 0
+        self.frame = 0
 
     @property
     def choice(self):
         return self.game.options.current.choice
 
     def render(self):
-        self.milliseconds += self.clock.get_time()
-        if self.milliseconds >= 1000:
-            self.milliseconds = 0
+        self.set_frame()
         return self.mapping()
 
     def debug(self):
@@ -158,4 +156,7 @@ class ArtistHandler(MVC):
         toq = get_surface(TURN_ORDER_QUEUE)
         align_and_blit(self.screen, toq, x_ratio=0.15, y_ratio=0.05)
 
-
+    def set_frame(self):
+        self.frame += 1
+        if self.frame >= 12:
+            self.frame = 0
