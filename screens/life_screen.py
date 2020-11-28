@@ -1,3 +1,5 @@
+import math
+
 from numpy.core._multiarray_umath import sqrt
 import tcod
 from pygame.surface import Surface
@@ -138,9 +140,10 @@ def draw_party(self, main_screen):
     cx, cy = self.handler.camera.x, self.handler.camera.y
     party = self.game.party
 
-    surfimg = party.p1.images.sprite
+    surfimgs = party.p1.images.sprite
+    
 
-    main_screen.blit(surfimg, ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
+    main_screen.blit(surfimgs[math.floor(self.milliseconds/250)], ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
 
 
 def draw_tile(main_screen, tiles, tile, x, y, cx, cy, visible, is_interior):

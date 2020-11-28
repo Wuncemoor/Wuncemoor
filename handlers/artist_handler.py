@@ -19,14 +19,19 @@ from screens.title_screen import get_title_text, get_title_menu
 
 
 class ArtistHandler(MVC):
-    def __init__(self, screen):
+    def __init__(self, screen, clock):
         self.screen = screen
+        self.clock = clock
+        self.milliseconds = 0
 
     @property
     def choice(self):
         return self.game.options.current.choice
 
     def render(self):
+        self.milliseconds += self.clock.get_time()
+        if self.milliseconds >= 1000:
+            self.milliseconds = 0
         return self.mapping()
 
     def debug(self):

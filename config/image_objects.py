@@ -64,7 +64,10 @@ STAIRS_UP = ImageBundle(py.image.load('images\\entities\\transitions\\stairsup.p
 ALPHA = py.image.load('images\\alpha.png')
 BUNDLE_ALPHA = ImageBundle(ALPHA)
 
-BUNDLE_HERO = ImageBundle(py.image.load('images\\entities\\combatants\\hero\\sprite.png'),
+BUNDLE_HERO = ImageBundle([py.image.load('images\\entities\\combatants\\hero\\sprite0.png'),
+                           py.image.load('images\\entities\\combatants\\hero\\sprite1.png'),
+                           py.image.load('images\\entities\\combatants\\hero\\sprite2.png'),
+                           py.image.load('images\\entities\\combatants\\hero\\sprite1.png')],
                           py.image.load('images\\entities\\combatants\\hero\\portrait.png'),
                           py.image.load('images\\entities\\combatants\\hero\\port_mini.png'),
                           py.image.load('images\\entities\\combatants\\hero\\actor.png'))
