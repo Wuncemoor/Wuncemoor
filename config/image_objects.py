@@ -64,42 +64,6 @@ STAIRS_UP = ImageBundle(py.image.load('images\\entities\\transitions\\stairsup.p
 ALPHA = py.image.load('images\\alpha.png')
 BUNDLE_ALPHA = ImageBundle(ALPHA)
 
-
-BUNDLE_SAMWISE = ImageBundle(py.image.load('images\\entities\\noncombatants\\samwise\\sprite.png'),
-                             py.image.load('images\\entities\\noncombatants\\samwise\\portrait.png'),
-                             py.image.load('images\\entities\\noncombatants\\samwise\\port_mini.png'))
-
-BUNDLE_MAGE = ImageBundle(py.image.load('images\\entities\\noncombatants\\mage\\sprite.png'),
-                             py.image.load('images\\entities\\noncombatants\\mage\\portrait.png'),
-                             py.image.load('images\\entities\\noncombatants\\mage\\port_mini.png'))
-
-BUNDLE_GUARD_CAPTAIN = ImageBundle(py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite.png'),
-                             py.image.load('images\\entities\\noncombatants\\guard_captain\\portrait.png'),
-                             py.image.load('images\\entities\\noncombatants\\guard_captain\\port_mini.png'))
-
-BUNDLE_PRIEST = ImageBundle(py.image.load('images\\entities\\noncombatants\\priest\\sprite.png'),
-                             py.image.load('images\\entities\\noncombatants\\priest\\portrait.png'),
-                             py.image.load('images\\entities\\noncombatants\\priest\\port_mini.png'))
-
-BUNDLE_ROGUE = ImageBundle(py.image.load('images\\entities\\noncombatants\\rogue\\sprite.png'),
-                             py.image.load('images\\entities\\noncombatants\\rogue\\portrait.png'),
-                             py.image.load('images\\entities\\noncombatants\\rogue\\port_mini.png'))
-
-BUNDLE_HOMER = ImageBundle(py.image.load('images\\entities\\noncombatants\\homer\\sprite.png'),
-                             py.image.load('images\\entities\\noncombatants\\homer\\portrait.png'),
-                             py.image.load('images\\entities\\noncombatants\\homer\\port_mini.png'))
-
-BUNDLE_MAYOR = ImageBundle(py.image.load('images\\entities\\noncombatants\\mayor\\sprite.png'),
-                             py.image.load('images\\entities\\noncombatants\\mayor\\portrait.png'),
-                             py.image.load('images\\entities\\noncombatants\\mayor\\port_mini.png'))
-
-BUNDLE_INNKEEPER = ImageBundle(py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite.png'),
-                             py.image.load('images\\entities\\noncombatants\\innkeeper\\portrait.png'),
-                             py.image.load('images\\entities\\noncombatants\\innkeeper\\port_mini.png'))
-
-BUNDLE_TAVERNKEEPER = ImageBundle(py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite.png'),
-                             py.image.load('images\\entities\\noncombatants\\tavernkeeper\\portrait.png'),
-                             py.image.load('images\\entities\\noncombatants\\tavernkeeper\\port_mini.png'))
 HERO_DOWN0 = py.image.load('images\\entities\\combatants\\hero\\sprite_00.png')
 HERO_DOWN1 = py.image.load('images\\entities\\combatants\\hero\\sprite_01.png')
 HERO_DOWN2 = py.image.load('images\\entities\\combatants\\hero\\sprite_02.png')
@@ -132,6 +96,244 @@ BUNDLE_HERO = ImageBundle(HERO_SPRITE_DICT,
                           HERO_PORTMINI,
                           HERO_ACTOR)
 
+SAMWISE_DOWN0 = py.image.load('images\\entities\\noncombatants\\samwise\\sprite_00.png')
+SAMWISE_DOWN1 = py.image.load('images\\entities\\noncombatants\\samwise\\sprite_01.png')
+SAMWISE_DOWN2 = py.image.load('images\\entities\\noncombatants\\samwise\\sprite_02.png')
+SAMWISE_LEFT0 = py.image.load('images\\entities\\noncombatants\\samwise\\sprite_03.png')
+SAMWISE_LEFT1 = py.image.load('images\\entities\\noncombatants\\samwise\\sprite_04.png')
+SAMWISE_LEFT2 = py.image.load('images\\entities\\noncombatants\\samwise\\sprite_05.png')
+SAMWISE_RIGHT0 = py.image.load('images\\entities\\noncombatants\\samwise\\sprite_06.png')
+SAMWISE_RIGHT1 = py.image.load('images\\entities\\noncombatants\\samwise\\sprite_07.png')
+SAMWISE_RIGHT2 = py.image.load('images\\entities\\noncombatants\\samwise\\sprite_08.png')
+SAMWISE_UP0 = py.image.load('images\\entities\\noncombatants\\samwise\\sprite_09.png')
+SAMWISE_UP1 = py.image.load('images\\entities\\noncombatants\\samwise\\sprite_10.png')
+SAMWISE_UP2 = py.image.load('images\\entities\\noncombatants\\samwise\\sprite_11.png')
+SAMWISE_PORTRAIT = py.image.load('images\\entities\\noncombatants\\samwise\\portrait.png')
+SAMWISE_PORTMINI = py.image.load('images\\entities\\noncombatants\\samwise\\port_mini.png')
+SAMWISE_ACTOR = None
+
+SAMWISE_SPRITE_DICT = {(0, 1): [SAMWISE_DOWN0, SAMWISE_DOWN0, SAMWISE_DOWN0, SAMWISE_DOWN1, SAMWISE_DOWN1, SAMWISE_DOWN1, SAMWISE_DOWN2, SAMWISE_DOWN2, SAMWISE_DOWN2, SAMWISE_DOWN1, SAMWISE_DOWN1, SAMWISE_DOWN1],
+                       (0, -1): [SAMWISE_UP0, SAMWISE_UP0, SAMWISE_UP0, SAMWISE_UP1, SAMWISE_UP1, SAMWISE_UP1, SAMWISE_UP2, SAMWISE_UP2, SAMWISE_UP2,SAMWISE_UP1, SAMWISE_UP1, SAMWISE_UP1],
+                       (-1, 0): [SAMWISE_LEFT0, SAMWISE_LEFT0, SAMWISE_LEFT0, SAMWISE_LEFT1, SAMWISE_LEFT1, SAMWISE_LEFT1, SAMWISE_LEFT2, SAMWISE_LEFT2, SAMWISE_LEFT2, SAMWISE_LEFT1, SAMWISE_LEFT1, SAMWISE_LEFT1],
+                       (1, 0): [SAMWISE_RIGHT0, SAMWISE_RIGHT0, SAMWISE_RIGHT0, SAMWISE_RIGHT1, SAMWISE_RIGHT1, SAMWISE_RIGHT1, SAMWISE_RIGHT2, SAMWISE_RIGHT2, SAMWISE_RIGHT2, SAMWISE_RIGHT1, SAMWISE_RIGHT1, SAMWISE_RIGHT1],}
+
+BUNDLE_SAMWISE = ImageBundle(SAMWISE_SPRITE_DICT,
+                             SAMWISE_SPRITE_DICT.get((0, 1)),
+                             SAMWISE_PORTRAIT,
+                             SAMWISE_PORTMINI,
+                             SAMWISE_ACTOR)
+
+MAGE_DOWN0 = py.image.load('images\\entities\\noncombatants\\mage\\sprite_00.png')
+MAGE_DOWN1 = py.image.load('images\\entities\\noncombatants\\mage\\sprite_01.png')
+MAGE_DOWN2 = py.image.load('images\\entities\\noncombatants\\mage\\sprite_02.png')
+MAGE_LEFT0 = py.image.load('images\\entities\\noncombatants\\mage\\sprite_03.png')
+MAGE_LEFT1 = py.image.load('images\\entities\\noncombatants\\mage\\sprite_04.png')
+MAGE_LEFT2 = py.image.load('images\\entities\\noncombatants\\mage\\sprite_05.png')
+MAGE_RIGHT0 = py.image.load('images\\entities\\noncombatants\\mage\\sprite_06.png')
+MAGE_RIGHT1 = py.image.load('images\\entities\\noncombatants\\mage\\sprite_07.png')
+MAGE_RIGHT2 = py.image.load('images\\entities\\noncombatants\\mage\\sprite_08.png')
+MAGE_UP0 = py.image.load('images\\entities\\noncombatants\\mage\\sprite_09.png')
+MAGE_UP1 = py.image.load('images\\entities\\noncombatants\\mage\\sprite_10.png')
+MAGE_UP2 = py.image.load('images\\entities\\noncombatants\\mage\\sprite_11.png')
+MAGE_PORTRAIT = py.image.load('images\\entities\\noncombatants\\mage\\portrait.png')
+MAGE_PORTMINI = py.image.load('images\\entities\\noncombatants\\mage\\port_mini.png')
+MAGE_ACTOR = None
+
+MAGE_SPRITE_DICT = {(0, 1): [MAGE_DOWN0, MAGE_DOWN0, MAGE_DOWN0, MAGE_DOWN1, MAGE_DOWN1, MAGE_DOWN1, MAGE_DOWN2, MAGE_DOWN2, MAGE_DOWN2, MAGE_DOWN1, MAGE_DOWN1, MAGE_DOWN1],
+                       (0, -1): [MAGE_UP0, MAGE_UP0, MAGE_UP0, MAGE_UP1, MAGE_UP1, MAGE_UP1, MAGE_UP2, MAGE_UP2, MAGE_UP2,MAGE_UP1, MAGE_UP1, MAGE_UP1],
+                       (-1, 0): [MAGE_LEFT0, MAGE_LEFT0, MAGE_LEFT0, MAGE_LEFT1, MAGE_LEFT1, MAGE_LEFT1, MAGE_LEFT2, MAGE_LEFT2, MAGE_LEFT2, MAGE_LEFT1, MAGE_LEFT1, MAGE_LEFT1],
+                       (1, 0): [MAGE_RIGHT0, MAGE_RIGHT0, MAGE_RIGHT0, MAGE_RIGHT1, MAGE_RIGHT1, MAGE_RIGHT1, MAGE_RIGHT2, MAGE_RIGHT2, MAGE_RIGHT2, MAGE_RIGHT1, MAGE_RIGHT1, MAGE_RIGHT1],}
+
+BUNDLE_MAGE = ImageBundle(MAGE_SPRITE_DICT,
+                          MAGE_SPRITE_DICT.get((0, 1)),
+                          MAGE_PORTRAIT,
+                          MAGE_PORTMINI,
+                          MAGE_ACTOR)
+
+GUARD_CAPTAIN_DOWN0 = py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite_00.png')
+GUARD_CAPTAIN_DOWN1 = py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite_01.png')
+GUARD_CAPTAIN_DOWN2 = py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite_02.png')
+GUARD_CAPTAIN_LEFT0 = py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite_03.png')
+GUARD_CAPTAIN_LEFT1 = py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite_04.png')
+GUARD_CAPTAIN_LEFT2 = py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite_05.png')
+GUARD_CAPTAIN_RIGHT0 = py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite_06.png')
+GUARD_CAPTAIN_RIGHT1 = py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite_07.png')
+GUARD_CAPTAIN_RIGHT2 = py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite_08.png')
+GUARD_CAPTAIN_UP0 = py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite_09.png')
+GUARD_CAPTAIN_UP1 = py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite_10.png')
+GUARD_CAPTAIN_UP2 = py.image.load('images\\entities\\noncombatants\\guard_captain\\sprite_11.png')
+GUARD_CAPTAIN_PORTRAIT = py.image.load('images\\entities\\noncombatants\\guard_captain\\portrait.png')
+GUARD_CAPTAIN_PORTMINI = py.image.load('images\\entities\\noncombatants\\guard_captain\\port_mini.png')
+GUARD_CAPTAIN_ACTOR = None
+
+GUARD_CAPTAIN_SPRITE_DICT = {(0, 1): [GUARD_CAPTAIN_DOWN0, GUARD_CAPTAIN_DOWN0, GUARD_CAPTAIN_DOWN0, GUARD_CAPTAIN_DOWN1, GUARD_CAPTAIN_DOWN1, GUARD_CAPTAIN_DOWN1, GUARD_CAPTAIN_DOWN2, GUARD_CAPTAIN_DOWN2, GUARD_CAPTAIN_DOWN2, GUARD_CAPTAIN_DOWN1, GUARD_CAPTAIN_DOWN1, GUARD_CAPTAIN_DOWN1],
+                       (0, -1): [GUARD_CAPTAIN_UP0, GUARD_CAPTAIN_UP0, GUARD_CAPTAIN_UP0, GUARD_CAPTAIN_UP1, GUARD_CAPTAIN_UP1, GUARD_CAPTAIN_UP1, GUARD_CAPTAIN_UP2, GUARD_CAPTAIN_UP2, GUARD_CAPTAIN_UP2,GUARD_CAPTAIN_UP1, GUARD_CAPTAIN_UP1, GUARD_CAPTAIN_UP1],
+                       (-1, 0): [GUARD_CAPTAIN_LEFT0, GUARD_CAPTAIN_LEFT0, GUARD_CAPTAIN_LEFT0, GUARD_CAPTAIN_LEFT1, GUARD_CAPTAIN_LEFT1, GUARD_CAPTAIN_LEFT1, GUARD_CAPTAIN_LEFT2, GUARD_CAPTAIN_LEFT2, GUARD_CAPTAIN_LEFT2, GUARD_CAPTAIN_LEFT1, GUARD_CAPTAIN_LEFT1, GUARD_CAPTAIN_LEFT1],
+                       (1, 0): [GUARD_CAPTAIN_RIGHT0, GUARD_CAPTAIN_RIGHT0, GUARD_CAPTAIN_RIGHT0, GUARD_CAPTAIN_RIGHT1, GUARD_CAPTAIN_RIGHT1, GUARD_CAPTAIN_RIGHT1, GUARD_CAPTAIN_RIGHT2, GUARD_CAPTAIN_RIGHT2, GUARD_CAPTAIN_RIGHT2, GUARD_CAPTAIN_RIGHT1, GUARD_CAPTAIN_RIGHT1, GUARD_CAPTAIN_RIGHT1],}
+
+BUNDLE_GUARD_CAPTAIN = ImageBundle(GUARD_CAPTAIN_SPRITE_DICT,
+                          GUARD_CAPTAIN_SPRITE_DICT.get((0, 1)),
+                          GUARD_CAPTAIN_PORTRAIT,
+                          GUARD_CAPTAIN_PORTMINI,
+                          GUARD_CAPTAIN_ACTOR)
+
+PRIEST_DOWN0 = py.image.load('images\\entities\\noncombatants\\priest\\sprite_00.png')
+PRIEST_DOWN1 = py.image.load('images\\entities\\noncombatants\\priest\\sprite_01.png')
+PRIEST_DOWN2 = py.image.load('images\\entities\\noncombatants\\priest\\sprite_02.png')
+PRIEST_LEFT0 = py.image.load('images\\entities\\noncombatants\\priest\\sprite_03.png')
+PRIEST_LEFT1 = py.image.load('images\\entities\\noncombatants\\priest\\sprite_04.png')
+PRIEST_LEFT2 = py.image.load('images\\entities\\noncombatants\\priest\\sprite_05.png')
+PRIEST_RIGHT0 = py.image.load('images\\entities\\noncombatants\\priest\\sprite_06.png')
+PRIEST_RIGHT1 = py.image.load('images\\entities\\noncombatants\\priest\\sprite_07.png')
+PRIEST_RIGHT2 = py.image.load('images\\entities\\noncombatants\\priest\\sprite_08.png')
+PRIEST_UP0 = py.image.load('images\\entities\\noncombatants\\priest\\sprite_09.png')
+PRIEST_UP1 = py.image.load('images\\entities\\noncombatants\\priest\\sprite_10.png')
+PRIEST_UP2 = py.image.load('images\\entities\\noncombatants\\priest\\sprite_11.png')
+PRIEST_PORTRAIT = py.image.load('images\\entities\\noncombatants\\priest\\portrait.png')
+PRIEST_PORTMINI = py.image.load('images\\entities\\noncombatants\\priest\\port_mini.png')
+PRIEST_ACTOR = None
+
+PRIEST_SPRITE_DICT = {(0, 1): [PRIEST_DOWN0, PRIEST_DOWN0, PRIEST_DOWN0, PRIEST_DOWN1, PRIEST_DOWN1, PRIEST_DOWN1, PRIEST_DOWN2, PRIEST_DOWN2, PRIEST_DOWN2, PRIEST_DOWN1, PRIEST_DOWN1, PRIEST_DOWN1],
+                       (0, -1): [PRIEST_UP0, PRIEST_UP0, PRIEST_UP0, PRIEST_UP1, PRIEST_UP1, PRIEST_UP1, PRIEST_UP2, PRIEST_UP2, PRIEST_UP2,PRIEST_UP1, PRIEST_UP1, PRIEST_UP1],
+                       (-1, 0): [PRIEST_LEFT0, PRIEST_LEFT0, PRIEST_LEFT0, PRIEST_LEFT1, PRIEST_LEFT1, PRIEST_LEFT1, PRIEST_LEFT2, PRIEST_LEFT2, PRIEST_LEFT2, PRIEST_LEFT1, PRIEST_LEFT1, PRIEST_LEFT1],
+                       (1, 0): [PRIEST_RIGHT0, PRIEST_RIGHT0, PRIEST_RIGHT0, PRIEST_RIGHT1, PRIEST_RIGHT1, PRIEST_RIGHT1, PRIEST_RIGHT2, PRIEST_RIGHT2, PRIEST_RIGHT2, PRIEST_RIGHT1, PRIEST_RIGHT1, PRIEST_RIGHT1],}
+
+BUNDLE_PRIEST = ImageBundle(PRIEST_SPRITE_DICT,
+                          PRIEST_SPRITE_DICT.get((0, 1)),
+                          PRIEST_PORTRAIT,
+                          PRIEST_PORTMINI,
+                          PRIEST_ACTOR)
+
+ROGUE_DOWN0 = py.image.load('images\\entities\\noncombatants\\rogue\\sprite_00.png')
+ROGUE_DOWN1 = py.image.load('images\\entities\\noncombatants\\rogue\\sprite_01.png')
+ROGUE_DOWN2 = py.image.load('images\\entities\\noncombatants\\rogue\\sprite_02.png')
+ROGUE_LEFT0 = py.image.load('images\\entities\\noncombatants\\rogue\\sprite_03.png')
+ROGUE_LEFT1 = py.image.load('images\\entities\\noncombatants\\rogue\\sprite_04.png')
+ROGUE_LEFT2 = py.image.load('images\\entities\\noncombatants\\rogue\\sprite_05.png')
+ROGUE_RIGHT0 = py.image.load('images\\entities\\noncombatants\\rogue\\sprite_06.png')
+ROGUE_RIGHT1 = py.image.load('images\\entities\\noncombatants\\rogue\\sprite_07.png')
+ROGUE_RIGHT2 = py.image.load('images\\entities\\noncombatants\\rogue\\sprite_08.png')
+ROGUE_UP0 = py.image.load('images\\entities\\noncombatants\\rogue\\sprite_09.png')
+ROGUE_UP1 = py.image.load('images\\entities\\noncombatants\\rogue\\sprite_10.png')
+ROGUE_UP2 = py.image.load('images\\entities\\noncombatants\\rogue\\sprite_11.png')
+ROGUE_PORTRAIT = py.image.load('images\\entities\\noncombatants\\rogue\\portrait.png')
+ROGUE_PORTMINI = py.image.load('images\\entities\\noncombatants\\rogue\\port_mini.png')
+ROGUE_ACTOR = None
+
+ROGUE_SPRITE_DICT = {(0, 1): [ROGUE_DOWN0, ROGUE_DOWN0, ROGUE_DOWN0, ROGUE_DOWN1, ROGUE_DOWN1, ROGUE_DOWN1, ROGUE_DOWN2, ROGUE_DOWN2, ROGUE_DOWN2, ROGUE_DOWN1, ROGUE_DOWN1, ROGUE_DOWN1],
+                       (0, -1): [ROGUE_UP0, ROGUE_UP0, ROGUE_UP0, ROGUE_UP1, ROGUE_UP1, ROGUE_UP1, ROGUE_UP2, ROGUE_UP2, ROGUE_UP2,ROGUE_UP1, ROGUE_UP1, ROGUE_UP1],
+                       (-1, 0): [ROGUE_LEFT0, ROGUE_LEFT0, ROGUE_LEFT0, ROGUE_LEFT1, ROGUE_LEFT1, ROGUE_LEFT1, ROGUE_LEFT2, ROGUE_LEFT2, ROGUE_LEFT2, ROGUE_LEFT1, ROGUE_LEFT1, ROGUE_LEFT1],
+                       (1, 0): [ROGUE_RIGHT0, ROGUE_RIGHT0, ROGUE_RIGHT0, ROGUE_RIGHT1, ROGUE_RIGHT1, ROGUE_RIGHT1, ROGUE_RIGHT2, ROGUE_RIGHT2, ROGUE_RIGHT2, ROGUE_RIGHT1, ROGUE_RIGHT1, ROGUE_RIGHT1],}
+
+BUNDLE_ROGUE = ImageBundle(ROGUE_SPRITE_DICT,
+                          ROGUE_SPRITE_DICT.get((0, 1)),
+                          ROGUE_PORTRAIT,
+                          ROGUE_PORTMINI,
+                          ROGUE_ACTOR)
+
+HOMER_DOWN0 = py.image.load('images\\entities\\noncombatants\\homer\\sprite_00.png')
+HOMER_DOWN1 = py.image.load('images\\entities\\noncombatants\\homer\\sprite_01.png')
+HOMER_DOWN2 = py.image.load('images\\entities\\noncombatants\\homer\\sprite_02.png')
+HOMER_LEFT0 = py.image.load('images\\entities\\noncombatants\\homer\\sprite_03.png')
+HOMER_LEFT1 = py.image.load('images\\entities\\noncombatants\\homer\\sprite_04.png')
+HOMER_LEFT2 = py.image.load('images\\entities\\noncombatants\\homer\\sprite_05.png')
+HOMER_RIGHT0 = py.image.load('images\\entities\\noncombatants\\homer\\sprite_06.png')
+HOMER_RIGHT1 = py.image.load('images\\entities\\noncombatants\\homer\\sprite_07.png')
+HOMER_RIGHT2 = py.image.load('images\\entities\\noncombatants\\homer\\sprite_08.png')
+HOMER_UP0 = py.image.load('images\\entities\\noncombatants\\homer\\sprite_09.png')
+HOMER_UP1 = py.image.load('images\\entities\\noncombatants\\homer\\sprite_10.png')
+HOMER_UP2 = py.image.load('images\\entities\\noncombatants\\homer\\sprite_11.png')
+HOMER_PORTRAIT = py.image.load('images\\entities\\noncombatants\\homer\\portrait.png')
+HOMER_PORTMINI = py.image.load('images\\entities\\noncombatants\\homer\\port_mini.png')
+HOMER_ACTOR = None
+
+HOMER_SPRITE_DICT = {(0, 1): [HOMER_DOWN0, HOMER_DOWN0, HOMER_DOWN0, HOMER_DOWN1, HOMER_DOWN1, HOMER_DOWN1, HOMER_DOWN2, HOMER_DOWN2, HOMER_DOWN2, HOMER_DOWN1, HOMER_DOWN1, HOMER_DOWN1],
+                       (0, -1): [HOMER_UP0, HOMER_UP0, HOMER_UP0, HOMER_UP1, HOMER_UP1, HOMER_UP1, HOMER_UP2, HOMER_UP2, HOMER_UP2,HOMER_UP1, HOMER_UP1, HOMER_UP1],
+                       (-1, 0): [HOMER_LEFT0, HOMER_LEFT0, HOMER_LEFT0, HOMER_LEFT1, HOMER_LEFT1, HOMER_LEFT1, HOMER_LEFT2, HOMER_LEFT2, HOMER_LEFT2, HOMER_LEFT1, HOMER_LEFT1, HOMER_LEFT1],
+                       (1, 0): [HOMER_RIGHT0, HOMER_RIGHT0, HOMER_RIGHT0, HOMER_RIGHT1, HOMER_RIGHT1, HOMER_RIGHT1, HOMER_RIGHT2, HOMER_RIGHT2, HOMER_RIGHT2, HOMER_RIGHT1, HOMER_RIGHT1, HOMER_RIGHT1],}
+
+BUNDLE_HOMER = ImageBundle(HOMER_SPRITE_DICT, HOMER_SPRITE_DICT.get((0, 1)), HOMER_PORTRAIT, HOMER_PORTMINI, HOMER_ACTOR)
+
+MAYOR_DOWN0 = py.image.load('images\\entities\\noncombatants\\mayor\\sprite_00.png')
+MAYOR_DOWN1 = py.image.load('images\\entities\\noncombatants\\mayor\\sprite_01.png')
+MAYOR_DOWN2 = py.image.load('images\\entities\\noncombatants\\mayor\\sprite_02.png')
+MAYOR_LEFT0 = py.image.load('images\\entities\\noncombatants\\mayor\\sprite_03.png')
+MAYOR_LEFT1 = py.image.load('images\\entities\\noncombatants\\mayor\\sprite_04.png')
+MAYOR_LEFT2 = py.image.load('images\\entities\\noncombatants\\mayor\\sprite_05.png')
+MAYOR_RIGHT0 = py.image.load('images\\entities\\noncombatants\\mayor\\sprite_06.png')
+MAYOR_RIGHT1 = py.image.load('images\\entities\\noncombatants\\mayor\\sprite_07.png')
+MAYOR_RIGHT2 = py.image.load('images\\entities\\noncombatants\\mayor\\sprite_08.png')
+MAYOR_UP0 = py.image.load('images\\entities\\noncombatants\\mayor\\sprite_09.png')
+MAYOR_UP1 = py.image.load('images\\entities\\noncombatants\\mayor\\sprite_10.png')
+MAYOR_UP2 = py.image.load('images\\entities\\noncombatants\\mayor\\sprite_11.png')
+MAYOR_PORTRAIT = py.image.load('images\\entities\\noncombatants\\mayor\\portrait.png')
+MAYOR_PORTMINI = py.image.load('images\\entities\\noncombatants\\mayor\\port_mini.png')
+MAYOR_ACTOR = None
+
+MAYOR_SPRITE_DICT = {(0, 1): [MAYOR_DOWN0, MAYOR_DOWN0, MAYOR_DOWN0, MAYOR_DOWN1, MAYOR_DOWN1, MAYOR_DOWN1, MAYOR_DOWN2, MAYOR_DOWN2, MAYOR_DOWN2, MAYOR_DOWN1, MAYOR_DOWN1, MAYOR_DOWN1],
+                       (0, -1): [MAYOR_UP0, MAYOR_UP0, MAYOR_UP0, MAYOR_UP1, MAYOR_UP1, MAYOR_UP1, MAYOR_UP2, MAYOR_UP2, MAYOR_UP2,MAYOR_UP1, MAYOR_UP1, MAYOR_UP1],
+                       (-1, 0): [MAYOR_LEFT0, MAYOR_LEFT0, MAYOR_LEFT0, MAYOR_LEFT1, MAYOR_LEFT1, MAYOR_LEFT1, MAYOR_LEFT2, MAYOR_LEFT2, MAYOR_LEFT2, MAYOR_LEFT1, MAYOR_LEFT1, MAYOR_LEFT1],
+                       (1, 0): [MAYOR_RIGHT0, MAYOR_RIGHT0, MAYOR_RIGHT0, MAYOR_RIGHT1, MAYOR_RIGHT1, MAYOR_RIGHT1, MAYOR_RIGHT2, MAYOR_RIGHT2, MAYOR_RIGHT2, MAYOR_RIGHT1, MAYOR_RIGHT1, MAYOR_RIGHT1],}
+
+BUNDLE_MAYOR = ImageBundle(MAYOR_SPRITE_DICT,
+                          MAYOR_SPRITE_DICT.get((0, 1)),
+                          MAYOR_PORTRAIT,
+                          MAYOR_PORTMINI,
+                          MAYOR_ACTOR)
+
+INNKEEPER_DOWN0 = py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite_00.png')
+INNKEEPER_DOWN1 = py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite_01.png')
+INNKEEPER_DOWN2 = py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite_02.png')
+INNKEEPER_LEFT0 = py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite_03.png')
+INNKEEPER_LEFT1 = py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite_04.png')
+INNKEEPER_LEFT2 = py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite_05.png')
+INNKEEPER_RIGHT0 = py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite_06.png')
+INNKEEPER_RIGHT1 = py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite_07.png')
+INNKEEPER_RIGHT2 = py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite_08.png')
+INNKEEPER_UP0 = py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite_09.png')
+INNKEEPER_UP1 = py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite_10.png')
+INNKEEPER_UP2 = py.image.load('images\\entities\\noncombatants\\innkeeper\\sprite_11.png')
+INNKEEPER_PORTRAIT = py.image.load('images\\entities\\noncombatants\\innkeeper\\portrait.png')
+INNKEEPER_PORTMINI = py.image.load('images\\entities\\noncombatants\\innkeeper\\port_mini.png')
+INNKEEPER_ACTOR = None
+
+INNKEEPER_SPRITE_DICT = {(0, 1): [INNKEEPER_DOWN0, INNKEEPER_DOWN0, INNKEEPER_DOWN0, INNKEEPER_DOWN1, INNKEEPER_DOWN1, INNKEEPER_DOWN1, INNKEEPER_DOWN2, INNKEEPER_DOWN2, INNKEEPER_DOWN2, INNKEEPER_DOWN1, INNKEEPER_DOWN1, INNKEEPER_DOWN1],
+                       (0, -1): [INNKEEPER_UP0, INNKEEPER_UP0, INNKEEPER_UP0, INNKEEPER_UP1, INNKEEPER_UP1, INNKEEPER_UP1, INNKEEPER_UP2, INNKEEPER_UP2, INNKEEPER_UP2,INNKEEPER_UP1, INNKEEPER_UP1, INNKEEPER_UP1],
+                       (-1, 0): [INNKEEPER_LEFT0, INNKEEPER_LEFT0, INNKEEPER_LEFT0, INNKEEPER_LEFT1, INNKEEPER_LEFT1, INNKEEPER_LEFT1, INNKEEPER_LEFT2, INNKEEPER_LEFT2, INNKEEPER_LEFT2, INNKEEPER_LEFT1, INNKEEPER_LEFT1, INNKEEPER_LEFT1],
+                       (1, 0): [INNKEEPER_RIGHT0, INNKEEPER_RIGHT0, INNKEEPER_RIGHT0, INNKEEPER_RIGHT1, INNKEEPER_RIGHT1, INNKEEPER_RIGHT1, INNKEEPER_RIGHT2, INNKEEPER_RIGHT2, INNKEEPER_RIGHT2, INNKEEPER_RIGHT1, INNKEEPER_RIGHT1, INNKEEPER_RIGHT1],}
+
+BUNDLE_INNKEEPER = ImageBundle(INNKEEPER_SPRITE_DICT,
+                          INNKEEPER_SPRITE_DICT.get((0, 1)),
+                          INNKEEPER_PORTRAIT,
+                          INNKEEPER_PORTMINI,
+                          INNKEEPER_ACTOR)
+
+TAVERNKEEPER_DOWN0 = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite_00.png')
+TAVERNKEEPER_DOWN1 = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite_01.png')
+TAVERNKEEPER_DOWN2 = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite_02.png')
+TAVERNKEEPER_LEFT0 = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite_03.png')
+TAVERNKEEPER_LEFT1 = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite_04.png')
+TAVERNKEEPER_LEFT2 = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite_05.png')
+TAVERNKEEPER_RIGHT0 = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite_06.png')
+TAVERNKEEPER_RIGHT1 = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite_07.png')
+TAVERNKEEPER_RIGHT2 = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite_08.png')
+TAVERNKEEPER_UP0 = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite_09.png')
+TAVERNKEEPER_UP1 = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite_10.png')
+TAVERNKEEPER_UP2 = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\sprite_11.png')
+TAVERNKEEPER_PORTRAIT = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\portrait.png')
+TAVERNKEEPER_PORTMINI = py.image.load('images\\entities\\noncombatants\\tavernkeeper\\port_mini.png')
+TAVERNKEEPER_ACTOR = None
+
+TAVERNKEEPER_SPRITE_DICT = {(0, 1): [TAVERNKEEPER_DOWN0, TAVERNKEEPER_DOWN0, TAVERNKEEPER_DOWN0, TAVERNKEEPER_DOWN1, TAVERNKEEPER_DOWN1, TAVERNKEEPER_DOWN1, TAVERNKEEPER_DOWN2, TAVERNKEEPER_DOWN2, TAVERNKEEPER_DOWN2, TAVERNKEEPER_DOWN1, TAVERNKEEPER_DOWN1, TAVERNKEEPER_DOWN1],
+                       (0, -1): [TAVERNKEEPER_UP0, TAVERNKEEPER_UP0, TAVERNKEEPER_UP0, TAVERNKEEPER_UP1, TAVERNKEEPER_UP1, TAVERNKEEPER_UP1, TAVERNKEEPER_UP2, TAVERNKEEPER_UP2, TAVERNKEEPER_UP2,TAVERNKEEPER_UP1, TAVERNKEEPER_UP1, TAVERNKEEPER_UP1],
+                       (-1, 0): [TAVERNKEEPER_LEFT0, TAVERNKEEPER_LEFT0, TAVERNKEEPER_LEFT0, TAVERNKEEPER_LEFT1, TAVERNKEEPER_LEFT1, TAVERNKEEPER_LEFT1, TAVERNKEEPER_LEFT2, TAVERNKEEPER_LEFT2, TAVERNKEEPER_LEFT2, TAVERNKEEPER_LEFT1, TAVERNKEEPER_LEFT1, TAVERNKEEPER_LEFT1],
+                       (1, 0): [TAVERNKEEPER_RIGHT0, TAVERNKEEPER_RIGHT0, TAVERNKEEPER_RIGHT0, TAVERNKEEPER_RIGHT1, TAVERNKEEPER_RIGHT1, TAVERNKEEPER_RIGHT1, TAVERNKEEPER_RIGHT2, TAVERNKEEPER_RIGHT2, TAVERNKEEPER_RIGHT2, TAVERNKEEPER_RIGHT1, TAVERNKEEPER_RIGHT1, TAVERNKEEPER_RIGHT1],}
+
+BUNDLE_TAVERNKEEPER = ImageBundle(TAVERNKEEPER_SPRITE_DICT,
+                          TAVERNKEEPER_SPRITE_DICT.get((0, 1)),
+                          TAVERNKEEPER_PORTRAIT,
+                          TAVERNKEEPER_PORTMINI,
+                          TAVERNKEEPER_ACTOR)
 
 DUNGEON_ALPHA_NONCOMBATANT_IMAGE_BUNDLES = {'samwise': BUNDLE_SAMWISE,
                                             'mage': BUNDLE_MAGE,

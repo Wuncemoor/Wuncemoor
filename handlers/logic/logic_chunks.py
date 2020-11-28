@@ -48,6 +48,8 @@ class Move(AbstractLogic):
 
         tile = self.game.world.current_map.tiles[destination_y][destination_x]
 
+        self.game.party.change_direction(output)
+
         if not tile.blocker:
 
             self.game.party.move(dx, dy)

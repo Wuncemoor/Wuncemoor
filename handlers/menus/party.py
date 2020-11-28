@@ -14,6 +14,7 @@ class Party:
         self.focus = None
         self.x = None
         self.y = None
+        self.direction = (0, 1)
         self.sub = None
         self.formation = 'Unorganized'
         self.move_speed = 'Normal'
@@ -32,6 +33,12 @@ class Party:
     def move(self, dx, dy):
         self.x += dx
         self.y += dy
+
+    def change_direction(self, new_direction):
+        if self.direction != new_direction:
+            self.direction = new_direction
+            for member in self.members:
+                member.combatant.images.sprite = member.combatant.images.sprite_dict.get(new_direction)
 
     def remove(self, entity):
         if self.p1 is entity:
