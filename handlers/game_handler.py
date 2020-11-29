@@ -1,3 +1,4 @@
+from config.constants import KEYDOWN_DELAY
 from handlers.log_handler import LogHandler
 from handlers.logic.options import initialize_menu_options
 from handlers import state_handlers
@@ -48,7 +49,16 @@ class GameHandler:
             'reward': self.reward,
             'debug': self.debug,
         }
+
+        self.set_key_repeat(string)
         self.state_handler = state_dict.get(string)
+
+    @staticmethod
+    def set_key_repeat(string):
+        if string != 'life':
+            py.key.set_repeat()
+        else:
+            py.key.set_repeat(KEYDOWN_DELAY)
 
     def take_ownership(self):
         self.world.owner = self

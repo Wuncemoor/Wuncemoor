@@ -1,6 +1,7 @@
 # (screen, title)
 SCREEN_SIZE = (1920, 1080)
 CAPTION = 'Wuncemoor: The Eternal Dream'
+KEYDOWN_DELAY = 75
 
 TILESIZE = 48
 # (width, height)

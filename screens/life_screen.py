@@ -1,8 +1,8 @@
-import math
 
 from numpy.core._multiarray_umath import sqrt
 import tcod
 from pygame.surface import Surface
+from pygame import key, K_LEFT, K_a, K_RIGHT, K_UP, K_DOWN, K_d, K_s, K_w
 from pygame.transform import scale
 from config.constants import WHITE, TILES_ON_SCREEN, TILESIZE, BLACK, TRANSPARENT, LIFE_PANEL_WIDTH, LIFE_PANEL_HEIGHT
 from config.image_objects import RESOURCE_HUD_BASE, RESOURCE_HUD_OVERLAY, HP, MP, TP, VP, TILE_BASE, \
@@ -141,8 +141,13 @@ def draw_party(self, main_screen):
     party = self.game.party
 
     sprite = party.p1.images.sprite
+    keys = key.get_pressed()
 
-    main_screen.blit(sprite[self.frame], ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
+    if keys[K_LEFT] | keys[K_RIGHT] | keys[K_UP] | keys[K_DOWN] | keys[K_a] | keys[K_d] | keys[K_s] | keys[K_w]:
+        fast = self.frame * 3
+        main_screen.blit(sprite[fast % len(sprite)], ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
+    else:
+        main_screen.blit(sprite[self.frame], ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
 
 
 def draw_tile(main_screen, tiles, tile, x, y, cx, cy, visible, is_interior):

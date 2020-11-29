@@ -1,5 +1,5 @@
 import pygame as py
-from config.constants import SCREEN_SIZE, CAPTION
+from config.constants import SCREEN_SIZE, CAPTION, KEYDOWN_DELAY
 from handlers.game_handler import GameHandler
 from handlers.artist_handler import ArtistHandler
 from handlers.input_handler import InputHandler
@@ -11,6 +11,7 @@ def main():
 
     py.init()
     py.display.set_caption(CAPTION)
+    py.key.set_repeat(KEYDOWN_DELAY)
     screen = py.display.set_mode(SCREEN_SIZE, flags=py.FULLSCREEN)
     clock = py.time.Clock()
 
