@@ -1,6 +1,7 @@
 import tcod as libtcod
 from ECS.entity import Entity
 from abstracts.abstract_dungeon_builder import AbstractDungeonBuilder
+from abstracts.abstract_tile_component import ModalTileFloor
 from config.constants import OVERWORLD, DUNGEON_ALPHA, DUNGEON_DELTA, DUNGEON_GAMMA, DUNGEON_BETA
 from dungeons.mixins import InitDangerousMap, InitSafeMap
 from enums.render_order import RenderOrder
@@ -123,7 +124,8 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
 
         alpha_map.set_modes(major_road, 'floor')
         for struct in structures:
-            alpha_map.set_modes(struct, 'floor')
+            if issubclass(struct.floor_component, ModalTileFloor):
+                alpha_map.set_modes(struct, 'floor')
 
         noncombatants = self.get_noncombatants()
         alpha_map.noncombatants.extend(noncombatants)

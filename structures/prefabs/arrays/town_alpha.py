@@ -35,11 +35,34 @@ from config.image_objects import EXT_LEFT_EDGE_BOT, EXT_EXTEND_BOT, EXT_LEFT_DOO
     GREEN_ROOF_BACK_LEFT_CONNECT, GREEN_ROOF_BACK_MID_CONNECT, GREEN_ROOF_FRONT_MID_CONNECT, \
     GREEN_ROOF_FRONT_RIGHT_CONNECT, GREEN_ROOF_BACK_RIGHT_CONNECT, GREEN_ROOF_LEFT, GREEN_ROOF_FRONT_LEFT_PEAK, \
     GREEN_ROOF_BACK_LEFT_PEAK, GREEN_ROOF_RIGHT, GREEN_ROOF_FRONT_RIGHT_PEAK, GREEN_ROOF_BACK_RIGHT_PEAK, \
-    GREEN_ROOF_MID, GREEN_ROOF_FRONT_MID_PEAK, GREEN_ROOF_BACK_MID_PEAK
+    GREEN_ROOF_MID, GREEN_ROOF_FRONT_MID_PEAK, GREEN_ROOF_BACK_MID_PEAK, H_WOODPLANK_TILEFLOOR, \
+    H_WOODPLANK_YELLOWRUG_BOTLEFT_TILEFLOOR, H_WOODPLANK_YELLOWRUG_BOTRIGHT_TILEFLOOR, \
+    H_WOODPLANK_YELLOWRUG_TOPLEFT_TILEFLOOR, H_WOODPLANK_YELLOWRUG_TOPRIGHT_TILEFLOOR, \
+    H_WOODPLANK_YELLOWRUG_BOT_TILEFLOOR, H_WOODPLANK_YELLOWRUG_TOP_TILEFLOOR
 from world_objects.blockers.structure_blockers import WoodenWallTileBlocker
+from world_objects.floors.wood_floors import WoodPlankTileFloor
 from world_objects.overheads.basic_overheads import WoodenWallOverhead, RoofOverhead
 
 
+def mage_house_floor_array():
+    wood = WoodPlankTileFloor(H_WOODPLANK_TILEFLOOR)
+    rlb = WoodPlankTileFloor(H_WOODPLANK_YELLOWRUG_BOTLEFT_TILEFLOOR)
+    rb = WoodPlankTileFloor(H_WOODPLANK_YELLOWRUG_BOT_TILEFLOOR)
+    rrb = WoodPlankTileFloor(H_WOODPLANK_YELLOWRUG_BOTRIGHT_TILEFLOOR)
+    rlt = WoodPlankTileFloor(H_WOODPLANK_YELLOWRUG_TOPLEFT_TILEFLOOR)
+    rt = WoodPlankTileFloor(H_WOODPLANK_YELLOWRUG_TOP_TILEFLOOR)
+    rrt = WoodPlankTileFloor(H_WOODPLANK_YELLOWRUG_TOPRIGHT_TILEFLOOR)
+
+    array = [[wood, wood, wood, wood, wood, wood, wood, wood, wood, wood, wood],
+             [wood, wood, wood, wood, wood, wood, wood, wood, wood, wood, wood],
+             [wood, wood, wood, wood, wood, wood, wood, wood, wood, wood, wood],
+             [wood, wood, wood, wood, wood, wood, wood, wood, wood, wood, wood],
+             [wood, wood, wood, wood, wood, wood, wood, wood, wood, wood, wood],
+             [wood, wood, wood, wood, wood, wood, wood, wood, wood, wood, wood],
+             [wood, wood, wood, wood, wood, wood, wood, wood, wood, wood, wood],
+             [wood, wood, wood, wood,  rlt,   rt,  rrt, wood, wood, wood, wood],
+             [wood, wood, wood, wood,  rlb,   rb,  rrb, wood, wood, wood, wood]]
+    return array
 def mage_house_blocker_array():
     fl = WoodenWallTileBlocker(EXT_LEFT_EDGE_BOT)
     bl = WoodenWallTileBlocker(EXT_LEFT_EDGE_BOT)

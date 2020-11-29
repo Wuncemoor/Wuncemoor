@@ -1,15 +1,18 @@
 from abstracts.abstract_structure import PrefabStructure
-from structures.prefabs.arrays.town_alpha import mage_house_blocker_array, mage_house_overhead_array, mayor_house_blocker_array, \
+from structures.prefabs.arrays.town_alpha import mage_house_blocker_array, mage_house_overhead_array, \
+    mayor_house_blocker_array, \
     mayor_house_overhead_array, guard_hut_blocker_array, guard_hut_overhead_array, church_blocker_array, \
     church_overhead_array, orphanage_blocker_array, orphanage_overhead_array, inn_blocker_array, inn_overhead_array, \
-    tavern_blocker_array, tavern_overhead_array
+    tavern_blocker_array, tavern_overhead_array, mage_house_floor_array
 from world_objects.floors.outside_floors import DirtTileFloor
+from world_objects.floors.wood_floors import WoodPlankTileFloor
 from world_objects.rect import Rect
 
 
 class TownAlphaMageHouse(PrefabStructure):
 
-    floor_component = DirtTileFloor
+    floor_component = WoodPlankTileFloor
+    _floors = mage_house_floor_array()
     _blockers = mage_house_blocker_array()
     _overhead = mage_house_overhead_array()
     rect = Rect(7, 7, 11, 9)
@@ -24,7 +27,7 @@ class TownAlphaMageHouse(PrefabStructure):
         i, j = 0, 0
         for row in self.tiles:
             for tile in row:
-                tile.floor = DirtTileFloor()
+                tile.floor = self._floors[j][i]
                 tile.blocker = self._blockers[j][i]
                 i += 1
             j += 1

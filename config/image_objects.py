@@ -506,6 +506,13 @@ TILE_BASE = {
 }
 
 GRASS_TILE_FLOOR = py.image.load('images\\tiles\\grass.png')
+H_WOODPLANK_TILEFLOOR = py.image.load('images\\tiles\\wood\\h_woodplank.png')
+H_WOODPLANK_YELLOWRUG_TOPLEFT_TILEFLOOR = py.image.load('images\\tiles\\wood\\h_woodplank_yellowrug_topleft.png')
+H_WOODPLANK_YELLOWRUG_TOP_TILEFLOOR = py.image.load('images\\tiles\\wood\\h_woodplank_yellowrug_top.png')
+H_WOODPLANK_YELLOWRUG_TOPRIGHT_TILEFLOOR = py.image.load('images\\tiles\\wood\\h_woodplank_yellowrug_topright.png')
+H_WOODPLANK_YELLOWRUG_BOTLEFT_TILEFLOOR = py.image.load('images\\tiles\\wood\\h_woodplank_yellowrug_botleft.png')
+H_WOODPLANK_YELLOWRUG_BOT_TILEFLOOR = py.image.load('images\\tiles\\wood\\h_woodplank_yellowrug_bot.png')
+H_WOODPLANK_YELLOWRUG_BOTRIGHT_TILEFLOOR = py.image.load('images\\tiles\\wood\\h_woodplank_yellowrug_botright.png')
 
 STONE_WALL = {
     '00001000': py.image.load('images\\entities\\blockers\\stone_wall\\stone_wall00001000.png'),
