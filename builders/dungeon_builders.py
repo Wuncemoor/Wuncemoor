@@ -1,14 +1,13 @@
 import tcod as libtcod
 from ECS.entity import Entity
 from abstracts.abstract_dungeon_builder import AbstractDungeonBuilder
-from abstracts.abstract_tile_component import ModalTileFloor
 from config.constants import OVERWORLD, DUNGEON_ALPHA, DUNGEON_DELTA, DUNGEON_GAMMA, DUNGEON_BETA
 from dungeons.mixins import InitDangerousMap, InitSafeMap
 from enums.render_order import RenderOrder
 from world_objects.transition import Transition
 from config.image_objects import STAIRS_DOWN, STAIRS_UP
 from world_objects.rect import Rect
-from world_objects.majorroad import MajorRoad
+from structures.procedurals.roads import MajorRoad
 from dungeons.dungeon_alpha import DungeonAlphaMixin
 from dungeons.overworld.biome_mixin import BiomeMixin
 from dungeons.overworld.plot_mixin import PlotMixin
@@ -116,7 +115,7 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
         alpha_map.integrate_protostructure(walls)
         alpha_map.integrate_protostructure(major_road, flag='major')
 
-        structures = self.get_prefab_structures()
+        structures = self.get_structures()
 
         alpha_map.integrate_protostructures(structures)
 
