@@ -12,6 +12,15 @@ class AbstractTileComponent(ABC):
     def name(self):
         pass
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        else:
+            return False
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
 
 class AbstractTileFloor(AbstractTileComponent):
     """Abstract to make a type of ground for the Player to walk on. Can hold transitions which take Player to another
@@ -20,6 +29,11 @@ class AbstractTileFloor(AbstractTileComponent):
     def __init__(self):
         super().__init__()
         self.transition = None
+
+    @property
+    @abstractmethod
+    def name(self):
+        pass
 
     def has_transition(self):
         if self.transition is not None:
