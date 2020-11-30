@@ -63,6 +63,8 @@ def mage_house_floor_array():
              [wood, wood, wood, wood,  rlt,   rt,  rrt, wood, wood, wood, wood],
              [wood, wood, wood, wood,  rlb,   rb,  rrb, wood, wood, wood, wood]]
     return array
+
+
 def mage_house_blocker_array():
     fl = WoodenWallTileBlocker(EXT_LEFT_EDGE_BOT)
     bl = WoodenWallTileBlocker(EXT_LEFT_EDGE_BOT)

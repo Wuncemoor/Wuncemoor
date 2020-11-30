@@ -1,4 +1,5 @@
 from abstracts.abstract_structure import ProceduralStructure, PrefabStructure
+from abstracts.abstract_tile_component import ModalTileFloor, ModalTileBlocker
 from dungeons.tile_mixins import InitRealTiles
 from ECS.entity import Entity
 from random import randint
@@ -199,38 +200,38 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
                 i = 0
             return self.tiles
 
-    def set_modes(self, proto, tile_component):
-        for y in range(proto.rect.y1, proto.rect.y2):
-            for x in range(proto.rect.x1, proto.rect.x2):
-                mode = ''
-                try:
-                    nearby_tiles = [self.tiles[y - 1][x - 1], self.tiles[y - 1][x],
-                                    self.tiles[y - 1][x + 1], self.tiles[y][x - 1],
-                                    self.tiles[y][x + 1], self.tiles[y + 1][x - 1],
-                                    self.tiles[y + 1][x], self.tiles[y + 1][x + 1]]
-                except IndexError:
-                    nearby_tiles = [self.tiles[y][x], self.tiles[y][x],
-                                    self.tiles[y][x], self.tiles[y][x],
-                                    self.tiles[y][x], self.tiles[y][x],
-                                    self.tiles[y][x], self.tiles[y][x]]
-
-                if tile_component == 'floor':
-                    for tile in nearby_tiles:
-                        if isinstance(tile.floor, proto.floor_component):
-                            mode += '1'
-                        else:
-                            mode += '0'
+    def set_modes(self):
+        directions = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
+        for y in range(len(self.tiles)):
+            for x in range(len(self.tiles[0])):
+                if not isinstance(self.tiles[y][x].floor, ModalTileFloor):
+                    pass
+                else:
+                    mode = ''
+                    try:
+                        for dxdy in directions:
+                            if isinstance(self.tiles[y][x].floor, self.tiles[y + dxdy[1]][x + dxdy[0]].floor.__class__):
+                                mode += '1'
+                            else:
+                                mode += '0'
+                    except IndexError:
+                        mode = '11111111'
                     self.tiles[y][x].floor.mode = mode
                     self.tiles[y][x].floor.set_images()
-                elif tile_component == 'blocker':
-                    for tile in nearby_tiles:
-                        if isinstance(tile.blocker, self.tiles[y][x].blocker.__class__):
-                            mode += '1'
-                        else:
-                            mode += '0'
-                    if self.tiles[y][x].blocker is not None:
-                        self.tiles[y][x].blocker.mode = mode
-                        self.tiles[y][x].blocker.set_images()
+                if not isinstance(self.tiles[y][x].blocker, ModalTileBlocker):
+                    pass
+                else:
+                    mode = ''
+                    try:
+                        for dxdy in directions:
+                            if isinstance(self.tiles[y][x].blocker, self.tiles[y + dxdy[1]][x + dxdy[0]].blocker.__class__):
+                                mode += '1'
+                            else:
+                                mode += '0'
+                    except IndexError:
+                        mode = '11111111'
+                    self.tiles[y][x].blocker.mode = mode
+                    self.tiles[y][x].blocker.set_images()
 
     def fill_tiles(self):
         pass

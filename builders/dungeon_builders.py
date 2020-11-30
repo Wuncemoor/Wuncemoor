@@ -116,16 +116,11 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
         alpha_map.integrate_protostructure(walls)
         alpha_map.integrate_protostructure(major_road, flag='major')
 
-        alpha_map.set_modes(walls, 'blocker')
-
         structures = self.get_prefab_structures()
 
         alpha_map.integrate_protostructures(structures)
 
-        alpha_map.set_modes(major_road, 'floor')
-        for struct in structures:
-            if issubclass(struct.floor_component, ModalTileFloor):
-                alpha_map.set_modes(struct, 'floor')
+        alpha_map.set_modes()
 
         noncombatants = self.get_noncombatants()
         alpha_map.noncombatants.extend(noncombatants)
@@ -135,7 +130,6 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
         # equippable_test = EquippableBuilder(499)
         # director = Director()
         #
-        # random shopkeeper
         # director.set_builder(equippable_test)
         # equippable = director.get_equippable()
         # item_component = Item(equippable=equippable)

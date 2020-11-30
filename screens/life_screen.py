@@ -159,7 +159,6 @@ def draw_tile(main_screen, tiles, tile, x, y, cx, cy, visible, is_interior):
 
 
 def draw_tile_floor(main_screen, tile, x, y, vis):
-
     if vis:
         main_screen.blit(tile.floor.image, (x * TILESIZE, y * TILESIZE))
         tile.explored = True
