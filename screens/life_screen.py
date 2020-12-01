@@ -154,7 +154,7 @@ def draw_tile(main_screen, tiles, tile, x, y, cx, cy, visible, is_interior):
 
     draw_tile_floor(main_screen, tile, x, y, visible)
     draw_tile_decoration(main_screen, tile, x, y, visible)
-    draw_tile_blocker(main_screen, tile, x, y)
+    draw_tile_blocker(main_screen, tile, x, y, is_interior)
     draw_tile_overhead(main_screen, tiles, tile, x, y, cx, cy, is_interior)
 
 
@@ -173,16 +173,19 @@ def draw_tile_decoration(main_screen, tile, x, y, vis):
         main_screen.blit(tile.decoration.image, (x * TILESIZE, y * TILESIZE))
 
 
-def draw_tile_blocker(main_screen, tile, x, y):
+def draw_tile_blocker(main_screen, tile, x, y, interior):
     if tile.blocker and tile.explored:
-        main_screen.blit(tile.blocker.image, (x * TILESIZE, y * TILESIZE))
+        if interior and tile.blocker.int_image:
+            main_screen.blit(tile.blocker.int_image, (x * TILESIZE, y * TILESIZE))
+        else:
+            main_screen.blit(tile.blocker.image, (x * TILESIZE, y * TILESIZE))
 
 
 def draw_tile_overhead(main_screen, tiles, tile, x, y, cx, cy, interior):
     if tile.overhead:
         for obj in tile.overhead:
             associated_tile = tiles[cy + y - obj.distance_overhead][cx + x]
-            if (tile.explored or associated_tile.explored) and interior is False:
+            if (tile.explored or associated_tile.explored) and interior == obj.interior:
                 main_screen.blit(obj.image, (x * TILESIZE, ((y - obj.distance_overhead) * TILESIZE)))
 
 
