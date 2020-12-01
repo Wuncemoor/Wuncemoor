@@ -60,8 +60,9 @@ class ModalTileFloor(AbstractTileFloor):
 class AbstractTileBlocker(AbstractTileComponent):
     """Abstract for TileBlocker components for Tile. Blocks field of view if opaque."""
 
-    def __init__(self, image=None):
+    def __init__(self, image=None, int_image=None):
         super().__init__(image)
+        self.int_image = int_image
 
     @property
     @abstractmethod
@@ -86,8 +87,9 @@ class ModalTileBlocker(AbstractTileBlocker):
 
 class AbstractTileOverhead(AbstractTileComponent):
 
-    def __init__(self, distance_overhead: int, image=None):
+    def __init__(self, interior: bool, distance_overhead: int, image=None):
         super().__init__(image)
+        self.interior = interior
         self.distance_overhead = distance_overhead
 
     @property

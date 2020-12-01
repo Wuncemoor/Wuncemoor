@@ -6,5 +6,5 @@ class WoodenWallTileBlocker(AbstractTileBlocker):
     name = 'Wooden Wall'
     opaque = True
 
-    def __init__(self, image):
-        super().__init__(image)
+    def __init__(self, image, int_image=None):
+        super().__init__(image, int_image)

@@ -12,7 +12,8 @@ class DungeonAlphaMixin:
 
     @staticmethod
     def get_noncombatants():
-        noncombatants = [get_samwise(), get_mage(), get_guard_captain(), get_priest(), get_rogue(), get_homer(), get_mayor(), get_innkeeper(), get_tavernkeeper()]
+        noncombatants = [get_samwise(), get_mage(), get_guard_captain(), get_priest(), get_rogue(), get_homer(),
+                         get_mayor(), get_innkeeper(), get_tavernkeeper()]
         return noncombatants
 
     def get_major_road(self, outer_scenery_dim):
@@ -43,12 +44,7 @@ class DungeonAlphaMixin:
                       TownAlphaChurch(), church_graveyard, church_road, market, TownAlphaOrphanage(), orphan_road, inntavern_road, tavern_road1, tavern_road2]
         return structures
 
-
     def get_town_walls(self, outer_scenery_dim):
         rect = Rect(outer_scenery_dim, outer_scenery_dim, self.width - outer_scenery_dim*2, self.height - outer_scenery_dim*2)
         walls = TownWalls(rect, 'stone')
         return walls
-
-
-
-
