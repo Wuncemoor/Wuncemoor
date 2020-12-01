@@ -26,10 +26,14 @@ class PrefabStructure(InitFakeTiles, PrefabTiles2D, ABC):
 
     def __init__(self):
         super().__init__()
-        self.fill_tiles()
 
     @abstractmethod
     def set_transitions(self):
+        pass
+
+    @property
+    @abstractmethod
+    def _floors(self):
         pass
 
     @property

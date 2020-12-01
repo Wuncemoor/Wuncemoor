@@ -18,18 +18,7 @@ class TownAlphaMageHouse(PrefabStructure):
 
     def __init__(self):
         super().__init__()
-        self.fill_tiles()
         self.set_transitions()
-
-    def fill_tiles(self):
-        i, j = 0, 0
-        for row in self.tiles:
-            for tile in row:
-                tile.floor = self._floors[j][i]
-                tile.blocker = self._blockers[j][i]
-                i += 1
-            j += 1
-            i = 0
 
     def set_transitions(self):
         pass
@@ -44,18 +33,7 @@ class TownAlphaMayorHouse(PrefabStructure):
 
     def __init(self):
         super().__init__()
-        self.fill_tiles()
         self.set_transitions()
-
-    def fill_tiles(self):
-        i, j = 0, 0
-        for row in self.tiles:
-            for tile in row:
-                tile.floor = self._floors[j][i]
-                tile.blocker = self._blockers[j][i]
-                i += 1
-            j += 1
-            i = 0
 
     def set_transitions(self):
         pass
@@ -70,18 +48,7 @@ class TownAlphaGuardHut(PrefabStructure):
 
     def __init(self):
         super().__init__()
-        self.fill_tiles()
         self.set_transitions()
-
-    def fill_tiles(self):
-        i, j = 0, 0
-        for row in self.tiles:
-            for tile in row:
-                tile.floor = self._floors[j][i]
-                tile.blocker = self._blockers[j][i]
-                i += 1
-            j += 1
-            i = 0
 
     def set_transitions(self):
         pass
@@ -96,18 +63,7 @@ class TownAlphaChurch(PrefabStructure):
 
     def __init(self):
         super().__init__()
-        self.fill_tiles()
         self.set_transitions()
-
-    def fill_tiles(self):
-        i, j = 0, 0
-        for row in self.tiles:
-            for tile in row:
-                tile.floor = self._floors[j][i]
-                tile.blocker = self._blockers[j][i]
-                i += 1
-            j += 1
-            i = 0
 
     def set_transitions(self):
         pass
@@ -120,14 +76,9 @@ class TownAlphaOrphanage(PrefabStructure):
     rect = Rect(69, 14, 13, 10)
     is_interior = True
 
-    def fill_tiles(self):
-        i, j = 0, 0
-        for row in self.tiles:
-            for tile in row:
-                tile.floor = self._floors[j][i]
-                i += 1
-            j += 1
-            i = 0
+    def __init(self):
+        super().__init__()
+        self.set_transitions()
 
     def set_transitions(self):
         pass
@@ -142,18 +93,7 @@ class TownAlphaInn(PrefabStructure):
 
     def __init__(self):
         super().__init__()
-        self.fill_tiles()
         self.set_transitions()
-
-    def fill_tiles(self):
-        i, j = 0, 0
-        for row in self.tiles:
-            for tile in row:
-                tile.floor = self._floors[j][i]
-                tile.blocker = self._blockers[j][i]
-                i += 1
-            j += 1
-            i = 0
 
     def set_transitions(self):
         pass
@@ -168,18 +108,7 @@ class TownAlphaTavern(PrefabStructure):
 
     def __init(self):
         super().__init__()
-        self.fill_tiles()
         self.set_transitions()
-
-    def fill_tiles(self):
-        i, j = 0, 0
-        for row in self.tiles:
-            for tile in row:
-                tile.floor = self._floors[j][i]
-                tile.blocker = self._blockers[j][i]
-                i += 1
-            j += 1
-            i = 0
 
     def set_transitions(self):
         pass

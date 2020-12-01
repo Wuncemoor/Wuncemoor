@@ -20,7 +20,7 @@ class AbstractFillTiles(ABC):
         pass
 
 
-class PrefabTiles2D(AbstractInitTiles, AbstractFillTiles, ABC):
+class PrefabTiles2D(AbstractInitTiles, ABC):
     """Abstract for tiles that are always linked together in the same configuration"""
     def __init__(self):
         self.width = self.rect.x2 - self.rect.x1

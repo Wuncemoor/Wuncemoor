@@ -105,10 +105,10 @@ class PlotMixin:
     def add_town(overworld, node):
         town = OverworldTown(node)
         y, x = 0, 0
-        for j in range(node.y, node.y + len(town._images)):
-            for i in range(node.x, node.x + len(town._images[0])):
+        for j in range(node.y, node.y + len(town._decorations)):
+            for i in range(node.x, node.x + len(town._decorations[0])):
                 overworld.tiles[j][i].floor.transition = town.tiles[y][x].floor.transition
-                overworld.tiles[j][i].decoration = town.tiles[y][x].floor
+                overworld.tiles[j][i].decoration = town._decorations[y][x]
                 x += 1
             y += 1
             x = 0

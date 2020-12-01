@@ -189,7 +189,7 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
         elif isinstance(proto, PrefabStructure):
             for y in range(proto.rect.y1, proto.rect.y2):
                 for x in range(proto.rect.x1, proto.rect.x2):
-                    self.tiles[y][x].floor = proto.tiles[j][i].floor
+                    self.tiles[y][x].floor = proto._floors[j][i]
                     if proto._blockers:
                         self.tiles[y][x].blocker = proto._blockers[j][i]
                     if proto._overhead:
