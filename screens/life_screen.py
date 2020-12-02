@@ -185,7 +185,7 @@ def draw_tile_overhead(main_screen, tiles, tile, x, y, cx, cy, interior):
     if tile.overhead:
         for obj in tile.overhead:
             associated_tile = tiles[cy + y - obj.distance_overhead][cx + x]
-            if (tile.explored or associated_tile.explored) and interior == obj.interior:
+            if (tile.explored or associated_tile.explored) and interior == obj.is_interior:
                 main_screen.blit(obj.image, (x * TILESIZE, ((y - obj.distance_overhead) * TILESIZE)))
 
 

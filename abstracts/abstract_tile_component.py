@@ -1,34 +1,29 @@
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
+
+from pygame.surface import Surface
+
+from world_objects.transition import Transition
 
 
+@dataclass
 class AbstractTileComponent(ABC):
     """You likely want to inherit from  AbstractTileFloor, AbstractTileBlocker, or AbstractTileOverhead"""
 
-    def __init__(self, image=None):
-        self.image = image
+    image: Surface = None
 
     @property
     @abstractmethod
     def name(self):
         pass
 
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        else:
-            return False
 
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
-
+@dataclass
 class AbstractTileFloor(AbstractTileComponent):
     """Abstract to make a type of ground for the Player to walk on. Can hold transitions which take Player to another
     Map when stepped on. """
 
-    def __init__(self):
-        super().__init__()
-        self.transition = None
+    transition: Transition = None
 
     @property
     @abstractmethod
@@ -41,12 +36,11 @@ class AbstractTileFloor(AbstractTileComponent):
         return False
 
 
+@dataclass
 class ModalTileFloor(AbstractTileFloor):
     """Some TileFloor images are dynamic based on neighboring tiles. Has dictionaries to change image."""
 
-    def __init__(self):
-        super().__init__()
-        self.mode = None
+    mode: str = None
 
     @property
     @abstractmethod
@@ -57,12 +51,11 @@ class ModalTileFloor(AbstractTileFloor):
         self.image = self.image_dict.get(self.mode)
 
 
+@dataclass
 class AbstractTileBlocker(AbstractTileComponent):
     """Abstract for TileBlocker components for Tile. Blocks field of view if opaque."""
 
-    def __init__(self, image=None, int_image=None):
-        super().__init__(image)
-        self.int_image = int_image
+    int_image: Surface = None
 
     @property
     @abstractmethod
@@ -70,11 +63,10 @@ class AbstractTileBlocker(AbstractTileComponent):
         pass
 
 
+@dataclass
 class ModalTileBlocker(AbstractTileBlocker):
 
-    def __init__(self):
-        super().__init__()
-        self.mode = None
+    mode: str = None
 
     @property
     @abstractmethod
@@ -85,12 +77,11 @@ class ModalTileBlocker(AbstractTileBlocker):
         self.image = self.image_dict.get(self.mode)
 
 
+@dataclass
 class AbstractTileOverhead(AbstractTileComponent):
 
-    def __init__(self, interior: bool, distance_overhead: int, image=None):
-        super().__init__(image)
-        self.interior = interior
-        self.distance_overhead = distance_overhead
+    distance_overhead: int = 1
+    is_interior: bool = False
 
     @property
     @abstractmethod

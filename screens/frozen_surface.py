@@ -1,8 +1,7 @@
 import pygame as py
-Surface = py.Surface
 
 
-class FrozenSurface(Surface):
+class FrozenSurface(py.Surface):
     """PyGame uses Surface for all view functions including loading image objects. This is a variant to be used to
     give names to image objects. """
 
