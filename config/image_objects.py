@@ -37,14 +37,15 @@ COPPER = py.image.load('images\\GUI\\menus\\copper.png')
 
 JOURNAL_OBJS = {
     'bg': py.image.load('images\\GUI\\journal\\journal_bg.png'),
-    'icon0': py.image.load('images\\GUI\\journal\\current.png'),
+    'current': py.image.load('images\\GUI\\journal\\current.png'),
     'text0': py.image.load('images\\GUI\\journal\\current_text.png'),
-    'icon1': py.image.load('images\\GUI\\journal\\completed.png'),
+    'completed': py.image.load('images\\GUI\\journal\\completed.png'),
     'text1': py.image.load('images\\GUI\\journal\\completed_text.png'),
-    'icon2': py.image.load('images\\GUI\\journal\\codex.png'),
+    'codex': py.image.load('images\\GUI\\journal\\codex.png'),
     'text2': py.image.load('images\\GUI\\journal\\codex_text.png'),
-    'icon3': py.image.load('images\\GUI\\journal\\history.png'),
+    'history': py.image.load('images\\GUI\\journal\\history.png'),
     'text3': py.image.load('images\\GUI\\journal\\history_text.png'),
+    'selected': py.image.load('images\\GUI\\journal\\selected_icon.png'),
     'quest_holder': py.image.load('images\\GUI\\journal\\quest_holder.png'),
 }
 

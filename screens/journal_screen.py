@@ -18,9 +18,18 @@ def journal_screen(self):
         ind = self.game.options.current.choice
 
     text = JOURNAL_OBJS.get('text' + str(ind))
-    icon = JOURNAL_OBJS.get('icon' + str(ind))
-    surf.blit(text, (78, 43))
-    surf.blit(icon, (92 + 25 * ind, 72))
+    icon_select = JOURNAL_OBJS.get('selected')
+    current = JOURNAL_OBJS.get('current')
+    completed = JOURNAL_OBJS.get('completed')
+    codex = JOURNAL_OBJS.get('codex')
+    history = JOURNAL_OBJS.get('history')
+
+    surf.blit(text, (71, 218))
+    surf.blit(icon_select, (825 + 75 * ind, 120))
+    surf.blit(current, (825, 120))
+    surf.blit(completed, (900, 120))
+    surf.blit(codex, (975, 120))
+    surf.blit(history, (1050, 120))
 
     align_and_blit(self.screen, surf)
 
