@@ -18,19 +18,23 @@ def get_alpha_surface(width, height):
     return res_display
 
 
-def get_text_surface(text, fontsize=12, color=BLACK):
+def get_text_surface(text, fontsize=12, color=BLACK, style='lunchds'):
+    style_dict = {'lunchds': 'fonts\\lunchds.ttf',
+                  'gentium': 'fonts\\GentiumBookBasic-Regular.ttf',
+                  'source_sans_pro': 'fonts\\SourceSansPro-Regular.ttf',
+                  }
 
-    font = py.font.Font('screens\\fonts\\lunchds.ttf', fontsize)
+    font = py.font.Font(style_dict.get(style), fontsize)
     surf = font.render(text, True, color)
 
     return surf
 
 
-def get_button_surface(image, text, fontsize, color):
+def get_button_surface(image, text, fontsize, color, style='lunchds'):
 
     w, h = image.get_width(), image.get_height()
     surf = get_alpha_surface(w, h)
-    text = get_text_surface(text, fontsize, color)
+    text = get_text_surface(text, fontsize, color, style)
     surf.blit(image, (0, 0))
     align_and_blit(surf, text, x_ratio=0.5, y_ratio=0.5, x_adjust=0, y_adjust=math.floor(fontsize/10))
 

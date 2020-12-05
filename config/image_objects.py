@@ -45,8 +45,8 @@ JOURNAL_OBJS = {
     'text2': py.image.load('images\\GUI\\journal\\codex_text.png'),
     'history': py.image.load('images\\GUI\\journal\\history.png'),
     'text3': py.image.load('images\\GUI\\journal\\history_text.png'),
-    'selected': py.image.load('images\\GUI\\journal\\selected_icon.png'),
-    'quest_holder': py.image.load('images\\GUI\\journal\\quest_holder.png'),
+    'selected_icon': py.image.load('images\\GUI\\journal\\selected_icon.png'),
+    'selected_quest': py.image.load('images\\GUI\\journal\\selected_quest.png'),
 }
 
 LOOT_BG = py.image.load('images\\GUI\\looting\\loot_bg.png')
@@ -346,21 +346,21 @@ DUNGEON_ALPHA_NONCOMBATANT_IMAGE_BUNDLES = {'samwise': BUNDLE_SAMWISE,
                                             'innkeeper': BUNDLE_INNKEEPER,
                                             'tavernkeeper': BUNDLE_TAVERNKEEPER, }
 
-BUNDLE_STICK = ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\sprite.png'),
-                           py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\portrait.png'),
-                           py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\port_mini.png'))
+BUNDLE_STICK = ImageBundle(sprite=py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\sprite.png'),
+                           portrait=py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\portrait.png'),
+                           port_mini=py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\port_mini.png'))
 
 BUNDLE_WEAPONS = {
-    'staff': ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\staff\\sprite.png')),
-    'dagger': ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\dagger\\sprite.png')),
-    'shield': ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\shield\\sprite.png')),
-    'longsword': ImageBundle(py.image.load('images\\entities\\items\\equippables\\weapons\\longsword\\sprite.png'),
-                             py.image.load('images\\entities\\items\\equippables\\weapons\\longsword\\portrait.png')),
+    'staff': ImageBundle(sprite=py.image.load('images\\entities\\items\\equippables\\weapons\\staff\\sprite.png')),
+    'dagger': ImageBundle(sprite=py.image.load('images\\entities\\items\\equippables\\weapons\\dagger\\sprite.png')),
+    'shield': ImageBundle(sprite=py.image.load('images\\entities\\items\\equippables\\weapons\\shield\\sprite.png')),
+    'longsword': ImageBundle(sprite=py.image.load('images\\entities\\items\\equippables\\weapons\\longsword\\sprite.png'),
+                             portrait=py.image.load('images\\entities\\items\\equippables\\weapons\\longsword\\portrait.png')),
 }
 
-BUNDLE_POTION = ImageBundle(py.image.load('images\\entities\\items\\useables\\potion\\sprite.png'),
-                            py.image.load('images\\entities\\items\\useables\\potion\\portrait.png'),
-                            py.image.load('images\\entities\\items\\useables\\potion\\port_mini.png'))
+BUNDLE_POTION = ImageBundle(sprite=py.image.load('images\\entities\\items\\useables\\potion\\sprite.png'),
+                            portrait=py.image.load('images\\entities\\items\\useables\\potion\\portrait.png'),
+                            port_mini=py.image.load('images\\entities\\items\\useables\\potion\\port_mini.png'))
 SCROLL = py.image.load('images\\entities\\items\\useables\\scroll\\sprite.png')
 
 BUNDLE_MOBS = {

@@ -5,8 +5,8 @@ from screens.gui_tools import get_surface, blit_options
 
 
 def get_title_text():
-    tfont = Font('screens\\fonts\\lunchds.ttf', 150)
-    stfont = Font('screens\\fonts\\lunchds.ttf', 60)
+    tfont = Font('fonts\\lunchds.ttf', 150)
+    stfont = Font('fonts\\lunchds.ttf', 60)
     text = tfont.render('WUNCEMOOR', True, (0, 0, 0))
     subtext = stfont.render('THE ETERNAL DREAM', True, (0, 0, 0))
 
