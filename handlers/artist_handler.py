@@ -1,3 +1,6 @@
+from pygame.surface import Surface
+
+from config.constants import BLACK, GREY
 from config.image_objects import TITLE_SCREEN_BG, INDICATOR_H, ENCOUNTER_MENU, ENCOUNTER_BUTTON, \
     ENCOUNTER_MESSAGE_BG, INDICATOR_V, LOOT_BG, LOOT_BANNER, LIFE_BACKDROP, TURN_ORDER_QUEUE
 from enums.game_states import GameStates, MenuStates, EncounterStates
@@ -60,6 +63,8 @@ class ArtistHandler(MVC):
         self.screen.blit(right_panel, (1654, 0))
 
     def menus(self):
+        self.life()
+        self.darken_main_screen()
         if self.handler.state == MenuStates.PARTY:
             character_screen(self)
         elif self.handler.state == MenuStates.JOURNAL:
@@ -160,3 +165,10 @@ class ArtistHandler(MVC):
         self.frame += 1
         if self.frame >= 12:
             self.frame = 0
+
+    def darken_main_screen(self):
+        dark = Surface((1392, 1008))
+        dark.fill(BLACK)
+        dark.set_alpha(150)
+        self.screen.blit(dark, (264, 36))
+

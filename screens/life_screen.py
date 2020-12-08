@@ -7,6 +7,7 @@ from pygame.transform import scale
 from config.constants import WHITE, TILES_ON_SCREEN, TILESIZE, BLACK, TRANSPARENT, LIFE_PANEL_WIDTH, LIFE_PANEL_HEIGHT
 from config.image_objects import RESOURCE_HUD_BASE, RESOURCE_HUD_OVERLAY, HP, MP, TP, VP, TILE_BASE, \
     PARTY_SETTINGS_FRAME, MINI_MAP, CLOCK, UPCOMING_EVENTS, EVENT_LOG_BG
+from enums.game_states import GameStates
 from screens.displays.calendar import display_calendar
 from screens.gui_tools import get_alpha_surface, get_text_surface, get_surface, align_and_blit, print_message
 
@@ -90,18 +91,18 @@ def get_life_main_screen(self):
     main_screen = get_alpha_surface(1392, 1008)
     (width, height) = TILES_ON_SCREEN
 
-    cx, cy = self.handler.camera.x, self.handler.camera.y
+    cx, cy = self.game.life.camera.x, self.game.life.camera.y
     largest_overhead = 3
 
-    if self.handler.fov.needs_recompute:
-        self.handler.fov.recompute()
-        self.handler.fov.needs_recompute = False
+    if self.game.life.fov.needs_recompute:
+        self.game.life.fov.recompute()
+        self.game.life.fov.needs_recompute = False
 
     is_interior = is_party_on_interior_tile(self.game.party, self.game.world.tiles)
     for y in range(height + largest_overhead):
         for x in range(width):
             try:
-                visible = tcod.map_is_in_fov(self.handler.fov.map, cy + y, cx + x)
+                visible = tcod.map_is_in_fov(self.game.life.fov.map, cy + y, cx + x)
                 tile = self.game.world.tiles[cy + y][cx + x]
 
                 draw_tile(main_screen, self.game.world.tiles, tile, x, y, cx, cy, visible, is_interior)
@@ -129,21 +130,21 @@ def is_party_on_interior_tile(party, tiles):
 
 
 def draw_entity(self, main_screen, entity):
-    cx, cy = self.handler.camera.x, self.handler.camera.y
+    cx, cy = self.game.life.camera.x, self.game.life.camera.y
     sprite = entity.images.sprite
 
-    if tcod.map_is_in_fov(self.handler.fov.map, entity.y, entity.x):
+    if tcod.map_is_in_fov(self.game.life.fov.map, entity.y, entity.x):
         main_screen.blit(sprite[self.frame], ((entity.x - cx) * TILESIZE, (entity.y - cy) * TILESIZE - (TILESIZE/3)))
 
 
 def draw_party(self, main_screen):
-    cx, cy = self.handler.camera.x, self.handler.camera.y
+    cx, cy = self.game.life.camera.x, self.game.life.camera.y
     party = self.game.party
 
     sprite = party.p1.images.sprite
     keys = key.get_pressed()
 
-    if keys[K_LEFT] | keys[K_RIGHT] | keys[K_UP] | keys[K_DOWN] | keys[K_a] | keys[K_d] | keys[K_s] | keys[K_w]:
+    if keys[K_LEFT] | keys[K_RIGHT] | keys[K_UP] | keys[K_DOWN] | keys[K_a] | keys[K_d] | keys[K_s] | keys[K_w] and self.game.state == GameStates.LIFE:
         fast = self.frame * 3
         main_screen.blit(sprite[fast % len(sprite)], ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
     else:
