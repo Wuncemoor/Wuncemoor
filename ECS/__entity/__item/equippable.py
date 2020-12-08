@@ -100,6 +100,78 @@ class Equippable:
         return math.floor(self.core.hit_dodge_bonuses[1] * self.modifier)
 
     @property
+    def initiative_bonus(self):
+        return math.floor(self.core.initiative_bonus * self.modifier)
+
+    @property
+    def speed_bonus(self):
+        return math.floor(self.core.speed_bonus * self.modifier)
+
+    @property
+    def critical_strike_bonus(self):
+        return math.floor(self.core.critical_strike_bonus * self.modifier)
+
+    @property
+    def critical_damage_bonus(self):
+        return math.floor(self.core.critical_damage_bonus * self.modifier)
+
+    @property
+    def presence_bonus(self):
+        return math.floor(self.core.presence_bonus * self.modifier)
+
+    @property
+    def teamwork_bonus(self):
+        return math.floor(self.core.teamwork_bonus * self.modifier)
+
+    @property
+    def savethrow_injury_bonus(self):
+        return math.floor(self.core.savethrow_injury_bonus * self.modifier)
+
+    @property
+    def savethrow_illness_bonus(self):
+        return math.floor(self.core.savethrow_illness_bonus * self.modifier)
+
+    @property
+    def savethrow_tenacity_bonus(self):
+        return math.floor(self.core.savethrow_tenacity_bonus * self.modifier)
+
+    @property
+    def savethrow_apathy_bonus(self):
+        return math.floor(self.core.savethrow_apathy_bonus * self.modifier)
+
+    @property
+    def savethrow_composure_bonus(self):
+        return math.floor(self.core.savethrow_composure_bonus * self.modifier)
+
+    @property
+    def savethrow_pain_bonus(self):
+        return math.floor(self.core.savethrow_pain_bonus * self.modifier)
+
+    @property
+    def savethrow_cognition_bonus(self):
+        return math.floor(self.core.savethrow_cognition_bonus * self.modifier)
+
+    @property
+    def savethrow_force_bonus(self):
+        return math.floor(self.core.savethrow_force_bonus * self.modifier)
+
+    @property
+    def savethrow_breath_bonus(self):
+        return math.floor(self.core.savethrow_breath_bonus * self.modifier)
+
+    @property
+    def savethrow_reflex_bonus(self):
+        return math.floor(self.core.savethrow_reflex_bonus * self.modifier)
+
+    @property
+    def savethrow_corruption_bonus(self):
+        return math.floor(self.core.savethrow_corruption_bonus * self.modifier)
+
+    @property
+    def savethrow_will_bonus(self):
+        return math.floor(self.core.savethrow_will_bonus * self.modifier)
+
+    @property
     def node_value(self):
         return math.floor(self.core.values[0] * self.modifier)
 

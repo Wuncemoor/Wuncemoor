@@ -16,805 +16,356 @@ class Equipment:
         self.back = back
 
     @property
+    def equipment_slots(self):
+        return [self.main_hand, self.off_hand, self.head, self.body, self.feet, self.belt, self.hands, self.finger, self.neck, self.back]
+
+    @property
     def max_hp_bonus(self):
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.max_hp_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.max_hp_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.max_hp_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.max_hp_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.max_hp_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.max_hp_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.max_hp_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.max_hp_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.max_hp_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.max_hp_bonus
-            
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.max_hp_bonus
         return bonus
         
     @property
     def max_mp_bonus(self):
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.max_mp_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.max_mp_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.max_mp_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.max_mp_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.max_mp_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.max_mp_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.max_mp_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.max_mp_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.max_mp_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.max_mp_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.max_mp_bonus
         return bonus
 
     @property
     def max_tp_bonus(self):
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.max_tp_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.max_tp_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.max_tp_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.max_tp_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.max_tp_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.max_tp_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.max_tp_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.max_tp_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.max_tp_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.max_tp_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.max_tp_bonus
         return bonus
 
     @property
     def max_vp_bonus(self):
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.max_vp_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.max_vp_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.max_vp_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.max_vp_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.max_vp_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.max_vp_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.max_vp_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.max_vp_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.max_vp_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.max_vp_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.max_vp_bonus
         return bonus
         
     @property
     def power_slash_bonus(self):
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.power_slash_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.power_slash_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.power_slash_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.power_slash_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.power_slash_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.power_slash_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.power_slash_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.power_slash_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.power_slash_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.power_slash_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.power_slash_bonus
         return bonus
 
     @property
     def power_pierce_bonus(self):
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.power_pierce_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.power_pierce_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.power_pierce_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.power_pierce_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.power_pierce_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.power_pierce_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.power_pierce_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.power_pierce_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.power_pierce_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.power_pierce_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.power_pierce_bonus
         return bonus
         
     @property
     def power_blunt_bonus(self):
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.power_blunt_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.power_blunt_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.power_blunt_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.power_blunt_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.power_blunt_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.power_blunt_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.power_blunt_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.power_blunt_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.power_blunt_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.power_blunt_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.power_blunt_bonus
         return bonus
         
     @property
     def power_heat_bonus(self):
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.power_heat_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.power_heat_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.power_heat_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.power_heat_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.power_heat_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.power_heat_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.power_heat_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.power_heat_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.power_heat_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.power_heat_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.power_heat_bonus
         return bonus
-       
+
+
     @property
     def power_cold_bonus(self):
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.power_cold_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.power_cold_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.power_cold_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.power_cold_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.power_cold_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.power_cold_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.power_cold_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.power_cold_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.power_cold_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.power_cold_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.power_cold_bonus
         return bonus
         
     @property
     def power_acid_bonus(self):
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.power_acid_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.power_acid_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.power_acid_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.power_acid_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.power_acid_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.power_acid_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.power_acid_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.power_acid_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.power_acid_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.power_acid_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.power_acid_bonus
         return bonus
         
     @property
     def power_current_bonus(self):
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.power_current_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.power_current_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.power_current_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.power_current_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.power_current_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.power_current_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.power_current_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.power_current_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.power_current_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.power_current_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.power_current_bonus
         return bonus
         
     @property
     def power_aether_bonus(self):
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.power_aether_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.power_aether_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.power_aether_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.power_aether_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.power_aether_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.power_aether_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.power_aether_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.power_aether_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.power_aether_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.power_aether_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.power_aether_bonus
         return bonus
         
     @property
     def resist_slash_bonus(self):
     
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.resist_slash_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.resist_slash_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.resist_slash_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.resist_slash_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.resist_slash_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.resist_slash_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.resist_slash_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.resist_slash_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.resist_slash_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.resist_slash_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.resist_slash_bonus
         return bonus
 
     @property
     def resist_pierce_bonus(self):
     
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.resist_pierce_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.resist_pierce_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.resist_pierce_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.resist_pierce_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.resist_pierce_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.resist_pierce_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.resist_pierce_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.resist_pierce_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.resist_pierce_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.resist_pierce_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.resist_pierce_bonus
         return bonus
         
     @property
     def resist_blunt_bonus(self):
     
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.resist_blunt_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.resist_blunt_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.resist_blunt_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.resist_blunt_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.resist_blunt_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.resist_blunt_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.resist_blunt_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.resist_blunt_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.resist_blunt_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.resist_blunt_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.resist_blunt_bonus
         return bonus
 
     @property
     def resist_heat_bonus(self):
     
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.resist_heat_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.resist_heat_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.resist_heat_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.resist_heat_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.resist_heat_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.resist_heat_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.resist_heat_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.resist_heat_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.resist_heat_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.resist_heat_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.resist_heat_bonus
         return bonus
 
     @property
     def resist_cold_bonus(self):
     
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.resist_cold_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.resist_cold_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.resist_cold_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.resist_cold_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.resist_cold_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.resist_cold_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.resist_cold_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.resist_cold_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.resist_cold_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.resist_cold_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.resist_cold_bonus
         return bonus
 
     @property
     def resist_acid_bonus(self):
     
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.resist_acid_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.resist_acid_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.resist_acid_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.resist_acid_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.resist_acid_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.resist_acid_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.resist_acid_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.resist_acid_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.resist_acid_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.resist_acid_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.resist_acid_bonus
         return bonus
 
     @property
     def resist_current_bonus(self):
     
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.resist_current_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.resist_current_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.resist_current_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.resist_current_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.resist_current_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.resist_current_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.resist_current_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.resist_current_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.resist_current_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.resist_current_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.resist_current_bonus
         return bonus
 
     @property
     def resist_aether_bonus(self):
     
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.resist_aether_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.resist_aether_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.resist_aether_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.resist_aether_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.resist_aether_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.resist_aether_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.resist_aether_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.resist_aether_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.resist_aether_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.resist_aether_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.resist_aether_bonus
         return bonus
 
     @property
     def accuracy_bonus(self):
     
         bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.accuracy_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.accuracy_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.accuracy_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.accuracy_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.accuracy_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.accuracy_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.accuracy_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.accuracy_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.accuracy_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.accuracy_bonus
-
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.accuracy_bonus
         return bonus
 
     @property
     def dodge_bonus(self):
-    
-        bonus = 0
-        
-        if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.dodge_bonus
-            
-        if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.dodge_bonus
-            
-        if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.dodge_bonus
-            
-        if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.dodge_bonus
-        
-        if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.dodge_bonus
-            
-        if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.dodge_bonus
-            
-        if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.dodge_bonus
-            
-        if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.dodge_bonus
-            
-        if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.dodge_bonus
-            
-        if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.dodge_bonus
 
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.dodge_bonus
+        return bonus
+
+    @property
+    def initiative_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.initiative_bonus
+        return bonus
+
+    @property
+    def speed_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.speed_bonus
+        return bonus
+
+    @property
+    def critical_strike_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.critical_strike_bonus
+        return bonus
+
+    @property
+    def critical_damage_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.critical_damage_bonus
+        return bonus
+
+    @property
+    def presence_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.presence_bonus
+        return bonus
+
+    @property
+    def teamwork_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.teamwork_bonus
+        return bonus
+
+    @property
+    def savethrow_injury_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.savethrow_injury_bonus
+        return bonus
+
+    @property
+    def savethrow_illness_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.savethrow_illness_bonus
+        return bonus
+
+    @property
+    def savethrow_tenacity_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.savethrow_tenacity_bonus
+        return bonus
+
+    @property
+    def savethrow_apathy_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.savethrow_apathy_bonus
+        return bonus
+
+    @property
+    def savethrow_composure_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.savethrow_composure_bonus
+        return bonus
+
+    @property
+    def savethrow_pain_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.savethrow_pain_bonus
+        return bonus
+
+    @property
+    def savethrow_cognition_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.savethrow_cognition_bonus
+        return bonus
+
+    @property
+    def savethrow_force_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.savethrow_force_bonus
+        return bonus
+
+    @property
+    def savethrow_breath_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.savethrow_breath_bonus
+        return bonus
+
+    @property
+    def savethrow_reflex_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.savethrow_reflex_bonus
+        return bonus
+
+    @property
+    def savethrow_corruption_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.savethrow_corruption_bonus
+        return bonus
+
+    @property
+    def savethrow_will_bonus(self):
+
+        bonus = 0
+        for slot in self.equipment_slots:
+            if slot is not None:
+                bonus += slot.item.equippable.savethrow_will_bonus
         return bonus
 
     def toggle_equip(self, equippable_entity):
