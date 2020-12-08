@@ -376,52 +376,9 @@ BUNDLE_MOBS = {
     'spider': ImageBundle(actor=py.image.load('images\\entities\\combatants\\spider\\actor.png')),
 }
 
-CHARACTER_SCREEN = {
-    'bg': py.image.load('images\\GUI\\character_sheet\\char_sheet.png'),
-    'level': py.image.load('images\\GUI\\character_sheet\\level_icon.png'),
-    'age': py.image.load('images\\GUI\\character_sheet\\age_icon.png'),
-    'power': py.image.load('images\\GUI\\character_sheet\\power.png'),
-    'resistance': py.image.load('images\\GUI\\character_sheet\\resistance.png'),
-    'slash': py.image.load('images\\GUI\\character_sheet\\slash.png'),
-    'pierce': py.image.load('images\\GUI\\character_sheet\\pierce.png'),
-    'blunt': py.image.load('images\\GUI\\character_sheet\\blunt.png'),
-    'heat': py.image.load('images\\GUI\\character_sheet\\heat.png'),
-    'cold': py.image.load('images\\GUI\\character_sheet\\cold.png'),
-    'acid': py.image.load('images\\GUI\\character_sheet\\acid.png'),
-    'current': py.image.load('images\\GUI\\character_sheet\\current.png'),
-    'aether': py.image.load('images\\GUI\\character_sheet\\aether.png'),
-    'accuracy': py.image.load('images\\GUI\\character_sheet\\accuracy.png'),
-    'dodge': py.image.load('images\\GUI\\character_sheet\\dodge.png'),
-    'initiative': py.image.load('images\\GUI\\character_sheet\\initiative.png'),
-    'speed': py.image.load('images\\GUI\\character_sheet\\speed.png'),
-    'teamwork': py.image.load('images\\GUI\\character_sheet\\teamwork.png'),
-    'leadership': py.image.load('images\\GUI\\character_sheet\\leadership.png'),
-    'presence': py.image.load('images\\GUI\\character_sheet\\presence.png'),
-    'reflex': py.image.load('images\\GUI\\character_sheet\\reflex.png'),
-    'balance': py.image.load('images\\GUI\\character_sheet\\balance.png'),
-    'breath': py.image.load('images\\GUI\\character_sheet\\breath.png'),
-    'grapple': py.image.load('images\\GUI\\character_sheet\\grapple.png'),
-    'stun': py.image.load('images\\GUI\\character_sheet\\stun.png'),
-    'panic': py.image.load('images\\GUI\\character_sheet\\panic.png'),
-    'apathy': py.image.load('images\\GUI\\character_sheet\\apathy.png'),
-    'pain': py.image.load('images\\GUI\\character_sheet\\pain.png'),
-    'bewitch': py.image.load('images\\GUI\\character_sheet\\bewitch.png'),
-    'enrage': py.image.load('images\\GUI\\character_sheet\\enrage.png'),
-    'illness': py.image.load('images\\GUI\\character_sheet\\illness.png'),
-    'tenacity': py.image.load('images\\GUI\\character_sheet\\tenacity.png'),
-    'pressure': py.image.load('images\\GUI\\character_sheet\\pressure.png'),
-    'bleed': py.image.load('images\\GUI\\character_sheet\\bleed.png'),
-    'injury': py.image.load('images\\GUI\\character_sheet\\injury.png'),
-    'xp_bar': py.image.load('images\\GUI\\character_sheet\\xp_bar.png'),
-    'xp0': py.image.load('images\\GUI\\character_sheet\\xp0.png'),
-    'xp1': py.image.load('images\\GUI\\character_sheet\\xp1.png'),
-    'xp2': py.image.load('images\\GUI\\character_sheet\\xp2.png'),
-    'xp3': py.image.load('images\\GUI\\character_sheet\\xp3.png'),
-    'xp4': py.image.load('images\\GUI\\character_sheet\\xp4.png'),
-    'human': py.image.load('images\\GUI\\character_sheet\\human_icon.png'),
-    'male': py.image.load('images\\GUI\\character_sheet\\male_icon.png'),
-    'female': py.image.load('images\\GUI\\character_sheet\\female_icon.png'),
-}
+CHARACTER_SHEET_BASE = py.image.load('images\\GUI\\character_sheet\\char_sheet.png')
+XP_FILL = py.image.load('images\\GUI\\character_sheet\\xp_fill.png')
+
 RESOURCE_HUD_BASE = py.image.load('images\\GUI\\life\\resources_hud\\base_layer.png')
 RESOURCE_HUD_OVERLAY = py.image.load('images\\GUI\\life\\resources_hud\\portrait_overlay.png')
 HP = py.image.load('images\\GUI\\life\\resources_hud\\hp.png')
