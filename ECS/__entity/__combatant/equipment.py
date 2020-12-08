@@ -268,182 +268,182 @@ class Equipment:
         return bonus
         
     @property
-    def spirit_heat_bonus(self):
+    def power_heat_bonus(self):
         bonus = 0
         
         if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.spirit_heat_bonus
+            bonus += self.main_hand.item.equippable.power_heat_bonus
             
         if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.spirit_heat_bonus
+            bonus += self.off_hand.item.equippable.power_heat_bonus
             
         if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.spirit_heat_bonus
+            bonus += self.head.item.equippable.power_heat_bonus
             
         if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.spirit_heat_bonus
+            bonus += self.body.item.equippable.power_heat_bonus
         
         if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.spirit_heat_bonus
+            bonus += self.feet.item.equippable.power_heat_bonus
             
         if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.spirit_heat_bonus
+            bonus += self.belt.item.equippable.power_heat_bonus
             
         if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.spirit_heat_bonus
+            bonus += self.feet.item.equippable.power_heat_bonus
             
         if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.spirit_heat_bonus
+            bonus += self.feet.item.equippable.power_heat_bonus
             
         if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.spirit_heat_bonus
+            bonus += self.feet.item.equippable.power_heat_bonus
             
         if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.spirit_heat_bonus
+            bonus += self.back.item.equippable.power_heat_bonus
 
         return bonus
        
     @property
-    def spirit_cold_bonus(self):
+    def power_cold_bonus(self):
         bonus = 0
         
         if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.spirit_cold_bonus
+            bonus += self.main_hand.item.equippable.power_cold_bonus
             
         if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.spirit_cold_bonus
+            bonus += self.off_hand.item.equippable.power_cold_bonus
             
         if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.spirit_cold_bonus
+            bonus += self.head.item.equippable.power_cold_bonus
             
         if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.spirit_cold_bonus
+            bonus += self.body.item.equippable.power_cold_bonus
         
         if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.spirit_cold_bonus
+            bonus += self.feet.item.equippable.power_cold_bonus
             
         if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.spirit_cold_bonus
+            bonus += self.belt.item.equippable.power_cold_bonus
             
         if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.spirit_cold_bonus
+            bonus += self.feet.item.equippable.power_cold_bonus
             
         if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.spirit_cold_bonus
+            bonus += self.feet.item.equippable.power_cold_bonus
             
         if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.spirit_cold_bonus
+            bonus += self.feet.item.equippable.power_cold_bonus
             
         if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.spirit_cold_bonus
+            bonus += self.back.item.equippable.power_cold_bonus
 
         return bonus
         
     @property
-    def spirit_acid_bonus(self):
+    def power_acid_bonus(self):
         bonus = 0
         
         if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.spirit_acid_bonus
+            bonus += self.main_hand.item.equippable.power_acid_bonus
             
         if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.spirit_acid_bonus
+            bonus += self.off_hand.item.equippable.power_acid_bonus
             
         if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.spirit_acid_bonus
+            bonus += self.head.item.equippable.power_acid_bonus
             
         if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.spirit_acid_bonus
+            bonus += self.body.item.equippable.power_acid_bonus
         
         if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.spirit_acid_bonus
+            bonus += self.feet.item.equippable.power_acid_bonus
             
         if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.spirit_acid_bonus
+            bonus += self.belt.item.equippable.power_acid_bonus
             
         if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.spirit_acid_bonus
+            bonus += self.feet.item.equippable.power_acid_bonus
             
         if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.spirit_acid_bonus
+            bonus += self.feet.item.equippable.power_acid_bonus
             
         if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.spirit_acid_bonus
+            bonus += self.feet.item.equippable.power_acid_bonus
             
         if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.spirit_acid_bonus
+            bonus += self.back.item.equippable.power_acid_bonus
 
         return bonus
         
     @property
-    def spirit_current_bonus(self):
+    def power_current_bonus(self):
         bonus = 0
         
         if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.spirit_current_bonus
+            bonus += self.main_hand.item.equippable.power_current_bonus
             
         if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.spirit_current_bonus
+            bonus += self.off_hand.item.equippable.power_current_bonus
             
         if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.spirit_current_bonus
+            bonus += self.head.item.equippable.power_current_bonus
             
         if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.spirit_current_bonus
+            bonus += self.body.item.equippable.power_current_bonus
         
         if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.spirit_current_bonus
+            bonus += self.feet.item.equippable.power_current_bonus
             
         if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.spirit_current_bonus
+            bonus += self.belt.item.equippable.power_current_bonus
             
         if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.spirit_current_bonus
+            bonus += self.feet.item.equippable.power_current_bonus
             
         if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.spirit_current_bonus
+            bonus += self.feet.item.equippable.power_current_bonus
             
         if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.spirit_current_bonus
+            bonus += self.feet.item.equippable.power_current_bonus
             
         if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.spirit_current_bonus
+            bonus += self.back.item.equippable.power_current_bonus
 
         return bonus
         
     @property
-    def spirit_aether_bonus(self):
+    def power_aether_bonus(self):
         bonus = 0
         
         if self.main_hand and self.main_hand.item.equippable:
-            bonus += self.main_hand.item.equippable.spirit_aether_bonus
+            bonus += self.main_hand.item.equippable.power_aether_bonus
             
         if self.off_hand and self.off_hand.item.equippable:
-            bonus += self.off_hand.item.equippable.spirit_aether_bonus
+            bonus += self.off_hand.item.equippable.power_aether_bonus
             
         if self.head and self.head.item.equippable:
-            bonus += self.head.item.equippable.spirit_aether_bonus
+            bonus += self.head.item.equippable.power_aether_bonus
             
         if self.body and self.body.eqiuppable:
-            bonus += self.body.item.equippable.spirit_aether_bonus
+            bonus += self.body.item.equippable.power_aether_bonus
         
         if self.feet and self.feet.item.equippable:
-            bonus += self.feet.item.equippable.spirit_aether_bonus
+            bonus += self.feet.item.equippable.power_aether_bonus
             
         if self.belt and self.belt.item.equippable:
-            bonus += self.belt.item.equippable.spirit_aether_bonus
+            bonus += self.belt.item.equippable.power_aether_bonus
             
         if self.hands and self.hands.eqiuppable:
-            bonus += self.feet.item.equippable.spirit_aether_bonus
+            bonus += self.feet.item.equippable.power_aether_bonus
             
         if self.finger and self.finger.item.equippable:
-            bonus += self.feet.item.equippable.spirit_aether_bonus
+            bonus += self.feet.item.equippable.power_aether_bonus
             
         if self.neck and self.neck.item.equippable:
-            bonus += self.feet.item.equippable.spirit_aether_bonus
+            bonus += self.feet.item.equippable.power_aether_bonus
             
         if self.back and self.back.item.equippable:
-            bonus += self.back.item.equippable.spirit_aether_bonus
+            bonus += self.back.item.equippable.power_aether_bonus
 
         return bonus
         

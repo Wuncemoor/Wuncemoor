@@ -40,23 +40,23 @@ class Equippable:
         return math.floor(self.core.power_bonuses[2] * self.modifier)
 
     @property
-    def spirit_heat_bonus(self):
+    def power_heat_bonus(self):
         return math.floor(self.core.spirit_bonuses[0] * self.modifier)
 
     @property
-    def spirit_cold_bonus(self):
+    def power_cold_bonus(self):
         return math.floor(self.core.spirit_bonuses[1] * self.modifier)
 
     @property
-    def spirit_acid_bonus(self):
+    def power_acid_bonus(self):
         return math.floor(self.core.spirit_bonuses[2] * self.modifier)
 
     @property
-    def spirit_current_bonus(self):
+    def power_current_bonus(self):
         return math.floor(self.core.spirit_bonuses[3] * self.modifier)
 
     @property
-    def spirit_aether_bonus(self):
+    def power_aether_bonus(self):
         return math.floor(self.core.spirit_bonuses[4] * self.modifier)
 
     @property

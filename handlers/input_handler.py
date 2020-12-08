@@ -59,8 +59,6 @@ class InputHandler(MVC):
             return {'interact': True}
         elif event.key == py.K_PERIOD:
             return {'debug': GameStates.LIFE}
-        if event.key == py.K_RETURN and py.K_LALT:
-            return {'fullscreen': True}
         if event.key == py.K_ESCAPE:
             return {'show_menus': Settings()}
         return {}

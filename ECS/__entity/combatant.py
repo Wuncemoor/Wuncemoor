@@ -84,49 +84,47 @@ class Combatant:
             bonus = 0
             
         return self.attributes.base_power_blunt + bonus
-        
-#True Spirits
-    
+
     @property
-    def spirit_heat(self):
+    def power_heat(self):
         if self.owner and self.equipment:
-            bonus = self.equipment.spirit_heat_bonus
+            bonus = self.equipment.power_heat_bonus
         else:
             bonus = 0
             
         return self.attributes.base_spirit_heat + bonus
         
     @property
-    def spirit_cold(self):
+    def power_cold(self):
         if self.owner and self.equipment:
-            bonus = self.equipment.spirit_cold_bonus
+            bonus = self.equipment.power_cold_bonus
         else:
             bonus = 0
             
         return self.attributes.base_spirit_cold + bonus
         
     @property
-    def spirit_acid(self):
+    def power_acid(self):
         if self.owner and self.equipment:
-            bonus = self.equipment.spirit_acid_bonus
+            bonus = self.equipment.power_acid_bonus
         else:
             bonus = 0
             
         return self.attributes.base_spirit_acid + bonus
         
     @property
-    def spirit_current(self):
+    def power_current(self):
         if self.owner and self.equipment:
-            bonus = self.equipment.spirit_current_bonus
+            bonus = self.equipment.power_current_bonus
         else:
             bonus = 0
             
         return self.attributes.base_spirit_current + bonus
         
     @property
-    def spirit_aether(self):
+    def power_aether(self):
         if self.owner and self.equipment:
-            bonus = self.equipment.spirit_aether_bonus
+            bonus = self.equipment.power_aether_bonus
         else:
             bonus = 0
             
@@ -314,8 +312,8 @@ class Combatant:
     @property
     def initiative(self):
         """Who goes first?"""
-        bonus = self.attributes.instinct + self.attributes.improvisation
-        return bonus
+        ahah = self.attributes.instinct + self.attributes.improvisation
+        return ahah
 
     @property
     def speed(self):

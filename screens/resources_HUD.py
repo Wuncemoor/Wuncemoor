@@ -62,32 +62,12 @@ def blit_resource_bar(res_display, player, stat):
 
 
 def get_resource_vals(player, stat):
-    hp_dict = {
-        'current': player.combatant.attributes.current_hp,
-        'max': player.combatant.max_hp,
-    }
+    hp_dict = {'current': player.combatant.attributes.current_hp, 'max': player.combatant.max_hp}
+    mp_dict = {'current': player.combatant.attributes.current_mp, 'max': player.combatant.max_mp}
+    tp_dict = {'current': player.combatant.attributes.current_tp, 'max': player.combatant.max_tp}
+    vp_dict = {'current': player.combatant.attributes.current_vp, 'max': player.combatant.max_vp}
 
-    mp_dict = {
-        'current': player.combatant.attributes.current_mp,
-        'max': player.combatant.max_mp,
-    }
-
-    tp_dict = {
-        'current': player.combatant.attributes.current_tp,
-        'max': player.combatant.max_tp,
-    }
-
-    vp_dict = {
-        'current': player.combatant.attributes.current_vp,
-        'max': player.combatant.max_vp,
-    }
-
-    stat_dict = {
-        'HP': hp_dict,
-        'MP': mp_dict,
-        'TP': tp_dict,
-        'VP': vp_dict,
-    }
+    stat_dict = {'HP': hp_dict, 'MP': mp_dict, 'TP': tp_dict, 'VP': vp_dict}
 
     now_val = stat_dict.get(stat).get('current')
     max_val = stat_dict.get(stat).get('max')
@@ -167,9 +147,9 @@ def get_res_val_off_y(stat):
 
 
 def get_resource_font_color(percent):
-    color_list = [(50, WHITE), (25, YELLOW, (10, ORANGE), (0, DARK_RED))]
+    color_list = [(50, WHITE), (35, YELLOW), (15, ORANGE), (0, DARK_RED)]
 
     for threshold in color_list:
-        if percent >= threshold[0]:
+        if percent > threshold[0]:
             return threshold[1]
     return GREY

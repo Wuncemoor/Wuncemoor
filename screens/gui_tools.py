@@ -18,7 +18,7 @@ def get_alpha_surface(width, height):
     return res_display
 
 
-def get_text_surface(text, fontsize=12, color=BLACK, style='lunchds'):
+def get_text_surface(text, fontsize=12, color=BLACK, style='source_sans_pro'):
     style_dict = {'lunchds': 'fonts\\lunchds.ttf',
                   'gentium': 'fonts\\GentiumBookBasic-Regular.ttf',
                   'source_sans_pro': 'fonts\\SourceSansPro-Regular.ttf',
@@ -30,7 +30,7 @@ def get_text_surface(text, fontsize=12, color=BLACK, style='lunchds'):
     return surf
 
 
-def get_button_surface(image, text, fontsize, color, style='lunchds'):
+def get_button_surface(image, text, fontsize, color, style='source_sans_pro'):
 
     w, h = image.get_width(), image.get_height()
     surf = get_alpha_surface(w, h)
@@ -53,13 +53,6 @@ def blit_options(menu, image, off_x, off_y, dy, options, fontsize):
     for i in range(len(options)):
         button = get_button_surface(image, options[i], fontsize, color=WHITE)
         menu.blit(button, (off_x, off_y + (i * dy)))
-
-
-def get_offset(screen, text, var):
-    if var == 'x':
-        return (screen.get_width() / 2) - (text.get_width() / 2)
-    elif var == 'y':
-        return (screen.get_height() / 2) - (text.get_height() / 2)
 
 
 def align_and_blit(surface, image, x_ratio=0.5, y_ratio=0.5, x_adjust=0, y_adjust=0):
