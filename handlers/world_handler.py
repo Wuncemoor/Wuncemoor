@@ -1,5 +1,5 @@
 from builders.world_builder import DungeonDirector
-from config.image_objects import MINIMAP
+from config.image_objects import MAP_MENU_PIXELS
 from world_objects.dungeon_maps import DangerousMap
 
 
@@ -101,7 +101,7 @@ class WorldHandler:
         for row in overworld.maps[0].tiles:
             mini_row = []
             for tile in row:
-                mini_row.append(MINIMAP.get(tile.type))
+                mini_row.append(MAP_MENU_PIXELS.get(tile.type))
             mini.append(mini_row)
         return mini
 

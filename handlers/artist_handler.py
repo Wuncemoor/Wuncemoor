@@ -15,7 +15,7 @@ from screens.gui_tools import get_surface, print_message, align_and_blit, blit_o
 from screens.inventory_screen import inventory_screen
 from screens.journal_screen import journal_screen
 from screens.loot_menu import display_loot, display_resources_gain, get_reward_menu
-from screens.mini_map import minimap_screen
+from screens.map_screen import map_screen
 from screens.resources_HUD import player_resource_display
 
 from screens.title_screen import get_title_text, get_title_menu
@@ -72,7 +72,7 @@ class ArtistHandler(MVC):
         elif self.handler.state == MenuStates.INVENTORY:
             inventory_screen(self)
         elif self.handler.state == MenuStates.MAP:
-            minimap_screen(self)
+            map_screen(self)
 
     def encounter(self):
 

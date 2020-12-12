@@ -12,7 +12,7 @@ def journal_screen(self):
 
         j_display = journal_options_display(sj, self.game.options.current.choice)
         details = get_entry_details(sj[self.game.options.current.choice])
-        surf.blit(j_display, (int(surf.get_width()*0.05), int(surf.get_height()*0.25)))
+        surf.blit(j_display, (int(surf.get_width()*0.05), int(surf.get_height()*0.27)))
         surf.blit(details, (int(surf.get_width()*0.43), int(surf.get_height()*0.255)))
 
     else:

@@ -24,7 +24,6 @@ INVENTORY_OPTIONS = [py.image.load('images\\GUI\\inventory\\miscellaneous.png'),
                      py.image.load('images\\GUI\\inventory\\plot.png')]
 
 LIFE_BACKDROP = py.image.load('images\\GUI\\life\\life_backdrop.png')
-MINI_MAP = py.image.load('images\\GUI\\life\\minimap.png')
 CLOCK = py.image.load('images\\GUI\\life\\clock.png')
 UPCOMING_EVENTS = py.image.load('images\\GUI\\life\\upcoming_events.png')
 EVENT_LOG_BG = py.image.load('images\\GUI\\life\\event_log_bg.png')
@@ -430,8 +429,8 @@ BACKGROUNDS = {
     'tundra': py.image.load('images\\background\\tundra.png'),
     'cave': py.image.load('images\\background\\cave.png'),
 }
-
-MINIMAP = {
+MAP_BG = py.image.load('images\\GUI\\menus\\map_bg.png')
+MAP_MENU_PIXELS = {
     'deep': py.image.load('images\\tiles\\overworld\\mini_map\\deep.png'),
     'desert': py.image.load('images\\tiles\\overworld\\mini_map\\desert.png'),
     'forest': py.image.load('images\\tiles\\overworld\\mini_map\\forest.png'),
