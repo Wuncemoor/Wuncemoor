@@ -69,7 +69,6 @@ def get_wrapped_text(info, width, fontsize, color):
     for word in prewords[:len(prewords)]:
         word += ' '
         words.append(word)
-    words.reverse()
     lines = []
     lines = slice_text(words, lines, width, fontsize)
     surfaces = [get_text_surface(line, fontsize, color) for line in lines]
@@ -91,7 +90,7 @@ def slice_text(words, lines, width, fontsize):
             break
     line = ''
     for i in range(current_word - 1):
-        line += words.pop()
+        line += words.pop(0)
     lines.append(line)
     if len(words) > 0:
         lines = slice_text(words, lines, width, fontsize)
