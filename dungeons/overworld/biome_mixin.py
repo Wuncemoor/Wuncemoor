@@ -28,8 +28,8 @@ class BiomeMixin:
                 temp = 1 - tempdiff
 
                 for k in range(octaves):
-                    octavex = j * scale * freq
-                    octavey = i * scale * freq
+                    octavex = i * scale * freq
+                    octavey = j * scale * freq
 
                     altitude_value = altitude_mesh.noise2d(x=octavex, y=octavey)
                     rainfall_value = rainfall_mesh.noise2d(x=octavex, y=octavey)
@@ -48,18 +48,18 @@ class BiomeMixin:
 
                 if altitude <= water_level:
                     if altitude > 0:
-                        map.tiles[i][j].type = 'shallow'
+                        map.tiles[j][i].type = 'shallow'
                     else:
-                        map.tiles[i][j].type = 'deep'
-                    self.get_biome_floor(map.tiles[i][j])
+                        map.tiles[j][i].type = 'deep'
+                    self.get_biome_floor(map.tiles[j][i])
 
                 else:
 
                     temp = self.temperature(templist, temp)
                     moistlist = self.get_moistlist(temp)
                     biome = self.moisture(moistlist, moist)
-                    map.tiles[i][j].type = biome
-                    self.get_biome_floor(map.tiles[i][j])
+                    map.tiles[j][i].type = biome
+                    self.get_biome_floor(map.tiles[j][i])
 
     @staticmethod
     def get_biome_floor(tile):

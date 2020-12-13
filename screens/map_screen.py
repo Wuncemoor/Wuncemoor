@@ -13,8 +13,8 @@ def map_screen(self):
         for img in row:
             if overworld_tiles[j][i].explored:
                 window.blit(img, (i, j))
-            j += 1
-        i += 1
-        j = 0
+            i += 1
+        j += 1
+        i = 0
     align_and_blit(display, window)
     align_and_blit(self.screen, display)
