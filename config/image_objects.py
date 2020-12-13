@@ -24,9 +24,18 @@ INVENTORY_OPTIONS = [py.image.load('images\\GUI\\inventory\\miscellaneous.png'),
                      py.image.load('images\\GUI\\inventory\\plot.png')]
 
 LIFE_BACKDROP = py.image.load('images\\GUI\\life\\life_backdrop.png')
-CLOCK = py.image.load('images\\GUI\\life\\clock.png')
 UPCOMING_EVENTS = py.image.load('images\\GUI\\life\\upcoming_events.png')
 EVENT_LOG_BG = py.image.load('images\\GUI\\life\\event_log_bg.png')
+
+SUN = py.image.load('images\\GUI\\life\\sun.png')
+MOON_FULL = py.image.load('images\\GUI\\life\\moon_full.png')
+MOON_WAXING_GIBBOUS = py.image.load('images\\GUI\\life\\moon_waxing_gibbous.png')
+MOON_FIRST_QUARTER = py.image.load('images\\GUI\\life\\moon_first_quarter.png')
+MOON_WAXING_CRESCENT = py.image.load('images\\GUI\\life\\moon_waxing_crescent.png')
+MOON_WANING_CRESCENT = py.image.load('images\\GUI\\life\\moon_waning_crescent.png')
+MOON_LAST_QUARTER = py.image.load('images\\GUI\\life\\moon_last_quarter.png')
+MOON_WANING_GIBBOUS = py.image.load('images\\GUI\\life\\moon_waning_gibbous.png')
+MOON_NEW = py.image.load('images\\GUI\\life\\moon_new.png')
 
 TURN_ORDER_QUEUE = py.image.load('images\\GUI\\encounter\\turn_order_queue.png')
 

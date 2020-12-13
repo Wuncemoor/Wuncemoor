@@ -1,3 +1,4 @@
+import math
 
 from numpy.core._multiarray_umath import sqrt
 import tcod
@@ -6,9 +7,10 @@ from pygame import key, K_LEFT, K_a, K_RIGHT, K_UP, K_DOWN, K_d, K_s, K_w
 from pygame.transform import scale
 from config.constants import WHITE, TILES_ON_SCREEN, TILESIZE, BLACK, TRANSPARENT, LIFE_PANEL_WIDTH, LIFE_PANEL_HEIGHT
 from config.image_objects import RESOURCE_HUD_BASE, RESOURCE_HUD_OVERLAY, HP, MP, TP, VP, TILE_BASE, \
-    PARTY_SETTINGS_FRAME, CLOCK, UPCOMING_EVENTS, EVENT_LOG_BG
+    PARTY_SETTINGS_FRAME, UPCOMING_EVENTS, EVENT_LOG_BG
 from enums.game_states import GameStates
 from screens.displays.calendar import display_calendar
+from screens.displays.clock import display_clock
 from screens.gui_tools import get_alpha_surface, get_text_surface, get_surface, align_and_blit, print_message
 
 
@@ -205,7 +207,7 @@ def get_life_right_panel(game):
     off_x, off_y = 8, 36
     panel = get_alpha_surface(LIFE_PANEL_WIDTH, LIFE_PANEL_HEIGHT)
 
-    for display in [get_life_minimap(game.world.current_map.tiles), get_life_clock(), display_calendar(game.time), get_upcoming_events(),
+    for display in [get_life_minimap(game.world.current_map.tiles), display_clock(game.time), display_calendar(game.time), get_upcoming_events(),
                     get_life_event_log(game.log)]:
         panel.blit(display, (off_x, off_y))
         off_y += display.get_height()
@@ -215,6 +217,7 @@ def get_life_right_panel(game):
 
 def get_life_minimap(tiles):
     mini = get_alpha_surface(248, 248)
+
     display = get_alpha_surface(2*len(tiles[0]), 2*len(tiles))
     for y, row in enumerate(tiles):
         for x, tile in enumerate(row):
@@ -226,11 +229,6 @@ def get_life_minimap(tiles):
     align_and_blit(mini, display)
 
     return mini
-
-
-def get_life_clock():
-    clock = get_surface(CLOCK)
-    return clock
 
 
 def get_upcoming_events():

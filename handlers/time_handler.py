@@ -6,12 +6,17 @@ class TimeHandler:
         self.month = 1
         self.day = 1
         self.hour = 6
+        self.l_moon = 0
+        self.r_moon = 24
 
     def goes_on(self):
         for party in self.observers:
             for member in party.members:
                 member.age.become_older([0, 0, 0, 1])
         self.hour += 1
+        if self.hour == 7:
+            self.l_moon = (self.l_moon + 1) % 8
+            self.r_moon = (self.r_moon + 1) % 48
         self.new_day()
 
     def new_day(self):
