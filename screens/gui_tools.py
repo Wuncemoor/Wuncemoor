@@ -63,6 +63,20 @@ def align_and_blit(surface, image, x_ratio=0.5, y_ratio=0.5, x_adjust=0, y_adjus
     surface.blit(image, (off_x, off_y))
 
 
+def get_wrapped_text_surface(info, width, fontsize, color):
+    text_list = get_wrapped_text(info, width, fontsize, color)
+    total_surface_height = 0
+    current_blit_height = 0
+    for text in text_list:
+        total_surface_height += text.get_height()
+    surf = get_alpha_surface(width, total_surface_height)
+    for text in text_list:
+        surf.blit(text, (0, current_blit_height))
+        current_blit_height += text.get_height()
+
+    return surf
+
+
 def get_wrapped_text(info, width, fontsize, color):
     prewords = info.split()
     words = []

@@ -125,6 +125,8 @@ class ArtistHandler(MVC):
         self.screen.blit(window, (0, 0))
 
     def dialogue(self):
+        self.life()
+        self.darken_main_screen()
         dialogue_screen(self)
 
     def shop(self):

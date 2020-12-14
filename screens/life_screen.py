@@ -1,6 +1,4 @@
-import math
-
-from numpy.core._multiarray_umath import sqrt
+from math import sqrt
 import tcod
 from pygame.surface import Surface
 from pygame import key, K_LEFT, K_a, K_RIGHT, K_UP, K_DOWN, K_d, K_s, K_w

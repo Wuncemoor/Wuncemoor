@@ -1,58 +1,51 @@
-import math
 from config.constants import WHITE, GREY
-from config.image_objects import DIALOGUE_MENU
-from screens.gui_tools import get_surface, get_text_surface
+from config.image_objects import DIALOGUE_BG
+from screens.gui_tools import get_surface, get_text_surface, align_and_blit, get_alpha_surface, get_wrapped_text, \
+    get_wrapped_text_surface
 
 
 def dialogue_screen(self):
-    gap = 5
-    portrait_off_x = 20
-    name_off_y = 40
-    noncom_off_x = 1030
-    interactor_width = 250
-    fontsize = 12
-    actor_name_fontsize = 20
-    hero = self.game.party.p1
+    display = get_surface(DIALOGUE_BG)
+    surf = get_alpha_surface(display.get_width(), int(display.get_height()*1.5))
+    partner = self.handler.partner
 
-    window = get_surface(DIALOGUE_MENU)
+    partner_name = get_text_surface(partner.name.capitalize(), fontsize=24, color=WHITE)
 
-    hero_name = get_text_surface(hero.name, actor_name_fontsize, WHITE)
-    (pnw, pnh) = hero_name.get_size()
-
-    pn_off_x = (interactor_width / 2) - (pnw / 2)
-    window.blit(hero.images.portrait, (portrait_off_x, name_off_y + pnh + gap))
-    window.blit(hero_name, (pn_off_x, name_off_y))
-
-    noncom_name = get_text_surface(self.handler.partner.name.capitalize(), actor_name_fontsize, WHITE)
-    nnw, nnh = noncom_name.get_width(), noncom_name.get_height()
-    nn_off_x = (interactor_width / 2) - (nnw / 2)
-    window.blit(self.handler.partner.images.portrait, (noncom_off_x + portrait_off_x, name_off_y + nnh + gap))
-    window.blit(noncom_name, (noncom_off_x + nn_off_x, name_off_y))
+    display.blit(partner_name, (int(display.get_width()*0.1), int(display.get_height()*0.05)))
+    align_and_blit(surf, partner.images.portrait, y_ratio=0.12)
 
     dialogue = self.handler.partner.noncombatant.dialogue
     current_node = dialogue.graph_dict.get(dialogue.conversation)
+    words = get_wrapped_text_surface(current_node.words, width=int(display.get_width()*0.95), fontsize=18, color=WHITE)
+    display.blit(words, (int(display.get_width()*0.025), int(display.get_height()*0.05 + partner_name.get_height())))
 
-    words_off_x = 285
-    words_off_y = 25
-    options_off_y = 296
+    options = get_dialogue_options(self)
+    display.blit(options, (int(display.get_width()*0.025), int(display.get_height()*0.505)))
 
-    words = get_text_surface(current_node.words, fontsize, WHITE)
+    surf.blit(display, (surf.get_width()-display.get_width(), surf.get_height()-display.get_height()))
+    align_and_blit(self.screen, surf, y_ratio=0.65)
 
-    window.blit(words, (words_off_x, words_off_y))
 
-    text_gap = math.ceil(fontsize * 0.2)
-    letter_index = ord('a')
-    q = 0
+def get_dialogue_options(self):
+    window_height_total = 0
+    line_blit_height = 0
+    option_list = []
+    q = 1
     for option in self.handler.real_talk:
 
-        deja_vu = self.handler.deja_vu_check(q + 1)
+        deja_vu = self.handler.deja_vu_check(q)
         if deja_vu:
             color = GREY
         else:
             color = WHITE
-        text = get_text_surface(str(q + 1) + ' ) ' + option.text, fontsize, color)
-        window.blit(text, (words_off_x, words_off_y + options_off_y + ((q * fontsize) + (q + 1) * text_gap)))
+        lines = get_wrapped_text(str(q) + ' ) ' + option.text, width=950, fontsize=18, color=color)
+        option_list.extend(lines)
+        for line in lines:
+            window_height_total += line.get_height()
         q += 1
-        letter_index += 1
+    window = get_alpha_surface(width=950, height=window_height_total)
+    for option in option_list:
+        window.blit(option, (0, line_blit_height))
+        line_blit_height += option.get_height()
 
-    self.screen.blit(window, (0, 0))
+    return window
