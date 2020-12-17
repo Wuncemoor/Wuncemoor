@@ -45,7 +45,7 @@ def settings_options():
 
 
 def shop_base_categories():
-    return OptionsFake(['misc', 'weapons', 'armor', 'accessories', 'satchel', 'materials', 'plot'], fake=ShopBaseGoToSub)
+    return OptionsFake(['weapons', 'armor', 'accessories', 'rations', 'satchel', 'materials', 'plot'], fake=ShopBaseGoToSub)
 
 
 

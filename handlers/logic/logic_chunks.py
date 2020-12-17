@@ -110,7 +110,7 @@ class MenusToggle(AbstractLogic):
 
     def logic(self, output):
 
-        if self.handler.menu is output:
+        if self.handler.menu_type is output:
             return MenusSubToLife.logic(self)
         else:
             return MenusToMenus.logic(self, output)
@@ -131,26 +131,26 @@ class MenusToMenus(AbstractLogic):
 class MenusSubToLife(AbstractLogic):
 
     def logic(self):
-        self.handler.menu.sub = None
+        self.handler.menu_type.sub = None
         return [{'state': 'life'}]
 
 
 class MenusExit(AbstractLogic):
 
     def logic(self):
-        if self.handler.menu.sub is None:
+        if self.handler.menu_type.sub is None:
             self.game.state_handler = self.game.life
         else:
-            self.handler.menu.sub = None
-            self.game.options.current = self.handler.menu.options
+            self.handler.menu_type.sub = None
+            self.game.options.current = self.handler.menu_type.options
 
 
 class MenuGoToSub(AbstractLogic):
 
     def logic(self):
-        sub = self.handler.menu.get_sub()
+        sub = self.handler.menu_type.get_sub()
         if len(sub) > 0:
-            self.handler.menu.sub = sub
+            self.handler.menu_type.sub = sub
             self.game.options.wrap_and_set(sub)
 
 

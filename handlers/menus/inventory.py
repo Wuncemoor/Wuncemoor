@@ -10,8 +10,8 @@ class Inventory:
         self.weapons = []
         self.armor = []
         self.accessories = []
+        self.rations = []
         self.satchel = []
-        self.food = []
         self.materials = []
         self.plot = []
         self.money = 0
@@ -20,7 +20,7 @@ class Inventory:
         self.sub = None
 
     def initialize_subgroups(self):
-        return [self.weapons, self.armor, self.accessories, self.satchel, self.food, self.materials, self.plot]
+        return [self.weapons, self.armor, self.accessories, self.rations, self.satchel, self.materials, self.plot]
 
     def get_sub(self):
         return self.subgroups[self.options.choice]

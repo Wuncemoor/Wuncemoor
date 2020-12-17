@@ -82,7 +82,7 @@ class LogicHandler(MVC):
         elif 'traverse_menu' in output:
             self.game.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
-            if self.handler.menu.sub is None:
+            if self.handler.menu_type.sub is None:
                 self.response = self.game.options.choose()
                 self.response(self)
         elif 'debug' in output:

@@ -1,5 +1,5 @@
 from config.constants import WHITE
-from config.image_objects import SHOP_MENU, INVENTORY_OPTIONS
+from config.image_objects import SHOP_MENU, INVENTORY_ICONS
 from enums.game_states import ShopStates
 from screens.display_money import display_money
 from screens.gui_tools import get_surface, align_and_blit, get_text_surface, get_alpha_surface
@@ -8,16 +8,16 @@ from screens.gui_tools import get_surface, align_and_blit, get_text_surface, get
 def shop_screen(self):
     surf = get_surface(SHOP_MENU)
     if self.handler.state is ShopStates.BASE:
-        options_img = INVENTORY_OPTIONS[self.game.options.current.choice]
+        options_img = INVENTORY_ICONS[self.game.options.current.choice]
         party_subinv, shop_subinv = self.handler.get_subinventories(self.game.options.current.choice)
     elif self.handler.state in (ShopStates.BUYING, ShopStates.SELLING, ShopStates.TRANSACTING):
-        options_img = INVENTORY_OPTIONS[self.handler.sub_index]
+        options_img = INVENTORY_ICONS[self.handler.sub_index]
         party_subinv, shop_subinv = self.handler.get_subinventories(self.handler.sub_index)
     else:
-        ind = self.handler.menu.options.choice
-        options_img = INVENTORY_OPTIONS[ind]
+        ind = self.handler.menu_type.options.choice
+        options_img = INVENTORY_ICONS[ind]
         surf.blit(INDICATOR_H, (410, 130 + (32 * self.game.options.current.choice)))
-        subinventory = self.handler.menu.get_sub()
+        subinventory = self.handler.menu_type.get_sub()
     ps, ss = display_partysub(party_subinv), display_shopsub(shop_subinv)
     sk_name = get_text_surface(self.handler.shopkeeper.name.capitalize(), fontsize=18)
     sk_money = display_money(self.handler.shopkeeper.shopkeeper.inventory.money, color=WHITE)

@@ -11,17 +11,37 @@ ENCOUNTER_MENU = py.image.load('images\\GUI\\menus\\encounter_menu.png')
 ENCOUNTER_BUTTON = py.image.load('images\\GUI\\menus\\option_button.png')
 DIALOGUE_BG = py.image.load('images\\GUI\\dialogue_bg.png')
 SHOP_MENU = py.image.load('images\\GUI\\shop_menu.png')
-LEVELUP_MENU = py.image.load('images\\GUI\\levelup_menu.png')
 
-INVENTORY_BG = py.image.load('images\\GUI\\inventory\\inven_bg.png')
-EQUIPMENT_BG = py.image.load('images\\GUI\\inventory\\equipment_bg.png')
-INVENTORY_OPTIONS = [py.image.load('images\\GUI\\inventory\\miscellaneous.png'),
-                     py.image.load('images\\GUI\\inventory\\weapons.png'),
-                     py.image.load('images\\GUI\\inventory\\armor.png'),
-                     py.image.load('images\\GUI\\inventory\\accessories.png'),
-                     py.image.load('images\\GUI\\inventory\\satchel.png'),
-                     py.image.load('images\\GUI\\inventory\\materials.png'),
-                     py.image.load('images\\GUI\\inventory\\plot.png')]
+INVENTORY_BG = py.image.load('images\\GUI\\inventory\\inventory_bg.png')
+INVENTORY_ICONS = [py.image.load('images\\GUI\\inventory\\icon_weapons.png'),
+                   py.image.load('images\\GUI\\inventory\\icon_armor.png'),
+                   py.image.load('images\\GUI\\inventory\\icon_accessories.png'),
+                   py.image.load('images\\GUI\\inventory\\icon_rations.png'),
+                   py.image.load('images\\GUI\\inventory\\icon_satchel.png'),
+                   py.image.load('images\\GUI\\inventory\\icon_materials.png'),
+                   py.image.load('images\\GUI\\inventory\\icon_plot.png')]
+EQUIPMENT_SLOT_BORDER = py.image.load('images\\GUI\\inventory\\equipment_slot_border.png')
+EQUIPMENT_EMPTY_DICT = {'arms': py.image.load('images\\GUI\\inventory\\arms_empty.png'),
+                        'back': py.image.load('images\\GUI\\inventory\\back_empty.png'),
+                        'chest': py.image.load('images\\GUI\\inventory\\chest_empty.png'),
+                        'drink': py.image.load('images\\GUI\\inventory\\drink_empty.png'),
+                        'face': py.image.load('images\\GUI\\inventory\\face_empty.png'),
+                        'feet': py.image.load('images\\GUI\\inventory\\feet_empty.png'),
+                        'food': py.image.load('images\\GUI\\inventory\\food_empty.png'),
+                        'hands': py.image.load('images\\GUI\\inventory\\hands_empty.png'),
+                        'head': py.image.load('images\\GUI\\inventory\\head_empty.png'),
+                        'legs': py.image.load('images\\GUI\\inventory\\legs_empty.png'),
+                        'neck': py.image.load('images\\GUI\\inventory\\necklace_empty.png'),
+                        'quiver': py.image.load('images\\GUI\\inventory\\quiver_empty.png'),
+                        'finger1': py.image.load('images\\GUI\\inventory\\ring_empty.png'),
+                        'finger2': py.image.load('images\\GUI\\inventory\\ring_empty.png'),
+                        'satchel': py.image.load('images\\GUI\\inventory\\satchel_empty.png'),
+                        'shoulders': py.image.load('images\\GUI\\inventory\\shoulders_empty.png'),
+                        'waist': py.image.load('images\\GUI\\inventory\\waist_empty.png'),
+                        'weapon1': py.image.load('images\\GUI\\inventory\\weapon_empty.png'),
+                        'weapon2': py.image.load('images\\GUI\\inventory\\weapon_empty.png'),
+                        'wrists': py.image.load('images\\GUI\\inventory\\wrists_empty.png')}
+
 
 LIFE_BACKDROP = py.image.load('images\\GUI\\life\\life_backdrop.png')
 UPCOMING_EVENTS = py.image.load('images\\GUI\\life\\upcoming_events.png')
@@ -354,21 +374,16 @@ DUNGEON_ALPHA_NONCOMBATANT_IMAGE_BUNDLES = {'samwise': BUNDLE_SAMWISE,
                                             'innkeeper': BUNDLE_INNKEEPER,
                                             'tavernkeeper': BUNDLE_TAVERNKEEPER, }
 
-BUNDLE_STICK = ImageBundle(sprite=py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\sprite.png'),
-                           portrait=py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\portrait.png'),
-                           port_mini=py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\port_mini.png'))
+BUNDLE_STICK = ImageBundle(sprite=py.image.load('images\\entities\\items\\equippables\\weapons\\stick\\sprite.png'))
 
 BUNDLE_WEAPONS = {
     'staff': ImageBundle(sprite=py.image.load('images\\entities\\items\\equippables\\weapons\\staff\\sprite.png')),
     'dagger': ImageBundle(sprite=py.image.load('images\\entities\\items\\equippables\\weapons\\dagger\\sprite.png')),
     'shield': ImageBundle(sprite=py.image.load('images\\entities\\items\\equippables\\weapons\\shield\\sprite.png')),
-    'longsword': ImageBundle(sprite=py.image.load('images\\entities\\items\\equippables\\weapons\\longsword\\sprite.png'),
-                             portrait=py.image.load('images\\entities\\items\\equippables\\weapons\\longsword\\portrait.png')),
+    'longsword': ImageBundle(sprite=py.image.load('images\\entities\\items\\equippables\\weapons\\longsword\\sprite.png')),
 }
 
-BUNDLE_POTION = ImageBundle(sprite=py.image.load('images\\entities\\items\\useables\\potion\\sprite.png'),
-                            portrait=py.image.load('images\\entities\\items\\useables\\potion\\portrait.png'),
-                            port_mini=py.image.load('images\\entities\\items\\useables\\potion\\port_mini.png'))
+BUNDLE_POTION = ImageBundle(sprite=py.image.load('images\\entities\\items\\useables\\potion\\sprite.png'),)
 SCROLL = py.image.load('images\\entities\\items\\useables\\scroll\\sprite.png')
 
 BUNDLE_MOBS = {

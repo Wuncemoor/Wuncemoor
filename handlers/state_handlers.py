@@ -34,19 +34,19 @@ class MenusHandler:
     def __init__(self):
         self.superstate = GameStates.MENUS
         self.state = None
-        self.menu = None
+        self.menu_type = None
 
     def change_state(self, menu):
-        self.menu = menu
+        self.menu_type = menu
         self.state = menu.superstate
         self.confirm_submenu()
         self.owner.options.get()
 
     def confirm_submenu(self):
-        if self.menu.sub is None:
+        if self.menu_type.sub is None:
             pass
-        elif len(self.menu.sub) == 0:
-            self.menu.sub = None
+        elif len(self.menu_type.sub) == 0:
+            self.menu_type.sub = None
 
 
 class DialogueHandler:

@@ -1,8 +1,6 @@
 from pygame.transform import scale
-
 from config.constants import WHITE
 from screens.gui_tools import get_alpha_surface, get_surface, get_text_surface, align_and_blit
-import tcod as libtcod
 from config.image_objects import CHARACTER_SHEET_BASE, XP_FILL
 from screens.resources_HUD import get_resource_vals
 
@@ -16,6 +14,7 @@ def character_screen(self):
     # age = get_age_icon(player)
     # species = None
     # sex = None
+
     xp = display_xp_fill(player)
     resources = display_resources(player)
     primaries = display_primary_stats(player)
@@ -23,7 +22,7 @@ def character_screen(self):
     attributes = display_attributes(player)
     saves = display_saving_throws(player)
 
-    p_name = get_text_surface(player.name, fontsize=25, color=libtcod.white, style='source_sans_pro')
+    p_name = get_text_surface(player.name, fontsize=25, color=WHITE, style='source_sans_pro')
     align_and_blit(char_sheet, p_name, x_ratio=0.23, y_ratio=0.25)
     align_and_blit(char_sheet, player.images.portrait, x_ratio=0.23)
     # surf.blit(level, (35, 110))

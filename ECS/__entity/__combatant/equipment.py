@@ -2,22 +2,36 @@ from enums.equipment_slots import EquipmentSlots
 
 
 class Equipment:
-    def __init__(self, main_hand=None, off_hand=None, head=None, body=None, feet=None, belt=None, hands=None,
-                 finger=None, neck=None, back=None):
-        self.main_hand = main_hand
-        self.off_hand = off_hand
+    def __init__(self, main_hand=None, off_hand=None, quiver=None, head=None, shoulders=None, chest=None, arms=None,
+                 wrists=None, hands=None, legs=None, feet=None, face=None, neck=None, back=None, waist=None,
+                 finger1=None, finger2=None, satchel=None, food=None, drink=None):
         self.head = head
-        self.body = body
-        self.feet = feet
-        self.belt = belt
+        self.shoulders = shoulders
+        self.chest = chest
+        self.arms = arms
+        self.wrists = wrists
         self.hands = hands
-        self.finger = finger
+        self.legs = legs
+        self.feet = feet
+        self.face = face
         self.neck = neck
         self.back = back
+        self.waist = waist
+        self.finger1 = finger1
+        self.finger2 = finger2
+        self.satchel = satchel
+        self.main_hand = main_hand
+        self.off_hand = off_hand
+        self.quiver = quiver
+        self.food = food
+        self.drink = drink
+
 
     @property
     def equipment_slots(self):
-        return [self.main_hand, self.off_hand, self.head, self.body, self.feet, self.belt, self.hands, self.finger, self.neck, self.back]
+        return [self.head, self.shoulders, self.chest, self.arms, self.wrists, self.hands, self.legs, self.feet,
+                self.face, self.neck, self.back, self.waist, self.finger1, self.finger2, self.satchel, self.main_hand,
+                self.off_hand, self.quiver, self.food, self.drink]
 
     @property
     def max_hp_bonus(self):

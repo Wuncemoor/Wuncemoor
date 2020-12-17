@@ -35,9 +35,9 @@ class OptionsHandler(MVC):
             return self.traverse_graph(path)
         elif self.owner.state == GameStates.SHOP and self.handler.state == ShopStates.BASE:
             self.traverse_list((path[0]))
-        elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and self.handler.menu.sub is None:
+        elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and self.handler.menu_type.sub is None:
             self.traverse_list(path[0])
-        elif self.handler.state == MenuStates.JOURNAL:
+        elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY):
             self.traverse_list(path[1])
         elif self.handler.state == EncounterStates.THINKING:
             self.traverse_list(path[1])

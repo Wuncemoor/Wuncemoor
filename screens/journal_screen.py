@@ -6,9 +6,9 @@ from config.constants import RED, DARK_RED, BLACK, YELLOW_SELECT, GREY, WHITE
 def journal_screen(self):
     surf = get_surface(JOURNAL_OBJS.get('bg'))
 
-    if self.handler.menu.sub is not None:
-        ind = self.handler.menu.options.choice
-        sj = self.handler.menu.sub
+    if self.handler.menu_type.sub is not None:
+        ind = self.handler.menu_type.options.choice
+        sj = self.handler.menu_type.sub
 
         j_display = journal_options_display(sj, self.game.options.current.choice)
         details = get_entry_details(sj[self.game.options.current.choice])
