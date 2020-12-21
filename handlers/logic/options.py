@@ -1,5 +1,5 @@
-from handlers.logic.logic_chunks import NewGame, LoadGame, QuitGame, FightTargeting, UseSatchel, RunAway, RewardAuto, \
-    RewardManual, RewardToLife, MenuGoToSub, ShopBaseGoToSub, TitleSettings, TitleAcknowledgements
+from handlers.logic.logic_chunks import FightTargeting, UseSatchel, RunAway, RewardAuto, \
+    RewardManual, RewardToLife, ShopBaseGoToSub
 
 
 class Options:
@@ -18,25 +18,17 @@ class OptionsFake:
         self.choice = 0
 
 
-def title_options():
-    text = ['New Game', 'Load Game', 'Settings', 'Acknowledgements', 'Quit']
-    options = Options([NewGame, LoadGame, TitleSettings, TitleAcknowledgements, QuitGame], text)
-    return options
-
-
-def initialize_menu_options(subgroups):
-    return OptionsFake(subgroups, MenuGoToSub)
-
-
 def encounter_window_options():
+    logic = [FightTargeting, UseSatchel, RunAway]
     text = ['FIGHT', 'ITEM', 'RUN']
-    options = Options([FightTargeting, UseSatchel, RunAway], text)
+    options = Options(logic, text)
     return options
 
 
 def reward_options():
+    logic = [RewardAuto, RewardManual, RewardToLife]
     text = ['AUTO', 'MANUAL', 'LEAVE']
-    options = Options([RewardAuto, RewardManual, RewardToLife], text)
+    options = Options(logic, text)
     return options
 
 

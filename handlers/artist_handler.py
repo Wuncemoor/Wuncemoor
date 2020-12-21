@@ -1,6 +1,6 @@
 from pygame.surface import Surface
 
-from config.constants import BLACK, GREY
+from config.constants import BLACK
 from config.image_objects import TITLE_SCREEN_BG, INDICATOR_H, ENCOUNTER_MENU, ENCOUNTER_BUTTON, \
     ENCOUNTER_MESSAGE_BG, INDICATOR_V, LOOT_BG, LOOT_BANNER, LIFE_BACKDROP, TURN_ORDER_QUEUE
 from enums.game_states import GameStates, MenuStates, EncounterStates
@@ -11,14 +11,14 @@ from screens.debug_window import debug_window
 from screens.dialogue_screen import dialogue_screen
 from screens.life_screen import get_life_left_panel, get_life_main_screen, get_life_right_panel
 from screens.shop_screen import shop_screen
-from screens.gui_tools import get_surface, print_message, align_and_blit, blit_options, get_alpha_surface
+from data_structures.gui_tools import get_surface, print_message, align_and_blit, blit_options, get_alpha_surface
 from screens.inventory_screen import inventory_screen
 from screens.journal_screen import journal_screen
 from screens.loot_menu import display_loot, display_resources_gain, get_reward_menu
 from screens.map_screen import map_screen
 from screens.resources_HUD import player_resource_display
 
-from screens.title_screen import get_title_text, get_title_menu
+from screens.title_screen import get_title_text, get_title_menu, title_screen
 
 
 class ArtistHandler(MVC):
@@ -39,14 +39,7 @@ class ArtistHandler(MVC):
         debug_window(self)
 
     def title(self):
-        self.screen.blit(TITLE_SCREEN_BG, (0, 0))
-
-        text, subtext = get_title_text()
-        align_and_blit(self.screen, text, x_ratio=0.5, y_ratio=0.15)
-        align_and_blit(self.screen, subtext, x_ratio=0.5, y_ratio=0.28)
-
-        menu = get_title_menu(self.game.options.current)
-        align_and_blit(self.screen, menu, x_ratio=0.5, y_ratio=0.75)
+        title_screen(self)
 
     def life(self):
 

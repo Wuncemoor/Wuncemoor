@@ -7,6 +7,7 @@ from handlers.logic.options import encounter_window_options
 from handlers.views.camera import Camera
 from handlers.views.fov_handler import FovHandler
 from handlers.views.messages import Message
+from screens.title_screen import get_title_menu
 
 
 class TitleHandler:
@@ -15,6 +16,7 @@ class TitleHandler:
     def __init__(self):
         self.superstate = GameStates.TITLE
         self.state = None
+        self.menu = get_title_menu()
 
 
 class LifeHandler:
@@ -36,17 +38,17 @@ class MenusHandler:
         self.state = None
         self.menu_type = None
 
-    def change_state(self, menu):
+    def change_state(self, menu, options):
         self.menu_type = menu
         self.state = menu.superstate
         self.confirm_submenu()
-        self.owner.options.get()
+        options.current = self.menu_type.menu
 
     def confirm_submenu(self):
-        if self.menu_type.sub is None:
+        if self.menu_type.submenu is None:
             pass
-        elif len(self.menu_type.sub) == 0:
-            self.menu_type.sub = None
+        elif len(self.menu_type.submenu) == 0:
+            self.menu_type.submenu = None
 
 
 class DialogueHandler:
@@ -243,8 +245,8 @@ class ShopHandler:
         self.transaction_details = []
 
     def get_subinventories(self, index):
-        player_subinv = self.snapshot[0].subgroups[index]
-        shop_subinv = self.snapshot[1].subgroups[index]
+        player_subinv = self.snapshot[0].menu[index]
+        shop_subinv = self.snapshot[1].menu[index]
         return player_subinv, shop_subinv
 
     def take_snapshot(self):

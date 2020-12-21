@@ -34,9 +34,9 @@ class LogicHandler(MVC):
             self.response = FullscreenToggle.logic
             self.response(self)
         elif 'traverse_menu' in output:
-            self.game.options.traverse(output.get('traverse_menu'))
+            self.game.title.menu.traverse_list(output.get('traverse_menu'))
         elif 'choose_option' in output:
-            self.response = self.game.options.choose()
+            self.response = self.game.title.menu.logic[self.game.title.menu.pointer]
             self.response(self)
         elif 'debug' in output:
             self.response = Debug.logic

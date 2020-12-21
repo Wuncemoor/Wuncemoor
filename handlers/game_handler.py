@@ -1,6 +1,5 @@
 from config.constants import KEYDOWN_DELAY
 from handlers.log_handler import LogHandler
-from handlers.logic.options import initialize_menu_options
 from handlers import state_handlers
 from handlers.time_handler import TimeHandler
 import pygame as py
@@ -79,7 +78,7 @@ class GameHandler:
         self.encounter = state_handlers.EncounterHandler(loot)
         self.reward = state_handlers.RewardHandler(loot)
         self.party = party
-        self.init_options()
+        # self.init_options()
         self.log = LogHandler()
         self.debug.set_allowed_objs()
         self.take_ownership()
@@ -87,15 +86,12 @@ class GameHandler:
         self.life.fov.map = self.life.fov.initialize(self.world)
         self.state_handler = self.life
 
-    def init_options(self):
-        self.party.options = initialize_menu_options(self.party.members)
-        self.party.journal.options = initialize_menu_options(self.party.journal.subgroups)
-        self.party.inventory.options = initialize_menu_options(self.party.inventory.subgroups)
-        for dung in self.world.dungeons.values():
-            for map in dung.maps:
-                for entity in map.noncombatants:
-                    if entity.shopkeeper:
-                        entity.shopkeeper.inventory.options = initialize_menu_options(entity.shopkeeper.inventory)
+    # def init_options(self):
+    #     for dung in self.world.dungeons.values():
+    #         for map in dung.maps:
+    #             for entity in map.noncombatants:
+    #                 if entity.shopkeeper:
+    #                     entity.shopkeeper.inventory.options = initialize_menu_options(entity.shopkeeper.inventory)
 
 
     @staticmethod
