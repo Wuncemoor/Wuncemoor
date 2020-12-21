@@ -1,6 +1,6 @@
-from screens.gui_tools import get_surface, get_alpha_surface, align_and_blit, get_text_surface, get_wrapped_text
+from data_structures.gui_tools import get_surface, get_alpha_surface, align_and_blit, get_text_surface, get_wrapped_text
 from config.image_objects import JOURNAL_OBJS
-from config.constants import RED, DARK_RED, BLACK, YELLOW_SELECT, GREY, WHITE
+from config.constants import BLACK, YELLOW_SELECT, GREY, WHITE
 
 
 def journal_screen(self):

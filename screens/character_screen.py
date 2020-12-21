@@ -1,6 +1,6 @@
 from pygame.transform import scale
 from config.constants import WHITE
-from screens.gui_tools import get_alpha_surface, get_surface, get_text_surface, align_and_blit
+from data_structures.gui_tools import get_alpha_surface, get_surface, get_text_surface, align_and_blit
 from config.image_objects import CHARACTER_SHEET_BASE, XP_FILL
 from screens.resources_HUD import get_resource_vals
 

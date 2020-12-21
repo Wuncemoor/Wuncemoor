@@ -1,6 +1,6 @@
 from config.constants import WHITE, GREY
 from config.image_objects import DIALOGUE_BG
-from screens.gui_tools import get_surface, get_text_surface, align_and_blit, get_alpha_surface, get_wrapped_text, \
+from data_structures.gui_tools import get_surface, get_text_surface, align_and_blit, get_alpha_surface, get_wrapped_text, \
     get_wrapped_text_surface
 
 

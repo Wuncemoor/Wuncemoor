@@ -9,7 +9,7 @@ from config.image_objects import RESOURCE_HUD_BASE, RESOURCE_HUD_OVERLAY, HP, MP
 from enums.game_states import GameStates
 from screens.displays.calendar import display_calendar
 from screens.displays.clock import display_clock
-from screens.gui_tools import get_alpha_surface, get_text_surface, get_surface, align_and_blit, print_message
+from data_structures.gui_tools import get_alpha_surface, get_text_surface, get_surface, align_and_blit, print_message
 
 
 def get_life_left_panel(party):

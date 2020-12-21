@@ -1,4 +1,4 @@
-from screens.gui_tools import get_surface, get_text_surface, align_and_blit
+from data_structures.gui_tools import get_surface, get_text_surface, align_and_blit
 from config.image_objects import CALENDAR_BG, CALENDAR_CIRCLE
 from config.constants import BLACK
 

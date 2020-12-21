@@ -1,4 +1,4 @@
-from screens.gui_tools import get_alpha_surface, get_text_surface
+from data_structures.gui_tools import get_alpha_surface, get_text_surface
 from config.image_objects import RESOURCE_HUD
 from config.constants import WHITE, YELLOW, ORANGE, DARK_RED, GREY
 

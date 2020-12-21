@@ -1,5 +1,5 @@
 from config.image_objects import MAP_BG
-from screens.gui_tools import get_surface, align_and_blit, get_alpha_surface
+from data_structures.gui_tools import get_surface, align_and_blit, get_alpha_surface
 
 
 def map_screen(self):

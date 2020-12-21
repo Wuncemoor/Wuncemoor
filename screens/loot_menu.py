@@ -1,5 +1,5 @@
 from handlers.logic.options import reward_options
-from screens.gui_tools import get_alpha_surface, get_text_surface, blit_options
+from data_structures.gui_tools import get_alpha_surface, get_text_surface, blit_options
 from enums.game_states import RewardStates
 from config.image_objects import ENCOUNTER_BUTTON, INDICATOR_H
 from config.constants import BLACK

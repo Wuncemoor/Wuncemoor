@@ -4,7 +4,7 @@ from config.constants import BLACK, TWILIGHT_BLUE, MIDNIGHT_BLUE, DARKER_BLUE, D
     DODGER_BLUE, DARK_CYAN, DEEP_SKY_BLUE, LIGHT_SKY_BLUE, LIGHT_BLUE, LIGHT_CYAN
 from config.image_objects import MOON_NEW, MOON_WAXING_CRESCENT, MOON_FIRST_QUARTER, MOON_WAXING_GIBBOUS, MOON_FULL, \
     MOON_WANING_GIBBOUS, MOON_LAST_QUARTER, MOON_WANING_CRESCENT, SUN
-from screens.gui_tools import get_alpha_surface, get_text_surface, align_and_blit
+from data_structures.gui_tools import get_alpha_surface, get_text_surface, align_and_blit
 
 
 def display_clock(time):

@@ -1,6 +1,6 @@
 import pygame as py
 from config.constants import SCREEN_SIZE, WHITE
-from screens.gui_tools import get_text_surface, align_and_blit, print_message
+from data_structures.gui_tools import get_text_surface, align_and_blit, print_message
 
 
 def debug_window(self):
