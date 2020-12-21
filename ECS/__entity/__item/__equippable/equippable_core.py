@@ -29,6 +29,7 @@ class EquippableCore:
         self.savethrow_corruption_bonus = 0
         self.savethrow_will_bonus = 0
         self.values = [0, 0]
+        self.mass_modifier = 0
 
         if self.core == 'staff':
 
@@ -39,6 +40,7 @@ class EquippableCore:
             self.resist_ele_bonuses = [0, 0, 0, 0, 0]
             self.hit_dodge_bonuses = [0, 0]
             self.values = [0, 0]
+            self.mass_modifier = 7
 
         elif self.core == 'dagger':
 
@@ -49,6 +51,7 @@ class EquippableCore:
             self.resist_ele_bonuses = [0, 0, 0, 0, 0]
             self.hit_dodge_bonuses = [5, 0]
             self.values = [0, 0]
+            self.mass_modifier = 1
 
         elif self.core == 'longsword':
 
@@ -59,6 +62,7 @@ class EquippableCore:
             self.resist_ele_bonuses = [0, 0, 0, 0, 0]
             self.hit_dodge_bonuses = [5, 0]
             self.values = [0, 0]
+            self.mass_modifier = 14
 
         elif self.core == 'shield':
 
@@ -69,3 +73,4 @@ class EquippableCore:
             self.resist_ele_bonuses = [5, 5, 5, 5, 0]
             self.hit_dodge_bonuses = [5, 0]
             self.values = [0, 0]
+            self.mass_modifier = 20

@@ -22,6 +22,21 @@ class Combatant:
         self.competence_points = 0
         self.sex = sex
 
+    @property
+    def mass(self):
+        return self.equipment.mass
+
+    @property
+    def max_carry_capacity(self):
+        return 3*self.attributes.strength
+
+    @property
+    def used_carry_capacity(self):
+        return self.equipment.mass
+
+    @property
+    def extra_carry_capacity(self):
+        return self.max_carry_capacity - self.equipment.mass
     # Resources
     
     @property

@@ -21,6 +21,13 @@ class Inventory:
 
     def initialize_subgroups(self):
         return [self.weapons, self.armor, self.accessories, self.rations, self.satchel, self.materials, self.plot]
+    @property
+    def mass(self):
+        total = 0
+        for subgroup in self.menu:
+            for entity in subgroup:
+                total += entity.mass
+        return total
 
     def get_sub(self):
         return self.subgroups[self.options.choice]

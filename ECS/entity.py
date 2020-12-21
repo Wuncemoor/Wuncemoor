@@ -51,6 +51,35 @@ class Entity:
         if self.shopkeeper:
             self.shopkeeper.owner = self
 
+    @property
+    def mass(self):
+        if self.item:
+            return self.item.mass
+        elif self.combatant:
+            return self.combatant.mass
+        else:
+            return 0
+
+    @property
+    def max_carry_capacity(self):
+        if self.combatant:
+            return self.combatant.max_carry_capacity
+        else:
+            return 0
+
+    @property
+    def used_carry_capacity(self):
+        if self.combatant:
+            return self.combatant.used_carry_capacity
+        else:
+            return 0
+
+    @property
+    def extra_carry_capacity(self):
+        if self.combatant:
+            return self.combatant.extra_carry_capacity
+        else:
+            return 0
     # Move the entity
     def move(self, dx, dy):
         self.x += dx

@@ -26,6 +26,9 @@ class Equipment:
         self.food = food
         self.drink = drink
 
+    @property
+    def mass(self):
+        return sum([slot.mass for slot in self.equipment_slots if slot is not None])
 
     @property
     def equipment_slots(self):

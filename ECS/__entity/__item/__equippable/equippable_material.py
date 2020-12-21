@@ -5,6 +5,7 @@ class EquippableMaterial:
         
         self.material = material
         self.modifier = 0
+        self.mass_modifier = 0
         
         if self.material == 'wood':
             self.modifier = 0.25
@@ -18,4 +19,5 @@ class EquippableMaterial:
             self.modifier = 0.7
         elif self.material == 'iron':
             self.modifier = 1.0
+        self.mass_modifier = self.modifier
             

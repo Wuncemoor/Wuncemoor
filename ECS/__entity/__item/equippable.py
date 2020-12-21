@@ -12,6 +12,9 @@ class Equippable:
         self.quality = quality
 
     @property
+    def mass(self):
+        return self.core.mass_modifier * self.material.mass_modifier
+    @property
     def max_hp_bonus(self):
         return math.floor(self.core.resource_bonuses[0])
 

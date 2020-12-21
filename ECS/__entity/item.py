@@ -23,3 +23,13 @@ class Item:
             self.name = self.important.name
             self.images = self.important.images
 
+    @property
+    def mass(self):
+        total = 0
+        for slot in (self.equippable, self.useable, self.craftable):
+            if slot is not None:
+                total += slot.mass
+        return total
+
+
+
