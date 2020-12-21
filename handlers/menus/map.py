@@ -5,4 +5,4 @@ class Map:
     def __init__(self):
         self.superstate = MenuStates.MAP
         self.options = []
-        self.sub = None
+        self.submenu = None

@@ -1,4 +1,6 @@
+from data_structures.menu_tools import LogicList
 from enums.game_states import MenuStates
+from handlers.logic.menus_logic import menus_goto_submenu
 
 
 class Journal:
@@ -8,12 +10,11 @@ class Journal:
         self.codex = []
         self.convo_history = []
         self.superstate = MenuStates.JOURNAL
-        self.subgroups = self.initialize_subgroups()
-        self.options = None
-        self.sub = None
+        self.menu = self.initialize_menu()
+        self.submenu = None
 
-    def initialize_subgroups(self):
-        return [self.current_quests, self.completed_quests, self.codex, self.convo_history]
+    def initialize_menu(self):
+        return LogicList([self.current_quests, self.completed_quests, self.codex, self.convo_history], menus_goto_submenu)
 
     def update_plot(self, signal):
         for quest in self.current_quests:

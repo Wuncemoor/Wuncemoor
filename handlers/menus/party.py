@@ -15,7 +15,8 @@ class Party:
         self.x = None
         self.y = None
         self.direction = (0, 1)
-        self.sub = None
+        self.menu = None
+        self.submenu = None
         self.formation = 'Unorganized'
         self.move_speed = 'Normal'
         self.rations = 'None'
