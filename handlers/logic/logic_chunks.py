@@ -1,42 +1,35 @@
+from ECS.entity import Entity
 from abstracts.abstract_logic import AbstractLogic
-from config.constants import DARK_BLUE, DARK_ORANGE, BLACK, WHITE, SCREEN_SIZE
+from config.constants import DARK_BLUE, DARK_ORANGE, BLACK, WHITE, SCREEN_SIZE, MIDNIGHT_BLUE
+from data_structures.menu_tools import Menu
 from enums.game_states import EncounterStates, RewardStates, GameStates, ShopStates
+from handlers.menus.party import Party
 from handlers.views.messages import Message
 from loader_functions.data_loaders import load_game
 from loader_functions.initialize_new_game import get_game_variables
 import pygame as py
 
 
-class NewGame(AbstractLogic):
-
-    def logic(self):
-        world, party = get_game_variables()
-        self.game.preplay(world, party)
+def new_game(mvc):
+    world, party = get_game_variables()
+    mvc.game.preplay(world, party)
 
 
-class LoadGame(AbstractLogic):
-
-    def logic(self):
-        world, party = load_game()
-        self.game.preplay(world, party)
+def load_game(mvc):
+    world, party = load_game()
+    mvc.game.preplay(world, party)
 
 
-class TitleSettings(AbstractLogic):
-
-    def logic(self):
-        self.game.quit()
+def goto_settings(mvc):
+    mvc.game.quit()
 
 
-class TitleAcknowledgements(AbstractLogic):
-
-    def logic(self):
-        self.game.quit()
+def goto_acknowledgements(mvc):
+    mvc.game.quit()
 
 
-class QuitGame(AbstractLogic):
-
-    def logic(self):
-        self.game.quit()
+def quit_game(mvc):
+    mvc.game.quit()
 
 
 class Move(AbstractLogic):
@@ -106,52 +99,8 @@ class Interact(AbstractLogic):
         return changes
 
 
-class MenusToggle(AbstractLogic):
-
-    def logic(self, output):
-
-        if self.handler.menu_type is output:
-            return MenusSubToLife.logic(self)
-        else:
-            return MenusToMenus.logic(self, output)
-
-
-class LifeToMenus(AbstractLogic):
-
-    def logic(self, obj):
-        return [{'state': 'menus'}, {'substate': obj}]
-
-
-class MenusToMenus(AbstractLogic):
-
-    def logic(self, obj):
-        return [{'substate': obj}]
-
-
-class MenusSubToLife(AbstractLogic):
-
-    def logic(self):
-        self.handler.menu_type.sub = None
-        return [{'state': 'life'}]
-
-
-class MenusExit(AbstractLogic):
-
-    def logic(self):
-        if self.handler.menu_type.sub is None:
-            self.game.state_handler = self.game.life
-        else:
-            self.handler.menu_type.sub = None
-            self.game.options.current = self.handler.menu_type.options
-
-
-class MenuGoToSub(AbstractLogic):
-
-    def logic(self):
-        sub = self.handler.menu_type.get_sub()
-        if len(sub) > 0:
-            self.handler.menu_type.sub = sub
-            self.game.options.wrap_and_set(sub)
+def life_goto_menus(obj):
+    return [{'state': 'menus'}, {'substate': obj}]
 
 
 class ShopBaseGoToSub(AbstractLogic):
@@ -404,4 +353,30 @@ class FullscreenToggle(AbstractLogic):
         else:
             self.game.screen = py.display.set_mode(SCREEN_SIZE, flags=py.FULLSCREEN)
             self.game.fullscreen = True
+
+
+def attempt_equip_item(party: Party, menu: Menu):
+    slot = menu.pointer_data.item.equippable.slot
+    currently_equipped = party.p1.combatant.equipment.slots_dict.get(slot)
+    changes = []
+    if currently_equipped:
+        # check weight limit later
+        changes.append({'dequipped': slot})
+    changes.append({'equipped': menu})
+    message = Message('{0} equipped the {1}!'.format(party.p1.name, menu.pointer_data.name), MIDNIGHT_BLUE)
+    changes.append({'message': message})
+    changes.append({'subsubstate': 2})
+    return changes
+
+class ExamineItem(AbstractLogic):
+
+    pass
+
+
+class UseItem(AbstractLogic):
+    pass
+
+
+class DropItem(AbstractLogic):
+    pass
 

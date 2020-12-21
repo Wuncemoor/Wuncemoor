@@ -37,6 +37,19 @@ class Equipment:
                 self.off_hand, self.quiver, self.food, self.drink]
 
     @property
+    def slots_dict(self):
+        return {EquipmentSlots.HEAD: self.head, EquipmentSlots.SHOULDERS: self.shoulders,
+                EquipmentSlots.CHEST: self.chest, EquipmentSlots.ARMS: self.arms,
+                EquipmentSlots.HANDS: self.hands, EquipmentSlots.LEGS: self.legs,
+                EquipmentSlots.FEET: self.feet, EquipmentSlots.FACE: self.face,
+                EquipmentSlots.NECK: self.neck, EquipmentSlots.BACK: self.back,
+                EquipmentSlots.WAIST: self.waist, EquipmentSlots.FINGER1: self.finger1,
+                EquipmentSlots.FINGER2: self.finger2, EquipmentSlots.SATCHEL: self.satchel,
+                EquipmentSlots.MAIN_HAND: self.main_hand, EquipmentSlots.OFF_HAND: self.off_hand,
+                EquipmentSlots.QUIVER: self.quiver, EquipmentSlots.FOOD: self.food,
+                EquipmentSlots.DRINK: self.drink}
+
+    @property
     def max_hp_bonus(self):
         bonus = 0
         for slot in self.equipment_slots:
@@ -385,124 +398,91 @@ class Equipment:
                 bonus += slot.item.equippable.savethrow_will_bonus
         return bonus
 
-    def toggle_equip(self, equippable_entity):
-        results = []
-        
-        slot = equippable_entity.item.equippable.slot
-        
-        if slot == EquipmentSlots.MAIN_HAND:
-            if self.main_hand == equippable_entity:
-                self.main_hand = None
-                results.append({'dequipped': equippable_entity})
-            else:
-                if self.main_hand:
-                    results.append({'dequipped': self.main_hand})
-                    
-                self.main_hand = equippable_entity
-                results.append({'equipped': equippable_entity})
-                
-        elif slot == EquipmentSlots.OFF_HAND:
-            if self.off_hand == equippable_entity:
-                self.off_hand = None
-                results.append({'dequipped': equippable_entity})
-            else:
-                if self.off_hand:
-                    results.append({'dequipped': equippable_entity})
-                    
-                self.off_hand = equippable_entity
-                results.append({'equipped': equippable_entity})
-                
-        elif slot == EquipmentSlots.HEAD:
-            if self.head == equippable_entity:
-                self.head = None
-                results.append({'dequipped': equippable_entity})
-            else:
-                if self.head:
-                    results.append({'dequipped': equippable_entity})
-                    
-                self.head = equippable_entity
-                results.append({'equipped': equippable_entity})
-                
-        elif slot == EquipmentSlots.BODY:
-            if self.body == equippable_entity:
-                self.body = None
-                results.append({'dequipped': equippable_entity})
-            else:
-                if self.body:
-                    results.append({'dequipped': equippable_entity})
-                    
-                self.body = equippable_entity
-                results.append({'equipped': equippable_entity})
-                
-        elif slot == EquipmentSlots.FEET:
-            if self.feet == equippable_entity:
-                self.feet = None
-                results.append({'dequipped': equippable_entity})
-            else:
-                if self.feet:
-                    results.append({'dequipped': equippable_entity})
-                    
-                self.feet = equippable_entity
-                results.append({'equipped': equippable_entity})
-                
-        elif slot == EquipmentSlots.BELT:
-            if self.belt == equippable_entity:
-                self.belt = None
-                results.append({'dequipped': equippable_entity})
-            else:
-                if self.belt:
-                    results.append({'dequipped': equippable_entity})
-                    
-                self.feet = equippable_entity
-                results.append({'equipped': equippable_entity})
-
+    def unequip(self, slot):
+        slot_gear = self.slots_dict.get(slot)
+        added_to_inventory = slot_gear
+        if slot == EquipmentSlots.HEAD:
+            self.head = None
+        elif slot == EquipmentSlots.SHOULDERS:
+            self.shoulders = None
+        elif slot == EquipmentSlots.CHEST:
+            self.chest = None
+        elif slot == EquipmentSlots.ARMS:
+            self.arms = None
         elif slot == EquipmentSlots.HANDS:
-            if self.hands == equippable_entity:
-                self.hands = None
-                results.append({'dequipped': equippable_entity})
-            else:
-                if self.hands:
-                    results.append({'dequipped': equippable_entity})
-                    
-                self.hands = equippable_entity
-                results.append({'equipped': equippable_entity})
-                
-        elif slot == EquipmentSlots.FINGER:
-            if self.finger == equippable_entity:
-                self.finger = None
-                results.append({'dequipped': equippable_entity})
-            else:
-                if self.finger:
-                    results.append({'dequipped': equippable_entity})
-                    
-                self.finger = equippable_entity
-                results.append({'equipped': equippable_entity})
-                
+            self.hands = None
+        elif slot == EquipmentSlots.LEGS:
+            self.legs = None
+        elif slot == EquipmentSlots.FEET:
+            self.feet = None
+        elif slot == EquipmentSlots.FACE:
+            self.face = None
         elif slot == EquipmentSlots.NECK:
-            if self.neck == equippable_entity:
-                self.neck = None
-                results.append({'dequipped': equippable_entity})
-            else:
-                if self.neck:
-                    results.append({'dequipped': equippable_entity})
-                    
-                self.neck = equippable_entity
-                results.append({'equipped': equippable_entity})
-                
+            self.neck = None
         elif slot == EquipmentSlots.BACK:
-            if self.back == equippable_entity:
-                self.back = None
-                results.append({'dequipped': equippable_entity})
-            else:
-                if self.back:
-                    results.append({'dequipped': equippable_entity})
-                    
-                self.back = equippable_entity
-                results.append({'equipped': equippable_entity})
+            self.back = None
+        elif slot == EquipmentSlots.WAIST:
+            self.waist = None
+        elif slot == EquipmentSlots.FINGER1:
+            self.finger1 = None
+        elif slot == EquipmentSlots.FINGER2:
+            self.finger2 = None
+        elif slot == EquipmentSlots.SATCHEL:
+            self.satchel = None
+        elif slot == EquipmentSlots.MAIN_HAND:
+            self.main_hand = None
+        elif slot == EquipmentSlots.OFF_HAND:
+            self.off_hand = None
+        elif slot == EquipmentSlots.QUIVER:
+            self.quiver = None
+        elif slot == EquipmentSlots.FOOD:
+            self.food = None
+        elif slot == EquipmentSlots.DRINK:
+            self.drink = None
 
-        return results
+        return added_to_inventory
+
+    def equip(self, entity):
+        slot = entity.item.equippable.slot
+        if slot == EquipmentSlots.HEAD:
+            self.head = entity
+        elif slot == EquipmentSlots.SHOULDERS:
+            self.shoulders = entity
+        elif slot == EquipmentSlots.CHEST:
+            self.chest = entity
+        elif slot == EquipmentSlots.ARMS:
+            self.arms = entity
+        elif slot == EquipmentSlots.HANDS:
+            self.hands = entity
+        elif slot == EquipmentSlots.LEGS:
+            self.legs = entity
+        elif slot == EquipmentSlots.FEET:
+            self.feet = entity
+        elif slot == EquipmentSlots.FACE:
+            self.face = entity
+        elif slot == EquipmentSlots.NECK:
+            self.neck = entity
+        elif slot == EquipmentSlots.BACK:
+            self.back = entity
+        elif slot == EquipmentSlots.WAIST:
+            self.waist = entity
+        elif slot == EquipmentSlots.FINGER1:
+            self.finger1 = entity
+        elif slot == EquipmentSlots.FINGER2:
+            self.finger2 = entity
+        elif slot == EquipmentSlots.SATCHEL:
+            self.satchel = entity
+        elif slot == EquipmentSlots.MAIN_HAND:
+            self.main_hand = entity
+        elif slot == EquipmentSlots.OFF_HAND:
+            self.off_hand = entity
+        elif slot == EquipmentSlots.QUIVER:
+            self.quiver = entity
+        elif slot == EquipmentSlots.FOOD:
+            self.food = entity
+        elif slot == EquipmentSlots.DRINK:
+            self.drink = entity
 
     def drop_dead(self):
-        drop = [item for item in (self.main_hand, self.off_hand, self.head, self.body, self.feet, self.belt, self.hands,
-                                  self.finger, self.neck, self.back) if item is not None]
+        drop = [item for item in self.equipment_slots if item is not None]
         return drop

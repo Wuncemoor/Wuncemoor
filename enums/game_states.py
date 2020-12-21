@@ -45,6 +45,16 @@ class MenuStates(Enum):
     SETTINGS = 5
 
 
+class InventoryStates(Enum):
+    """Sub-substates that occur in MenuStates.INVENTORY"""
+
+    BASE = 1
+    SUBINVENTORY = 2
+    ENTITY_OPTIONS = 3
+
+
+
+
 class ShopStates(Enum):
     """Substates that occur in GameStates.SHOP"""
 

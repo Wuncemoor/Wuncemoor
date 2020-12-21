@@ -1,6 +1,8 @@
 from abstracts.abstract_mvc import MVC
-from handlers.logic.logic_chunks import Move, Interact, MenusToggle, MenusExit, EncounterExit, EndTurn, EnemyTurn, \
-    RewardToggle, RewardExit, LifeToMenus, Debug, DebugExit, DebugAttemptCommand, ShopExit, FullscreenToggle
+from enums.game_states import InventoryStates
+from handlers.logic.logic_chunks import Move, Interact, EncounterExit, EndTurn, EnemyTurn, \
+    RewardToggle, RewardExit, Debug, DebugExit, DebugAttemptCommand, ShopExit, FullscreenToggle, life_goto_menus
+from handlers.logic.menus_logic import menus_exit, menus_toggle, menus_goto_entity_options
 
 
 class LogicHandler(MVC):
@@ -58,8 +60,8 @@ class LogicHandler(MVC):
             changes = self.response(self)
             self.mutate(changes)
         elif 'show_menus' in output:
-            self.response = LifeToMenus.logic
-            changes = self.response(self, output.get('show_menus'))
+            self.response = life_goto_menus
+            changes = self.response(output.get('show_menus'))
             self.mutate(changes)
         elif 'debug' in output:
             self.response = Debug.logic
@@ -73,18 +75,27 @@ class LogicHandler(MVC):
             self.response = FullscreenToggle.logic
             self.response(self)
         elif 'exit' in output:
-            self.response = MenusExit.logic
-            self.response(self)
+            self.response = menus_exit
+            changes = self.response(self)
+            self.mutate(changes)
         elif 'show_menus' in output:
-            self.response = MenusToggle.logic
+            self.response = menus_toggle
             changes = self.response(self, output.get('show_menus'))
             self.mutate(changes)
         elif 'traverse_menu' in output:
             self.game.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
-            if self.handler.menu_type.sub is None:
-                self.response = self.game.options.choose()
-                self.response(self)
+            if self.handler.menu_type.state == self.handler.menu_type.state.__class__(1):
+                self.response = self.handler.menu_type.menu.logic
+                changes = self.response(self)
+            elif self.handler.menu_type.state == self.handler.menu_type.state.__class__(2):
+                self.response = self.handler.menu_type.submenu.logic
+                changes = self.response()
+            elif self.handler.menu_type.state == self.handler.menu_type.state.__class__(3):
+                self.response = self.game.options.current.logic[self.game.options.current.pointer]
+                changes = self.response(self.game.party, self.handler.menu_type.submenu)
+            self.mutate(changes)
+
         elif 'debug' in output:
             self.response = Debug.logic
             changes = self.response(self)
@@ -176,8 +187,18 @@ class LogicHandler(MVC):
                 self.game.log.messages.add_message(change.get('message'))
             elif 'item_added' in change:
                 self.game.world.current_map.entities.remove(change.get('item_added'))
+            elif 'dequipped' in change:
+                item = self.game.party.p1.combatant.equipment.unequip(change.get('dequipped'))
+                self.game.party.inventory.add_item(item)
+            elif 'equipped' in change:
+                menu = change.get('equipped')
+                item = menu.pop_pointer()
+                self.game.party.p1.combatant.equipment.equip(item)
+            elif 'subsubstate' in change:
+                self.handler.menu_type.state = self.handler.menu_type.state.__class__(change.get('subsubstate'))
+                self.handler.menu_type.change_state(change.get('subsubstate'), self.game.options)
             elif 'substate' in change:
-                self.handler.change_state(change.get('substate'))
+                self.handler.change_state(change.get('substate'), self.game.options)
             elif 'state' in change:
                 self.game.change_state(change.get('state'))
             elif 'xp' in change:

@@ -1,11 +1,12 @@
 from pygame import draw
 from pygame.transform import scale
 
-from config.constants import WHITE, BLACK, DARK_GREY
+from config.constants import WHITE, BLACK, DARK_GREY, SUBINVENTORY_OPTION_WIDTH, SUBINVENTORY_OPTION_HEIGHT
 from config.image_objects import INVENTORY_BG, INVENTORY_ICONS, EQUIPMENT_EMPTY_DICT, EQUIPMENT_SLOT_BORDER, \
-    POINTER_RIGHT
-from screens.display_money import display_money
-from screens.gui_tools import get_surface, align_and_blit, get_alpha_surface, get_text_surface
+    POINTER_RIGHT, DIALOGUE_BG
+from enums.game_states import InventoryStates
+from misc_functions.split_money_value import split_money
+from data_structures.gui_tools import get_surface, align_and_blit, get_alpha_surface, get_text_surface
 
 
 def inventory_screen(self):
@@ -15,11 +16,12 @@ def inventory_screen(self):
     display_equipment_icons(self.game.party.p1, surf)
     display_selected_icon(self, surf)
     display_subinventory(self, surf)
-    #     party_money = display_money(self.game.party.inventory.money)
-    #
-    #     align_and_blit(surf, party_money, x_ratio=0.6, y_ratio=0.19)
-    # carrying capacity goes here
+    if self.handler.menu_type.state is InventoryStates.ENTITY_OPTIONS:
+        display_entity_options(self, surf)
+    display_mass_capacities(self.game.party, surf)
+    display_wealth(self.game.party.inventory.money, surf)
 
+    # carrying capacity goes here
 
     align_and_blit(self.screen, surf)
 
@@ -81,29 +83,64 @@ def display_equipment_icon(window, eq, slot, mini=False):
 
 
 def display_selected_icon(self, surf):
-    if self.handler.menu_type.sub is None:
-        ind = self.game.options.current.choice
-    else:
-        ind = self.handler.menu_type.options.choice
-    selected_icon = INVENTORY_ICONS[ind]
-    align_and_blit(surf, selected_icon, x_ratio=0.493+(0.0669*ind), y_ratio=0.242)
+    index = self.handler.menu_type.menu.pointer
+    selected_icon = INVENTORY_ICONS[index]
+    align_and_blit(surf, selected_icon, x_ratio=0.493+(0.0669*index), y_ratio=0.242)
 
 
 def display_subinventory(self, surf):
-    entities = self.handler.menu_type.get_sub()
-    OPTION_WIDTH, OPTION_HEIGHT = 360, 52
+    entities = self.handler.menu_type.menu.pointer_data
 
-    subinv = get_alpha_surface(OPTION_WIDTH, len(entities) * OPTION_HEIGHT)
+    subinv = get_alpha_surface(SUBINVENTORY_OPTION_WIDTH, len(entities) * SUBINVENTORY_OPTION_HEIGHT)
+    display_entity_list(entities, subinv)
+    display_subinv_pointer(self, subinv)
+    surf.blit(subinv, (340, 170))
+
+
+def display_entity_list(entities, subinv):
     y = 0
     for entity in entities:
         sprite = entity.images.sprite
         text = get_text_surface(entity.name, fontsize=24, color=WHITE)
-        item = get_alpha_surface(OPTION_WIDTH, OPTION_HEIGHT)
+        item = get_alpha_surface(SUBINVENTORY_OPTION_WIDTH, SUBINVENTORY_OPTION_HEIGHT)
         align_and_blit(item, sprite, x_ratio=0.15)
-        item.blit(text, (int(item.get_width()*0.35), int(0.5*(item.get_height() - text.get_height()))))
-        draw.line(item, DARK_GREY, (0, OPTION_HEIGHT-1), (int(OPTION_WIDTH), OPTION_HEIGHT-1))
-        subinv.blit(item, (0, y * OPTION_HEIGHT))
+        item.blit(text, (int(item.get_width() * 0.35), int(0.5 * (item.get_height() - text.get_height()))))
+        draw.line(item, DARK_GREY, (0, SUBINVENTORY_OPTION_HEIGHT - 1),
+                  (int(SUBINVENTORY_OPTION_WIDTH), SUBINVENTORY_OPTION_HEIGHT - 1))
+        subinv.blit(item, (0, y * SUBINVENTORY_OPTION_HEIGHT))
         y += 1
-    if self.handler.menu_type.sub:
-        subinv.blit(POINTER_RIGHT, (0, 2 + (OPTION_HEIGHT * self.game.options.current.choice)))
-    surf.blit(subinv, (340, 170))
+
+
+def display_subinv_pointer(self, subinv):
+    if self.handler.menu_type.state is InventoryStates.BASE:
+        pass
+    elif self.handler.menu_type.state in (InventoryStates.SUBINVENTORY, InventoryStates.ENTITY_OPTIONS):
+        subinv.blit(POINTER_RIGHT, (0, 2 + (SUBINVENTORY_OPTION_HEIGHT * self.handler.menu_type.submenu.pointer)))
+
+
+def display_entity_options(self, surf):
+    menu = self.game.options.current
+    window = menu.blit_options()
+
+    surf.blit(window, (surf.get_width()*0.55, surf.get_height()*0.3 + SUBINVENTORY_OPTION_HEIGHT*self.handler.menu_type.submenu.pointer))
+
+
+def display_mass_capacities(party, surf):
+    total_extra = 0
+    for member in party.members:
+        total_extra += member.extra_carry_capacity
+    total_used = party.inventory.mass
+    player_capa = get_text_surface(str(round(party.p1.used_carry_capacity, 2)) + '  /  ' + str(round(party.p1.max_carry_capacity, 2)) + ' kg.', color=WHITE)
+    surf.blit(player_capa, (140, 400))
+    mass_capa = get_text_surface(str(round(total_used, 2)) + '  /  ' + str(round(total_extra, 2)) + ' kg.', color=WHITE)
+    surf.blit(mass_capa, (358, surf.get_height()-50))
+
+
+def display_wealth(money, surf):
+    gold, silver, copper = split_money(money, fontsize=16)
+
+    w = 508
+    for money in [gold, silver, copper]:
+        if money is not None:
+            surf.blit(money, (w-money.get_width(), surf.get_height()-52))
+        w += 75

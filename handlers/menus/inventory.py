@@ -1,26 +1,26 @@
-from config.constants import DARK_PURPLE, YELLOW
+from config.constants import YELLOW
+from data_structures.menu_tools import LogicList
+from handlers.logic.menus_logic import menus_goto_submenu, menus_goto_entity_options
 from handlers.views.messages import Message
-from enums.game_states import MenuStates
+from enums.game_states import MenuStates, InventoryStates
 from enums.equipment_slots import EquipmentSlots
 
 
 class Inventory:
     def __init__(self):
         self.superstate = MenuStates.INVENTORY
-        self.weapons = []
-        self.armor = []
-        self.accessories = []
-        self.rations = []
-        self.satchel = []
-        self.materials = []
-        self.plot = []
+        self.state = InventoryStates.BASE
+        self.weapons = LogicList([], menus_goto_entity_options)
+        self.armor = LogicList([], menus_goto_entity_options)
+        self.accessories = LogicList([], menus_goto_entity_options)
+        self.rations = LogicList([], menus_goto_entity_options)
+        self.satchel = LogicList([], menus_goto_entity_options)
+        self.materials = LogicList([], menus_goto_entity_options)
+        self.plot = LogicList([], menus_goto_entity_options)
         self.money = 0
-        self.subgroups = self.initialize_subgroups()
-        self.options = None
-        self.sub = None
+        self.menu = self.initialize_menu()
+        self.submenu = None
 
-    def initialize_subgroups(self):
-        return [self.weapons, self.armor, self.accessories, self.rations, self.satchel, self.materials, self.plot]
     @property
     def mass(self):
         total = 0
@@ -29,21 +29,35 @@ class Inventory:
                 total += entity.mass
         return total
 
-    def get_sub(self):
-        return self.subgroups[self.options.choice]
+    def initialize_menu(self):
+        return LogicList([self.weapons, self.armor, self.accessories, self.rations, self.satchel, self.materials,
+                             self.plot], menus_goto_submenu)
+
+    def change_state(self, state, options):
+        self.state = self.state.__class__(state)
+        if state == 1:
+            self.submenu = None
+            self.menu.unlock()
+            options.current = self.menu
+        elif state == 2:
+            self.menu.lock()
+            self.submenu = self.menu.pointer_data
+            self.submenu.unlock()
+            options.current = self.submenu
+            if len(options.current) == 0:
+                self.change_state(1, options)
+        elif state == 3:
+            self.submenu.lock()
+            entity = self.submenu.pointer_data
+            options.current = options.get(component=entity.item)
 
     def add_item(self, item):
-        results = []
-        
+
         # if len(self.items) >= self.wt_limit:
         #     results.append({'item_added': None, 'message': Message("You're already overburdened! Get rid of some things or get stronger!", libtcod.dark_purple)})
-        # else:
-        results.extend([{'item_added': item},
-                       {'message': Message('You pick up the {0}!'.format(item.name), DARK_PURPLE)}])
+
         subgroup = self.filter_item(item.item)
         subgroup.append(item)
-
-        return results
 
     def take_loot(self, loot):
         for item in loot:

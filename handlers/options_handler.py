@@ -1,9 +1,17 @@
+from pygame.transform import scale
+
+from ECS.__entity.item import Item
+from config.image_objects import DIALOGUE_BG, POINTER_RIGHT
+from data_structures.gui_tools import get_alpha_surface
+from data_structures.menu_tools import Menu, MenuSpecs
 from enums.game_states import GameStates, MenuStates, EncounterStates, RewardStates, ShopStates
 from abstracts.abstract_mvc import MVC
 from handlers.encounter.combat import CombatGrid
-from handlers.logic.logic_chunks import AttackMob, GoToReward, RewardSifting, RewardDepositing
-from handlers.logic.options import title_options, Options, encounter_window_options, reward_options, OptionsFake, \
+from handlers.logic.logic_chunks import AttackMob, GoToReward, RewardSifting, RewardDepositing, UseItem, \
+    ExamineItem, DropItem, attempt_equip_item
+from handlers.logic.options import Options, encounter_window_options, reward_options, OptionsFake, \
     settings_options, shop_base_categories
+from screens.title_screen import get_title_menu
 
 
 class OptionsHandler(MVC):
@@ -19,14 +27,32 @@ class OptionsHandler(MVC):
         else:
             return Options(options)
 
-    def wrap_and_set(self, options):
-        self.current = self.wrap(options)
-
-    def get(self, case=None):
-        if case is None:
+    def get(self, component=None):
+        if component is None:
             self.current = self.mapping()
-        elif case == 'sub':
-            pass
+        elif isinstance(component, Item):
+            logic = []
+            data = []
+            if component.equippable:
+                logic.extend([attempt_equip_item])
+                data.append('Equip')
+            if component.useable:
+                logic.extend([UseItem])
+                data.append('Use')
+            logic.extend([ExamineItem])
+            data.append('Examine')
+            if not component.important:
+                logic.extend([DropItem])
+                data.append('Drop')
+            BG_WIDTH = 80
+            BG_HEIGHT = 24*len(data)
+            bg = get_alpha_surface(BG_WIDTH, BG_HEIGHT)
+            bg.blit(scale(DIALOGUE_BG, (BG_WIDTH, BG_HEIGHT)), (0, 0))
+            pointer_image = get_alpha_surface(16, 16)
+            pointer_image.blit(scale(POINTER_RIGHT, (16, 16)), (0, 0))
+            specs = MenuSpecs(bg=bg, pointer_image=pointer_image, pointer_y_offset=8, font_size=16,
+                              button_x_offset=10, button_y_offset=4)
+            return Menu(data, logic, specs)
 
     def traverse(self, path):
         if self.state == GameStates.TITLE:
@@ -35,10 +61,10 @@ class OptionsHandler(MVC):
             return self.traverse_graph(path)
         elif self.owner.state == GameStates.SHOP and self.handler.state == ShopStates.BASE:
             self.traverse_list((path[0]))
-        elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and self.handler.menu_type.sub is None:
-            self.traverse_list(path[0])
+        elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and self.handler.menu_type.submenu is None:
+            self.current.traverse_list(path[0])
         elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY):
-            self.traverse_list(path[1])
+            self.current.traverse_list(path[1])
         elif self.handler.state == EncounterStates.THINKING:
             self.traverse_list(path[1])
         elif self.handler.state == EncounterStates.FIGHT_TARGETING:
@@ -118,7 +144,7 @@ class OptionsHandler(MVC):
         return option.logic
 
     def title(self):
-        return title_options()
+        return get_title_menu()
 
     def life(self):
         pass
@@ -126,8 +152,8 @@ class OptionsHandler(MVC):
     def menus(self):
         menus = {
             MenuStates.PARTY: self.wrap([]),
-            MenuStates.INVENTORY: self.owner.party.inventory.options,
-            MenuStates.JOURNAL: self.owner.party.journal.options,
+            MenuStates.INVENTORY: self.owner.party.inventory.menu,
+            MenuStates.JOURNAL: self.owner.party.journal.menu,
             MenuStates.MAP: self.wrap([]),
             MenuStates.SETTINGS: settings_options(),
         }
