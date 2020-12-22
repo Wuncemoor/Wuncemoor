@@ -55,7 +55,7 @@ class TravLockList(UserList):
     def pop_pointer(self):
         pop = self.pop(self.pointer)
         if self.pointer >= len(self.data):
-            self.pointer = len(self.data) - 1
+            self.pointer = max(0, len(self.data) - 1)
         return pop
 
 
