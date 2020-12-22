@@ -29,6 +29,18 @@ class Inventory:
                 total += entity.mass
         return total
 
+    @property
+    def max_carry_capacity(self):
+        return sum([member.unused_carry_capacity for member in self.owner.members])
+
+    @property
+    def used_carry_capacity(self):
+        return self.mass
+
+    @property
+    def unused_carry_capacity(self):
+        return self.max_carry_capacity - self.used_carry_capacity
+
     def initialize_menu(self):
         return LogicList([self.weapons, self.armor, self.accessories, self.rations, self.satchel, self.materials,
                              self.plot], menus_goto_submenu)
@@ -52,9 +64,6 @@ class Inventory:
             options.current = options.get(component=entity.item)
 
     def add_item(self, item):
-
-        # if len(self.items) >= self.wt_limit:
-        #     results.append({'item_added': None, 'message': Message("You're already overburdened! Get rid of some things or get stronger!", libtcod.dark_purple)})
 
         subgroup = self.filter_item(item.item)
         subgroup.append(item)

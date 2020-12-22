@@ -126,13 +126,13 @@ def display_entity_options(self, surf):
 
 
 def display_mass_capacities(party, surf):
-    total_extra = 0
-    for member in party.members:
-        total_extra += member.extra_carry_capacity
+    # total_extra = 0
+    # for member in party.members:
+    #     total_extra += member.extra_carry_capacity
     total_used = party.inventory.mass
     player_capa = get_text_surface(str(round(party.p1.used_carry_capacity, 2)) + '  /  ' + str(round(party.p1.max_carry_capacity, 2)) + ' kg.', color=WHITE)
     surf.blit(player_capa, (140, 400))
-    mass_capa = get_text_surface(str(round(total_used, 2)) + '  /  ' + str(round(total_extra, 2)) + ' kg.', color=WHITE)
+    mass_capa = get_text_surface(str(round(total_used, 2)) + '  /  ' + str(round(party.inventory.max_carry_capacity, 2)) + ' kg.', color=WHITE)
     surf.blit(mass_capa, (358, surf.get_height()-50))
 
 

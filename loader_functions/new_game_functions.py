@@ -26,6 +26,7 @@ def get_party():
     player = get_player()
     party = Party(player)
     party.inventory = Inventory()
+    party.inventory.owner = party
     party.inventory.money += 100
     party.map = Map()
     party.x, party.y = player.x, player.y

@@ -1,6 +1,6 @@
 from ECS.entity import Entity
 from abstracts.abstract_logic import AbstractLogic
-from config.constants import DARK_BLUE, DARK_ORANGE, BLACK, WHITE, SCREEN_SIZE, MIDNIGHT_BLUE
+from config.constants import DARK_BLUE, DARK_ORANGE, BLACK, WHITE, SCREEN_SIZE, MIDNIGHT_BLUE, DARK_PURPLE, RED
 from data_structures.menu_tools import Menu
 from enums.game_states import EncounterStates, RewardStates, GameStates, ShopStates
 from handlers.menus.party import Party
@@ -73,30 +73,37 @@ class Move(AbstractLogic):
                 self.game.encounter.check(tile)
 
 
-class Interact(AbstractLogic):
+def interact(self):
+    changes = []
+    changes.extend(attempt_pickup_item(self.game.party, self.game.world.current_map.entities))
 
-    def logic(self):
-        nothing = True
-        changes = []
-        world = self.game.world
-        for entity in world.current_map.entities:
-            if entity.x == self.game.party.x and entity.y == self.game.party.y:
-                if entity.item:
-                    pickup_results = self.game.party.inventory.add_item(entity)
-                    changes.extend(pickup_results)
-                    nothing = False
-                    break
+    for noncom in self.game.world.current_map.noncombatants:
+        if noncom.x == self.game.party.x and noncom.y == self.game.party.y:
+            self.game.dialogue.partner = noncom
+            self.game.dialogue.set_real_talk()
+            self.game.state_handler = self.game.dialogue
+            self.game.options.current = noncom.noncombatant.dialogue
+    if len(changes) == 0:
+        message = Message('Nothing to see here, move along...', DARK_BLUE)
+        changes.append({'message': message})
+    return changes
 
-        for noncom in world.current_map.noncombatants:
-            if noncom.x == self.game.party.x and noncom.y == self.game.party.y:
-                self.game.dialogue.partner = noncom
-                self.game.dialogue.set_real_talk()
-                self.game.state_handler = self.game.dialogue
-                self.game.options.current = noncom.noncombatant.dialogue
-                nothing = False
-        if nothing:
-            self.game.log.messages.add_message(Message('Nothing to see here, move along...', DARK_BLUE))
-        return changes
+
+def attempt_pickup_item(party, entities):
+    changes = []
+    item_exists = False
+    for entity in entities:
+        if entity.x == party.x and entity.y == party.y and entity.item \
+                and (party.inventory.unused_carry_capacity >= entity.mass):
+            message = Message('{0} added to party inventory!'.format(entity.name), DARK_PURPLE)
+            changes.extend([{'pickup_item': entity}, {'message': message}])
+            break
+        elif entity.x == party.x and entity.y == party.y and entity.item:
+            item_exists = True
+    if len(changes) == 0 and item_exists:
+        message = Message("That's too heavy! Get rid of some things or get stronger!", RED)
+        changes.extend([{'message': message}])
+    return changes
 
 
 def life_goto_menus(obj):
@@ -367,6 +374,11 @@ def attempt_equip_item(party: Party, menu: Menu):
     changes.append({'message': message})
     changes.append({'subsubstate': 2})
     return changes
+
+
+def drop_item(party: Party, menu: Menu):
+    message = Message('{0} was dropped on the ground.'.format(menu.pointer_data.name), BLACK)
+    return [{'drop_item': menu}, {'message': message}, {'subsubstate': 2}]
 
 class ExamineItem(AbstractLogic):
 

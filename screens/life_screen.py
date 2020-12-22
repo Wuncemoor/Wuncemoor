@@ -1,4 +1,6 @@
 from math import sqrt
+from typing import List
+
 import tcod
 from pygame.surface import Surface
 from pygame import key, K_LEFT, K_a, K_RIGHT, K_UP, K_DOWN, K_d, K_s, K_w
@@ -116,7 +118,7 @@ def get_life_main_screen(self):
         draw_entity(self, main_screen, noncom)
     entities_in_render_order = sorted(self.game.world.current_map.entities, key=lambda x: x.render_order.value)
     for entity in entities_in_render_order:
-        self.draw_entity(entity)
+        draw_entity(self, main_screen, entity)
 
     draw_party(self, main_screen)
     return main_screen
@@ -132,9 +134,13 @@ def is_party_on_interior_tile(party, tiles):
 def draw_entity(self, main_screen, entity):
     cx, cy = self.game.life.camera.x, self.game.life.camera.y
     sprite = entity.images.sprite
+    if isinstance(sprite, List):
+        img = sprite[self.frame]
+    else:
+        img = sprite
 
     if tcod.map_is_in_fov(self.game.life.fov.map, entity.y, entity.x):
-        main_screen.blit(sprite[self.frame], ((entity.x - cx) * TILESIZE, (entity.y - cy) * TILESIZE - (TILESIZE/3)))
+        main_screen.blit(img, ((entity.x - cx) * TILESIZE, (entity.y - cy) * TILESIZE - (img.get_height()-TILESIZE)))
 
 
 def draw_party(self, main_screen):
@@ -146,9 +152,11 @@ def draw_party(self, main_screen):
 
     if keys[K_LEFT] | keys[K_RIGHT] | keys[K_UP] | keys[K_DOWN] | keys[K_a] | keys[K_d] | keys[K_s] | keys[K_w] and self.game.state == GameStates.LIFE:
         fast = self.frame * 3
-        main_screen.blit(sprite[fast % len(sprite)], ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
+        img = sprite[fast % len(sprite)]
+        main_screen.blit(img, ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (img.get_height()-TILESIZE)))
     else:
-        main_screen.blit(sprite[self.frame], ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (TILESIZE/3)))
+        img = sprite[self.frame]
+        main_screen.blit(sprite[self.frame], ((party.x - cx) * TILESIZE, (party.y - cy) * TILESIZE - (img.get_height()-TILESIZE)))
 
 
 def draw_tile(main_screen, tiles, tile, x, y, cx, cy, visible, is_interior):

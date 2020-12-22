@@ -8,7 +8,7 @@ from enums.game_states import GameStates, MenuStates, EncounterStates, RewardSta
 from abstracts.abstract_mvc import MVC
 from handlers.encounter.combat import CombatGrid
 from handlers.logic.logic_chunks import AttackMob, GoToReward, RewardSifting, RewardDepositing, UseItem, \
-    ExamineItem, DropItem, attempt_equip_item
+    ExamineItem, DropItem, attempt_equip_item, drop_item
 from handlers.logic.options import Options, encounter_window_options, reward_options, OptionsFake, \
     settings_options, shop_base_categories
 from screens.title_screen import get_title_menu
@@ -18,7 +18,6 @@ class OptionsHandler(MVC):
 
     def __init__(self):
         self.current = None
-
 
     @staticmethod
     def wrap(options, fake=None):
@@ -42,7 +41,7 @@ class OptionsHandler(MVC):
             logic.extend([ExamineItem])
             data.append('Examine')
             if not component.important:
-                logic.extend([DropItem])
+                logic.extend([drop_item])
                 data.append('Drop')
             BG_WIDTH = 80
             BG_HEIGHT = 24*len(data)

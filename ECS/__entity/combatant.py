@@ -35,7 +35,7 @@ class Combatant:
         return self.equipment.mass
 
     @property
-    def extra_carry_capacity(self):
+    def unused_carry_capacity(self):
         return self.max_carry_capacity - self.equipment.mass
     # Resources
     

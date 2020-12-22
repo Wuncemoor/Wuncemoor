@@ -75,9 +75,9 @@ class Entity:
             return 0
 
     @property
-    def extra_carry_capacity(self):
+    def unused_carry_capacity(self):
         if self.combatant:
-            return self.combatant.extra_carry_capacity
+            return self.combatant.unused_carry_capacity
         else:
             return 0
     # Move the entity

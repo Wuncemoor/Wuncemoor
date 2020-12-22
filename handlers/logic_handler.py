@@ -1,8 +1,8 @@
 from abstracts.abstract_mvc import MVC
-from enums.game_states import InventoryStates
-from handlers.logic.logic_chunks import Move, Interact, EncounterExit, EndTurn, EnemyTurn, \
-    RewardToggle, RewardExit, Debug, DebugExit, DebugAttemptCommand, ShopExit, FullscreenToggle, life_goto_menus
-from handlers.logic.menus_logic import menus_exit, menus_toggle, menus_goto_entity_options
+from handlers.logic.logic_chunks import Move, EncounterExit, EndTurn, EnemyTurn, \
+    RewardToggle, RewardExit, Debug, DebugExit, DebugAttemptCommand, ShopExit, FullscreenToggle, life_goto_menus, \
+    interact
+from handlers.logic.menus_logic import menus_exit, menus_toggle
 
 
 class LogicHandler(MVC):
@@ -56,7 +56,7 @@ class LogicHandler(MVC):
             self.response = Move.logic
             self.response(self, output.get('move'))
         elif 'interact' in output:
-            self.response = Interact.logic
+            self.response = interact
             changes = self.response(self)
             self.mutate(changes)
         elif 'show_menus' in output:
@@ -185,8 +185,15 @@ class LogicHandler(MVC):
                 self.game.log.debugger.add_message(change.get('debug_message'))
             elif 'message' in change:
                 self.game.log.messages.add_message(change.get('message'))
-            elif 'item_added' in change:
-                self.game.world.current_map.entities.remove(change.get('item_added'))
+            elif 'pickup_item' in change:
+                item = change.get('pickup_item')
+                self.game.party.inventory.add_item(item)
+                self.game.world.current_map.entities.remove(item)
+            elif 'drop_item' in change:
+                menu = change.get('drop_item')
+                item = menu.pop_pointer()
+                item.x, item.y = self.game.party.x, self.game.party.y
+                self.game.world.current_map.entities.append(item)
             elif 'dequipped' in change:
                 item = self.game.party.p1.combatant.equipment.unequip(change.get('dequipped'))
                 self.game.party.inventory.add_item(item)
