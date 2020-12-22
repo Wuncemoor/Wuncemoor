@@ -1,12 +1,23 @@
 class Age:
     """Component for Entities to get older"""
 
-    def __init__(self, year, month, day, hour, birthday):
+    def __init__(self, year, month, day, hour):
         self.year = year
         self.month = month
         self.day = day
         self.hour = hour
-        self.birthday = birthday
+
+    @property
+    def birthday(self):
+        if self.month == 0:
+            m = 1
+        else:
+            m = 13 - self.month
+        if self.day == 0:
+            d = 1
+        else:
+            d = 31 - self.day
+        return m, d
 
     def become_older(self, diff):
         year, month, day, hour = diff

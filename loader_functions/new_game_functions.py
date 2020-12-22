@@ -47,7 +47,7 @@ def get_player():
     combatant = Combatant('Player', BUNDLE_HERO, phylo=phylo, attributes=attributes,
                           level=level, competence=competence,
                           equipment=equipment, satchel=satchel, sex='male')
-    age = Age(10, 0, 0, 0, (1, 1))
+    age = Age(10, 0, 0, 0)
     player = Entity(13, 13, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant, age=age)
 
     # player = Entity(75, 19, blocks=True, render_order=RenderOrder.ACTOR, combatant=combatant, age=age)
@@ -60,8 +60,6 @@ def get_starting_items(party):
                    EquippableMaterial('wood'), EquippableQuality('average')))
     stick = Entity(0, 0, item=item_component)
     party.inventory.add_item(stick)
-
-
 
 
 def get_intro_quest():

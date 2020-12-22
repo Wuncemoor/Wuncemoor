@@ -13,8 +13,8 @@ from handlers.menus.inventory import Inventory
 
 def get_samwise():
     dialogue = get_samwise_dialogue()
-    age = Age(13, 12, 28, 0, (1, 4))
     converser = Converser('samwise', DANIB.get('samwise'), dialogue)
+    age = Age(13, 12, 28, 0)
     inven = Inventory()
     potion = make_item('healing_potion')
     inven.add_item(potion)
@@ -27,8 +27,8 @@ def get_samwise():
 def get_mage():
 
     dialogue = get_mage_dialogue()
-    age = Age(57, 4, 16, 0, (8, 15))
     converser = Converser('Mage', DANIB.get('mage'), dialogue)
+    age = Age(57, 4, 16, 0)
     inven = Inventory()
     potion = make_item('healing_potion')
     inven.add_item(potion)
@@ -41,8 +41,8 @@ def get_mage():
 def get_guard_captain():
 
     dialogue = get_guard_captain_dialogue()
-    age = Age(36, 10, 11, 0, (2, 20))
     converser = Converser('Guard Captain', DANIB.get('guard_captain'), dialogue)
+    age = Age(36, 10, 11, 0)
     inven = Inventory()
     potion = make_item('healing_potion')
     inven.add_item(potion)
@@ -55,8 +55,8 @@ def get_guard_captain():
 def get_priest():
 
     dialogue = get_priest_dialogue()
-    age = Age(62, 3, 22, 0, (9, 9))
     converser = Converser('Priest', DANIB.get('priest'), dialogue)
+    age = Age(62, 3, 22, 0)
     inven = Inventory()
     potion = make_item('healing_potion')
     inven.add_item(potion)
@@ -69,8 +69,8 @@ def get_priest():
 def get_rogue():
 
     dialogue = get_rogue_dialogue()
-    age = Age(19, 6, 25, 0, (6, 6))
     converser = Converser('Rogue', DANIB.get('rogue'), dialogue)
+    age = Age(19, 6, 25, 0)
     inven = Inventory()
     potion = make_item('healing_potion')
     inven.add_item(potion)
@@ -83,8 +83,8 @@ def get_rogue():
 def get_homer():
 
     dialogue = get_homer_dialogue()
-    age = Age(45, 9, 4, 0, (3, 27))
     converser = Converser('Homer', DANIB.get('homer'), dialogue)
+    age = Age(45, 9, 4, 0)
     homer = Entity(71, 15, blocks=False, render_order=RenderOrder.ACTOR, converser=converser, age=age)
     return homer
 
@@ -92,8 +92,8 @@ def get_homer():
 def get_mayor():
 
     dialogue = get_mayor_dialogue()
-    age = Age(48, 2, 16, 0, (10, 15))
     converser = Converser('Mayor', DANIB.get('mayor'), dialogue)
+    age = Age(48, 2, 16, 0)
     mayor = Entity(49, 10, blocks=False, render_order=RenderOrder.ACTOR, converser=converser, age=age)
     return mayor
 
@@ -101,16 +101,16 @@ def get_mayor():
 def get_innkeeper():
 
     dialogue = get_innkeeper_dialogue()
-    age = Age(42, 11, 25, 0, (1, 6))
     converser = Converser('Innkeeper', DANIB.get('innkeeper'), dialogue)
+    age = Age(42, 11, 25, 0)
     innkeeper = Entity(78, 47, blocks=False, render_order=RenderOrder.ACTOR, converser=converser, age=age)
     return innkeeper
 
 
 def get_tavernkeeper():
     dialogue = get_tavernkeeper_dialogue()
-    age = Age(31, 5, 20, 0, (7, 11))
     converser = Converser('Tavernkeeper', DANIB.get('tavernkeeper'), dialogue)
+    age = Age(31, 5, 20, 0)
     tavernkeeper = Entity(80, 55, blocks=False, render_order=RenderOrder.ACTOR, converser=converser, age=age)
     return tavernkeeper
 
