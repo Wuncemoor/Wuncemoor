@@ -11,10 +11,10 @@ class DungeonAlphaMixin:
     """Mixin for DungeonAlphaBuilder, adds functionality unique to starting town"""
 
     @staticmethod
-    def get_noncombatants():
-        noncombatants = [get_samwise(), get_mage(), get_guard_captain(), get_priest(), get_rogue(), get_homer(),
+    def get_conversers():
+        conversers = [get_samwise(), get_mage(), get_guard_captain(), get_priest(), get_rogue(), get_homer(),
                          get_mayor(), get_innkeeper(), get_tavernkeeper()]
-        return noncombatants
+        return conversers
 
     def get_major_road(self, outer_scenery_dim):
         rect = Rect(outer_scenery_dim, int(self.height / 2) - 2, self.width - outer_scenery_dim*2, 4)

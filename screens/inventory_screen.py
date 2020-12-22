@@ -3,7 +3,7 @@ from pygame.transform import scale
 
 from config.constants import WHITE, BLACK, DARK_GREY, SUBINVENTORY_OPTION_WIDTH, SUBINVENTORY_OPTION_HEIGHT
 from config.image_objects import INVENTORY_BG, INVENTORY_ICONS, EQUIPMENT_EMPTY_DICT, EQUIPMENT_SLOT_BORDER, \
-    POINTER_RIGHT, DIALOGUE_BG
+    POINTER_RIGHT
 from enums.game_states import InventoryStates
 from misc_functions.split_money_value import split_money
 from data_structures.gui_tools import get_surface, align_and_blit, get_alpha_surface, get_text_surface
@@ -20,8 +20,6 @@ def inventory_screen(self):
         display_entity_options(self, surf)
     display_mass_capacities(self.game.party, surf)
     display_wealth(self.game.party.inventory.money, surf)
-
-    # carrying capacity goes here
 
     align_and_blit(self.screen, surf)
 
@@ -126,9 +124,7 @@ def display_entity_options(self, surf):
 
 
 def display_mass_capacities(party, surf):
-    # total_extra = 0
-    # for member in party.members:
-    #     total_extra += member.extra_carry_capacity
+
     total_used = party.inventory.mass
     player_capa = get_text_surface(str(round(party.p1.used_carry_capacity, 2)) + '  /  ' + str(round(party.p1.max_carry_capacity, 2)) + ' kg.', color=WHITE)
     surf.blit(player_capa, (140, 400))

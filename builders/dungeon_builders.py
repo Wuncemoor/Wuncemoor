@@ -121,8 +121,8 @@ class DungeonAlphaBuilder(InitSafeMap, AbstractDungeonBuilder, DungeonAlphaMixin
 
         alpha_map.set_modes()
 
-        noncombatants = self.get_noncombatants()
-        alpha_map.noncombatants.extend(noncombatants)
+        conversers = self.get_conversers()
+        alpha_map.entities.extend(conversers)
 
         return [alpha_map]
 

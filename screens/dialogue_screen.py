@@ -14,7 +14,7 @@ def dialogue_screen(self):
     display.blit(partner_name, (int(display.get_width()*0.1), int(display.get_height()*0.05)))
     align_and_blit(surf, partner.images.portrait, y_ratio=0.12)
 
-    dialogue = self.handler.partner.noncombatant.dialogue
+    dialogue = self.handler.partner.converser.dialogue
     current_node = dialogue.graph_dict.get(dialogue.conversation)
     words = get_wrapped_text_surface(current_node.words, width=int(display.get_width()*0.95), fontsize=18, color=WHITE)
     display.blit(words, (int(display.get_width()*0.025), int(display.get_height()*0.05 + partner_name.get_height())))

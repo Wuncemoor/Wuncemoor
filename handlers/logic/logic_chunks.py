@@ -75,14 +75,14 @@ class Move(AbstractLogic):
 
 def interact(self):
     changes = []
-    changes.extend(attempt_pickup_item(self.game.party, self.game.world.current_map.entities))
+    changes.extend(attempt_pickup_item(self.game.party, self.game.world.current_map.items))
 
-    for noncom in self.game.world.current_map.noncombatants:
-        if noncom.x == self.game.party.x and noncom.y == self.game.party.y:
-            self.game.dialogue.partner = noncom
+    for entity in self.game.world.current_map.conversers:
+        if entity.x == self.game.party.x and entity.y == self.game.party.y:
+            self.game.dialogue.partner = entity
             self.game.dialogue.set_real_talk()
             self.game.state_handler = self.game.dialogue
-            self.game.options.current = noncom.noncombatant.dialogue
+            self.game.options.current = entity.converser.dialogue
     if len(changes) == 0:
         message = Message('Nothing to see here, move along...', DARK_BLUE)
         changes.append({'message': message})
@@ -91,16 +91,12 @@ def interact(self):
 
 def attempt_pickup_item(party, entities):
     changes = []
-    item_exists = False
     for entity in entities:
-        if entity.x == party.x and entity.y == party.y and entity.item \
-                and (party.inventory.unused_carry_capacity >= entity.mass):
+        if entity.x == party.x and entity.y == party.y and (party.inventory.unused_carry_capacity >= entity.mass):
             message = Message('{0} added to party inventory!'.format(entity.name), DARK_PURPLE)
             changes.extend([{'pickup_item': entity}, {'message': message}])
             break
-        elif entity.x == party.x and entity.y == party.y and entity.item:
-            item_exists = True
-    if len(changes) == 0 and item_exists:
+    if len(entities) > 0 and len(changes) == 0:
         message = Message("That's too heavy! Get rid of some things or get stronger!", RED)
         changes.extend([{'message': message}])
     return changes

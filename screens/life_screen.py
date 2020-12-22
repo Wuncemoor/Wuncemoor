@@ -114,8 +114,8 @@ def get_life_main_screen(self):
             except IndexError:
                 pass
 
-    for noncom in self.game.world.current_map.noncombatants:
-        draw_entity(self, main_screen, noncom)
+    for converser in self.game.world.current_map.conversers:
+        draw_entity(self, main_screen, converser)
     entities_in_render_order = sorted(self.game.world.current_map.entities, key=lambda x: x.render_order.value)
     for entity in entities_in_render_order:
         draw_entity(self, main_screen, entity)

@@ -7,14 +7,14 @@ class Entity:
     """Generic Entity that represents most things in the game world. PC, NPC, items, structures"""
 
     def __init__(self, x, y, blocks=False, render_order=RenderOrder.CORPSE, combatant=None, item=None,
-                 noncombatant=None, age=None, shopkeeper=None):
+                 converser=None, age=None, shopkeeper=None):
         self.x = x
         self.y = y
         self.blocks = blocks
         self.render_order = render_order
         self.combatant = combatant
         self.item = item
-        self.noncombatant = noncombatant
+        self.converser = converser
         self.age = age
         self.shopkeeper = shopkeeper
         self.name = None
@@ -40,10 +40,10 @@ class Entity:
             if self.item.useable:
                 self.item.useable.owner = self
 
-        if self.noncombatant:
-            self.noncombatant.owner = self
-            self.name = self.noncombatant.name
-            self.images = self.noncombatant.images
+        if self.converser:
+            self.converser.owner = self
+            self.name = self.converser.name
+            self.images = self.converser.images
 
         if self.age:
             self.age.owner = self

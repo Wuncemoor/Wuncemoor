@@ -66,8 +66,8 @@ class DialogueHandler:
             response = observer.transduce_all(self.partner.name)
             for res in response:
                 responses.append(res)
-        current_node = self.partner.noncombatant.dialogue.graph_dict.get(
-            self.partner.noncombatant.dialogue.conversation)
+        current_node = self.partner.converser.dialogue.graph_dict.get(
+            self.partner.converser.dialogue.conversation)
         options = current_node.options_text
         self.real_talk = [i for i in options if i.condition is None or i.condition in responses]
         self.set_real_io()
@@ -87,7 +87,7 @@ class DialogueHandler:
 
     def deja_vu_check(self, option):
 
-        dialogue = self.partner.noncombatant.dialogue
+        dialogue = self.partner.converser.dialogue
 
         nn_string = self.real_io.get(str(option))
 

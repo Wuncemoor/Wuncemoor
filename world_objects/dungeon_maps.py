@@ -22,10 +22,16 @@ class DangerousMap(ProceduralTiles2D, InitRealTiles):
     def __init__(self, width, height, variant):
         super().__init__(width, height, variant)
         self.entities = []
-        self.structures = []
-        self.noncombatants = []
         self.entrance = None
         self.exit = None
+
+    @property
+    def items(self):
+        return [entity for entity in self.entities if entity.item]
+
+    @property
+    def conversers(self):
+        return [entity for entity in self.entities if entity.converser]
 
     def create_room(self, room, d_type, subtype):
 
@@ -159,10 +165,16 @@ class SafeMap(InitRealTiles, ProceduralTiles2D):
     def __init__(self, width, height, variant):
         super().__init__(width, height, variant)
         self.entities = []
-        self.structures = []
-        self.noncombatants = []
         self.entrance = None
         self.exit = None
+
+    @property
+    def items(self):
+        return [entity for entity in self.entities if entity.item]
+
+    @property
+    def conversers(self):
+        return [entity for entity in self.entities if entity.converser]
 
     def connect_to_overworld(self, major_road):
         """Receives a Structure (such as a MajorRoad) and sets the tiles (containing Transitions) and their images
