@@ -1,6 +1,6 @@
 
 from builders.mob_builder import MobBuilder, MobDirector
-from handlers.menus.party import Party
+from handlers.party_handler import PartyHandler
 from misc_functions.mob_chances import MobChances
 from misc_functions.random_utils import random_choice_from_dict
 
@@ -26,7 +26,7 @@ class Combat:
         return grid
 
     def get_mob_party(self, tile):
-        mp = Party(self.get_mob(tile))
+        mp = PartyHandler(self.get_mob(tile))
         return mp
 
     @staticmethod

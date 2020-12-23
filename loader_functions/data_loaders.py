@@ -1,5 +1,6 @@
 import os
 import shelve
+import json
 
 
 def save_game(player, maps, entities, game_map, message_log, game_state):

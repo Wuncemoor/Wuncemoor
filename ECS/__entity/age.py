@@ -6,9 +6,9 @@ class Age:
         self.month = month
         self.day = day
         self.hour = hour
+        self.birthday = self.set_birthday()
 
-    @property
-    def birthday(self):
+    def set_birthday(self):
         if self.month == 0:
             m = 1
         else:

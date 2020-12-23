@@ -38,7 +38,7 @@ class RewardStates(Enum):
 class MenuStates(Enum):
     """Substates that occur in GameStates.MENUS"""
 
-    PARTY = 1
+    CHAR_SHEET = 1
     JOURNAL = 2
     INVENTORY = 3
     MAP = 4

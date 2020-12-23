@@ -12,6 +12,7 @@ from ECS.__entity.item import Item
 from ECS.__entity.__combatant.equipment import Equipment
 from ECS.__entity.combatant import Combatant
 from ECS.__entity.age import Age
+from handlers.menus.char_sheet import CharSheet
 from handlers.menus.inventory import Inventory
 from handlers.menus.map import Map
 from ECS.entity import Entity
@@ -19,12 +20,13 @@ from enums.equipment_slots import EquipmentSlots
 from enums.render_order import RenderOrder
 from handlers.menus.journal import Quest, QuestNode
 from config.image_objects import BUNDLE_HERO, BUNDLE_STICK
-from handlers.menus.party import Party
+from handlers.party_handler import PartyHandler
 
 
 def get_party():
     player = get_player()
-    party = Party(player)
+    party = PartyHandler(player)
+    party.char_sheet = CharSheet()
     party.inventory = Inventory()
     party.inventory.owner = party
     party.inventory.money += 100

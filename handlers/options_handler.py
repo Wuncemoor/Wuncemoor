@@ -150,7 +150,7 @@ class OptionsHandler(MVC):
 
     def menus(self):
         menus = {
-            MenuStates.PARTY: self.wrap([]),
+            MenuStates.CHAR_SHEET: self.wrap([]),
             MenuStates.INVENTORY: self.owner.party.inventory.menu,
             MenuStates.JOURNAL: self.owner.party.journal.menu,
             MenuStates.MAP: self.wrap([]),

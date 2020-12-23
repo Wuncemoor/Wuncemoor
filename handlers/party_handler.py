@@ -1,22 +1,19 @@
-from enums.game_states import MenuStates
 
 
-class Party:
+class PartyHandler:
     def __init__(self, hero):
-        self.superstate = MenuStates.PARTY
         self.p1 = hero
         self.p2 = None
         self.p3 = None
         self.p4 = None
-        self.options = None
+        self.char_sheet = None
         self.inventory = None
+        self.journal = None
         self.map = None
         self.focus = None
         self.x = None
         self.y = None
         self.direction = (0, 1)
-        self.menu = None
-        self.submenu = None
         self.formation = 'Unorganized'
         self.move_speed = 'Normal'
         self.rations = 'None'
@@ -50,5 +47,3 @@ class Party:
             self.p3 = None
         elif self.p4 is entity:
             self.p4 = None
-
-

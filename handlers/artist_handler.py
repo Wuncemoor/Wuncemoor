@@ -58,7 +58,7 @@ class ArtistHandler(MVC):
     def menus(self):
         self.life()
         self.darken_main_screen()
-        if self.handler.state == MenuStates.PARTY:
+        if self.handler.state == MenuStates.CHAR_SHEET:
             character_screen(self)
         elif self.handler.state == MenuStates.JOURNAL:
             journal_screen(self)

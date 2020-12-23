@@ -3,7 +3,7 @@ from abstracts.abstract_logic import AbstractLogic
 from config.constants import DARK_BLUE, DARK_ORANGE, BLACK, WHITE, SCREEN_SIZE, MIDNIGHT_BLUE, DARK_PURPLE, RED
 from data_structures.menu_tools import Menu
 from enums.game_states import EncounterStates, RewardStates, GameStates, ShopStates
-from handlers.menus.party import Party
+from handlers.party_handler import PartyHandler
 from handlers.views.messages import Message
 from loader_functions.data_loaders import load_game
 from loader_functions.initialize_new_game import get_game_variables
@@ -358,7 +358,7 @@ class FullscreenToggle(AbstractLogic):
             self.game.fullscreen = True
 
 
-def attempt_equip_item(party: Party, menu: Menu):
+def attempt_equip_item(party: PartyHandler, menu: Menu):
     slot = menu.pointer_data.item.equippable.slot
     currently_equipped = party.p1.combatant.equipment.slots_dict.get(slot)
     changes = []
@@ -372,7 +372,7 @@ def attempt_equip_item(party: Party, menu: Menu):
     return changes
 
 
-def drop_item(party: Party, menu: Menu):
+def drop_item(party: PartyHandler, menu: Menu):
     message = Message('{0} was dropped on the ground.'.format(menu.pointer_data.name), BLACK)
     return [{'drop_item': menu}, {'message': message}, {'subsubstate': 2}]
 
