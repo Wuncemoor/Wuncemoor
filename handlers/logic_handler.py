@@ -202,7 +202,6 @@ class LogicHandler(MVC):
                 item = menu.pop_pointer()
                 self.game.party.p1.combatant.equipment.equip(item)
             elif 'subsubstate' in change:
-                self.handler.menu_type.state = self.handler.menu_type.state.__class__(change.get('subsubstate'))
                 self.handler.menu_type.change_state(change.get('subsubstate'), self.game.options)
             elif 'substate' in change:
                 self.handler.change_state(change.get('substate'), self.game.options)

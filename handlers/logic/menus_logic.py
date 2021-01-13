@@ -5,7 +5,7 @@ def menus_goto_submenu(mvc):
     return []
 
 
-def menus_goto_entity_options():
+def menus_goto_selected_options():
     return [{'subsubstate': 3}]
 
 

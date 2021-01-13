@@ -1,22 +1,25 @@
+from dataclasses import dataclass
+
 from config.constants import YELLOW
 from data_structures.menu_tools import LogicList
-from handlers.logic.menus_logic import menus_goto_submenu, menus_goto_entity_options
+from handlers.logic.menus_logic import menus_goto_submenu, menus_goto_selected_options
 from handlers.views.messages import Message
-from enums.game_states import MenuStates, InventoryStates
+from enums.game_states import MenuStates, MenuSubStates
 from enums.equipment_slots import EquipmentSlots
 
 
 class Inventory:
+
     def __init__(self):
         self.superstate = MenuStates.INVENTORY
-        self.state = InventoryStates.BASE
-        self.weapons = LogicList([], menus_goto_entity_options)
-        self.armor = LogicList([], menus_goto_entity_options)
-        self.accessories = LogicList([], menus_goto_entity_options)
-        self.rations = LogicList([], menus_goto_entity_options)
-        self.satchel = LogicList([], menus_goto_entity_options)
-        self.materials = LogicList([], menus_goto_entity_options)
-        self.plot = LogicList([], menus_goto_entity_options)
+        self.state = MenuSubStates.BASE
+        self.weapons = LogicList([], menus_goto_selected_options)
+        self.armor = LogicList([], menus_goto_selected_options)
+        self.accessories = LogicList([], menus_goto_selected_options)
+        self.rations = LogicList([], menus_goto_selected_options)
+        self.satchel = LogicList([], menus_goto_selected_options)
+        self.materials = LogicList([], menus_goto_selected_options)
+        self.plot = LogicList([], menus_goto_selected_options)
         self.money = 0
         self.menu = self.initialize_menu()
         self.submenu = None
@@ -61,7 +64,7 @@ class Inventory:
         elif state == 3:
             self.submenu.lock()
             entity = self.submenu.pointer_data
-            options.current = options.get(component=entity.item)
+            options.get(component=entity.item)
 
     def add_item(self, item):
 
