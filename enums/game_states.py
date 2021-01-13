@@ -19,7 +19,7 @@ class GameStates(Enum):
 
 
 class EncounterStates(Enum):
-    """Substates that occur in GameStates.ENCOUNTER"""
+    """States that occur in GameStates.ENCOUNTER"""
 
     THINKING = 1
     FIGHT_TARGETING = 2
@@ -28,7 +28,7 @@ class EncounterStates(Enum):
 
 
 class RewardStates(Enum):
-    """Substates that occur in GameStates.REWARD"""
+    """States that occur in GameStates.REWARD"""
 
     THINKING = 1
     SIFTING = 2
@@ -36,7 +36,7 @@ class RewardStates(Enum):
 
 
 class MenuStates(Enum):
-    """Substates that occur in GameStates.MENUS"""
+    """States that occur in GameStates.MENUS"""
 
     CHAR_SHEET = 1
     JOURNAL = 2
@@ -45,14 +45,12 @@ class MenuStates(Enum):
     SETTINGS = 5
 
 
-class InventoryStates(Enum):
-    """Sub-substates that occur in MenuStates.INVENTORY"""
+class MenuSubStates(Enum):
+    """Substates that occur in GameStates.MENUS"""
 
     BASE = 1
-    SUBINVENTORY = 2
-    ENTITY_OPTIONS = 3
-
-
+    SUBMENU = 2
+    SELECTED_OPTIONS = 3
 
 
 class ShopStates(Enum):
