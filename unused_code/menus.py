@@ -78,3 +78,40 @@
 
 # class MultiMenu:
 #     pass
+
+# class LeftToRightLinked(LeftToRightData, LeftToRightPointer):
+#     """A mixin for making a custom menu style through multiple inheritance."""
+#     def get_blittables(self):
+#         return [self.get_data_image, self.get_pointer_image]
+#
+#
+# class DescendingLinked(DescendingData, DescendingPointer):
+#     """A mixin for making a custom menu style through multiple inheritance.  Menus with this mixin display menu options
+#     to the viewer as a descending list.  When the pointer number increases, the pointer image will display lower on the
+#      screen (y increases)"""
+#
+#     def get_blittables(self):
+#         blittables = []
+#         blittables.extend(self.get_data_blittable())
+#         blittables.append(self.get_pointer_blittable())
+#         return blittables
+#
+#     @abstractmethod
+#     def get_data_obj_images(self):
+#         pass
+#
+# class AscendingLinked(AscendingPointer, AscendingData):
+#     """A mixin for making a custom menu style through multiple inheritance."""
+#     def get_blittables(self):
+#         return [self.get_data_blittable, self.get_pointer_blittable]
+#
+# class RighttoLeftLinked(RightToLeftPointer, RightToLeftData):
+#     """A mixin for making a custom menu style through multiple inheritance."""
+#     def get_blittables(self):
+#         return [self.get_data_blittable, self.get_pointer_blittable]
+#
+#
+# class Backlit:
+#     pass
+# class FrontLit:
+#     pass

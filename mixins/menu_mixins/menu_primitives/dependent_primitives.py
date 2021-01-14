@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 
 from data_structures.menu_tools import Blittable
 
@@ -159,3 +160,23 @@ class DynamicLengthModalPointerImage(ABC):
     @abstractmethod
     def get_real_pointer_image(self, pointer_data):
         pass
+
+
+class StandardBlittables(ABC):
+    """A mixin for making a custom menu style through multiple inheritance. Menus with this mixin have two blittables:
+     Some data, and a pointer."""
+
+    def get_blittables(self) -> List:
+        blittables = []
+        blittables.extend(self.get_data_blittable())
+        blittables.append(self.get_pointer_blittable())
+        return blittables
+
+    @abstractmethod
+    def get_data_blittable(self):
+        pass
+
+    @abstractmethod
+    def get_pointer_blittable(self):
+        pass
+
