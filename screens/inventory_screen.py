@@ -1,10 +1,9 @@
 from pygame import draw
 from pygame.transform import scale
-
 from config.constants import WHITE, BLACK, DARK_GREY, SUBINVENTORY_OPTION_WIDTH, SUBINVENTORY_OPTION_HEIGHT
 from config.image_objects import INVENTORY_BG, INVENTORY_ICONS, EQUIPMENT_EMPTY_DICT, EQUIPMENT_SLOT_BORDER, \
     POINTER_RIGHT
-from enums.game_states import InventoryStates
+from enums.game_states import MenuSubStates
 from misc_functions.split_money_value import split_money
 from data_structures.gui_tools import get_surface, align_and_blit, get_alpha_surface, get_text_surface
 
@@ -16,7 +15,7 @@ def inventory_screen(self):
     display_equipment_icons(self.game.party.p1, surf)
     display_selected_icon(self, surf)
     display_subinventory(self, surf)
-    if self.handler.menu_type.state is InventoryStates.ENTITY_OPTIONS:
+    if self.handler.menu_type.state is MenuSubStates.SELECTED_OPTIONS:
         display_entity_options(self, surf)
     display_mass_capacities(self.game.party, surf)
     display_wealth(self.game.party.inventory.money, surf)
@@ -110,15 +109,15 @@ def display_entity_list(entities, subinv):
 
 
 def display_subinv_pointer(self, subinv):
-    if self.handler.menu_type.state is InventoryStates.BASE:
+    if self.handler.menu_type.state is MenuSubStates.BASE:
         pass
-    elif self.handler.menu_type.state in (InventoryStates.SUBINVENTORY, InventoryStates.ENTITY_OPTIONS):
+    elif self.handler.menu_type.state in (MenuSubStates.SUBMENU, MenuSubStates.SELECTED_OPTIONS):
         subinv.blit(POINTER_RIGHT, (0, 2 + (SUBINVENTORY_OPTION_HEIGHT * self.handler.menu_type.submenu.pointer)))
 
 
 def display_entity_options(self, surf):
     menu = self.game.options.current
-    window = menu.blit_options()
+    window = menu.get_window_image()
 
     surf.blit(window, (surf.get_width()*0.55, surf.get_height()*0.3 + SUBINVENTORY_OPTION_HEIGHT*self.handler.menu_type.submenu.pointer))
 
