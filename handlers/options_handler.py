@@ -3,14 +3,16 @@ from pygame.transform import scale
 from ECS.__entity.item import Item
 from config.image_objects import DIALOGUE_BG, POINTER_RIGHT
 from data_structures.gui_tools import get_alpha_surface
-from data_structures.menu_tools import Menu, MenuSpecs
+from data_structures.menu_tools import MenuSpecs
+from abstracts.abstract_menu import AbstractMenu
 from enums.game_states import GameStates, MenuStates, EncounterStates, RewardStates, ShopStates
 from abstracts.abstract_mvc import MVC
 from handlers.encounter.combat import CombatGrid
 from handlers.logic.logic_chunks import AttackMob, GoToReward, RewardSifting, RewardDepositing, UseItem, \
-    ExamineItem, DropItem, attempt_equip_item, drop_item
+    ExamineItem, DropItem, attempt_equip_item, drop_item, get_quest_details, toggle_starred, abandon_quest
 from handlers.logic.options import Options, encounter_window_options, reward_options, OptionsFake, \
     settings_options, shop_base_categories
+from handlers.menus.journal import Quest
 from screens.title_screen import get_title_menu
 
 
@@ -29,29 +31,9 @@ class OptionsHandler(MVC):
     def get(self, component=None):
         if component is None:
             self.current = self.mapping()
-        elif isinstance(component, Item):
-            logic = []
-            data = []
-            if component.equippable:
-                logic.extend([attempt_equip_item])
-                data.append('Equip')
-            if component.useable:
-                logic.extend([UseItem])
-                data.append('Use')
-            logic.extend([ExamineItem])
-            data.append('Examine')
-            if not component.important:
-                logic.extend([drop_item])
-                data.append('Drop')
-            BG_WIDTH = 80
-            BG_HEIGHT = 24*len(data)
-            bg = get_alpha_surface(BG_WIDTH, BG_HEIGHT)
-            bg.blit(scale(DIALOGUE_BG, (BG_WIDTH, BG_HEIGHT)), (0, 0))
-            pointer_image = get_alpha_surface(16, 16)
-            pointer_image.blit(scale(POINTER_RIGHT, (16, 16)), (0, 0))
-            specs = MenuSpecs(bg=bg, pointer_image=pointer_image, pointer_y_offset=8, font_size=16,
-                              button_x_offset=10, button_y_offset=4)
-            return Menu(data, logic, specs)
+        else:
+            self.current = MenuMaker.make(component)
+
 
     def traverse(self, path):
         if self.state == GameStates.TITLE:
@@ -182,6 +164,63 @@ class OptionsHandler(MVC):
     def debug(self):
         pass
 
+
+class MenuMaker:
+    """Contains a variety of static methods for making menus on demand."""
+
+    @staticmethod
+    def make(component):
+        component_class_func_dict = {Item: MenuMaker.make_item_menu, Quest: MenuMaker.make_quest_menu}
+        make_func = component_class_func_dict.get(component.__class__)
+        menu = make_func(component)
+        return menu
+
+    @staticmethod
+    def make_item_menu(component):
+        logic = []
+        data = []
+        if component.equippable:
+            logic.extend([attempt_equip_item])
+            data.append('Equip')
+        if component.useable:
+            logic.extend([UseItem])
+            data.append('Use')
+        logic.extend([ExamineItem])
+        data.append('Examine')
+        if not component.important:
+            logic.extend([drop_item])
+            data.append('Drop')
+        BG_WIDTH = 80
+        BG_HEIGHT = 24 * len(data)
+        bg = get_alpha_surface(BG_WIDTH, BG_HEIGHT)
+        bg.blit(scale(DIALOGUE_BG, (BG_WIDTH, BG_HEIGHT)), (0, 0))
+        pointer_image = get_alpha_surface(16, 16)
+        pointer_image.blit(scale(POINTER_RIGHT, (16, 16)), (0, 0))
+        specs = MenuSpecs(bg=bg, pointer_image=pointer_image, pointer_y_offset=8, font_size=16,
+                          button_x_offset=10, button_y_offset=4)
+        return AbstractMenu(data, logic, specs)
+
+
+    @staticmethod
+    def make_quest_menu(quest):
+        logic = [get_quest_details, toggle_starred]
+        data = ['Quest Details']
+        if quest.starred:
+            data.append('Mark As Unimportant')
+        else:
+            data.append('Mark As Important')
+        if not quest.part_of_main_storyline:
+            logic.extend([abandon_quest])
+            data.append('Abandon Quest')
+        BG_WIDTH = 120
+        BG_HEIGHT = 24 * len(data)
+        bg = get_alpha_surface(BG_WIDTH, BG_HEIGHT)
+        bg.blit(scale(DIALOGUE_BG, (BG_WIDTH, BG_HEIGHT)), (0, 0))
+        pointer_image = get_alpha_surface(16, 16)
+        pointer_image.blit(scale(POINTER_RIGHT, (16, 16)), (0, 0))
+        specs = MenuSpecs(bg=bg, pointer_image=pointer_image, pointer_y_offset=8, font_size=16,
+                          button_x_offset=10, button_y_offset=4)
+        return AbstractMenu(data, logic, specs)
 
 
 
