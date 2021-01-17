@@ -1,7 +1,7 @@
 from mixins.menu_mixins.menu_primitives.dependent_primitives import LeftToRightPointer, DescendingPointer, \
     RightToLeftPointer, AscendingPointer, LeftToRightData, DescendingData, AscendingData, RightToLeftData
 from mixins.menu_mixins.menu_primitives.independent_primitives import StaticPointerImage, ModalPointerImage, \
-    FancyTextOption
+    FancyTextOption, BasicTextOption
 
 """These components (Tier 1) for building custom Menus are slightly larger than primitives. Generally comprised of a 
 dependent primitive being supported by an independent primitive, these simple composites are effectively "functional" 
@@ -77,32 +77,64 @@ class AscendingModalImagePointer(ModalPointerImage, AscendingPointer):
 
 
 class LeftToRightFancyTextData(FancyTextOption, LeftToRightData):
-    """A mixin for making a custom menu style through multiple inheritance.  Data in this menu is displayed to the
-     viewer from left to right using the "FancyText" format.
+    """A mixin for making a custom menu style through multiple inheritance.  Menus with this mixin have their data
+    displayed to the viewer from left to right using the "FancyText" format.
 
-    Menus using this mixin require the following specs: button_bg,button_x_offset, button_y_offset, button_gap,
+    Menus using this mixin require the following specs: button_bg, button_x_offset, button_y_offset, button_gap,
     font_size, font_color, font_style"""
 
 
 class DescendingFancyTextData(FancyTextOption, DescendingData):
-    """A mixin for making a custom menu style through multiple inheritance.  Data in this menu is displayed to the
-     viewer from top to bottom using the "FancyText" format.
+    """A mixin for making a custom menu style through multiple inheritance.  Menus with this mixin have their data
+    displayed to the viewer from top to bottom using the "FancyText" format.
 
-    Menus using this mixin require the following specs: button_bg,button_x_offset, button_y_offset, button_gap,
+    Menus using this mixin require the following specs: button_bg, button_x_offset, button_y_offset, button_gap,
     font_size, font_color, font_style"""
 
 
 class AscendingFancyTextData(FancyTextOption, AscendingData):
-    """A mixin for making a custom menu style through multiple inheritance.  Data in this menu is displayed to the
-     viewer from bottom to top using the "FancyText" format.
+    """A mixin for making a custom menu style through multiple inheritance.  Menus with this mixin have their data
+    displayed to the viewer from bottom to top using the "FancyText" format.
 
-    Menus using this mixin require the following specs: button_bg,button_x_offset, button_y_offset, button_gap,
+    Menus using this mixin require the following specs: button_bg, button_x_offset, button_y_offset, button_gap,
     font_size, font_color, font_style"""
 
 
 class RightToLeftFancyTextData(FancyTextOption, RightToLeftData):
-    """A mixin for making a custom menu style through multiple inheritance.  Data in this menu is displayed to the
-     viewer from right to left using the "FancyText" format.
+    """A mixin for making a custom menu style through multiple inheritance.  Menus with this mixin have their data
+    displayed to the viewer from right to left using the "FancyText" format.
 
-    Menus using this mixin require the following specs: button_bg,button_x_offset, button_y_offset, button_gap,
+    Menus using this mixin require the following specs: button_bg, button_x_offset, button_y_offset, button_gap,
     font_size, font_color, font_style"""
+
+
+class LeftToRightBasicTextData(BasicTextOption, LeftToRightData):
+    """A mixin for making a custom menu style through multiple inheritance.  Menus with this mixin have their data
+     displayed to the viewer from left to right using the "BasicText" format.
+
+     Menus using this mixin require the following specs: button_x_offset, button_y_offset, button_gap, font_size,
+     font_color, font_style"""
+
+
+class DescendingBasicTextData(BasicTextOption, DescendingData):
+    """A mixin for making a custom menu style through multiple inheritance.  Menus with this mixin have their data
+     displayed to the viewer from top to bottom using the "BasicText" format.
+
+     Menus using this mixin require the following specs: button_x_offset, button_y_offset, button_gap, font_size,
+     font_color, font_style"""
+
+
+class AscendingBasicTextData(BasicTextOption, AscendingData):
+    """A mixin for making a custom menu style through multiple inheritance.  Menus with this mixin have their data
+     displayed to the viewer from bottom to top using the "BasicText" format.
+
+     Menus using this mixin require the following specs: button_x_offset, button_y_offset, button_gap, font_size,
+     font_color, font_style"""
+
+
+class RightToLeftBasicTextData(BasicTextOption, RightToLeftData):
+    """A mixin for making a custom menu style through multiple inheritance.  Menus with this mixin have their data
+     displayed to the viewer from right to left using the "BasicText" format.
+
+     Menus using this mixin require the following specs: button_x_offset, button_y_offset, button_gap, font_size,
+     font_color, font_style"""

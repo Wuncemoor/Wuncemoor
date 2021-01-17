@@ -40,8 +40,8 @@ class ModalPointerImage:
 
 
 class FancyTextOption:
-    """A mixin for making a custom menu style through multiple inheritance. FancyTextOptions display to the viewer as a
-     background image with centered text on top.
+    """A mixin for making a custom menu style through multiple inheritance. Menus with this mixin display their options
+    to the viewer as a background image with centered text on top.
 
       Menus using this mixin require the following specs: button_bg, font_size, font_color, font_style"""
 
@@ -59,3 +59,21 @@ class FancyTextOption:
         align_and_blit(surf, text)
 
         return surf
+
+
+class BasicTextOption:
+    """A mixin for making a custom menu style through multiple inheritance.  Menus with this mixin display their options
+    to the viewer as text.
+
+    Menus using this mixin require the following specs: font_size, font_color, font_style"""
+
+    def get_data_obj_images(self):
+        images = []
+        for i in range(len(self.data)):
+            images.append(self.get_option_image(i))
+        return images
+
+    def get_option_image(self, index):
+        text = get_text_surface(self.data[index], self.specs.font_size, self.specs.font_color, self.specs.font_style)
+        print(text.get_height())
+        return text

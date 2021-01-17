@@ -177,6 +177,20 @@ class MenuMaker:
 
     @staticmethod
     def make_item_menu(component):
+        data, logic = MenuMaker.get_item_menu_datalogic(component)
+        BG_WIDTH = 80
+        BG_HEIGHT = 24 * len(data)
+        bg = get_alpha_surface(BG_WIDTH, BG_HEIGHT)
+        bg.blit(scale(DIALOGUE_BG, (BG_WIDTH, BG_HEIGHT)), (0, 0))
+        pointer_image = get_alpha_surface(16, 16)
+        pointer_image.blit(scale(POINTER_RIGHT, (16, 16)), (0, 0))
+        specs = MenuSpecs(bg=bg, pointer_image=pointer_image, pointer_y_offset=8, font_size=16, pointer_delta=20,
+                          button_x_offset=12, button_y_offset=4)
+        return BasicMenu(data, logic, specs)
+
+
+    @staticmethod
+    def get_item_menu_datalogic(component):
         logic = []
         data = []
         if component.equippable:
@@ -190,16 +204,7 @@ class MenuMaker:
         if not component.important:
             logic.extend([drop_item])
             data.append('Drop')
-        BG_WIDTH = 80
-        BG_HEIGHT = 24 * len(data)
-        bg = get_alpha_surface(BG_WIDTH, BG_HEIGHT)
-        bg.blit(scale(DIALOGUE_BG, (BG_WIDTH, BG_HEIGHT)), (0, 0))
-        pointer_image = get_alpha_surface(16, 16)
-        pointer_image.blit(scale(POINTER_RIGHT, (16, 16)), (0, 0))
-        specs = MenuSpecs(bg=bg, pointer_image=pointer_image, pointer_y_offset=8, font_size=16,
-                          button_x_offset=10, button_y_offset=4)
-        return AbstractMenu(data, logic, specs)
-
+        return data, logic
 
     @staticmethod
     def make_quest_menu(quest):
@@ -212,15 +217,15 @@ class MenuMaker:
         if not quest.part_of_main_storyline:
             logic.extend([abandon_quest])
             data.append('Abandon Quest')
-        BG_WIDTH = 120
+        BG_WIDTH = 150
         BG_HEIGHT = 24 * len(data)
         bg = get_alpha_surface(BG_WIDTH, BG_HEIGHT)
         bg.blit(scale(DIALOGUE_BG, (BG_WIDTH, BG_HEIGHT)), (0, 0))
         pointer_image = get_alpha_surface(16, 16)
         pointer_image.blit(scale(POINTER_RIGHT, (16, 16)), (0, 0))
-        specs = MenuSpecs(bg=bg, pointer_image=pointer_image, pointer_y_offset=8, font_size=16,
-                          button_x_offset=10, button_y_offset=4)
-        return AbstractMenu(data, logic, specs)
+        specs = MenuSpecs(bg=bg, pointer_image=pointer_image, pointer_y_offset=8, font_size=16, pointer_delta=20,
+                          button_x_offset=12, button_y_offset=4)
+        return BasicMenu(data, logic, specs)
 
 
 

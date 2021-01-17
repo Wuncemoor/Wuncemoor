@@ -162,9 +162,30 @@ class DynamicLengthModalPointerImage(ABC):
         pass
 
 
+class DeluxeBlittables(ABC):
+    """A mixin for making a custom menu style through multiple inheritance.  Menus with this mixin have three blittables:
+    a background image, some data, and a pointer.
+
+    Menus with this mixin require the following specs: bg"""
+
+    def get_blittables(self) -> List:
+        blittables = [Blittable(self.specs.bg)]
+        blittables.extend(self.get_data_blittable())
+        blittables.append(self.get_pointer_blittable())
+        return blittables
+
+    @abstractmethod
+    def get_data_blittable(self):
+        pass
+
+    @abstractmethod
+    def get_pointer_blittable(self):
+        pass
+
+
 class StandardBlittables(ABC):
     """A mixin for making a custom menu style through multiple inheritance. Menus with this mixin have two blittables:
-     Some data, and a pointer."""
+     some data, and a pointer."""
 
     def get_blittables(self) -> List:
         blittables = []
