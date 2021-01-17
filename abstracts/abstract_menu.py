@@ -2,9 +2,7 @@ from abc import ABC, abstractmethod
 from collections import UserList
 from types import FunctionType
 from typing import Union, List
-
 from pygame.surface import Surface
-
 from data_structures.gui_tools import get_surface, align_and_blit
 from data_structures.menu_tools import LogicList, MenuSpecs
 
@@ -35,11 +33,11 @@ class TopLevelMenu(AbstractMenu):
         return get_surface(self.specs.bg)
 
     def get_window_image(self) -> Surface:
-        self.window.blit(self.specs.bg, (0, 0))
         self.blit_blittables()
         return self.window
 
     def blit_blittables(self):
+        self.window.blit(self.specs.bg, (0, 0))
         blittables = self.get_blittables()
         for blittable in blittables:
             if blittable.blit_by_alignment:

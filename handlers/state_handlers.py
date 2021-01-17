@@ -106,9 +106,9 @@ class EncounterHandler:
         self.loot = loot
         self.steps_since = 0
 
-    def change_state(self, state):
+    def change_state(self, state, options):
         self.state = state
-        self.owner.options.get()
+        options.get()
 
     def check(self, tile):
         encountering = (self.steps_since / (100 + self.steps_since)) * 50 > randint(1, 100)
@@ -147,9 +147,9 @@ class RewardHandler:
         self.loot = loot
         self.state = None
 
-    def change_state(self, state):
+    def change_state(self, state, options):
         self.state = state
-        self.owner.options.get()
+        options.get()
 
 
 class DebugHandler:

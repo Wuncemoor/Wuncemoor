@@ -114,7 +114,6 @@ def display_subinv_pointer(self, subinv):
     elif self.handler.menu_type.state in (MenuSubStates.SUBMENU, MenuSubStates.SELECTED_OPTIONS):
         subinv.blit(POINTER_RIGHT, (0, 2 + (SUBINVENTORY_OPTION_HEIGHT * self.handler.menu_type.submenu.pointer)))
 
-
 def display_entity_options(self, surf):
     menu = self.game.options.current
     window = menu.get_window_image()

@@ -51,10 +51,7 @@ class TimeHandler:
                 if entity.age:
                     diff = map(lambda x, y: x - y, self.stamp(), dungeon.time_dilation)
                     entity.age.become_older(list(diff))
-            for noncom in dmap.noncombatants:
-                if noncom.age:
-                    diff = map(lambda x, y: x - y, self.stamp(), dungeon.time_dilation)
-                    noncom.age.become_older(list(diff))
+
 
     def stamp(self):
         return [self.year, self.month, self.day, self.hour]

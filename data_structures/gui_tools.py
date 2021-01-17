@@ -1,5 +1,4 @@
 import pygame as py
-import math
 from config.constants import BLACK, WHITE
 
 

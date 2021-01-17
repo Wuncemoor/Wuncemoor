@@ -1,8 +1,7 @@
 from data_structures.gui_tools import get_surface, get_alpha_surface, align_and_blit, get_text_surface, get_wrapped_text
 from config.image_objects import JOURNAL_OBJS
-from config.constants import BLACK, YELLOW_SELECT, GREY, WHITE
+from config.constants import BLACK, YELLOW_SELECT, GREY, WHITE, SUBINVENTORY_OPTION_HEIGHT
 from enums.game_states import MenuSubStates
-from screens.inventory_screen import display_entity_options
 
 
 def journal_screen(self):
@@ -31,7 +30,7 @@ def journal_screen(self):
         surf.blit(details, (int(surf.get_width()*0.43), int(surf.get_height()*0.255)))
 
     if self.handler.menu_type.state is MenuSubStates.SELECTED_OPTIONS:
-        display_entity_options(self, surf)
+        display_quest_options(self, surf)
 
     align_and_blit(self.screen, surf)
 
@@ -47,7 +46,7 @@ def journal_options_display(subjournal, option):
             bg = get_surface(obj)
         else:
             color = GREY
-            bg = get_alpha_surface(obj.get_widhth(), obj.get_height())
+            bg = get_alpha_surface(obj.get_width(), obj.get_height())
         text = get_text_surface(i.title, 18, color, 'source_sans_pro')
         align_and_blit(bg, text)
         surf.blit(bg, (0, 0 + (y * obj.get_height())))
@@ -79,3 +78,11 @@ def get_story_chunk(chunk):
         surf.blit(line, (0, y))
         y += fontsize
     return surf
+
+
+def display_quest_options(self, surf):
+    menu = self.game.options.current
+    window = menu.get_window_image()
+
+    surf.blit(window, (surf.get_width()*0.25, surf.get_height()*0.3 + SUBINVENTORY_OPTION_HEIGHT*self.handler.menu_type.submenu.pointer))
+

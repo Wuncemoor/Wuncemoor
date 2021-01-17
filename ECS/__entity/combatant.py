@@ -510,33 +510,3 @@ class Combatant:
 
         results.append({'end_turn': True})
         return results
-
-    def set_name(self, name):
-        self.name = name
-        
-    def set_image(self, image):
-        self.image = image
-        
-    def set_phylo(self, phylo):
-        self.phylo = phylo
-        
-    def set_attributes(self, attributes):
-        self.attributes = attributes
-        
-    def set_level(self, level):
-        self.level = level
-        
-    def set_competence(self, competence):
-        self.competence = competence
-        
-    def set_equipment(self, equipment):
-        self.equipment = equipment
-        
-    def set_inventory(self, inventory):
-        self.inventory = inventory
-        
-    def set_ai(self, ai):
-        self.ai = ai
-        
-    def set_xp(self, xp):
-        self.xp = xp

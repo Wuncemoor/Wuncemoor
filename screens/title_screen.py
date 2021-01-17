@@ -1,7 +1,7 @@
 
 from config.image_objects import TITLE_MENU_BG, TITLE_MENU_BUTTON, TITLE_SCREEN_BG, POINTER_RIGHT
 from data_structures.gui_tools import get_text_surface, align_and_blit
-from data_structures.menu_structures.fancy_menu import FancyMenu
+from data_structures.menu_structures import FancyMenu
 from data_structures.menu_tools import MenuSpecs
 from handlers.logic.logic_chunks import new_game, load_game, goto_settings, goto_acknowledgements, quit_game
 

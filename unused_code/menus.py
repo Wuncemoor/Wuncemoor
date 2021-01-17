@@ -115,3 +115,56 @@
 #     pass
 # class FrontLit:
 #     pass
+
+# class BasicMenu(MenuYesBg, DescendingLinked, StaticPointerImage, OptionBasicText, NoExtrasMixin, AbstractMenu):
+#     """An example of a custom Menu built through multiple inheritance. This menu has a background but no option background,
+#      returning an image of a vertically descending list of strings and an image of a pointer."""
+#
+#     def get_blittables(self) -> List:
+#         blittables = self.get_menu_bg_image()
+#
+#         blittables.append(self.get_pointer_widget)
+#         blittables.append(self.get_data_widgets)
+#     BG_WIDTH = 80
+#     BG_HEIGHT = 24 * len(data)
+#     bg = get_alpha_surface(BG_WIDTH, BG_HEIGHT)
+#     bg.blit(scale(DIALOGUE_BG, (BG_WIDTH, BG_HEIGHT)), (0, 0))
+#     pointer_image = get_alpha_surface(16, 16)
+#     pointer_image.blit(scale(POINTER_RIGHT, (16, 16)), (0, 0))
+#     specs = MenuSpecs(bg=bg,
+#                       pointer_image=pointer_image,
+#                       pointer_y_offset=8,
+#                       font_size=16,
+#                       button_x_offset=10,
+#                       button_y_offset=4)
+#         return AbstractMenu(data, logic, specs)
+#
+#
+# class SneakPeekMenu(AbstractMenu, InitWindowNoBgMixin):
+#     """A Menu that returns a visual image of the data being pointed to. Moving the pointer will change the image being displayed. """
+#
+#     def get_window_image(self):
+#         entities = self.pointer.data
+#         window = self.initialize_window()
+#
+#         y = 0
+#         for entity in entities:
+#             sprite = entity.images.sprite
+#             text = get_text_surface(entity.name, fontsize=24, color=WHITE)
+#             item = get_alpha_surface(self.specs.option_width, self.specs.option_height)
+#             align_and_blit(item, sprite, x_ratio=0.15)
+#             item.blit(text, (int(item.get_width() * 0.35), int(0.5 * (item.get_height() - text.get_height()))))
+#             draw.line(item, DARK_GREY, (0, self.specs.option_height - 1),
+#                       (int(self.specs.option_width), self.specs.option_height - 1))
+#             window.blit(item, (0, y * self.specs.option_height))
+#             y += 1
+#
+#
+#
+#         def display_subinv_pointer(self, subinv):
+#             if self.handler.menu_type.state is MenuSubStates.BASE:
+#                 pass
+#             elif self.handler.menu_type.state in (MenuSubStates.SUBMENU, MenuSubStates.SELECTED_OPTIONS):
+#                 subinv.blit(POINTER_RIGHT,
+#                             (0, 2 + (SUBINVENTORY_OPTION_HEIGHT * self.handler.menu_type.submenu.pointer)))
+#
