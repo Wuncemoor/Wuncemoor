@@ -3,13 +3,14 @@ from pygame.transform import scale
 from ECS.__entity.item import Item
 from config.image_objects import DIALOGUE_BG, POINTER_RIGHT
 from data_structures.gui_tools import get_alpha_surface
+from data_structures.menu_structures import BasicMenu
 from data_structures.menu_tools import MenuSpecs
-from abstracts.abstract_menu import AbstractMenu
 from enums.game_states import GameStates, MenuStates, EncounterStates, RewardStates, ShopStates
 from abstracts.abstract_mvc import MVC
 from handlers.encounter.combat import CombatGrid
-from handlers.logic.logic_chunks import AttackMob, GoToReward, RewardSifting, RewardDepositing, UseItem, \
-    ExamineItem, DropItem, attempt_equip_item, drop_item, get_quest_details, toggle_starred, abandon_quest
+from handlers.logic.logic_chunks import RewardSifting, RewardDepositing, UseItem, \
+    ExamineItem, attempt_equip_item, drop_item, get_quest_details, toggle_starred, abandon_quest, basic_weapon_attack, \
+    encounter_goto_reward
 from handlers.logic.options import Options, encounter_window_options, reward_options, OptionsFake, \
     settings_options, shop_base_categories
 from handlers.menus.journal import Quest
@@ -33,7 +34,6 @@ class OptionsHandler(MVC):
             self.current = self.mapping()
         else:
             self.current = MenuMaker.make(component)
-
 
     def traverse(self, path):
         if self.state == GameStates.TITLE:
@@ -114,15 +114,15 @@ class OptionsHandler(MVC):
 
     def choose(self):
         if self.handler.state is EncounterStates.VICTORY:
-            option = GoToReward
+            option = encounter_goto_reward
         elif isinstance(self.current, CombatGrid):
-            option = AttackMob
+            option = basic_weapon_attack
         elif isinstance(self.current, OptionsFake):
             option = self.current.fake
         else:
             option = self.current.options[self.current.choice]
 
-        return option.logic
+        return option
 
     def title(self):
         return get_title_menu()

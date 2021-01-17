@@ -1,7 +1,7 @@
 from abstracts.abstract_mvc import MVC
-from handlers.logic.logic_chunks import Move, EncounterExit, EndTurn, EnemyTurn, \
-    RewardToggle, RewardExit, Debug, DebugExit, DebugAttemptCommand, ShopExit, FullscreenToggle, life_goto_menus, \
-    interact
+from handlers.logic.logic_chunks import Move, RewardToggle, RewardExit, Debug, DebugExit, DebugAttemptCommand, ShopExit, \
+    FullscreenToggle, life_goto_menus, \
+    interact, encounter_end_turn, encounter_enemy_turn, encounter_goto_life, encounter_goto_thinking
 from handlers.logic.menus_logic import menus_exit, menus_toggle
 
 
@@ -144,7 +144,7 @@ class LogicHandler(MVC):
             changes = self.response(self)
             self.mutate(changes)
         if 'exit' in output:
-            self.response = EncounterExit.logic
+            self.response = encounter_goto_thinking
             changes = self.response(self)
             self.mutate(changes)
         elif 'debug' in output:
@@ -214,11 +214,11 @@ class LogicHandler(MVC):
                 self.handler.combat.destroy(entity)
                 self.handler.loot.dissect(entity)
             elif 'end_turn' in change:
-                self.response = EndTurn.logic
+                self.response = encounter_end_turn
                 changes = self.response(self)
                 self.mutate(changes)
             elif 'automate' in change:
-                self.response = EnemyTurn.logic
+                self.response = encounter_enemy_turn
                 changes = self.response(self)
                 self.mutate(changes)
             elif 'set_choice' in change:

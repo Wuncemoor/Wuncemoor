@@ -124,125 +124,101 @@ class ShopBaseGoToSub(AbstractLogic):
             self.game.options.wrap_and_set(self.handler.transaction_details)
         else:
             changes = []
-        print(self.handler.sub_index)
         return changes
 
 
-class FightTargeting(AbstractLogic):
-
-    def logic(self):
-        changes = [{'substate': EncounterStates.FIGHT_TARGETING}]
-        return changes
+def encounter_goto_targeting(self):
+    return [{'substate': EncounterStates.FIGHT_TARGETING}]
 
 
-class EncounterExit(AbstractLogic):
-
-    def logic(self):
-        if self.handler.state is EncounterStates.FIGHT_TARGETING:
-            changes = [{'substate': EncounterStates.THINKING}]
-        else:
-            changes = []
-        return changes
+def encounter_goto_satchel():
+    pass
 
 
-class UseSatchel(AbstractLogic):
+def encounter_goto_life(self):
+    changes = [{'state': 'life'}]
+    xp = self.handler.loot.xp
+    if xp > 0:
+        changes.append({'xp': xp})
+        message = Message('You gain {0} experience points!'.format(xp), DARK_ORANGE)
+    else:
+        message = Message("You didn't learn much there...", DARK_ORANGE)
+    changes.append({'message': message})
 
-    def logic(self):
-        pass
-
-
-class RunAway(AbstractLogic):
-
-    def logic(self):
-        changes = [{'state': 'life'}]
-        xp = self.handler.loot.xp
-        if xp > 0:
-            changes.append({'xp': xp})
-            message = Message('You gain {0} experience points!'.format(xp), DARK_ORANGE)
-        else:
-            message = Message("You didn't learn much there...", DARK_ORANGE)
-        changes.append({'message': message})
-
-        return changes
+    return changes
 
 
-class AttackMob(AbstractLogic):
-
-    def logic(self):
+def encounter_goto_thinking(self):
+    if self.handler.state is EncounterStates.FIGHT_TARGETING:
+        changes = [{'substate': EncounterStates.THINKING}]
+    else:
         changes = []
-        combat = self.handler.combat
-        x, y = combat.grid.x, combat.grid.y
-        attack_results = combat.party.p1.combatant.attack(combat.grid.rows[x][y])
-        changes.extend(attack_results)
-        return changes
+    return changes
 
 
-class EndTurn(AbstractLogic):
+def basic_weapon_attack(self):
+    changes = []
+    combat = self.handler.combat
+    x, y = combat.grid.x, combat.grid.y
+    attack_results = combat.party.p1.combatant.attack(combat.grid.rows[x][y])
+    changes.extend(attack_results)
+    return changes
 
-    def logic(self):
+
+def encounter_end_turn(self):
+    changes = []
+    if len(self.handler.combat.enemies.members) > 0:
+        if self.handler.state is EncounterStates.ENEMY_TURN:
+            changes.append({'substate': EncounterStates.THINKING})
+        else:
+            changes.append({'substate': EncounterStates.ENEMY_TURN})
+            changes.append({'automate': 'enemy_turn'})
+    else:
+        changes.append({'message': Message('YOU WIN THE FIGHT!', BLACK)})
+        changes.append({'message': Message('Press [Enter] to loot.', BLACK)})
+        changes.append({'substate': EncounterStates.VICTORY})
+    return changes
+
+
+def encounter_enemy_turn(self):
+    player = self.handler.combat.party.p1
+    changes = self.handler.combat.enemies.p1.combatant.ai.take_turn_e(player)
+    changes.append({'substate': EncounterStates.THINKING})
+    return changes
+
+
+def encounter_goto_reward(self):
+    return [{'state': 'reward'}, {'substate': RewardStates.THINKING}]
+
+
+def reward_auto(self):
+    self.handler.loot.claimed.extend(self.handler.loot.items)
+    self.handler.loot.items = []
+    self.game.options.current.choice = 2
+    return []
+
+
+def reward_manual(self):
+    loot = self.handler.loot
+    if (len(loot.items) + len(loot.claimed)) > 0:
+        if len(loot.items) > 0:
+            changes = [{'substate': RewardStates.SIFTING}]
+        else:
+            changes = [{'substate': RewardStates.DEPOSITING}]
+    else:
         changes = []
-        if len(self.handler.combat.enemies.members) > 0:
-            if self.handler.state is EncounterStates.ENEMY_TURN:
-                changes.append({'substate': EncounterStates.THINKING})
-            else:
-                changes.append({'substate': EncounterStates.ENEMY_TURN})
-                changes.append({'automate': 'enemy_turn'})
-        else:
-            changes.append({'message': Message('YOU WIN THE FIGHT!', BLACK)})
-            changes.append({'message': Message('Press [Enter] to loot.', BLACK)})
-            changes.append({'substate': EncounterStates.VICTORY})
-        return changes
+    return changes
 
 
-class EnemyTurn(AbstractLogic):
+def reward_goto_life(self):
+    loot = self.handler.loot
+    changes = [{'xp': loot.xp}]
+    self.game.party.inventory.take_loot(loot.claimed)
+    self.game.options.current.choice = 0
 
-    def logic(self):
-        player = self.handler.combat.party.p1
-        changes = self.handler.combat.enemies.p1.combatant.ai.take_turn_e(player)
-        changes.append({'substate': EncounterStates.THINKING})
-        return changes
+    changes.append({'state': 'life'})
+    return changes
 
-
-class GoToReward(AbstractLogic):
-
-    def logic(self):
-        changes = [{'state': 'reward'}, {'substate': RewardStates.THINKING}]
-        return changes
-
-
-class RewardAuto(AbstractLogic):
-
-    def logic(self):
-        self.handler.loot.claimed.extend(self.handler.loot.items)
-        self.handler.loot.items = []
-        self.game.options.current.choice = 2
-        return []
-
-
-class RewardManual(AbstractLogic):
-
-    def logic(self):
-        loot = self.handler.loot
-        if (len(loot.items) + len(loot.claimed)) > 0:
-            if len(loot.items) > 0:
-                changes = [{'substate': RewardStates.SIFTING}]
-            else:
-                changes = [{'substate': RewardStates.DEPOSITING}]
-        else:
-            changes = []
-        return changes
-
-
-class RewardToLife(AbstractLogic):
-
-    def logic(self):
-        loot = self.handler.loot
-        changes = [{'xp': loot.xp}]
-        self.game.party.inventory.take_loot(loot.claimed)
-        self.game.options.current.choice = 0
-
-        changes.append({'state': 'life'})
-        return changes
 
 
 class RewardSifting(AbstractLogic):

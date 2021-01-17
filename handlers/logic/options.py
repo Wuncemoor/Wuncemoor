@@ -1,5 +1,5 @@
-from handlers.logic.logic_chunks import FightTargeting, UseSatchel, RunAway, RewardAuto, \
-    RewardManual, RewardToLife, ShopBaseGoToSub
+from handlers.logic.logic_chunks import ShopBaseGoToSub, encounter_goto_targeting, encounter_goto_life, \
+    encounter_goto_satchel, reward_goto_life, reward_manual, reward_auto
 
 
 class Options:
@@ -19,14 +19,14 @@ class OptionsFake:
 
 
 def encounter_window_options():
-    logic = [FightTargeting, UseSatchel, RunAway]
+    logic = [encounter_goto_targeting, encounter_goto_satchel, encounter_goto_life]
     text = ['FIGHT', 'ITEM', 'RUN']
     options = Options(logic, text)
     return options
 
 
 def reward_options():
-    logic = [RewardAuto, RewardManual, RewardToLife]
+    logic = [reward_auto, reward_manual, reward_goto_life]
     text = ['AUTO', 'MANUAL', 'LEAVE']
     options = Options(logic, text)
     return options
