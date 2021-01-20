@@ -1,6 +1,6 @@
 import pygame as py
 from data_structures.frozen_surface import FrozenSurface
-from ECS.image_bundle import ImageBundle
+from data_structures.image_bundle import ImageBundle
 
 TITLE_SCREEN_BG = py.image.load('images\\background\\main_menu.png')
 TITLE_MENU_BG = py.image.load('images\\GUI\\menus\\title_menu.png')

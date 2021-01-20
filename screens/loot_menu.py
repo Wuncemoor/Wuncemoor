@@ -27,14 +27,14 @@ def display_loot(reward):
 
     y1 = 0
     for item in reward.loot.items:
-        window.blit(item.images.port_mini, (120, 40 + (100 * y1)))
+        window.blit(item.images.sprite, (120, 40 + (100 * y1)))
         text = get_text_surface(item.name, fontsize=20, color=BLACK)
         window.blit(text, (210, 70 + (100 * y1)))
         y1 += 1
     y2 = 0
     bonus_y = 640
     for item in reward.loot.claimed:
-        window.blit(item.images.port_mini, (120 + bonus_y, 40 + (100 * y2)))
+        window.blit(item.images.sprite, (120 + bonus_y, 40 + (100 * y2)))
         text = get_text_surface(item.name, fontsize=20, color=BLACK)
         window.blit(text, (210 + bonus_y, 40 + (100 * y2)))
         y2 += 1
