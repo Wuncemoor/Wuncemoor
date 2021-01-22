@@ -38,7 +38,6 @@ class Journal:
             entity = self.submenu.pointer_data
             options.get(component=entity)
 
-
     def update_plot(self, signal):
         for quest in self.current_quests:
             if quest.title == signal[0]:

@@ -15,13 +15,11 @@ def main():
     screen = py.display.set_mode(SCREEN_SIZE, flags=py.FULLSCREEN)
     clock = py.time.Clock()
 
-    input = InputHandler()
-    logic = LogicHandler()
     options = OptionsHandler()
-    artist = ArtistHandler(screen, clock)
-
     game = GameHandler(options)
-    input.game, logic.game, options.game, artist.game = game, game, game, game
+    input = InputHandler(game)
+    logic = LogicHandler(game)
+    artist = ArtistHandler(game, screen, clock)
 
     game.state_handler = game.title
     game.options.get()

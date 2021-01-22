@@ -29,7 +29,7 @@ class TopLevelMenu(AbstractMenu):
         super().__init__(data, logic, specs)
         self.window = self.initialize_window()
 
-    def initialize_window(self):
+    def initialize_window(self) -> Surface:
         return get_surface(self.specs.bg)
 
     def get_window_image(self) -> Surface:

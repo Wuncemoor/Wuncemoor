@@ -1,7 +1,7 @@
 from handlers.logic.options import reward_options
 from data_structures.gui_tools import get_alpha_surface, get_text_surface, blit_options
 from enums.game_states import RewardStates
-from config.image_objects import ENCOUNTER_BUTTON, INDICATOR_H
+from config.image_objects import ENCOUNTER_BUTTON, POINTER_RIGHT
 from config.constants import BLACK
 
 
@@ -17,7 +17,7 @@ def get_reward_menu(reward):
 
     blit_options(menu, ENCOUNTER_BUTTON, off_x, off_y, dy, reward_options().text, fontsize)
     if reward.state == RewardStates.THINKING:
-        menu.blit(INDICATOR_H, (off_x - 50, off_y - 11 + (dy * options.current.choice)))
+        menu.blit(POINTER_RIGHT, (off_x - 50, off_y - 11 + (dy * options.current.choice)))
 
     return menu
 
@@ -40,9 +40,9 @@ def display_loot(reward):
         y2 += 1
     choice = reward.owner.options.current.choice
     if reward.state == RewardStates.SIFTING:
-        window.blit(INDICATOR_H, (80, 60 + (choice * 100)))
+        window.blit(POINTER_RIGHT, (80, 60 + (choice * 100)))
     elif reward.state == RewardStates.DEPOSITING:
-        window.blit(INDICATOR_H, (80 + bonus_y, 60 + choice * 100))
+        window.blit(POINTER_RIGHT, (80 + bonus_y, 60 + choice * 100))
 
     return window
 

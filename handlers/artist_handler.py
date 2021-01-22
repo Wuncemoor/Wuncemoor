@@ -22,7 +22,8 @@ from screens.title_screen import get_title_text, get_title_menu, title_screen
 
 
 class ArtistHandler(MVC):
-    def __init__(self, screen, clock):
+    def __init__(self, game, screen, clock):
+        super().__init__(game)
         self.screen = screen
         self.clock = clock
         self.frame = 0

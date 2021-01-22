@@ -74,7 +74,8 @@ def display_equipment_icon(window, eq, slot, mini=False):
                        y_ratio=y_ratio / window.get_height())
     else:
         align_and_blit(window, img, x_ratio=x_ratio/window.get_width(), y_ratio=y_ratio/window.get_height())
-        align_and_blit(window, EQUIPMENT_SLOT_BORDER, x_ratio=x_ratio/window.get_width(), y_ratio=y_ratio/window.get_height())
+        align_and_blit(window, EQUIPMENT_SLOT_BORDER, x_ratio=x_ratio/window.get_width(),
+                       y_ratio=y_ratio/window.get_height())
 
     return None
 
@@ -114,19 +115,23 @@ def display_subinv_pointer(self, subinv):
     elif self.handler.menu_type.state in (MenuSubStates.SUBMENU, MenuSubStates.SELECTED_OPTIONS):
         subinv.blit(POINTER_RIGHT, (0, 2 + (SUBINVENTORY_OPTION_HEIGHT * self.handler.menu_type.submenu.pointer)))
 
+
 def display_entity_options(self, surf):
     menu = self.game.options.current
     window = menu.get_window_image()
 
-    surf.blit(window, (surf.get_width()*0.55, surf.get_height()*0.3 + SUBINVENTORY_OPTION_HEIGHT*self.handler.menu_type.submenu.pointer))
+    surf.blit(window, (surf.get_width()*0.55, surf.get_height()*0.3 +
+                       SUBINVENTORY_OPTION_HEIGHT*self.handler.menu_type.submenu.pointer))
 
 
 def display_mass_capacities(party, surf):
 
     total_used = party.inventory.mass
-    player_capa = get_text_surface(str(round(party.p1.used_carry_capacity, 2)) + '  /  ' + str(round(party.p1.max_carry_capacity, 2)) + ' kg.', color=WHITE)
+    player_capa = get_text_surface(str(round(party.p1.used_carry_capacity, 2)) + '  /  ' +
+                                   str(round(party.p1.max_carry_capacity, 2)) + ' kg.', color=WHITE)
     surf.blit(player_capa, (140, 400))
-    mass_capa = get_text_surface(str(round(total_used, 2)) + '  /  ' + str(round(party.inventory.max_carry_capacity, 2)) + ' kg.', color=WHITE)
+    mass_capa = get_text_surface(str(round(total_used, 2)) + '  /  ' + str(round(party.inventory.max_carry_capacity, 2))
+                                 + ' kg.', color=WHITE)
     surf.blit(mass_capa, (358, surf.get_height()-50))
 
 

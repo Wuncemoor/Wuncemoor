@@ -6,6 +6,9 @@ from handlers.menus.settings import Settings
 
 class InputHandler(MVC):
 
+    def __init__(self, game):
+        super().__init__(game)
+
     def transduce(self, event):
         return self.mapping(event)
 

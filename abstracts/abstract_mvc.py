@@ -1,9 +1,13 @@
 from abc import ABC, abstractmethod
 from enums.game_states import GameStates
+from handlers.game_handler import GameHandler
 
 
 class MVC(ABC):
     """Abstract for Model-View-Controller.  """
+
+    def __init__(self, game: GameHandler) -> None:
+        self.game = game
 
     @property
     def state(self):

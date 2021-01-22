@@ -7,7 +7,8 @@ from handlers.logic.menus_logic import menus_exit, menus_toggle
 
 class LogicHandler(MVC):
 
-    def __init__(self):
+    def __init__(self, game):
+        super().__init__(game)
         self.response = None
 
     def translate(self, output):
