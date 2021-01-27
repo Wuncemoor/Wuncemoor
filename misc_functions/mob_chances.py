@@ -216,7 +216,3 @@ class MobChances:
                     'mega_goblin_shaman': from_node_power([[0,0], [25, 500], [50, 1000], [100, 2500]], self.np)
                     })
         return g
-        
-        
-        
-        

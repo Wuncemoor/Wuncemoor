@@ -1,11 +1,10 @@
 from pygame.surface import Surface
 
 from config.constants import BLACK
-from config.image_objects import TITLE_SCREEN_BG, INDICATOR_H, ENCOUNTER_MENU, ENCOUNTER_BUTTON, \
-    ENCOUNTER_MESSAGE_BG, INDICATOR_V, LOOT_BG, LOOT_BANNER, LIFE_BACKDROP, TURN_ORDER_QUEUE
+from config.image_objects import INDICATOR_H, ENCOUNTER_MENU, ENCOUNTER_BUTTON, ENCOUNTER_MESSAGE_BG, INDICATOR_V,\
+    REWARD_BG, LOOT_BANNER, LIFE_BACKDROP, TURN_ORDER_QUEUE
 from enums.game_states import GameStates, MenuStates, EncounterStates
 from abstracts.abstract_mvc import MVC
-from handlers.logic.options import encounter_window_options
 from screens.character_screen import character_screen
 from screens.debug_window import debug_window
 from screens.dialogue_screen import dialogue_screen
@@ -14,11 +13,11 @@ from screens.shop_screen import shop_screen
 from data_structures.gui_tools import get_surface, print_message, align_and_blit, blit_options, get_alpha_surface
 from screens.inventory_screen import inventory_screen
 from screens.journal_screen import journal_screen
-from screens.loot_menu import display_loot, display_resources_gain, get_reward_menu
+from screens.reward_screen import display_loot, display_resources_gain, get_reward_thinking_menu
 from screens.map_screen import map_screen
 from screens.resources_HUD import player_resource_display
 
-from screens.title_screen import get_title_text, get_title_menu, title_screen
+from screens.title_screen import title_screen
 
 
 class ArtistHandler(MVC):
@@ -72,8 +71,9 @@ class ArtistHandler(MVC):
 
         self.screen.blit(self.handler.background, (0, 0))
         self.blit_resource_hud()
-        self.blit_encounter_menu()
-        self.blit_message_box(off_x=15, off_y=5)
+        self.screen.blit(self.handler.menu.get_window_image(), (0, 840))
+        window = self.get_message_box(off_x=15, off_y=5)
+        self.screen.blit(window, (1540, 870))
         self.blit_turn_order_queue()
         self.blit_combat()
 
@@ -135,32 +135,13 @@ class ArtistHandler(MVC):
         xy = coord_dict.get(self.state)
         self.screen.blit(resource_hud, xy)
 
-    def blit_encounter_menu(self):
-
-        menu = get_alpha_surface(400, 240)
-
-        align_and_blit(menu, ENCOUNTER_MENU)
-
-        buttons_off_x = 130
-        buttons_off_y = 60
-        text = encounter_window_options().text
-
-        dy = 40
-        blit_options(menu, ENCOUNTER_BUTTON, buttons_off_x, buttons_off_y, dy, text, fontsize=24)
-
-        if self.handler.state == EncounterStates.THINKING:
-            menu.blit(INDICATOR_H, (buttons_off_x - 50, buttons_off_y - 11 + (dy * self.game.options.current.choice)))
-
-        self.screen.blit(menu, (0, 840))
-
     def blit_turn_order_queue(self):
         toq = get_surface(TURN_ORDER_QUEUE)
         align_and_blit(self.screen, toq, x_ratio=0.15, y_ratio=0.05)
 
+    # make property?
     def set_frame(self):
-        self.frame += 1
-        if self.frame >= 12:
-            self.frame = 0
+        self.frame = (self.frame + 1) % 12
 
     def darken_main_screen(self):
         dark = Surface((1392, 1008))
