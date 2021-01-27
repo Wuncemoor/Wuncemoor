@@ -1,12 +1,13 @@
 from copy import copy
 from random import randint
-from enums.game_states import EncounterStates, GameStates, ShopStates
+from enums.game_states import EncounterStates, GameStates, ShopStates, RewardStates
 from config.image_objects import BACKGROUNDS
 from handlers.encounter.combat import Combat
-from handlers.logic.options import encounter_window_options
 from handlers.views.camera import Camera
 from handlers.views.fov_handler import FovHandler
 from handlers.views.messages import Message
+from screens.encounter_screen import get_encounter_menu
+from screens.reward_screen import get_reward_thinking_menu
 from screens.title_screen import get_title_menu
 
 
@@ -103,27 +104,37 @@ class EncounterHandler:
         self.state = EncounterStates.THINKING
         self.background = None
         self.combat = None
+        self.menu = self.initialize_menu()
         self.loot = loot
         self.steps_since = 0
 
+    @staticmethod
+    def initialize_menu():
+        return get_encounter_menu()
+
     def change_state(self, state, options):
+
+        state_options_dict = {
+            EncounterStates.THINKING: self.menu,
+            EncounterStates.FIGHT_TARGETING: self.combat.grid,
+        }
+
         self.state = state
-        options.get()
+        options.current = state_options_dict.get(state)
 
     def check(self, tile):
         encountering = (self.steps_since / (100 + self.steps_since)) * 50 > randint(1, 100)
         if encountering:
-            self.new(tile)
-            self.owner.state_handler = self
-            self.owner.options.get()
+            return [{'new_encounter': tile}]
         else:
             self.steps_since += 1
+            return []
 
-    def new(self, tile):
-        self.state = EncounterStates.THINKING
-        self.background = BACKGROUNDS.get(tile.type)
+    def new_encounter(self, tile, options):
         self.combat = self.get_combat(tile)
         self.combat.owner = self
+        self.change_state(EncounterStates.THINKING, options)
+        self.background = BACKGROUNDS.get(tile.type)
         self.loot.reset()
         self.steps_since = 0
 
@@ -131,25 +142,28 @@ class EncounterHandler:
         combat = Combat(self.owner.party, tile)
         return combat
 
-    def give_options(self):
-        opts_dict = {
-            EncounterStates.THINKING: encounter_window_options(),
-            EncounterStates.FIGHT_TARGETING: self.combat.grid,
-        }
-        return opts_dict.get(self.state)
-
 
 class RewardHandler:
     """Handler for GameStates.REWARD"""
 
     def __init__(self, loot):
         self.superstate = GameStates.REWARD
-        self.loot = loot
         self.state = None
+        self.loot = loot
+        self.menu = self.initialize_menu()
+
+    @staticmethod
+    def initialize_menu():
+        return get_reward_thinking_menu()
 
     def change_state(self, state, options):
+        state_options_dict = {
+            RewardStates.THINKING: self.menu,
+            # RewardStates.SIFTING: self.wrap(self.owner.reward.loot.items, fake=reward_sifting),
+            # RewardStates.DEPOSITING: self.wrap(self.owner.reward.loot.claimed, fake=reward_depositing),
+        }
         self.state = state
-        options.get()
+        options.current = state_options_dict.get(state)
 
 
 class DebugHandler:

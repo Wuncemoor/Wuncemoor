@@ -79,20 +79,25 @@ class ArtistHandler(MVC):
 
     def reward(self):
 
-        self.screen.blit(LOOT_BG, (0, 0))
-        self.screen.blit(LOOT_BANNER, (320, 0))
+        align_and_blit(self.screen, self.handler.menu.get_window_image())
 
-        self.blit_message_box(off_x=15, off_y=5)
-        loot_visual = display_loot(self.handler)
-        self.screen.blit(loot_visual, (0, 300))
+        # menu = get_surface(REWARD_BG)
+        # menu.blit(LOOT_BANNER, (320, 0))
+        #
+        # window = self.get_message_box(off_x=15, off_y=5)
+        # align_and_blit(menu, window, x_ratio=0.8, y_ratio=0.8)
+        #
+        # loot_visual = display_loot(self.handler)
+        # menu.blit(loot_visual, (0, 300))
+        #
+        # resources = display_resources_gain(self.handler.loot)
+        # menu.blit(resources, (1000, 180))
+        #
+        # loot_menu = get_reward_thinking_menu(self.handler)
+        # menu.blit(loot_menu, (0, 0))
 
-        resources = display_resources_gain(self.handler.loot)
-        self.screen.blit(resources, (1000, 180))
 
-        loot_menu = get_reward_menu(self.handler)
-        self.screen.blit(loot_menu, (0, 0))
-
-    def blit_message_box(self, off_x, off_y):
+    def get_message_box(self, off_x, off_y):
 
         window = get_surface(ENCOUNTER_MESSAGE_BG)
 
@@ -100,8 +105,7 @@ class ArtistHandler(MVC):
         for message in self.game.log.messages.messages:
             print_message(window, message, off_x, off_y, y)
             y += 1
-
-        self.screen.blit(window, (1540, 870))
+        return window
 
     def blit_combat(self):
         w, h = 1920, 1280

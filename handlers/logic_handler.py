@@ -1,7 +1,8 @@
 from abstracts.abstract_mvc import MVC
-from handlers.logic.logic_chunks import Move, RewardToggle, RewardExit, Debug, DebugExit, DebugAttemptCommand, ShopExit, \
+from handlers.logic.logic_chunks import life_attempt_party_move, RewardExit, Debug, DebugExit, DebugAttemptCommand, \
+    ShopExit, \
     FullscreenToggle, life_goto_menus, \
-    interact, encounter_end_turn, encounter_enemy_turn, encounter_goto_life, encounter_goto_thinking
+    interact, encounter_end_turn, encounter_enemy_turn, encounter_goto_thinking, encounter_choose_option
 from handlers.logic.menus_logic import menus_exit, menus_toggle
 
 
@@ -54,8 +55,9 @@ class LogicHandler(MVC):
             self.response = FullscreenToggle.logic
             self.response(self)
         elif 'move' in output:
-            self.response = Move.logic
-            self.response(self, output.get('move'))
+            self.response = life_attempt_party_move
+            changes = self.response(self, output.get('move'))
+            self.mutate(changes)
         elif 'interact' in output:
             self.response = interact
             changes = self.response(self)
@@ -141,7 +143,7 @@ class LogicHandler(MVC):
         elif 'traverse_menu' in output:
             self.game.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
-            self.response = self.game.options.choose()
+            self.response = encounter_choose_option
             changes = self.response(self)
             self.mutate(changes)
         if 'exit' in output:
@@ -162,7 +164,7 @@ class LogicHandler(MVC):
         elif 'traverse_menu' in output:
             self.game.options.traverse(output.get('traverse_menu'))
         elif 'choose_option' in output:
-            self.response = self.game.options.choose()
+            self.response = self.game.options.current.pointer_logic
             changes = self.response(self)
             self.mutate(changes)
         elif 'toggle' in output:
@@ -226,7 +228,33 @@ class LogicHandler(MVC):
                 self.game.options.current.choice = change.get('set_choice')
             elif 'snapshot' in change:
                 self.handler.take_snapshot()
-
+            elif 'party_facing' in change:
+                self.game.party.change_direction(change.get('party_facing'))
+            elif 'party_move' in change:
+                self.game.party.move(change.get('party_move'))
+                self.handler.camera.refocus(self.game.party.x, self.game.party.y)
+                self.handler.fov.needs_recompute = True
+            elif 'party_teleport' in change:
+                self.game.party.teleport(change.get('party_teleport').go_to_xy)
+                self.handler.camera.refocus(self.game.party.x, self.game.party.y)
+                self.handler.fov.map = self.handler.fov.initialize(self.game.world)
+                self.handler.fov.needs_recompute = True
+            elif 'new_current_dungeon' in change:
+                new_dungeon = change.get('new_current_dungeon')
+                self.game.world.current_dungeon.time_dilation = self.game.time.stamp()
+                self.game.time.apply_dilation(new_dungeon)
+                self.game.world.current_dungeon = new_dungeon
+            elif 'new_current_map' in change:
+                self.game.world.current_map = change.get('new_current_map')
+                self.handler.fov.map = self.handler.fov.initialize(self.game.world)
+                self.handler.fov.needs_recompute = True
+            elif 'dangerous_move' in change:
+                self.game.time.goes_on()
+                changes = self.game.encounter.check(change.get('dangerous_move'))
+                self.mutate(changes)
+            elif 'new_encounter' in change:
+                self.mutate([{'state': 'encounter'}])
+                self.handler.new_encounter(change.get('new_encounter'), self.game.options)
 
 
 
