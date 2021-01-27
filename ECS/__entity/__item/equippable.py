@@ -1,9 +1,14 @@
 import math
 
+from ECS.__entity.__item.__equippable.equippable_core import EquippableCore
+from ECS.__entity.__item.__equippable.equippable_material import EquippableMaterial
+from ECS.__entity.__item.__equippable.equippable_quality import EquippableQuality
+
 
 class Equippable:
     """Component for Items to be worn, providing bonuses to the wearer."""
-    def __init__(self, name=None, images=None, slot=None, core=None, material=None, quality=None, *modifiers):
+    def __init__(self, name=None, images=None, slot=None, core: EquippableCore = None,
+                 material: EquippableMaterial = None, quality: EquippableQuality = None, *modifiers):
         self.name = name
         self.images = images
         self.slot = slot

@@ -20,10 +20,14 @@ class AbstractMenu(LogicList, ABC):
         pass
 
 
-class TopLevelMenu(AbstractMenu):
-    """TopLevel Menus are used as a canvas base for complex menu trees. They require a background image which encompasses and refreshes
-    the window  whenever it is blit. They may receive data, pointer, or submenu visualizations in the
-    form of a list of Blittable objects to additionally display. They may receive additional menus to display."""
+class CanvasMenu(AbstractMenu):
+    """CanvasMenus are used as a canvas base for complex menu trees. They require a background image and  may receive
+    data, pointer, or submenu visualizations in the form of a list of Blittable objects to additionally display. They
+     may receive additional menus to display.
+
+     The purpose of a CanvasMenu is to ensure that there are no "trailing images". Every time the ArtistHandler renders
+     the CanvasMenu, the background image should overwrite the visuals of every Blittable that was displayed during the
+      previous frame."""
 
     def __init__(self, data, logic, specs):
         super().__init__(data, logic, specs)

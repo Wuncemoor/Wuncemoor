@@ -77,7 +77,7 @@ JOURNAL_OBJS = {
     'selected_quest': py.image.load('images\\GUI\\journal\\selected_quest.png'),
 }
 
-LOOT_BG = py.image.load('images\\GUI\\looting\\loot_bg.png')
+REWARD_BG = py.image.load('images\\GUI\\looting\\loot_bg.png')
 LOOT_BANNER = py.image.load('images\\GUI\\looting\\loot_banner.png')
 
 CALENDAR_BG = py.image.load('images\\GUI\\life\\calendar.png')

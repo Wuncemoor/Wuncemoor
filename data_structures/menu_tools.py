@@ -1,7 +1,7 @@
 from collections import UserList
 from dataclasses import dataclass
 from types import FunctionType
-from typing import Union, List
+from typing import Union, List, Tuple
 from pygame.surface import Surface
 from config.constants import WHITE
 
@@ -61,8 +61,8 @@ class Blittable:
 
 @dataclass
 class MenuSpecs:
-    bg: Surface
-    pointer_image: Surface
+    bg: Union[Surface, Tuple]  # If no bg, must provide (width, height) to give Blittable coordinates
+    pointer_image: Union[Surface, None]
     pointer_x_offset: int = 0
     pointer_y_offset: int = 0
     pointer_delta: int = 0

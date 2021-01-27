@@ -4,22 +4,9 @@ from handlers.views.messages import Message
 
 
 class BasicMonster:
-    """Basic mob behavior. take_turn is old and take_turn_e is a prototype for new Encounter"""
-    def take_turn(self, target, fov_map, game_map, entities):
-        results = []
-        entity = self.owner
-        if libtcod.map_is_in_fov(fov_map, entity.x, entity.y):
-        
-            if entity.distance_to(target) >= 2:
-                entity.move_astar(target, entities, game_map)
-                
-            elif target.combatant.attributes.current_hp > 0:
-                attack_results = entity.combatant.attack(target)
-                results.extend(attack_results)
-                
-        return results
+    """Basic mob behavior. """
 
-    def take_turn_e(self, player):
+    def take_turn(self, player):
         results = []
         mob = self.owner
         attack_results = mob.combatant.attack(player)

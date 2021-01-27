@@ -17,6 +17,7 @@ def main():
 
     options = OptionsHandler()
     game = GameHandler(options)
+    options.game = game
     input = InputHandler(game)
     logic = LogicHandler(game)
     artist = ArtistHandler(game, screen, clock)
