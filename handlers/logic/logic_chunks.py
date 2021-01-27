@@ -32,45 +32,30 @@ def quit_game(mvc):
     mvc.game.quit()
 
 
-class Move(AbstractLogic):
+def life_attempt_party_move(self, output):
+    changes = [{'party_facing': output}]
+    dx, dy = output
+    destination_x = self.game.party.x + dx
+    destination_y = self.game.party.y + dy
+    tile = self.game.world.current_map.tiles[destination_y][destination_x]
 
-    def logic(self, output):
-        dx, dy = output
-        destination_x = self.game.party.x + dx
-        destination_y = self.game.party.y + dy
+    if not tile.blocker:
+        changes.append({'party_move': output})
 
-        tile = self.game.world.current_map.tiles[destination_y][destination_x]
+        if tile.floor.has_transition():
+            transition = tile.floor.transition
+            world = self.game.world
+            new_dungeon = world.dungeons[transition.go_to_dungeon]
+            if world.current_dungeon.name != transition.go_to_dungeon:
+                changes.append({'new_current_dungeon': new_dungeon})
 
-        self.game.party.change_direction(output)
+            new_map = new_dungeon.maps[transition.go_to_floor]
+            changes.append({'new_current_map': new_map})
+            changes.append({'party_teleport': transition})
 
-        if not tile.blocker:
-
-            self.game.party.move(dx, dy)
-            self.handler.camera.refocus(self.game.party.x, self.game.party.y)
-
-            self.handler.fov.needs_recompute = True
-
-            if tile.floor.has_transition():
-                transition = tile.floor.transition
-                world = self.game.world
-                new_dungeon = world.dungeons[transition.go_to_dungeon]
-                if world.current_dungeon.name != transition.go_to_dungeon:
-                    world.current_dungeon.time_dilation = self.game.time.stamp()
-                    self.game.time.apply_dilation(new_dungeon)
-                    world.current_dungeon = new_dungeon
-
-                new_map = new_dungeon.maps[transition.go_to_floor]
-                world.current_map = new_map
-                self.game.party.x = transition.go_to_xy[0]
-                self.game.party.y = transition.go_to_xy[1]
-                self.handler.camera.refocus(self.game.party.x, self.game.party.y)
-
-                self.handler.fov.map = self.handler.fov.initialize(world)
-                self.handler.fov.needs_recompute = True
-
-            elif self.game.world.dangerous:
-                self.game.time.goes_on()
-                self.game.encounter.check(tile)
+        elif self.game.world.dangerous:
+            changes.append({'dangerous_move': tile})
+    return changes
 
 
 def interact(self):
@@ -127,12 +112,25 @@ class ShopBaseGoToSub(AbstractLogic):
         return changes
 
 
+def encounter_choose_option(self):
+
+    state_to_func_dict = {
+        EncounterStates.THINKING: self.handler.menu.pointer_logic,
+        EncounterStates.FIGHT_TARGETING: basic_weapon_attack,
+        EncounterStates.VICTORY: encounter_goto_reward,
+    }
+
+    func = state_to_func_dict.get(self.handler.state)
+
+    return func(self)
+
+
 def encounter_goto_targeting(self):
     return [{'substate': EncounterStates.FIGHT_TARGETING}]
 
 
-def encounter_goto_satchel():
-    pass
+def encounter_goto_satchel(self):
+    return []
 
 
 def encounter_goto_life(self):
@@ -182,7 +180,7 @@ def encounter_end_turn(self):
 
 def encounter_enemy_turn(self):
     player = self.handler.combat.party.p1
-    changes = self.handler.combat.enemies.p1.combatant.ai.take_turn_e(player)
+    changes = self.handler.combat.enemies.p1.combatant.ai.take_turn(player)
     changes.append({'substate': EncounterStates.THINKING})
     return changes
 
@@ -220,44 +218,37 @@ def reward_goto_life(self):
     return changes
 
 
-
-class RewardSifting(AbstractLogic):
-
-    def logic(self):
-        changes = []
-        loot = self.handler.loot
-        loot.claim(self.game.options.current.choice)
-        if len(loot.items) == 0:
-            changes.append({'substate': RewardStates.THINKING})
-            changes.append({'set_choice': 2})
-        elif self.game.options.current.choice > len(loot.items) - 1:
-            self.game.options.current.choice -= 1
-        return changes
+def reward_sifting(self):
+    changes = []
+    loot = self.handler.loot
+    loot.claim(self.game.options.current.choice)
+    if len(loot.items) == 0:
+        changes.append({'substate': RewardStates.THINKING})
+        changes.append({'set_choice': 2})
+    elif self.game.options.current.choice > len(loot.items) - 1:
+        self.game.options.current.choice -= 1
+    return changes
 
 
-class RewardDepositing(AbstractLogic):
-
-    def logic(self):
-        changes = []
-        loot = self.handler.loot
-        loot.unclaim(self.game.options.current.choice)
-        if len(loot.claimed) == 0:
-            changes.append({'substate': RewardStates.SIFTING})
-        elif self.game.options.current.choice > len(loot.claimed) - 1:
-            self.game.options.current.choice -= 1
-        return changes
+def reward_depositing(self):
+    changes = []
+    loot = self.handler.loot
+    loot.unclaim(self.game.options.current.choice)
+    if len(loot.claimed) == 0:
+        changes.append({'substate': RewardStates.SIFTING})
+    elif self.game.options.current.choice > len(loot.claimed) - 1:
+        self.game.options.current.choice -= 1
+    return changes
 
 
-class RewardToggle(AbstractLogic):
-
-    def logic(self, direction):
-        changes = []
-        loot = self.handler.loot
-        if self.handler.state == RewardStates.SIFTING and direction == 'right' and len(loot.claimed) > 0:
-            changes.append({'substate': RewardStates.DEPOSITING})
-        elif self.handler.state == RewardStates.DEPOSITING and direction == 'left' and len(loot.items) > 0:
-            changes.append({'substate': RewardStates.SIFTING})
-        return changes
+def reward_toggle(self, direction):
+    changes = []
+    loot = self.handler.loot
+    if self.handler.state == RewardStates.SIFTING and direction == 'right' and len(loot.claimed) > 0:
+        changes.append({'substate': RewardStates.DEPOSITING})
+    elif self.handler.state == RewardStates.DEPOSITING and direction == 'left' and len(loot.items) > 0:
+        changes.append({'substate': RewardStates.SIFTING})
+    return changes
 
 
 class RewardExit(AbstractLogic):
