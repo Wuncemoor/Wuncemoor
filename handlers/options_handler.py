@@ -7,27 +7,18 @@ from data_structures.menu_structures import BasicMenu
 from data_structures.menu_tools import MenuSpecs
 from enums.game_states import GameStates, MenuStates, EncounterStates, RewardStates, ShopStates
 from abstracts.abstract_mvc import MVC
-from handlers.encounter.combat import CombatGrid
-from handlers.logic.logic_chunks import RewardSifting, RewardDepositing, UseItem, \
-    ExamineItem, attempt_equip_item, drop_item, get_quest_details, toggle_starred, abandon_quest, basic_weapon_attack, \
-    encounter_goto_reward
-from handlers.logic.options import Options, encounter_window_options, reward_options, OptionsFake, \
-    settings_options, shop_base_categories
+from handlers.logic.logic_chunks import UseItem, ExamineItem, attempt_equip_item, drop_item, get_quest_details, \
+    toggle_starred, abandon_quest
+from handlers.logic.options import settings_options, shop_base_categories
 from handlers.menus.journal import Quest
 from screens.title_screen import get_title_menu
 
 
 class OptionsHandler(MVC):
 
-    def __init__(self):
+    def __init__(self, game=None):
+        super().__init__(game)
         self.current = None
-
-    @staticmethod
-    def wrap(options, fake=None):
-        if fake:
-            return OptionsFake(options, fake)
-        else:
-            return Options(options)
 
     def get(self, component=None):
         if component is None:
@@ -37,7 +28,7 @@ class OptionsHandler(MVC):
 
     def traverse(self, path):
         if self.state == GameStates.TITLE:
-            self.traverse_list(path)
+            self.current.traverse_list(path)
         elif self.state == GameStates.DIALOGUE:
             return self.traverse_graph(path)
         elif self.owner.state == GameStates.SHOP and self.handler.state == ShopStates.BASE:
@@ -47,11 +38,11 @@ class OptionsHandler(MVC):
         elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY):
             self.current.traverse_list(path[1])
         elif self.handler.state == EncounterStates.THINKING:
-            self.traverse_list(path[1])
+            self.current.traverse_list(path[1])
         elif self.handler.state == EncounterStates.FIGHT_TARGETING:
             self.traverse_combat(path)
         elif self.handler.state == RewardStates.THINKING:
-            self.traverse_list(path)
+            self.current.traverse_list(path)
 
     def traverse_combat(self, path):
         x, y = path
@@ -112,18 +103,6 @@ class OptionsHandler(MVC):
                 self.owner.shop.shopkeeper = shopkeeper
         return changes
 
-    def choose(self):
-        if self.handler.state is EncounterStates.VICTORY:
-            option = encounter_goto_reward
-        elif isinstance(self.current, CombatGrid):
-            option = basic_weapon_attack
-        elif isinstance(self.current, OptionsFake):
-            option = self.current.fake
-        else:
-            option = self.current.options[self.current.choice]
-
-        return option
-
     def title(self):
         return get_title_menu()
 
@@ -156,8 +135,8 @@ class OptionsHandler(MVC):
     def reward(self):
         reward = {
             RewardStates.THINKING: reward_options(),
-            RewardStates.SIFTING: self.wrap(self.owner.reward.loot.items, fake=RewardSifting),
-            RewardStates.DEPOSITING: self.wrap(self.owner.reward.loot.claimed, fake=RewardDepositing),
+            RewardStates.SIFTING: self.wrap(self.owner.reward.loot.items, fake=reward_sifting),
+            RewardStates.DEPOSITING: self.wrap(self.owner.reward.loot.claimed, fake=reward_depositing),
         }
         return reward.get(self.handler.state)
 

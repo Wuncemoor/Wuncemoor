@@ -28,9 +28,12 @@ class PartyHandler:
         party = [member for member in (self.p1, self.p2, self.p3, self.p4) if member is not None]
         return party
 
-    def move(self, dx, dy):
-        self.x += dx
-        self.y += dy
+    def move(self, dxdy: tuple) -> None:
+        self.x += dxdy[0]
+        self.y += dxdy[1]
+
+    def teleport(self, go_to_xy: tuple) -> None:
+        self.x, self.y = go_to_xy
 
     def change_direction(self, new_direction):
         if self.direction != new_direction:
