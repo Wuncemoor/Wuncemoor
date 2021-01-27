@@ -48,6 +48,10 @@ class LogicList(TravLockList):
         super().__init__(data)
         self.logic = logic
 
+    @property
+    def pointer_logic(self):
+        return self.logic[self.pointer]
+
 
 @dataclass
 class Blittable:
