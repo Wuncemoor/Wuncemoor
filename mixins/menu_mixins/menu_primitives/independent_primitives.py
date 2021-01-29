@@ -75,5 +75,4 @@ class BasicTextOption:
 
     def get_option_image(self, index):
         text = get_text_surface(self.data[index], self.specs.font_size, self.specs.font_color, self.specs.font_style)
-        print(text.get_height())
         return text

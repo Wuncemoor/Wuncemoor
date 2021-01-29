@@ -91,25 +91,23 @@ def life_goto_menus(obj):
     return [{'state': 'menus'}, {'substate': obj}]
 
 
-class ShopBaseGoToSub(AbstractLogic):
-
-    def logic(self):
-        player_sub, shop_sub = self.handler.get_subinventories(self.game.options.current.choice)
-        if len(shop_sub) > 0:
-            changes = [{'substate': ShopStates.BUYING}]
-            self.handler.sub_index = self.game.options.current.choice
-            self.game.options.wrap_and_set(shop_sub)
-        elif len(player_sub) > 0:
-            changes = [{'substate': ShopStates.SELLING}]
-            self.handler.sub_index = self.game.options.current.choice
-            self.game.options.wrap_and_set(player_sub)
-        elif len(self.handler.transaction_details) > 0:
-            changes = [{'substate': ShopStates.TRANSACTING}]
-            self.handler.sub_index = self.game.options.current.choice
-            self.game.options.wrap_and_set(self.handler.transaction_details)
-        else:
-            changes = []
-        return changes
+def shop_base_goto_sub(self):
+    player_sub, shop_sub = self.handler.get_subinventories(self.game.options.current.choice)
+    if len(shop_sub) > 0:
+        changes = [{'substate': ShopStates.BUYING}]
+        self.handler.sub_index = self.game.options.current.choice
+        self.game.options.wrap_and_set(shop_sub)
+    elif len(player_sub) > 0:
+        changes = [{'substate': ShopStates.SELLING}]
+        self.handler.sub_index = self.game.options.current.choice
+        self.game.options.wrap_and_set(player_sub)
+    elif len(self.handler.transaction_details) > 0:
+        changes = [{'substate': ShopStates.TRANSACTING}]
+        self.handler.sub_index = self.game.options.current.choice
+        self.game.options.wrap_and_set(self.handler.transaction_details)
+    else:
+        changes = []
+    return changes
 
 
 def encounter_choose_option(self):

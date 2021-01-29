@@ -9,7 +9,7 @@ from enums.game_states import GameStates, MenuStates, EncounterStates, RewardSta
 from abstracts.abstract_mvc import MVC
 from handlers.logic.logic_chunks import UseItem, ExamineItem, attempt_equip_item, drop_item, get_quest_details, \
     toggle_starred, abandon_quest
-from handlers.logic.options import settings_options, shop_base_categories
+from screens.shop_screen import get_shop_menu
 from handlers.menus.journal import Quest
 from screens.title_screen import get_title_menu
 
@@ -99,7 +99,7 @@ class OptionsHandler(MVC):
                 shopkeeper = self.owner.dialogue.partner
                 changes.append({'state': 'shop'})
                 changes.append({'snapshot': True})
-                self.current = shop_base_categories()
+                self.current = get_shop_menu()
                 self.owner.shop.shopkeeper = shopkeeper
         return changes
 
@@ -123,7 +123,7 @@ class OptionsHandler(MVC):
         pass
 
     def shop(self):
-        return shop_base_categories()
+        return get_shop_menu()
 
     def encounter(self):
         encounter = {

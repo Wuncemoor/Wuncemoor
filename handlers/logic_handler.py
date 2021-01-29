@@ -250,7 +250,7 @@ class LogicHandler(MVC):
                 self.handler.fov.needs_recompute = True
             elif 'dangerous_move' in change:
                 self.game.time.goes_on()
-                changes = self.game.encounter.check(change.get('dangerous_move'))
+                changes = self.game.encounter.check_for_encounter(change.get('dangerous_move'))
                 self.mutate(changes)
             elif 'new_encounter' in change:
                 self.mutate([{'state': 'encounter'}])

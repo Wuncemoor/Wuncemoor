@@ -122,7 +122,7 @@ class EncounterHandler:
         self.state = state
         options.current = state_options_dict.get(state)
 
-    def check(self, tile):
+    def check_for_encounter(self, tile):
         encountering = (self.steps_since / (100 + self.steps_since)) * 50 > randint(1, 100)
         if encountering:
             return [{'new_encounter': tile}]
@@ -136,6 +136,7 @@ class EncounterHandler:
         self.change_state(EncounterStates.THINKING, options)
         self.background = BACKGROUNDS.get(tile.type)
         self.loot.reset()
+        options.current.pointer = 0
         self.steps_since = 0
 
     def get_combat(self, tile):
@@ -258,16 +259,6 @@ class ShopHandler:
         self.sub_index = None
         self.transaction_details = []
 
-    def get_subinventories(self, index):
-        player_subinv = self.snapshot[0].menu[index]
-        shop_subinv = self.snapshot[1].menu[index]
-        return player_subinv, shop_subinv
-
-    def take_snapshot(self):
-        player_inventory = copy(self.owner.party.inventory)
-        shop_inventory = copy(self.shopkeeper.shopkeeper.inventory)
-        self.snapshot = [player_inventory, shop_inventory]
-
     def change_state(self, state):
         self.state = state
         if self.state is ShopStates.BASE:
@@ -279,15 +270,12 @@ class ShopHandler:
         if self.state is ShopStates.BASE:
             self.sub_index = None
 
+    def get_subinventories(self, index):
+        player_subinv = self.snapshot[0].menu[index]
+        shop_subinv = self.snapshot[1].menu[index]
+        return player_subinv, shop_subinv
 
-
-
-
-
-
-
-
-
-
-
-
+    def take_snapshot(self):
+        player_inventory = copy(self.owner.party.inventory)
+        shop_inventory = copy(self.shopkeeper.shopkeeper.inventory)
+        self.snapshot = [player_inventory, shop_inventory]

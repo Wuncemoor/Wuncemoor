@@ -117,7 +117,7 @@ class InputHandler(MVC):
         elif event.key == py.K_ESCAPE:
             return {'exit': True}
         elif event.key == py.K_c:
-            return {'show_menus': self.game.party}
+            return {'show_menus': self.game.party.char_sheet}
         elif event.key == py.K_i:
             return {'show_menus': self.game.party.inventory}
         elif event.key == py.K_m:
