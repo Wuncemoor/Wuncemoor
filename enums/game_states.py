@@ -18,17 +18,6 @@ class GameStates(Enum):
     # COMPETENCE_MENU = 11
 
 
-class TitleStates(Enum):
-    """States that occur in GameStates.TITLE"""
-
-    OPENING = 1
-    MAIN = 2
-    NEW_GAME = 3
-    LOAD_GAME = 4
-    SETTINGS = 5
-    ACKNOWLEDGEMENTS = 6
-
-
 class EncounterStates(Enum):
     """States that occur in GameStates.ENCOUNTER"""
 
