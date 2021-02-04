@@ -37,6 +37,10 @@ class GameHandler:
     def state(self):
         return self.state_handler.superstate
 
+    def set_root_state(self):
+        self.state_handler = self.title
+        self.options.get()
+
     def change_state(self, string):
         state_dict = {
             'title': self.title,
