@@ -131,7 +131,7 @@ class AscendingData(ABC):
 
 
 class RightToLeftData(ABC):
-    """A mixin for making a custom menu style through multiple inheritance. Menus wiht this mixin display menu options
+    """A mixin for making a custom menu style through multiple inheritance. Menus with this mixin display menu options
     to the viewer as a list from right to left.
 
     Menus with this mixin require the following specs: button_x_offset, button_y_offset, button_gap"""

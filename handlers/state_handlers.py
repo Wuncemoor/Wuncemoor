@@ -1,47 +1,55 @@
 from copy import copy
 from random import randint
-from enums.game_states import EncounterStates, GameStates, ShopStates, RewardStates
+
+from abstracts.abstract_handlers import AbstractGameStateHandler
+from enums.game_states import EncounterStates, GameStates, ShopStates, RewardStates, TitleStates
 from config.image_objects import BACKGROUNDS
 from handlers.encounter.combat import Combat
 from handlers.views.camera import Camera
 from handlers.views.fov_handler import FovHandler
 from handlers.views.messages import Message
-from screens.encounter_screen import get_encounter_menu
+from screens.encounter_screen import get_encounter_thinking_menu
 from screens.reward_screen import get_reward_thinking_menu
 from screens.title_screen import get_title_menu
 
 
-class TitleHandler:
+class TitleHandler(AbstractGameStateHandler):
     """Handler for GameStates.TITLE"""
 
-    def __init__(self):
-        self.superstate = GameStates.TITLE
-        self.state = None
+    def __init__(self, superstate):
+        super().__init__(superstate)
         self.menu = get_title_menu()
 
+    def change_state(self):
+        pass
+        # self._state =
 
-class LifeHandler:
+
+class LifeHandler(AbstractGameStateHandler):
     """Handler for GameStates.LIFE"""
 
-    def __init__(self):
-        self.superstate = GameStates.LIFE
+    def __init__(self, superstate):
+        super().__init__(superstate)
         self.camera = Camera()
         self.camera.owner = self
         self.fov = FovHandler()
         self.fov.owner = self
 
+    def change_state(self):
+        pass
+        # self._state =
 
-class MenusHandler:
+
+class MenusHandler(AbstractGameStateHandler):
     """Handler for GameStates.MENUS"""
 
-    def __init__(self):
-        self.superstate = GameStates.MENUS
-        self.state = None
+    def __init__(self, superstate):
+        super().__init__(superstate)
         self.menu_type = None
 
     def change_state(self, menu, options):
         self.menu_type = menu
-        self.state = menu.superstate
+        self._state = menu.superstate
         self.confirm_submenu()
         options.current = self.menu_type.menu
 
@@ -52,14 +60,18 @@ class MenusHandler:
             self.menu_type.submenu = None
 
 
-class DialogueHandler:
+class DialogueHandler(AbstractGameStateHandler):
     """Handler for GameStates.DIALOGUE"""
-    def __init__(self, observers):
-        self.superstate = GameStates.DIALOGUE
+    def __init__(self, superstate, observers):
+        super().__init__(superstate)
         self.partner = None
         self.observers = observers
         self.real_talk = None
         self.real_io = None
+
+    def change_state(self):
+        pass
+        # self._state =
 
     def set_real_talk(self):
         responses = []
@@ -96,21 +108,16 @@ class DialogueHandler:
         return new_node.visited
 
 
-class EncounterHandler:
+class EncounterHandler(AbstractGameStateHandler):
     """Handler for GameStates.ENCOUNTER"""
 
-    def __init__(self, loot):
-        self.superstate = GameStates.ENCOUNTER
-        self.state = EncounterStates.THINKING
+    def __init__(self, superstate, loot):
+        super().__init__(superstate)
         self.background = None
         self.combat = None
         self.menu = self.initialize_menu()
         self.loot = loot
         self.steps_since = 0
-
-    @staticmethod
-    def initialize_menu():
-        return get_encounter_menu()
 
     def change_state(self, state, options):
 
@@ -119,8 +126,12 @@ class EncounterHandler:
             EncounterStates.FIGHT_TARGETING: self.combat.grid,
         }
 
-        self.state = state
+        self._state = state
         options.current = state_options_dict.get(state)
+
+    @staticmethod
+    def initialize_menu():
+        return get_encounter_thinking_menu()
 
     def check_for_encounter(self, tile):
         encountering = (self.steps_since / (100 + self.steps_since)) * 50 > randint(1, 100)
@@ -144,18 +155,13 @@ class EncounterHandler:
         return combat
 
 
-class RewardHandler:
+class RewardHandler(AbstractGameStateHandler):
     """Handler for GameStates.REWARD"""
 
-    def __init__(self, loot):
-        self.superstate = GameStates.REWARD
-        self.state = None
+    def __init__(self, superstate, loot):
+        super().__init__(superstate)
         self.loot = loot
         self.menu = self.initialize_menu()
-
-    @staticmethod
-    def initialize_menu():
-        return get_reward_thinking_menu()
 
     def change_state(self, state, options):
         state_options_dict = {
@@ -163,20 +169,28 @@ class RewardHandler:
             # RewardStates.SIFTING: self.wrap(self.owner.reward.loot.items, fake=reward_sifting),
             # RewardStates.DEPOSITING: self.wrap(self.owner.reward.loot.claimed, fake=reward_depositing),
         }
-        self.state = state
+        self._state = state
         options.current = state_options_dict.get(state)
 
+    @staticmethod
+    def initialize_menu():
+        return get_reward_thinking_menu()
 
-class DebugHandler:
+
+class DebugHandler(AbstractGameStateHandler):
     """Handler for GameStates.DEBUG"""
 
-    def __init__(self):
-        self.superstate = GameStates.DEBUG
+    def __init__(self, superstate):
+        super().__init__(superstate)
         self.previous_state = None
         self.allowed_inputs = self.init_allowed_inputs()
         self.allowed_objs = None
         self.current_input = ''
         self.message_slot = None
+
+    def change_state(self):
+        pass
+        # self._state =
 
     def init_allowed_inputs(self):
         """All other commands not recognized, will add "suggestions" later"""
@@ -248,12 +262,11 @@ class DebugHandler:
         self.message_slot = mes
 
 
-class ShopHandler:
+class ShopHandler(AbstractGameStateHandler):
     """Handler for GameStates.SHOP"""
 
-    def __init__(self):
-        self.superstate = GameStates.SHOP
-        self.state = ShopStates.BASE
+    def __init__(self, superstate):
+        super().__init__(superstate)
         self.shopkeeper = None
         self.snapshot = None
         self.sub_index = None

@@ -1,4 +1,5 @@
-import pygame as py
+import sys
+import pygame
 import engine.initialize as initialize
 
 
@@ -10,16 +11,17 @@ def main():
 
     while running:
         clock.tick()
-        for event in py.event.get():
-            if event.type == py.QUIT:
-                game.quit()
-            if event.type == py.KEYDOWN:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.quit()
+            if event.type == pygame.KEYDOWN:
 
                 output = input.transduce(event)
                 logic.translate(output)
 
         artist.render()
-        py.display.flip()
+        pygame.display.flip()
 
 
 if __name__ == '__main__':

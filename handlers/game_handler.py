@@ -1,9 +1,9 @@
 from config.constants import KEYDOWN_DELAY
+from enums.game_states import GameStates
 from handlers.log_handler import LogHandler
 from handlers import state_handlers
 from handlers.time_handler import TimeHandler
 import pygame as py
-import sys
 
 from world_objects.loot import Loot
 
@@ -16,13 +16,13 @@ class GameHandler:
         self.fullscreen = True
         self.options = options
         self.options.owner = self
-        self.title = state_handlers.TitleHandler()
+        self.title = state_handlers.TitleHandler(GameStates.TITLE)
         self.title.owner = self
-        self.life = state_handlers.LifeHandler()
+        self.life = state_handlers.LifeHandler(GameStates.LIFE)
         self.life.owner = self
-        self.menus = state_handlers.MenusHandler()
+        self.menus = state_handlers.MenusHandler(GameStates.MENUS)
         self.menus.owner = self
-        self.debug = state_handlers.DebugHandler()
+        self.debug = state_handlers.DebugHandler(GameStates.DEBUG)
         self.debug.owner = self
         self.world = None
         self.dialogue = None
@@ -76,11 +76,11 @@ class GameHandler:
     def preplay(self, world, party):
         loot = Loot()
         self.world = world
-        self.dialogue = state_handlers.DialogueHandler([party.journal])
-        self.shop = state_handlers.ShopHandler()
+        self.dialogue = state_handlers.DialogueHandler(GameStates.DIALOGUE, [party.journal])
+        self.shop = state_handlers.ShopHandler(GameStates.SHOP)
         self.time = TimeHandler([party])
-        self.encounter = state_handlers.EncounterHandler(loot)
-        self.reward = state_handlers.RewardHandler(loot)
+        self.encounter = state_handlers.EncounterHandler(GameStates.ENCOUNTER, loot)
+        self.reward = state_handlers.RewardHandler(GameStates.REWARD, loot)
         self.party = party
         # self.init_options()
         self.log = LogHandler()
@@ -96,9 +96,3 @@ class GameHandler:
     #             for entity in map.noncombatants:
     #                 if entity.shopkeeper:
     #                     entity.shopkeeper.inventory.options = initialize_menu_options(entity.shopkeeper.inventory)
-
-
-    @staticmethod
-    def quit():
-        py.quit()
-        sys.exit()
