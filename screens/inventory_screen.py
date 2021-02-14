@@ -5,20 +5,21 @@ from config.image_objects import INVENTORY_BG, INVENTORY_ICONS, EQUIPMENT_EMPTY_
     POINTER_RIGHT
 from enums.game_states import MenuSubStates
 from misc_functions.split_money_value import split_money
-from data_structures.gui_tools import get_surface, align_and_blit, get_alpha_surface, get_text_surface
+from data_structures.gui_tools import get_surface, align_and_blit, get_alpha_surface, get_text_surface, \
+    get_wrapped_text_surface
 
 
 def inventory_screen(self):
     surf = get_surface(INVENTORY_BG)
 
-    display_name_and_portrait(self.game.party.p1, surf)
-    display_equipment_icons(self.game.party.p1, surf)
+    display_name_and_portrait(self.game.model.party.p1, surf)
+    display_equipment_icons(self.game.model.party.p1, surf)
     display_selected_icon(self, surf)
     display_subinventory(self, surf)
-    if self.handler.menu_type.state is MenuSubStates.SELECTED_OPTIONS:
+    if self.handler.menu_type.state in (MenuSubStates.SELECTED_OPTIONS, MenuSubStates.EXAMINING_MENU_OBJECT):
         display_entity_options(self, surf)
-    display_mass_capacities(self.game.party, surf)
-    display_wealth(self.game.party.inventory.money, surf)
+    display_mass_capacities(self.game.model.party, surf)
+    display_wealth(self.game.model.party.inventory.money, surf)
 
     align_and_blit(self.screen, surf)
 

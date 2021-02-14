@@ -24,14 +24,11 @@ class GameHandler:
         self.menus.owner = self
         self.debug = state_handlers.DebugHandler(GameStates.DEBUG)
         self.debug.owner = self
-        self.world = None
         self.dialogue = None
-        self.time = None
         self.encounter = None
         self.reward = None
-        self.party = None
-        self.log = None
         self.shop = None
+        self.model = None
 
     @property
     def state(self):
@@ -64,35 +61,24 @@ class GameHandler:
             py.key.set_repeat(KEYDOWN_DELAY)
 
     def take_ownership(self):
-        self.world.owner = self
+        self.model.world.owner = self.model
+        self.model.time.owner = self.model
+        self.model.party.owner = self.model
+        self.model.log.owner = self.model
         self.dialogue.owner = self
-        self.time.owner = self
         self.encounter.owner = self
         self.reward.owner = self
-        self.party.owner = self
-        self.log.owner = self
         self.shop.owner = self
 
-    def preplay(self, world, party):
+    def preplay(self, model):
         loot = Loot()
-        self.world = world
-        self.dialogue = state_handlers.DialogueHandler(GameStates.DIALOGUE, [party.journal])
+        self.model = model
+        self.dialogue = state_handlers.DialogueHandler(GameStates.DIALOGUE, [model.party.journal])
         self.shop = state_handlers.ShopHandler(GameStates.SHOP)
-        self.time = TimeHandler([party])
         self.encounter = state_handlers.EncounterHandler(GameStates.ENCOUNTER, loot)
         self.reward = state_handlers.RewardHandler(GameStates.REWARD, loot)
-        self.party = party
-        # self.init_options()
-        self.log = LogHandler()
         self.debug.set_allowed_objs()
         self.take_ownership()
-        self.life.camera.refocus(party.p1.x, party.p1.y)
-        self.life.fov.map = self.life.fov.initialize(self.world)
+        self.life.camera.refocus(model.party.p1.x, model.party.p1.y)
+        self.life.fov.map = self.life.fov.initialize(model.world)
         self.state_handler = self.life
-
-    # def init_options(self):
-    #     for dung in self.world.dungeons.values():
-    #         for map in dung.maps:
-    #             for entity in map.noncombatants:
-    #                 if entity.shopkeeper:
-    #                     entity.shopkeeper.inventory.options = initialize_menu_options(entity.shopkeeper.inventory)

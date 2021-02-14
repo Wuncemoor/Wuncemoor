@@ -18,14 +18,14 @@ class Camera:
         # Ensures all tiles are valid to avoid bound errors/displaying "empty" tiles on potentially half of the screen
         if px < width/2:
             self.x = 0
-        elif px > self.owner.owner.world.width - width/2:
-            self.x = self.owner.owner.world.width - width
+        elif px > self.owner.owner.model.world.width - width/2:
+            self.x = self.owner.owner.model.world.width - width
         else:
             self.x = int(px - floor(width/2))
         if py < height/2:
             self.y = 0
-        elif py > self.owner.owner.world.height - height/2:
-            self.y = self.owner.owner.world.height - height
+        elif py > self.owner.owner.model.world.height - height/2:
+            self.y = self.owner.owner.model.world.height - height
         else:
             self.y = int(py - floor(height/2))
 

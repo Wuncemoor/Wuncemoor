@@ -151,7 +151,7 @@ class EncounterHandler(AbstractGameStateHandler):
         self.steps_since = 0
 
     def get_combat(self, tile):
-        combat = Combat(self.owner.party, tile)
+        combat = Combat(self.owner.model.party, tile)
         return combat
 
 
@@ -200,7 +200,7 @@ class DebugHandler(AbstractGameStateHandler):
 
     def set_allowed_objs(self):
         """All other commands not recognized, will add "suggestions" later"""
-        tiles = self.owner.world.current_map.tiles
+        tiles = self.owner.model.world.current_map.tiles
         objs = {
             'floor': [[tile.floor for tile in row] for row in tiles],
             'light_image': [[tile.floor.image for tile in row] for row in tiles],

@@ -6,13 +6,13 @@ from enums.game_states import EncounterStates, RewardStates, GameStates, ShopSta
 from handlers.party_handler import PartyHandler
 from handlers.views.messages import Message
 from loader_functions.data_loaders import load_game
-from loader_functions.initialize_new_game import get_game_variables
+from loader_functions.new_game_functions import make_new_game_model
 import pygame as py
 
 
 def new_game(mvc):
-    world, party = get_game_variables()
-    mvc.game.preplay(world, party)
+    model = make_new_game_model()
+    mvc.game.preplay(model)
 
 
 def load_game(mvc):
@@ -35,16 +35,16 @@ def quit_game(mvc):
 def life_attempt_party_move(self, output):
     changes = [{'party_facing': output}]
     dx, dy = output
-    destination_x = self.game.party.x + dx
-    destination_y = self.game.party.y + dy
-    tile = self.game.world.current_map.tiles[destination_y][destination_x]
+    destination_x = self.game.model.party.x + dx
+    destination_y = self.game.model.party.y + dy
+    tile = self.game.model.world.current_map.tiles[destination_y][destination_x]
 
     if not tile.blocker:
         changes.append({'party_move': output})
 
         if tile.floor.has_transition():
             transition = tile.floor.transition
-            world = self.game.world
+            world = self.game.model.world
             new_dungeon = world.dungeons[transition.go_to_dungeon]
             if world.current_dungeon.name != transition.go_to_dungeon:
                 changes.append({'new_current_dungeon': new_dungeon})
@@ -53,17 +53,17 @@ def life_attempt_party_move(self, output):
             changes.append({'new_current_map': new_map})
             changes.append({'party_teleport': transition})
 
-        elif self.game.world.dangerous:
+        elif self.game.model.world.dangerous:
             changes.append({'dangerous_move': tile})
     return changes
 
 
 def interact(self):
     changes = []
-    changes.extend(attempt_pickup_item(self.game.party, self.game.world.current_map.items))
+    changes.extend(attempt_pickup_item(self.game.model.party, self.game.model.world.current_map.items))
 
-    for entity in self.game.world.current_map.conversers:
-        if entity.x == self.game.party.x and entity.y == self.game.party.y:
+    for entity in self.game.model.world.current_map.conversers:
+        if entity.x == self.game.model.party.x and entity.y == self.game.model.party.y:
             self.game.dialogue.partner = entity
             self.game.dialogue.set_real_talk()
             self.game.state_handler = self.game.dialogue
@@ -209,7 +209,7 @@ def reward_manual(self):
 def reward_goto_life(self):
     loot = self.handler.loot
     changes = [{'xp': loot.xp}]
-    self.game.party.inventory.take_loot(loot.claimed)
+    self.game.model.party.inventory.take_loot(loot.claimed)
     self.game.options.current.choice = 0
 
     changes.append({'state': 'life'})
@@ -341,9 +341,9 @@ def drop_item(party: PartyHandler, menu: AbstractMenu):
     message = Message('{0} was dropped on the ground.'.format(menu.pointer_data.name), BLACK)
     return [{'drop_item': menu}, {'message': message}, {'subsubstate': 2}]
 
-class ExamineItem(AbstractLogic):
 
-    pass
+def examine_item(party: PartyHandler, menu: AbstractMenu):
+    return [{'subsubstate': 4}]
 
 
 class UseItem(AbstractLogic):

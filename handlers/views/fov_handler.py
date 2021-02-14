@@ -18,6 +18,6 @@ class FovHandler:
         return fov_map
 
     def recompute(self):
-        x, y, = self.owner.owner.party.x, self.owner.owner.party.y
+        x, y, = self.owner.owner.model.party.x, self.owner.owner.model.party.y
         # Light wall = True, fov algorithm = 0
         tcod.map_compute_fov(self.map, y, x, FOV_RADIUS, True, 0)

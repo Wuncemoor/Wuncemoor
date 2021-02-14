@@ -51,13 +51,13 @@ class InputHandler(MVC):
         elif event.key in (py.K_RIGHT, py.K_d):
             return {'move': (1, 0)}
         elif event.key == py.K_c:
-            return {'show_menus': self.game.party.char_sheet}
+            return {'show_menus': self.game.model.party.char_sheet}
         elif event.key == py.K_i:
-            return {'show_menus': self.game.party.inventory}
+            return {'show_menus': self.game.model.party.inventory}
         elif event.key == py.K_m:
-            return {'show_menus': self.game.party.map}
+            return {'show_menus': self.game.model.party.map}
         elif event.key == py.K_j:
-            return {'show_menus': self.game.party.journal}
+            return {'show_menus': self.game.model.party.journal}
         elif event.key == py.K_SPACE:
             return {'interact': True}
         elif event.key == py.K_PERIOD:
@@ -117,13 +117,13 @@ class InputHandler(MVC):
         elif event.key == py.K_ESCAPE:
             return {'exit': True}
         elif event.key == py.K_c:
-            return {'show_menus': self.game.party.char_sheet}
+            return {'show_menus': self.game.model.party.char_sheet}
         elif event.key == py.K_i:
-            return {'show_menus': self.game.party.inventory}
+            return {'show_menus': self.game.model.party.inventory}
         elif event.key == py.K_m:
-            return {'show_menus': self.game.party.map}
+            return {'show_menus': self.game.model.party.map}
         elif event.key == py.K_j:
-            return {'show_menus': self.game.party.journal}
+            return {'show_menus': self.game.model.party.journal}
         elif event.key in (py.K_a, py.K_LEFT):
             return {'traverse_menu': (-1, 0)}
         elif event.key in (py.K_d, py.K_RIGHT):

@@ -8,7 +8,7 @@ from screens.resources_HUD import get_resource_vals
 def character_screen(self):
 
     char_sheet = get_surface(CHARACTER_SHEET_BASE)
-    player = self.game.party.p1
+    player = self.game.model.party.p1
 
     # level = get_level_icon(player)
     # age = get_age_icon(player)

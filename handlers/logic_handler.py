@@ -96,7 +96,7 @@ class LogicHandler(MVC):
                 changes = self.response()
             elif self.handler.menu_type.state == self.handler.menu_type.state.__class__(3):
                 self.response = self.game.options.current.logic[self.game.options.current.pointer]
-                changes = self.response(self.game.party, self.handler.menu_type.submenu)
+                changes = self.response(self.game.model.party, self.handler.menu_type.submenu)
             self.mutate(changes)
 
         elif 'debug' in output:
@@ -185,25 +185,25 @@ class LogicHandler(MVC):
     def mutate(self, changes):
         for change in changes:
             if 'debug_message' in change:
-                self.game.log.debugger.add_message(change.get('debug_message'))
+                self.game.model.log.debugger.add_message(change.get('debug_message'))
             elif 'message' in change:
-                self.game.log.messages.add_message(change.get('message'))
+                self.game.model.log.messages.add_message(change.get('message'))
             elif 'pickup_item' in change:
                 item = change.get('pickup_item')
-                self.game.party.inventory.add_item(item)
-                self.game.world.current_map.entities.remove(item)
+                self.game.model.party.inventory.add_item(item)
+                self.game.model.world.current_map.entities.remove(item)
             elif 'drop_item' in change:
                 menu = change.get('drop_item')
                 item = menu.pop_pointer()
-                item.x, item.y = self.game.party.x, self.game.party.y
-                self.game.world.current_map.entities.append(item)
+                item.x, item.y = self.game.model.party.x, self.game.model.party.y
+                self.game.model.world.current_map.entities.append(item)
             elif 'dequipped' in change:
-                item = self.game.party.p1.combatant.equipment.unequip(change.get('dequipped'))
-                self.game.party.inventory.add_item(item)
+                item = self.game.model.party.p1.combatant.equipment.unequip(change.get('dequipped'))
+                self.game.model.party.inventory.add_item(item)
             elif 'equipped' in change:
                 menu = change.get('equipped')
                 item = menu.pop_pointer()
-                self.game.party.p1.combatant.equipment.equip(item)
+                self.game.model.party.p1.combatant.equipment.equip(item)
             elif 'subsubstate' in change:
                 self.handler.menu_type.change_state(change.get('subsubstate'), self.game.options)
             elif 'substate' in change:
@@ -211,7 +211,7 @@ class LogicHandler(MVC):
             elif 'state' in change:
                 self.game.change_state(change.get('state'))
             elif 'xp' in change:
-                self.game.party.p1.combatant.level.add_xp(change.get('xp'))
+                self.game.model.party.p1.combatant.level.add_xp(change.get('xp'))
             elif 'dead' in change:
                 entity = change.get('dead')
                 self.handler.combat.destroy(entity)
@@ -229,27 +229,27 @@ class LogicHandler(MVC):
             elif 'snapshot' in change:
                 self.handler.take_snapshot()
             elif 'party_facing' in change:
-                self.game.party.change_direction(change.get('party_facing'))
+                self.game.model.party.change_direction(change.get('party_facing'))
             elif 'party_move' in change:
-                self.game.party.move(change.get('party_move'))
-                self.handler.camera.refocus(self.game.party.x, self.game.party.y)
+                self.game.model.party.move(change.get('party_move'))
+                self.handler.camera.refocus(self.game.model.party.x, self.game.model.party.y)
                 self.handler.fov.needs_recompute = True
             elif 'party_teleport' in change:
-                self.game.party.teleport(change.get('party_teleport').go_to_xy)
-                self.handler.camera.refocus(self.game.party.x, self.game.party.y)
-                self.handler.fov.map = self.handler.fov.initialize(self.game.world)
+                self.game.model.party.teleport(change.get('party_teleport').go_to_xy)
+                self.handler.camera.refocus(self.game.model.party.x, self.game.model.party.y)
+                self.handler.fov.map = self.handler.fov.initialize(self.game.model.world)
                 self.handler.fov.needs_recompute = True
             elif 'new_current_dungeon' in change:
                 new_dungeon = change.get('new_current_dungeon')
-                self.game.world.current_dungeon.time_dilation = self.game.time.stamp()
-                self.game.time.apply_dilation(new_dungeon)
-                self.game.world.current_dungeon = new_dungeon
+                self.game.model.world.current_dungeon.time_dilation = self.game.model.time.stamp()
+                self.game.model.time.apply_dilation(new_dungeon)
+                self.game.model.world.current_dungeon = new_dungeon
             elif 'new_current_map' in change:
-                self.game.world.current_map = change.get('new_current_map')
-                self.handler.fov.map = self.handler.fov.initialize(self.game.world)
+                self.game.model.world.current_map = change.get('new_current_map')
+                self.handler.fov.map = self.handler.fov.initialize(self.game.model.world)
                 self.handler.fov.needs_recompute = True
             elif 'dangerous_move' in change:
-                self.game.time.goes_on()
+                self.game.model.time.goes_on()
                 changes = self.game.encounter.check_for_encounter(change.get('dangerous_move'))
                 self.mutate(changes)
             elif 'new_encounter' in change:

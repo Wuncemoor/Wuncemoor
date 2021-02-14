@@ -46,7 +46,7 @@ class ArtistHandler(MVC):
         life_backdrop = get_surface(LIFE_BACKDROP)
         self.screen.blit(life_backdrop, (0, 0))
 
-        left_panel = get_life_left_panel(self.game.party)
+        left_panel = get_life_left_panel(self.game.model.party)
         self.screen.blit(left_panel, (0, 0))
 
         main_screen = get_life_main_screen(self)
@@ -102,7 +102,7 @@ class ArtistHandler(MVC):
         window = get_surface(ENCOUNTER_MESSAGE_BG)
 
         y = 0
-        for message in self.game.log.messages.messages:
+        for message in self.game.model.log.messages.messages:
             print_message(window, message, off_x, off_y, y)
             y += 1
         return window
@@ -131,7 +131,7 @@ class ArtistHandler(MVC):
         shop_screen(self)
 
     def blit_resource_hud(self):
-        resource_hud = player_resource_display(self.game.party.p1)
+        resource_hud = player_resource_display(self.game.model.party.p1)
         coord_dict = {
             GameStates.LIFE: (0 - 10, 540 + 40),
             GameStates.ENCOUNTER: (360, 900),

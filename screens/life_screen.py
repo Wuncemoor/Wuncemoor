@@ -100,23 +100,23 @@ def get_life_main_screen(self):
         self.game.life.fov.recompute()
         self.game.life.fov.needs_recompute = False
 
-    is_interior = is_party_on_interior_tile(self.game.party, self.game.world.tiles)
+    is_interior = is_party_on_interior_tile(self.game.model.party, self.game.model.world.tiles)
     for y in range(height + largest_overhead):
         for x in range(width):
             try:
                 visible = tcod.map_is_in_fov(self.game.life.fov.map, cy + y, cx + x)
-                tile = self.game.world.tiles[cy + y][cx + x]
+                tile = self.game.model.world.tiles[cy + y][cx + x]
 
-                draw_tile(main_screen, self.game.world.tiles, tile, x, y, cx, cy, visible, is_interior)
+                draw_tile(main_screen, self.game.model.world.tiles, tile, x, y, cx, cy, visible, is_interior)
 
                 if not visible and not tile.floor.transition:
                     draw_darkened_overlay(main_screen, x, y)
             except IndexError:
                 pass
 
-    for converser in self.game.world.current_map.conversers:
+    for converser in self.game.model.world.current_map.conversers:
         draw_entity(self, main_screen, converser)
-    entities_in_render_order = sorted(self.game.world.current_map.entities, key=lambda x: x.render_order.value)
+    entities_in_render_order = sorted(self.game.model.world.current_map.entities, key=lambda x: x.render_order.value)
     for entity in entities_in_render_order:
         draw_entity(self, main_screen, entity)
 
@@ -145,7 +145,7 @@ def draw_entity(self, main_screen, entity):
 
 def draw_party(self, main_screen):
     cx, cy = self.game.life.camera.x, self.game.life.camera.y
-    party = self.game.party
+    party = self.game.model.party
 
     sprite = party.p1.images.sprite
     keys = key.get_pressed()
@@ -213,8 +213,8 @@ def get_life_right_panel(game):
     off_x, off_y = 8, 36
     panel = get_alpha_surface(LIFE_PANEL_WIDTH, LIFE_PANEL_HEIGHT)
 
-    for display in [get_life_minimap(game.world.current_map.tiles), display_clock(game.time), display_calendar(game.time), get_upcoming_events(),
-                    get_life_event_log(game.log)]:
+    for display in [get_life_minimap(game.model.world.current_map.tiles), display_clock(game.model.time), display_calendar(game.model.time), get_upcoming_events(),
+                    get_life_event_log(game.model.log)]:
         panel.blit(display, (off_x, off_y))
         off_y += display.get_height()
 

@@ -12,15 +12,18 @@ from ECS.__entity.item import Item
 from ECS.__entity.__combatant.equipment import Equipment
 from ECS.__entity.combatant import Combatant
 from ECS.__entity.age import Age
+from handlers.log_handler import LogHandler
 from handlers.menus.char_sheet import CharSheet
 from handlers.menus.inventory import Inventory
 from handlers.menus.map import Map
 from ECS.entity import Entity
 from enums.equipment_slots import EquipmentSlots
 from enums.render_order import RenderOrder
-from handlers.menus.journal import Quest, QuestNode
+from handlers.menus.journal import Quest, QuestNode, Journal
 from config.image_objects import BUNDLE_HERO, BUNDLE_STICK
 from handlers.party_handler import PartyHandler
+from handlers.time_handler import TimeHandler
+from handlers.world_handler import WorldHandler
 
 
 def get_party():
@@ -75,3 +78,34 @@ def get_intro_quest():
     q.plot.append(node1)
 
     return q
+
+
+def make_new_game_model():
+
+    party = get_party()
+
+    get_starting_items(party)
+
+    world = WorldHandler()
+    world.new()
+
+    journal = Journal()
+    journal.current_quests.append(get_intro_quest())
+    party.journal = journal
+    time = TimeHandler([party])
+    log = LogHandler()
+
+    model = DataModel(world, party, time, log)
+
+    return model
+
+
+class DataModel:
+    """One container to store and isolate all data that represents the current state of the program. Used to easily save
+     and load games."""
+
+    def __init__(self, world, party, time, log):
+        self.world = world
+        self.party = party
+        self.time = time
+        self.log = log
