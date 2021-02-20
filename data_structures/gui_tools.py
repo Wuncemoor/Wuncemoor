@@ -1,3 +1,5 @@
+from typing import Tuple, List
+
 import pygame as py
 from config.constants import BLACK, WHITE
 
@@ -17,13 +19,16 @@ def get_alpha_surface(width, height):
     return res_display
 
 
-def get_text_surface(text, fontsize=12, color=BLACK, style='source_sans_pro'):
-    style_dict = {'lunchds': 'fonts\\lunchds.ttf',
-                  'gentium': 'fonts\\GentiumBookBasic-Regular.ttf',
-                  'source_sans_pro': 'fonts\\SourceSansPro-Regular.ttf',
-                  }
+def string_to_font_style_dict():
+    return {'lunchds': 'fonts\\lunchds.ttf',
+            'gentium': 'fonts\\GentiumBookBasic-Regular.ttf',
+            'source_sans_pro': 'fonts\\SourceSansPro-Regular.ttf',
+            }
 
-    font = py.font.Font(style_dict.get(style), fontsize)
+
+def get_text_surface(text, fontsize=12, color=BLACK, style='source_sans_pro'):
+
+    font = py.font.Font(string_to_font_style_dict().get(style), fontsize)
     surf = font.render(text, True, color)
 
     return surf
@@ -62,8 +67,8 @@ def align_and_blit(surface, image, x_ratio=0.5, y_ratio=0.5, x_adjust=0, y_adjus
     surface.blit(image, (off_x, off_y))
 
 
-def get_wrapped_text_surface(info, width, fontsize, color):
-    text_list = get_wrapped_text(info, width, fontsize, color)
+def get_wrapped_text_surface(info, width, fontsize, color, style='source_sans_pro'):
+    text_list = get_wrapped_text(info, width, fontsize, color, style)
     total_surface_height = 0
     current_blit_height = 0
     for text in text_list:
@@ -76,7 +81,7 @@ def get_wrapped_text_surface(info, width, fontsize, color):
     return surf
 
 
-def get_wrapped_text(info, width, fontsize, color):
+def get_wrapped_text(info, width, fontsize, color, style='source_sans_pro'):
     prewords = info.split()
     words = []
     for word in prewords[:len(prewords)]:
@@ -84,7 +89,7 @@ def get_wrapped_text(info, width, fontsize, color):
         words.append(word)
     lines = []
     lines = slice_text(words, lines, width, fontsize)
-    surfaces = [get_text_surface(line, fontsize, color) for line in lines]
+    surfaces = [get_text_surface(line, fontsize, color, style) for line in lines]
 
     return surfaces
 
