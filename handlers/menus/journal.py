@@ -2,13 +2,13 @@ from dataclasses import dataclass, field
 from typing import Union, Dict, List
 
 from data_structures.menu_tools import LogicList
-from enums.game_states import MenuStates, MenuSubStates
+from enums.game_states import MenusStates, MenuSubStates
 from handlers.logic.menus_logic import menus_goto_submenu, menus_goto_selected_options
 
 
 class Journal:
     def __init__(self):
-        self.superstate = MenuStates.JOURNAL
+        self.superstate = MenusStates.JOURNAL
         self.state = MenuSubStates.BASE
         self.current_quests = LogicList([], menus_goto_selected_options)
         self.completed_quests = LogicList([], menus_goto_selected_options)

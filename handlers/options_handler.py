@@ -33,7 +33,7 @@ class OptionsHandler(MVC):
             return self.traverse_graph(path)
         elif self.owner.state == GameStates.SHOP and self.handler.state == ShopStates.BASE:
             self.traverse_list((path[0]))
-        elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY) and self.handler.menu_type.submenu is None:
+        elif self.handler.state in (MenusStates.JOURNAL, MenusStates.INVENTORY) and self.handler.menu_type.submenu is None:
             self.current.traverse_list(path[0])
         elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY):
             self.current.traverse_list(path[1])
@@ -111,11 +111,11 @@ class OptionsHandler(MVC):
 
     def menus(self):
         menus = {
-            MenuStates.CHAR_SHEET: self.wrap([]),
-            MenuStates.INVENTORY: self.owner.party.inventory.menu,
-            MenuStates.JOURNAL: self.owner.party.journal.menu,
-            MenuStates.MAP: self.wrap([]),
-            MenuStates.SETTINGS: settings_options(),
+            MenusStates.CHAR_SHEET: self.wrap([]),
+            MenusStates.INVENTORY: self.owner.party.inventory.menu,
+            MenusStates.JOURNAL: self.owner.party.journal.menu,
+            MenusStates.MAP: self.wrap([]),
+            MenusStates.SETTINGS: settings_options(),
         }
         return menus.get(self.handler.state)
 
@@ -178,12 +178,13 @@ class MenuMaker:
         if component.useable:
             logic.extend([UseItem])
             data.append('Use')
-        logic.extend([ExamineItem])
+        logic.extend([examine_item])
         data.append('Examine')
         if not component.important:
             logic.extend([drop_item])
             data.append('Drop')
         return data, logic
+    # identify item logic comes here later
 
     @staticmethod
     def make_quest_menu(quest):

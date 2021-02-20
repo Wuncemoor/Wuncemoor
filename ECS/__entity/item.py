@@ -4,15 +4,19 @@ from ECS.__entity.__item.useable import Useable
 
 class Item:
     """Component for Entities. Behavior is determined by Item components"""
-    def __init__(self, value: int, equippable: Equippable=None, useable: Useable=None, craftable=None, important=False, stackable=False):
+    def __init__(self, value: int, equippable: Equippable=None, useable: Useable=None, craftable=None, important=False,
+                 stackable=False, description: str = None):
         self.value = value
         self.equippable = equippable
         self.useable = useable
         self.craftable = craftable
         self.important = important
         self.stackable = stackable
+        if self.stackable:
+            self.quantity = 1
         self.name = None
         self.images = None
+        self.description = description
         
         if self.equippable:
             self.name = self.equippable.name

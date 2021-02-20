@@ -1,8 +1,8 @@
-from enums.game_states import MenuStates
+from enums.game_states import MenusStates
 
 
 class CharSheet:
     def __init__(self):
-        self.superstate = MenuStates.CHAR_SHEET
+        self.superstate = MenusStates.CHAR_SHEET
         self.menu = None
         self.submenu = None

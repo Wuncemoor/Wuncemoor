@@ -10,10 +10,12 @@ class AbstractGameStateHandler(ABC):
 
     @property
     def superstate(self):
+        """This is used by the GameHandler to determine which state the game is in and should never be modified."""
         return self._superstate
 
     @property
     def state(self):
+        """This should only be modified explicitly through self.change_state"""
         return self._state
 
     @abstractmethod

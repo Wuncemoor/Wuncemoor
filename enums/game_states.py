@@ -29,6 +29,22 @@ class TitleStates(Enum):
     ACKNOWLEDGEMENTS = 6
 
 
+class LifeStates(Enum):
+    """States that occur in GameStates.LIFE"""
+
+    ROOT = 1
+    SETTINGS = 2
+
+
+class LifeSubStates(Enum):
+    """Substates that occur within GameStates.LIFE"""
+
+    SETTINGS_ROOT = 1
+    SETTINGS_WAKEUP = 2
+    SETTINGS_COMPENDIUM = 3
+    SETTINGS_OPTIONS = 4
+
+
 class EncounterStates(Enum):
     """States that occur in GameStates.ENCOUNTER"""
 
@@ -46,15 +62,13 @@ class RewardStates(Enum):
     DEPOSITING = 3
 
 
-class MenuStates(Enum):
+class MenusStates(Enum):
     """States that occur in GameStates.MENUS"""
 
     CHAR_SHEET = 1
     JOURNAL = 2
     INVENTORY = 3
     MAP = 4
-    SETTINGS = 5
-
 
 class MenuSubStates(Enum):
     """Substates that occur in GameStates.MENUS"""
@@ -62,6 +76,7 @@ class MenuSubStates(Enum):
     BASE = 1
     SUBMENU = 2
     SELECTED_OPTIONS = 3
+    EXAMINING_MENU_OBJECT = 4
 
 
 class ShopStates(Enum):

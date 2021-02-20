@@ -7,7 +7,15 @@ from data_structures.gui_tools import get_surface, align_and_blit
 from data_structures.menu_tools import LogicList, MenuSpecs
 
 
-class AbstractMenu(LogicList, ABC):
+class AbstractGetBlittables(ABC):
+    """Abstract mixin for an abstract Menu. This returns a list of blittables."""
+
+    @abstractmethod
+    def get_blittables(self) -> list:
+        pass
+
+
+class AbstractMenu(AbstractGetBlittables, LogicList, ABC):
     """Abstract class used to make a custom Menu, capable of visualizing its data to the Player by returning a
     list of Blittables to be displayed."""
 
@@ -15,12 +23,8 @@ class AbstractMenu(LogicList, ABC):
         super().__init__(data, logic)
         self.specs = specs
 
-    @abstractmethod
-    def get_blittables(self) -> List:
-        pass
 
-
-class CanvasMenu(AbstractMenu):
+class CanvasMenu(AbstractMenu, ABC):
     """CanvasMenus are used as a canvas base for complex menu trees. They require a background image and  may receive
     data, pointer, or submenu visualizations in the form of a list of Blittable objects to additionally display. They
      may receive additional menus to display.
@@ -31,25 +35,22 @@ class CanvasMenu(AbstractMenu):
 
     def __init__(self, data, logic, specs):
         super().__init__(data, logic, specs)
-        self.window = self.initialize_window()
+        self.canvas = self.intialize_canvas()
 
-    def initialize_window(self) -> Surface:
+    def intialize_canvas(self) -> Surface:
         return get_surface(self.specs.bg)
 
-    def get_window_image(self) -> Surface:
+    def get_canvas_image(self) -> Surface:
         self.blit_blittables()
-        return self.window
+        return self.canvas
 
     def blit_blittables(self):
-        self.window.blit(self.specs.bg, (0, 0))
+        self.canvas.blit(self.specs.bg, (0, 0))
         blittables = self.get_blittables()
         for blittable in blittables:
             if blittable.blit_by_alignment:
                 xr, yr, xa, ya = blittable.x_ratio, blittable.y_ratio, blittable.x_offset, blittable.y_offset
-                align_and_blit(self.window, blittable.image, x_ratio=xr, y_ratio=yr, x_adjust=xa, y_adjust=ya)
+                align_and_blit(self.canvas, blittable.image, x_ratio=xr, y_ratio=yr, x_adjust=xa, y_adjust=ya)
             else:
-                self.window.blit(blittable.image, (blittable.x_offset, blittable.y_offset))
+                self.canvas.blit(blittable.image, (blittable.x_offset, blittable.y_offset))
 
-    @abstractmethod
-    def get_blittables(self):
-        pass

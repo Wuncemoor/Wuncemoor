@@ -19,7 +19,7 @@ def menus_submenu_goto_life():
 
 def menus_exit(mvc):
     if mvc.handler.menu_type.submenu is None:
-        return [{'state': 'life'}]
+        return [{'state': 'life'}, {'substate': 'root'}]
     elif mvc.handler.menu_type.submenu.locked:
         return menus_goto_submenu(mvc)
     else:

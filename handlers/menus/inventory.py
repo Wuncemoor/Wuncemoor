@@ -1,17 +1,15 @@
-from dataclasses import dataclass
-
 from config.constants import YELLOW
 from data_structures.menu_tools import LogicList
 from handlers.logic.menus_logic import menus_goto_submenu, menus_goto_selected_options
 from handlers.views.messages import Message
-from enums.game_states import MenuStates, MenuSubStates
+from enums.game_states import MenusStates, MenuSubStates
 from enums.equipment_slots import EquipmentSlots
 
 
 class Inventory:
 
     def __init__(self):
-        self.superstate = MenuStates.INVENTORY
+        self.superstate = MenusStates.INVENTORY
         self.state = MenuSubStates.BASE
         self.weapons = LogicList([], menus_goto_selected_options)
         self.armor = LogicList([], menus_goto_selected_options)

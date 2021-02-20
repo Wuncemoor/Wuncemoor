@@ -3,7 +3,7 @@ from builders.mob_builder import MobBuilder, MobDirector
 from handlers.party_handler import PartyHandler
 from misc_functions.mob_chances import MobChances
 from misc_functions.random_utils import random_choice_from_dict
-from screens.encounter_screen import get_encounter_menu
+from screens.encounter_screen import get_encounter_thinking_menu
 
 
 class Combat:
