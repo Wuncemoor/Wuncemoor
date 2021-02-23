@@ -63,6 +63,8 @@ class Inventory:
             self.submenu.lock()
             entity = self.submenu.pointer_data
             options.get(component=entity.item)
+        elif state == 4:
+            pass
 
     def add_item(self, item):
 

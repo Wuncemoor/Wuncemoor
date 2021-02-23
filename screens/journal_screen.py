@@ -82,7 +82,7 @@ def get_story_chunk(chunk):
 
 def display_quest_options(self, surf):
     menu = self.game.options.current
-    window = menu.get_window_image()
+    window = menu.get_canvas_image()
 
     surf.blit(window, (surf.get_width()*0.25, surf.get_height()*0.3 + SUBINVENTORY_OPTION_HEIGHT*self.handler.menu_type.submenu.pointer))
 

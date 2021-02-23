@@ -18,6 +18,8 @@ def inventory_screen(self):
     display_subinventory(self, surf)
     if self.handler.menu_type.state in (MenuSubStates.SELECTED_OPTIONS, MenuSubStates.EXAMINING_MENU_OBJECT):
         display_entity_options(self, surf)
+    if self.handler.menu_type.state is MenuSubStates.EXAMINING_MENU_OBJECT:
+        display_entity_examination(self, surf)
     display_mass_capacities(self.game.model.party, surf)
     display_wealth(self.game.model.party.inventory.money, surf)
 
@@ -119,10 +121,15 @@ def display_subinv_pointer(self, subinv):
 
 def display_entity_options(self, surf):
     menu = self.game.options.current
-    window = menu.get_window_image()
+    window = menu.get_canvas_image()
 
     surf.blit(window, (surf.get_width()*0.55, surf.get_height()*0.3 +
                        SUBINVENTORY_OPTION_HEIGHT*self.handler.menu_type.submenu.pointer))
+
+
+def display_entity_examination(self, surf):
+    description_string = self.handler.menu_type.submenu.pointer_data.item.description
+    description_surface = get_wrapped_text_surface(description_string, width, fontsize, color)
 
 
 def display_mass_capacities(party, surf):

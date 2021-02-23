@@ -1,4 +1,4 @@
-glyph_dim_dict = {
+GLYPH_DIMENSIONS_DICT = {
     (' ', 3, 'lunchds'): (2, 16),
     (' ', 3, 'gentium'): (2, 16),
     (' ', 3, 'source_sans_pro'): (2, 16),

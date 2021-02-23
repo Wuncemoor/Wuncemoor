@@ -2,15 +2,17 @@ from copy import copy
 from random import randint
 
 from abstracts.abstract_handlers import AbstractGameStateHandler
-from enums.game_states import EncounterStates, GameStates, ShopStates, RewardStates, TitleStates
+from enums.game_states import EncounterStates, ShopStates, RewardStates, LifeStates
 from config.image_objects import BACKGROUNDS
 from handlers.encounter.combat import Combat
 from handlers.views.camera import Camera
 from handlers.views.fov_handler import FovHandler
 from handlers.views.messages import Message
 from screens.encounter_screen import get_encounter_thinking_menu
+from screens.life_screen import get_life_settings_root_menu
 from screens.reward_screen import get_reward_thinking_menu
 from screens.title_screen import get_title_menu
+from handlers.menus.settings import Settings
 
 
 class TitleHandler(AbstractGameStateHandler):
@@ -30,14 +32,28 @@ class LifeHandler(AbstractGameStateHandler):
 
     def __init__(self, superstate):
         super().__init__(superstate)
+        self.camera = None
+        self.fov = None
+        self.settings = None
+
+    def initialize_components(self, model):
         self.camera = Camera()
         self.camera.owner = self
+        self.camera.refocus(model.party.p1.x, model.party.p1.y)
         self.fov = FovHandler()
         self.fov.owner = self
+        self.fov.map = self.fov.initialize(model.world)
+        self.settings = Settings(LifeStates.SETTINGS)
+        self.settings.initialize_components()
 
-    def change_state(self):
-        pass
-        # self._state =
+    def change_state(self, string, options):
+        string_dict = {
+            'root': LifeStates.ROOT,
+            'settings': LifeStates.SETTINGS,
+        }
+        self._state = string_dict.get(string)
+        if not string == 'root':
+            options.current = self.settings.menu
 
 
 class MenusHandler(AbstractGameStateHandler):

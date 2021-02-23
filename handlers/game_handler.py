@@ -1,8 +1,6 @@
 from config.constants import KEYDOWN_DELAY
 from enums.game_states import GameStates
-from handlers.log_handler import LogHandler
 from handlers import state_handlers
-from handlers.time_handler import TimeHandler
 import pygame as py
 
 from world_objects.loot import Loot
@@ -33,6 +31,10 @@ class GameHandler:
     @property
     def state(self):
         return self.state_handler.superstate
+
+    @property
+    def substate(self):
+        return self.state_handler.state
 
     def set_root_state(self):
         self.state_handler = self.title
@@ -79,6 +81,6 @@ class GameHandler:
         self.reward = state_handlers.RewardHandler(GameStates.REWARD, loot)
         self.debug.set_allowed_objs()
         self.take_ownership()
-        self.life.camera.refocus(model.party.p1.x, model.party.p1.y)
-        self.life.fov.map = self.life.fov.initialize(model.world)
+        self.life.initialize_components(model)
         self.state_handler = self.life
+        self.state_handler.change_state('root', 'null')

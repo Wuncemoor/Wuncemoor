@@ -3,7 +3,7 @@ from data_structures.gui_tools import get_alpha_surface, get_text_surface
 from enums.game_states import RewardStates
 from config.image_objects import ENCOUNTER_BUTTON, POINTER_RIGHT, REWARD_BG
 from config.constants import BLACK
-from data_structures.menu_structures import FancyMenu
+from data_structures.menu_structures import DescendingFancyMenu
 from handlers.logic.logic_chunks import reward_auto, reward_manual, reward_goto_life, reward_sifting, reward_depositing
 
 
@@ -28,7 +28,7 @@ def get_reward_thinking_menu():
     logic = [reward_auto, reward_manual, reward_goto_life]
     specs = get_reward_thinking_specs()
 
-    return FancyMenu(data, logic, specs)
+    return DescendingFancyMenu(data, logic, specs)
 
 def get_reward_sifting_menu_specs():
     specs = MenuSpecs(pointer_image=POINTER_RIGHT, )

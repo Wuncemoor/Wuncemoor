@@ -5,10 +5,10 @@ from config.image_objects import DIALOGUE_BG, POINTER_RIGHT
 from data_structures.gui_tools import get_alpha_surface
 from data_structures.menu_structures import BasicMenu
 from data_structures.menu_tools import MenuSpecs
-from enums.game_states import GameStates, MenuStates, EncounterStates, RewardStates, ShopStates
+from enums.game_states import GameStates, MenusStates, EncounterStates, RewardStates, ShopStates, LifeStates
 from abstracts.abstract_mvc import MVC
-from handlers.logic.logic_chunks import UseItem, ExamineItem, attempt_equip_item, drop_item, get_quest_details, \
-    toggle_starred, abandon_quest
+from handlers.logic.logic_chunks import UseItem, attempt_equip_item, drop_item, get_quest_details, \
+    toggle_starred, abandon_quest, examine_item
 from screens.shop_screen import get_shop_menu
 from handlers.menus.journal import Quest
 from screens.title_screen import get_title_menu
@@ -35,7 +35,7 @@ class OptionsHandler(MVC):
             self.traverse_list((path[0]))
         elif self.handler.state in (MenusStates.JOURNAL, MenusStates.INVENTORY) and self.handler.menu_type.submenu is None:
             self.current.traverse_list(path[0])
-        elif self.handler.state in (MenuStates.JOURNAL, MenuStates.INVENTORY):
+        elif self.handler.state in (LifeStates.SETTINGS, MenusStates.JOURNAL, MenusStates.INVENTORY):
             self.current.traverse_list(path[1])
         elif self.handler.state == EncounterStates.THINKING:
             self.current.traverse_list(path[1])

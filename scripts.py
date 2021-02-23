@@ -4,7 +4,7 @@ import pygame
 
 def glyph_dimensions():
     pygame.init()
-    keys = string_to_font_style_dict().keys()
+    keys = STRING_TO_FONT_STYLE_DICT.keys()
     with open('script_outputs/glyph_dimensions.py', 'w') as opened_file:
         opened_file.write('glyph_dim_dict = {\n')
         for unicode in [x for x in range(32, 127)]:
