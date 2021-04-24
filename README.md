@@ -1,5 +1,7 @@
 # Wuncemoor: The Eternal Dream
 
+THIS GAME IS CURRENTLY ON HOLD WHILE PARTS OF THE CODE ARE REPURPOSED INTO A GAME ENGINE (TO BE USED BY THIS GAME)
+
 Roguelike RPG - Dungeons & Dragons meets Dragon Quest meets Groundhog Day
 
 You live in a small village, grow up with your friends, marry your childhood sweetheart, and grow old. It seemed like a good life... until the fire nation attacked. As everything burns, you wake up. You're 10 years old again, back at the orphanage. Was it all a dream? No, a premonition of things to come, and now you have a lifetime to prepare.
